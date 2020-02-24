@@ -1,6 +1,17 @@
 <template>
   <div class="person_home">
-    222222222222222
+    <div class="police_career">
+      <div>
+        <span class="person_title">从警生涯</span>
+      </div>
+      <div class="w_full">
+        <img />
+      </div>
+    </div>
+    <!-- 风险提醒 -->
+    <div class="fengxian">
+      <div></div>
+    </div>
   </div>
 </template>
 <script>

@@ -2,9 +2,13 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 // import Home from "../views/Home.vue";
 import MenuPage from "../views/MenuPage.vue";
-const routerPush = VueRouter.prototype.push
+// 个人首页
+import PersonalHome from "../views/PersonalHome";
+import PersonalHome2 from "../views/PersonalHome2";
+
+const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(error=> error)
+  return routerPush.call(this, location).catch(error => error);
 }
 Vue.use(VueRouter);
 
@@ -18,7 +22,23 @@ const routes = [
   {
     path: "/",
     name: "MenuPaage",
-    component: MenuPage
+    component: MenuPage,
+    children: [
+      {
+        title:'个人首页',
+        icon: 'el-icon-location',
+        path: "/PersonalHome",
+        name: "PersonalHome",
+        component: PersonalHome
+      },
+      {
+        title:'市局门户',
+        icon: 'el-icon-menu',
+        path: "/PersonalHome2",
+        name: "PersonalHome2",
+        component: PersonalHome2
+      }
+    ]
   }
   //
 ];
