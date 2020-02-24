@@ -1,71 +1,67 @@
 <template>
-	<div class="MenuPage">
-		<div class="pageTop">头部标题</div>
+  <div class="MenuPage">
+    <div class="pageTop">头部标题</div>
     <div class="page_body">
       <div style="float:left;height:100%;background:#545c64">
-        <el-button type="primary" @click="switchClick" style="width:100%;">切换</el-button>
-        <el-menu default-active="2" class="el-menu-vertical-demo" 
+        <el-button type="primary" @click="switchClick" style="width:100%;">
+          切换
+        </el-button>
+        <el-menu :default-active="routes[0].path"  class="el-menu-vertical-demo" router="true"
           background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
           @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-          <el-submenu index="1">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">导航一</span>
-            </template>
-            <!--
-            <el-menu-item-group>
-              <span slot="title">分组一</span>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="分组2">
-              <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            -->
-            <el-submenu index="1-4">
-              <span slot="title">选项4</span>
-              <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-document"></i>
-            <span slot="title">导航三</span>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
+          <el-menu-item :index="item.path" v-for="(item,index) of routes" :key="index">
+            <i :class="item.icon"></i>
+            <span slot="title">{{item.title}}</span>
           </el-menu-item>
         </el-menu>
       </div>
-      <div class="bodyContent" :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 205px)'}]"></div>
+      <div class="bodyContent" :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 205px)'}]">
+        <router-view/>
+      </div>
     </div>
-	</div>
+  </div>
 </template>
 <script>
 export default {
   name: 'MenuPage',
-  data () {
+  data() {
     return {
-			isCollapse:false,
-      menuList:[
-      ]
+      isCollapse: false,
+      // menuList: [
+      //   {title:'个人首页',path:1,icon:'el-icon-location'},
+      //   {title:'市局门户',path:2,icon:'el-icon-menu'},
+      //   {title:'协作提效',path:3,icon:'el-icon-document'},
+      //   {title:'层级管理',path:4,icon:'el-icon-setting'},
+      //   {title:'精细管理',path:5,icon:'el-icon-menu'},
+      //   {title:'智慧监督',path:6,icon:'el-icon-menu'}
+      // ]
+      menuList:[]
     }
   },
-	watch: {
-		
-	},
+  watch: {},
+  computed: {
+    // 获取当前路由的子路由
+    routes(){
+      var routes = {
+        children: this.$router.options.routes
+      };
+      var route = this.$route.matched;
+      for(var i=0; i<route.length-1; i++){
+        routes = routes.children.find((e) => (e.name == route[i].name));
+      }
+      return routes.children
+    }
+  },
   mounted() {
+    console.log(this.routes)
     // this.$root.eventHub.$on("changeParam", (n)=>{
     //     this.getTraffData()
     // });
-    this.init()
+    this.init();
   },
   methods: {
     init() {
+      // this.$router.push({ path: '/PersonalHome' });
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -74,7 +70,7 @@ export default {
       console.log(key, keyPath);
     },
     switchClick(){
-      this.isCollapse = !this.isCollapse
+      this.isCollapse = !this.isCollapse;
     }
   }
 }
@@ -100,4 +96,5 @@ export default {
   .bodyContent
     float left
     height 100%
+    background:#f2f5f7
 </style>
