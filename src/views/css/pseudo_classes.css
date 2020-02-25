@@ -1,0 +1,170 @@
+input[type=text]:focus,
+select:focus,
+textarea:focus{
+  border-color: #235ff5!important;
+}
+
+.login .focus-username:focus,
+.login .focus-password:focus{
+  border-color: #00d2ff!important;
+  background-color: transparent!important;
+}
+.login .focus-username:-webkit-autofill,
+.login .focus-password:-webkit-autofill{
+  background-color: transparent!important;
+}
+.login .focus-remember-password:focus+label{
+  font-weight: bold!important
+}
+
+.home .hov-header-module:hover{
+  color: #467cd4!important
+}
+
+.home .hov-user-menu-toggle:hover{
+  border-radius: 50%!important;
+  background: #ccc!important
+}
+
+.home .hov-news-item:hover{
+  color: #014BB8!important
+}
+
+.home .hov-news-nav:hover>div{
+  opacity: 0.6!important
+}
+
+.left_menu::-webkit-scrollbar{
+  width: 0!important
+}
+
+.left_menu .hov-nav-item:hover{
+  background: #3985F633
+}
+
+.pager .hov-action:hover{
+  color: #ffffff!important;
+  background-color: #467cd4!important
+}
+
+.organization_home .hov-route:hover{
+  background-color: #185EFF!important
+}
+
+.organization_home .hov-route:hover>span{
+  color: #fff!important;
+}
+
+.my_tree_map .hov-menu-item:hover{
+  transform: skewX(10deg);
+}
+
+.annual_detail .left_menu .hov-menu-item:hover{
+  background: #3985f6!important;
+  color: #fff!important
+}
+
+.attendance_management .hov-menu-item:hover{
+  background: #3985f6!important;
+  color: #fff!important
+}
+
+.date_picker .hov-date:hover{
+  font-weight: bold!important
+}
+
+.date_picker .foc-select-year:focus,
+.date_picker .foc-select-year:hover,
+.date_picker .foc-select-month:focus,
+.date_picker .foc-select-month:hover{
+  border-color: #235FF5!important;
+}
+
+.date_picker .hov-month-button:hover{
+  background: #235FF5!important;
+}
+
+.date_picker .calendar .hov-date-item:hover>div{
+  background: #235FF5!important;
+  color: #FFFFFF!important;
+  border: 2px solid #235FF520;
+}
+
+.calendar_color .hov-date:hover{
+  background: #eee!important
+}
+
+.logs_management_evaluation .hov-score-item:hover {
+  background: #235ff5!important;
+  color: #FFFFFF!important;
+  border-radius: 8px;
+}
+
+.popup_manager .hov-clear:hover{
+  border-color: #72b7ec!important;
+}
+
+.left_panel .hov-action:hover{
+  background-color: #cf3034!important
+}
+
+.layer_mod .hov-action:hover{
+  background-position: right!important;
+  background-color: #467cd4!important
+}
+
+.role_management_sub .hov-action:hover{
+  background-position: right!important;
+  background-color: #467cd4!important
+}
+
+.user_management_sub .hov-action:hover {
+  background-position: right!important;
+  background-color: #467cd4!important
+}
+
+.wfs_config_mod .hov-list:hover{
+  color: #ffffff!important;
+  background-color: #467cd4!important
+}
+
+table>tbody.hov-tr-bg>tr:hover{
+  background-color: #ebf8ff!important
+}
+table>thead.pos-ends-border>tr>th:first-child{
+  border-left-width: 0!important
+}
+table>thead.pos-ends-border>tr>th:last-child{
+  border-right-width: 0!important
+}
+table>tbody.pos-tr-even-odd-bg>tr:nth-child(odd){
+  background-color: #ffffff
+}
+table>tbody.pos-tr-even-odd-bg>tr:nth-child(even){
+  background-color: #f9f9f9
+}
+
+.hov-career-item:hover, .hov-career-item:focus, .hov-career-item:active {
+  -webkit-animation-name: hvr-bob-float, hvr-bob;
+  animation-name: hvr-bob-float, hvr-bob;
+  -webkit-animation-duration: .3s, 1.5s;
+  animation-duration: .3s, 1.5s;
+  -webkit-animation-delay: 0s, .3s;
+  animation-delay: 0s, .3s;
+  -webkit-animation-timing-function: ease-out, ease-in-out;
+  animation-timing-function: ease-out, ease-in-out;
+  -webkit-animation-iteration-count: 1, infinite;
+  animation-iteration-count: 1, infinite;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-direction: normal, alternate;
+  animation-direction: normal, alternate;
+  box-shadow: 0 0 10px 2px rgba(31,51,73,.25)!important;
+}
+.hov-career-item {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}

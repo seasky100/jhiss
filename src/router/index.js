@@ -6,6 +6,9 @@ import MenuPage from "../views/MenuPage.vue";
 import PersonalHome from "../views/PersonalHome";
 import PersonalHome2 from "../views/PersonalHome2";
 
+import organizationRequest from "../views/wisdomSupervision/organizationRequest";
+import organizationRequestAdd from "../views/wisdomSupervision/organizationRequestAdd";
+
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error => error);
@@ -37,6 +40,73 @@ const routes = [
         path: "/PersonalHome2",
         name: "PersonalHome2",
         component: PersonalHome2
+      },
+      {
+        title:'事项申报',
+        icon: 'el-icon-menu',
+        path: "/organizationRequest",
+        name: "organizationRequest",
+        component: organizationRequest
+      },
+      {
+        title:'新增',
+        icon: 'el-icon-menu',
+        path: "/organizationRequestAdd",
+        name: "organizationRequestAdd",
+        component: organizationRequestAdd
+      }
+    ]
+  }
+  //
+];
+
+const routesMenu = [
+  {
+    path: "/",
+    name: "MenuPaage",
+    component: MenuPage,
+    children: [
+      {
+        title:'个人首页',
+        icon: 'el-icon-location',
+        path: "/PersonalHome",
+      },
+      {
+        title:'市局门户',
+        icon: 'el-icon-menu',
+        path: "/PersonalHome2",
+      },
+      {
+        title:'层级管理',
+        icon: 'el-icon-menu',
+        path: "/PersonalHome2",
+        children:[
+          {title:'事项申报', icon: 'el-icon-menu', path: "/organizationRequest"}
+        ]
+      },
+      {
+        path: '1',
+        title:'导航一', 
+        icon: 'el-icon-location',
+        children:[{
+          path: '1-1',
+          title:'二级', 
+          icon: 'el-icon-location',
+          children:[{
+            path: '1-1-1',
+            title:'三级', 
+            icon: 'el-icon-location',
+            children:[
+              {path: '1-1-1-1',title:'四级', icon: 'el-icon-location'}
+            ]
+          }]
+          },
+          {path: '1-2',title:'二级2', icon: 'el-icon-location'}
+        ]},
+      {
+        path: '2',
+        title:'导航二', 
+        icon: 'el-icon-location'
       }
     ]
   }
@@ -44,7 +114,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  routesMenu
 });
 
 export default router;
