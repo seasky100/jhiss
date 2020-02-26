@@ -333,7 +333,7 @@ export default {
     },
     // 查询分类风险提醒数据
     async getData() {
-      debugger
+      // debugger
       const id =''
       this.$request.get(`/police/warn/allWarnByType?userId=${id}`)
         .then(res => {

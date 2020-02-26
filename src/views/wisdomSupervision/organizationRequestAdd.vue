@@ -232,7 +232,7 @@ export default {
         // },
         // // 新增或修改敏感词
         add() {
-            debugger
+            // debugger
             this.$router.push({ path: '/organizationRequestAdd'})
         }
     },

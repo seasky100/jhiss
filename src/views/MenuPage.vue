@@ -7,7 +7,7 @@
           切换
         </el-button>
         <!-- router="true" -->
-        <el-menu :default-active="routes[0].path"  class="el-menu-vertical-demo" router="true"
+        <el-menu :default-active="routes[0].path"  class="el-menu-vertical-demo" :router="true"
           background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
           @open="handleOpen" @close="handleClose" :collapse="isCollapse">
           <!-- 一级 -->

@@ -54,6 +54,27 @@ const routes = [
         path: "/organizationRequestAdd",
         name: "organizationRequestAdd",
         component: organizationRequestAdd
+      },
+      {
+        title:'考勤预警管控',
+        icon: 'el-icon-menu',
+        name: 'AttendanceWarning',
+        path: "attendance-warning",
+        component: () => import('@/views/WisdomReminder/WisdomAttendance/AttendanceWarning')
+      },
+      {
+        title:'检查通报',
+        icon: 'el-icon-menu',
+        name: 'InspectionBulletin',
+        path: "inspection-bulletin",
+        component: () => import('@/views/WisdomReminder/InspectionBulletin')
+      },
+      {
+        title:'违规车管控',
+        icon: 'el-icon-menu',
+        name: 'ViolationsCarManage',
+        path: "violation",
+        component: () => import('@/views/ViolationsCarManage')
       }
     ]
   }
@@ -107,6 +128,21 @@ const routesMenu = [
         path: '2',
         title:'导航二', 
         icon: 'el-icon-location'
+      },
+      {
+        title:'考勤预警管控',
+        icon: 'el-icon-menu',
+        path: "attendance-warning"
+      },
+      {
+        title:'检查通报',
+        icon: 'el-icon-menu',
+        path: "inspection-bulletin"
+      },
+      {
+        title:'违规车管控',
+        icon: 'el-icon-menu',
+        path: "violation"
       }
     ]
   }

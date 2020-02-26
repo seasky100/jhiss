@@ -8,12 +8,19 @@ import store from "./store";
 import request from '@/utils/request'
 import echarts from 'echarts';
 import 'echarts/map/js/china';
+
+import './components';
+
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$request = request
 Vue.prototype.$findRouter = findRouter
 // import '@/utils/permission'
 import { findRouter } from '@/utils/findRouter'
 Vue.config.productionTip = false
+
+import VCharts from 'v-charts';
+Vue.use(VCharts);
+
 Vue.use(ElementUI)
 import BaiduMap from 'vue-baidu-map';
 Vue.use(BaiduMap, {

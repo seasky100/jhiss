@@ -164,7 +164,7 @@ export default {
                 }
             },
     created() {
-        debugger
+        // debugger
         this.getData()
     },
     methods: {
@@ -174,7 +174,7 @@ export default {
         // },
         // 查询敏感词列表数据
         async getData(){
-            debugger
+            // debugger
             this.$request.get(`/police/gaism-server/weddingBanquet/findReportPage?nCurrent=${this.pageNo}&nSize=${this.pageSize}&userId=${this.userId}&userName=${this.name}&policeCode=${this.policeNo}&approvalId=${this.approvalId}&reportType=${this.type}&status=${this.status}&startTime=${this.dateStart}&endTime=${this.dateEnd}`)
                 .then(res => {
                     if (res.success == true) {
@@ -196,7 +196,7 @@ export default {
         // },
         // // 新增或修改敏感词
         add() {
-            debugger
+            // debugger
             this.$router.push({ path: '/organizationRequestAdd'})
         }
     },
