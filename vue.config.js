@@ -170,6 +170,13 @@ module.exports = {
             pathRewrite: {
             '^/traff': ''
             }
+          },
+          '/gaism_server': {
+            target: 'http://39.100.4.175:10008/gaism-server/',
+            changeOrigin: true,
+            pathRewrite: {
+              '^/gaism_server': ''
+            }
           }
       },
   },
