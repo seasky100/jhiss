@@ -1,5 +1,5 @@
 # gmgaly
-
+智慧监督（vue）
 ## Project setup
 ```
 npm install
