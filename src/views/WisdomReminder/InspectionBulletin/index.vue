@@ -3,13 +3,29 @@
     <p>检查通报</p>
     <el-row>
       <el-col :span="8">
-        <ve-histogram :data="chartData"></ve-histogram>
+        <!-- 以部门进行分类统计 -->
+        <e-histogram
+          :chartSettings="departmentSettings"
+          :title="departmentTitle"
+          :chartData="departData"
+        />
       </el-col>
       <el-col :span="8">
-        <ve-histogram :data="chartData"></ve-histogram>
+        <!-- 问题性质分类统计 -->
+        <!-- <ve-histogram :data="chartData"></ve-histogram> -->
+        <e-histogram
+          :chartSettings="exceptionSettings"
+          :title="exceptionTitle"
+          :chartData="exceptionData"
+        />
       </el-col>
       <el-col :span="8">
-        <ve-histogram :data="chartData"></ve-histogram>
+        <!-- 按月统计 -->
+        <e-histogram
+          :chartSettings="monthlySettings"
+          :title="monthlyTitle"
+          :chartData="monthlyData"
+        />
       </el-col>
     </el-row>
     <div>
@@ -40,15 +56,46 @@ import {
 export default {
   data() {
     return {
-      chartData: {
-        columns: ['日期', '访问用户', '下单用户', '下单率'],
+      departmentTitle: {
+        text: '部门通报次数统计'
+      },
+      departmentSettings: {
+        labelMap: {
+          bulletinNum: '通报次数'
+        }
+      },
+      departData: {
+        columns: ['department', 'bulletinNum'],
         rows: [
-          { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
-          { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
-          { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
-          { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
-          { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
-          { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+          // { 'department': '纪检委', 'bulletinNum': 1}
+        ]
+      },
+      exceptionTitle: {
+        text: '问题性质分类统计'
+      },
+      exceptionSettings: {
+        labelMap: {
+          times: '次数'
+        }
+      },
+      exceptionData: {
+        columns: ['exception', 'times'],
+        rows: [
+          // { 'exception': '1', 'times': 1}
+        ]
+      },
+      monthlyTitle: {
+        text: '按月检查通报统计次数'
+      },
+      monthlySettings: {
+        labelMap: {
+          COUNT: '次数'
+        }
+      },
+      monthlyData: {
+        columns: ['months', 'COUNT'],
+        rows: [
+          // { 'months': '2020-02-11', 'COUNT': 1}
         ]
       },
       searchData: {
@@ -150,7 +197,7 @@ export default {
     // 查询
     handleSearch(params) {
       Object.assign(this.searchData, params);
-      console.log(params)
+      // console.log(params)
       this.query();
     },
     // 分页点击事件
@@ -170,7 +217,7 @@ export default {
           $this.searchData
         )
       ).then(res => {
-        console.log(res)
+        // console.log(res)
         this.$refs.recordSpTableRef.setPageInfo(
           nCurrent,
           res.data.size,
@@ -179,29 +226,54 @@ export default {
         );
       })
     },
-    // 图标分析
+    // 部门通报次数
     getBulletinTypeStatistics() {
       const params = {
         userId: '5ba98b66cd3549b9b92ea8723e89207e'
       }
       bulletinTypeStatistics(params).then(res => {
-        console.log(res)
+        // console.log(res)
+        if (res.success && res.data) {
+          let result = [];
+          for (let item in res.data) {
+            result.push({
+              department: item,
+              bulletinNum: res.data[item]
+            })
+          }
+          this.departData.rows = result;
+        }
       })
     },
+    // 问题性质
     getBulletinExceptionStatistics() {
       const params = {
         userId: '5ba98b66cd3549b9b92ea8723e89207e'
       }
       bulletinExceptionStatistics(params).then(res => {
-        console.log(res)
+        // console.log(res)
+        if (res.success && res.data) {
+          let result = [];
+          for (let item in res.data) {
+            result.push({
+              exception: item,
+              times: res.data[item]
+            })
+          }
+          this.exceptionData.rows = result;
+        }
       })
     },
+    // 按月统计
     getBulletinTimesStatistics() {
       const params = {
         userId: '5ba98b66cd3549b9b92ea8723e89207e'
       }
       bulletinTimesStatistics(params).then(res => {
-        console.log(res)
+        // console.log(res)
+        if (res.success && res.data) {
+          this.monthlyData.rows = res.data;
+        }
       })
     }
   },

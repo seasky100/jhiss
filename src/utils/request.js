@@ -51,10 +51,10 @@ service.interceptors.request.use(config => {
     }
     config.data = param
   } else if (config.method === 'get') {
-    config.params = {}
-    if (!config.params) {
-      config.params = {}
-    }
+    // config.params = {}
+    // if (!config.params) {
+    //   config.params = {}
+    // }
     config.params['access_token'] = store.state.user.token
   }
 

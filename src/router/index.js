@@ -75,6 +75,13 @@ const routes = [
         name: 'ViolationsCarManage',
         path: "violation",
         component: () => import('@/views/ViolationsCarManage')
+      },
+      {
+        title:'公车使用分析',
+        icon: 'el-icon-menu',
+        name: 'AnalysisBusUse',
+        path: "analysis-use",
+        component: () => import('@/views/AnalysisBusUse')
       }
     ]
   }
@@ -143,6 +150,11 @@ const routesMenu = [
         title:'违规车管控',
         icon: 'el-icon-menu',
         path: "violation"
+      },
+      {
+        title:'公车使用分析',
+        icon: 'el-icon-menu',
+        path: "analysis-use"
       }
     ]
   }
