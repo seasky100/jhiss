@@ -25,13 +25,14 @@ export default [
                     }
                 ]
 
-            }, {
-                title: '违规车管控',
-                icon: 'el-icon-menu',
-                name: 'ViolationsCarManage',
-                path: "/violation",
-                component: () => import('@/views/ViolationsCarManage')
-            },
+            }, 
+            // {
+            //     title: '违规车管控',
+            //     icon: 'el-icon-menu',
+            //     name: 'ViolationsCarManage',
+            //     path: "/violation",
+            //     component: () => import('@/views/ViolationsCarManage')
+            // },
         ]
     }
 ]
