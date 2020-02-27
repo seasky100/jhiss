@@ -44,7 +44,7 @@ const wisdomReminderRouter = [
           {
             title: '公车使用分析',
             name: 'AnalysisBusUse',
-            path: '/use',
+            path: '/organization-car',
             component: () => import('@/views/WisdomReminder/AnalysisBusUse')
           },
           {

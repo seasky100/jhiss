@@ -55,7 +55,7 @@ service.interceptors.request.use(config => {
     // if (!config.params) {
     //   config.params = {}
     // }
-    config.params['access_token'] = store.state.user.token
+    // config.params['access_token'] = store.state.user.token
   }
 
   // if (store.getters.token) {

@@ -11,6 +11,7 @@
           :expand-row-keys="expands"
           @row-click="rowClick"
           :border="false"
+          :show-header="optionsComputed.showHeader"
           :tree-props="treeProps"
           :max-height="optionsComputed.maxHeight"
           :height="optionsComputed.height"

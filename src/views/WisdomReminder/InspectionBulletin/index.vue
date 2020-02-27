@@ -1,46 +1,53 @@
 <template>
-  <div>
-    <p>检查通报</p>
-    <el-row>
-      <el-col :span="8">
-        <!-- 以部门进行分类统计 -->
-        <e-histogram
-          :chartSettings="departmentSettings"
-          :title="departmentTitle"
-          :chartData="departData"
+  <div class="container">
+    <div class="page-title">
+      <span>检查通报</span>
+    </div>
+    <div class="content">
+      <el-row class="bg-fff">
+        <el-col :span="8">
+          <!-- 以部门进行分类统计 -->
+          <e-histogram
+            :chartSettings="departmentSettings"
+            :title="departmentTitle"
+            :chartData="departData"
+          />
+        </el-col>
+        <el-col :span="8">
+          <!-- 问题性质分类统计 -->
+          <!-- <ve-histogram :data="chartData"></ve-histogram> -->
+          <e-histogram
+            :chartSettings="exceptionSettings"
+            :title="exceptionTitle"
+            :chartData="exceptionData"
+          />
+        </el-col>
+        <el-col :span="8">
+          <!-- 按月统计 -->
+          <e-histogram
+            :chartSettings="monthlySettings"
+            :title="monthlyTitle"
+            :chartData="monthlyData"
+          />
+        </el-col>
+      </el-row>
+      <div class="search-wrap">
+        <div class="section-title">查询条件</div>
+        <e-search
+          class="search-form"
+          @handleSearch="handleSearch"
+          :searchData="searchData"
+          :searchForm="searchForm" />
+      </div>
+      <div>
+        <e-table
+          ref="recordSpTableRef"
+          :tableList="tableList"
+          :options="options"
+          :columns="columns"
+          @afterCurrentPageClick="afterCurrentPageClickHandle"
         />
-      </el-col>
-      <el-col :span="8">
-        <!-- 问题性质分类统计 -->
-        <!-- <ve-histogram :data="chartData"></ve-histogram> -->
-        <e-histogram
-          :chartSettings="exceptionSettings"
-          :title="exceptionTitle"
-          :chartData="exceptionData"
-        />
-      </el-col>
-      <el-col :span="8">
-        <!-- 按月统计 -->
-        <e-histogram
-          :chartSettings="monthlySettings"
-          :title="monthlyTitle"
-          :chartData="monthlyData"
-        />
-      </el-col>
-    </el-row>
-    <div>
-      <p>查询条件</p>
-      <e-search 
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm" />
-      <e-table
-        ref="recordSpTableRef"
-        :tableList="tableList"
-        :options="options"
-        :columns="columns"
-        @afterCurrentPageClick="afterCurrentPageClickHandle"
-      />
+      </div>
     </div>
   </div>
 </template>
@@ -161,7 +168,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'550'
+        height:'500'
       },
       columns: [
         {
@@ -182,7 +189,6 @@ export default {
         {
           prop: 'bulletinDate',
           label: '通报时间',
-          width: '180px',
           align: 'left'
         },
         {
@@ -286,3 +292,6 @@ export default {
 }
 </script>
 
+<style lang="stylus" scoped>
+@import "../../../styles/common.styl"
+</style>

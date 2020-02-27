@@ -25,6 +25,19 @@ const DEFAULT_URL = {
     findIlluseCarPage: GAISMSERVER + 'warn/findIlluseCarPage', //
     monthIllUsecarStatistics: GAISMSERVER + 'warn/monthIllUsecarStatistics', //
     illUsecarHumanStatistics: GAISMSERVER + 'warn/illUsecarHumanStatistics', //
+    // 用车分析
+    carTimesStatistics: GAISMSERVER + 'carRecord/carTimesStatistics', //车辆使用次数统计
+    departmentTimesStatistics: GAISMSERVER + 'carRecord/departmentTimesStatistics', //部门用车统计
+    findCarRecordPage: GAISMSERVER + 'carRecord/findCarRecordPage', //获取车辆分页信息
+    usedCarsStatistics: GAISMSERVER + 'carRecord/usedCarsStatistics', //用车统计
+    carStatusStatistics: GAISMSERVER + 'carInfo/carStatusStatistics', //车辆状态统计
+    carExceptionStatistics: GAISMSERVER + 'carRecord/carExceptionStatistics', //异常统计
+  },
+  // 廉政风险
+  vacation: {
+    findVacationPage: GAISMSERVER + 'vacationApply/findVacationPage', //获取考勤信息分页
+    vacationApplyByMonth: GAISMSERVER + 'vacationApply/vacationApplyByMonth', //请假按月统计
+    vacationExceptionStatistics: GAISMSERVER + 'vacationApply/vacationExceptionStatistics', //请假按月统计
   }
 }
 

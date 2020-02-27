@@ -30,7 +30,7 @@ export default [
                 icon: 'el-icon-menu',
                 name: 'ViolationsCarManage',
                 path: "/violation",
-                component: () => import('@/views/ViolationsCarManage')
+                // component: () => import('@/views/ViolationsCarManage')
             },
         ]
     }

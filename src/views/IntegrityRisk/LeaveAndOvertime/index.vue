@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="page-title">
-      <span>考勤预警管控</span>
+      <span>请假加班</span>
     </div>
     <div class="content">
       <el-row class="bg-fff">
@@ -48,6 +48,12 @@
 <script>
 import { getHumanStatistics, getWarnStatusStatistics, getWarnPage } from '@/api/warn.js';
 
+import {
+  getVacationPage,
+  getVacationApplyByMonth,
+  getVacationExceptionStatistics
+  } from '@/api/integrity-risk-serve.js';
+
 export default {
   data() {
     this.chartExtend = {
@@ -68,16 +74,21 @@ export default {
     return {
       searchData: {
         userName: '',
-        policeCode: '',
         department: '',
-        problemType: '',
+        applyType: '',
         startTime: '',
         endTime: ''
       },
       searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
-        {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
-        {type: 'input', prop: 'reason', width: '120px', placeholder: '预警原因'},
+        {type: 'input', prop: 'userName', width: '120px', placeholder: '用户名称'},
+        {
+          type: 'select',
+          prop: 'department',
+          width: '150px',
+          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+          change: row => console.log(row),
+          placeholder: '所属部门'
+        },
         {
           type: 'daterange',
           options: [
@@ -97,19 +108,11 @@ export default {
         },
         {
           type: 'select',
-          prop: 'dept_id',
-          width: '150px',
-          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
-        {
-          type: 'select',
-          prop: 'response',
+          prop: 'applyType',
           width: '150px',
           options: [{label:'否', value: 0},{label:'是', value: 1}],
           change: row => console.log(row),
-          placeholder: '是否反馈'
+          placeholder: '申请类型'
         },
       ],
       tableList: [],
@@ -140,25 +143,34 @@ export default {
           align: 'left'
         },
         {
-          prop: 'warnTime',
+          prop: 'applyTime',
           label: '预警时间',
           align: 'left',
-          type: 'date',
-          dateFormat: 'yyyy-MM-dd'
+          type: 'date'
         },
         {
-          prop: 'warnReason',
-          label: '预警原因',
+          prop: 'exceptionReason',
+          label: '请假原因',
           align: 'left'
         },
         {
-          prop: 'content',
-          label: '反馈内容',
+          prop: 'applyType',
+          label: '请假类型',
           align: 'left'
         },
         {
-          prop: 'warnLevel',
-          label: '预警级别',
+          prop: 'approvalState',
+          label: '审批状态',
+          align: 'left'
+        },
+        {
+          prop: 'isException',
+          label: '是否异常',
+          align: 'left'
+        },
+        {
+          prop: 'exceptionReason',
+          label: '异常原因',
           align: 'left'
         }
       ],
@@ -175,11 +187,11 @@ export default {
         rows: []
       },
       humanStatistics: {
-        columns: ['user_name', 'warnnum'],
+        columns: ['month', 'applynum'],
         rows: []
       },
       title: {
-        text: '考勤预警人员统计',
+        text: '请假统计',
         left: 'center'
       }
     }
@@ -196,56 +208,63 @@ export default {
       this.query(val);
       next();
     },
-    // 获取考勤预警按人员名称统计
-    getHumanStatistics() {
+    // 请假按月统计
+    getVacationApply() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: '5ba98b66cd3549b9b92ea8723e89207e',
+        deptId: '111',
+        role: '10'
       }
-      getHumanStatistics(params).then(res => {
+      getVacationApplyByMonth(params).then(res => {
         // console.log(res)
-        if (res.success) {
-          this.humanStatistics.rows = res.data;
+        if (res.success && res.data && res.data.length > 0) {
+          const vacationData = res.data;
+          vacationData.forEach(item => {
+            item.month = item.month + '月'
+          })
+          this.humanStatistics.rows = vacationData;
         }
       })
     },
-    // 预警处置情况统计x未反馈，已反馈，y轴对应次数
-    getWarnStatusStatistics() {
+    // 请假异常情况统计
+    getExceptionStatistics() {
       const params = {
         userId: '5ba98b66cd3549b9b92ea8723e89207e'
       }
-      getWarnStatusStatistics(params).then(res => {
-        // console.log(res)
+      getVacationExceptionStatistics(params).then(res => {
+        console.log(res)
         if (res.success && res.data) {
-          let result = [];
-          for (let item in res.data) {
-            result.push({
-              status: item,
-              num: res.data[item]
-            })
-          }
-          // console.log(result);
-          this.warnStatusStatistics.rows = result;
+          // let result = [];
+          // for (let item in res.data) {
+          //   result.push({
+          //     status: item,
+          //     num: res.data[item]
+          //   })
+          // }
+          // // console.log(result);
+          // this.warnStatusStatistics.rows = result;
+        } else {
+          this.$message({
+            type: 'warning',
+            message: res.message
+          })
         }
       })
     },
     // 查找列表数据
     query(nCurrent = 1) {
       const $this = this;
-      getWarnPage(
+      getVacationPage(
         Object.assign(
           {
             nCurrent: nCurrent,
             nSize: 10,
-            user_id: '5ba98b66cd3549b9b92ea8723e89207e',
-            isAsc: false,
-            orderByField: 'warnTime',
-            role: 10,
-            warnType: 1
+            user_id: '5ba98b66cd3549b9b92ea8723e89207e'
           },
           $this.searchData
         )
       ).then(res => {
-        // console.log(res)
+        console.log(res)
         this.$refs.recordSpTableRef.setPageInfo(
           nCurrent,
           res.data.size,
@@ -256,13 +275,13 @@ export default {
     },
   },
   mounted() {
-    this.getHumanStatistics();
-    this.getWarnStatusStatistics();
+    this.getVacationApply();
+    this.getExceptionStatistics();
     this.query();
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../../styles/common.styl"
+@import "../../../styles/common.styl"
 </style>

@@ -21,7 +21,9 @@ export default {
     loading: {
       type: Boolean,
       default: false
-    }
+    },
+    xAxis: Object,
+    yAxis: Object
   },
   data() {
     return {
@@ -30,6 +32,8 @@ export default {
           show:false
         },
         title: { ...this.title, left: 'center' },
+        xAxis: this.xAxis,
+        yAxis: this.yAxis,
         series(v) {
           // 设置柱子的样式
           v.forEach(i => {

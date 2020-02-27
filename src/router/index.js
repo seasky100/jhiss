@@ -11,6 +11,7 @@ import organizationRouter from './organization'
 import supervisionRouter from './supervision'
 
 import wisdomReminderRouter from './modules/wisdomreminder';
+import integrityRiskRouter from './modules/integrityRisk';
 
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
@@ -66,6 +67,7 @@ const routes = [
       //   component: () => import('@/views/ViolationsCarManage')
       // },
       ...wisdomReminderRouter,
+      ...integrityRiskRouter,
       ...supervisionRouter,
       ...organizationRouter
     ]

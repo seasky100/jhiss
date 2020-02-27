@@ -1,40 +1,47 @@
 <template>
-  <div>
-    <p>违规车管控</p>
-    <el-row>
-      <el-col :span="12">
-        <!-- 违规用车按人名统计 -->
-        <e-histogram
-          :chartSettings="violationSettings"
-          :title="violationTitle"
-          :chartData="violationTimesHistogram"
+  <div class="container">
+    <div class="page-title">
+      <span>违规车管控</span>
+    </div>
+    <div class="content">
+      <el-row class="bg-fff">
+        <el-col :span="12">
+          <!-- 违规用车按人名统计 -->
+          <e-histogram
+            :chartSettings="violationSettings"
+            :title="violationTitle"
+            :chartData="violationTimesHistogram"
+          />
+        </el-col>
+        <el-col :span="12">
+          <!-- 违规用车按月统计 -->
+          <ve-line
+            :title="monthlyTitle"
+            :data="monthlyData"
+            :extend="monthlyExtend"
+            :settings="monthlySettings"
+            :legend-visible="false">
+          </ve-line>
+        </el-col>
+      </el-row>
+      <div class="search-wrap">
+        <div class="section-title">查询条件</div>
+        <e-search
+          class="search-form"
+          @handleSearch="handleSearch"
+          :searchData="searchData"
+          :searchForm="searchForm" />
+      </div>
+      <div>
+        <e-table
+          ref="recordSpTableRef"
+          :tableList="tableList"
+          :options="options"
+          :columns="columns"
+          :operates="operates"
+          @afterCurrentPageClick="afterCurrentPageClickHandle"
         />
-      </el-col>
-      <el-col :span="12">
-        <!-- 违规用车按月统计 -->
-        <ve-line
-          :title="monthlyTitle"
-          :data="monthlyData"
-          :extend="monthlyExtend"
-          :settings="monthlySettings"
-          :legend-visible="false">
-        </ve-line>
-      </el-col>
-    </el-row>
-    <div>
-      <p>查询条件</p>
-      <e-search 
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm" />
-      <e-table
-        ref="recordSpTableRef"
-        :tableList="tableList"
-        :options="options"
-        :columns="columns"
-        :operates="operates"
-        @afterCurrentPageClick="afterCurrentPageClickHandle"
-      />
+      </div>
     </div>
   </div>
 </template>
@@ -271,3 +278,6 @@ export default {
 }
 </script>
 
+<style lang="stylus" scoped>
+@import "../../../styles/common.styl"
+</style>

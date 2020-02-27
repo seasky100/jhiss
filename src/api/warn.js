@@ -85,6 +85,55 @@ export function illUsecarHumanStatistics (params) {
     params
   })
 }
+
+// 公车使用分析
+export function getCarTimesStatistics (params) {
+  return request({
+    url: DEFAULT_URL.warn.carTimesStatistics,
+    method: 'get',
+    params
+  })
+}
+
+export function getDepartmentTimes (params) {
+  return request({
+    url: DEFAULT_URL.warn.departmentTimesStatistics,
+    method: 'get',
+    params
+  })
+}
+
+export function getCarRecordPage (params) {
+  return request({
+    url: DEFAULT_URL.warn.findCarRecordPage,
+    method: 'get',
+    params
+  })
+}
+
+export function usedCarsStatistics (params) {
+  return request({
+    url: DEFAULT_URL.warn.usedCarsStatistics,
+    method: 'get',
+    params
+  })
+}
+
+export function carStatusStatistics (params) {
+  return request({
+    url: DEFAULT_URL.warn.carStatusStatistics,
+    method: 'get',
+    params
+  })
+}
+
+export function getCarExceptionStatistics (params) {
+  return request({
+    url: DEFAULT_URL.warn.carExceptionStatistics,
+    method: 'get',
+    params
+  })
+}
 // addCertificateApportion(params) {
 //   return request({
 //     url: URL.addZSFP,
