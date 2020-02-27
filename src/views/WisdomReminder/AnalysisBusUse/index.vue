@@ -70,39 +70,39 @@ export default {
     return {
       vehicleCondition: [
         {
-          imgUrl: require('../../assets/images/vehicle_home_gps@2x.png'),
+          imgUrl: require('../../../assets/images/vehicle_home_gps@2x.png'),
           count: 0,
           status: '在线'
         },
         {
-          imgUrl: require('../../assets/images/vehicle_home_idle@2x.png'),
+          imgUrl: require('../../../assets/images/vehicle_home_idle@2x.png'),
           count: 0,
           status: '空闲'
         },
         {
-          imgUrl: require('../../assets/images/vehicle_home_occupied@2x.png'),
+          imgUrl: require('../../../assets/images/vehicle_home_occupied@2x.png'),
           count: 0,
           status: '使用中'
         },
         {
-          imgUrl: require('../../assets/images/vehicle_home_maintenance@2x.png'),
+          imgUrl: require('../../../assets/images/vehicle_home_maintenance@2x.png'),
           count: 0,
           status: '维修中'
         }
       ],
       usageStatistics: [
         {
-          imgUrl: require('../../assets/images/vehicle_home_total_times@2x.png'),
+          imgUrl: require('../../../assets/images/vehicle_home_total_times@2x.png'),
           count: 0,
           status: '用车总次'
         },
         {
-          imgUrl: require('../../assets/images/vehicle_home_month_times@2x.png'),
+          imgUrl: require('../../../assets/images/vehicle_home_month_times@2x.png'),
           count: 0,
           status: '本月用车次数'
         },
         {
-          imgUrl: require('../../assets/images/vehicle_home_exception@2x.png'),
+          imgUrl: require('../../../assets/images/vehicle_home_exception@2x.png'),
           count: 0,
           status: '异常次数'
         }
