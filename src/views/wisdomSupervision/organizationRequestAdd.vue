@@ -1,5 +1,5 @@
 <template>
-    <div class='organization_request_add flex flex-column flex-grow bg-fff' style="padding-bottom: 40px">
+    <div class='organization_request_add flex flex-column flex-grow bg-fff' style="height:100%;">
         <div class='flex flex-align-center h48 w-full border-box' style="padding-left: 0.8em; color: #121518">
           <!-- <img src='/images/home_round_bar@2x.png' /> -->
           <span class='pl8 txt-bold' style="font-size: 16px">个人事项申报</span>
@@ -32,6 +32,7 @@
               <div class="block">
                 <span class="demonstration"></span>
                 <el-date-picker class='date_pick'
+                  size="mini"
                   v-model="value1"
                   type="date"
                   placeholder="开始日期">
@@ -46,6 +47,7 @@
                 <div class="block">
                     <span class="demonstration"></span>
                     <el-date-picker class='date_pick' 
+                      size="mini"
                       v-model="value1"
                       type="date"
                       placeholder="结束日期">
@@ -60,11 +62,12 @@
               </div>
               <div class="shenpi_person">
                 <el-input readonly @click.native="changelag"
+                  size="mini"
                   style="float:left;width:50%;"
                   placeholder="输入关键字进行过滤"
                   v-model="org_id.name">
                 </el-input>
-                <el-select v-model="person_id" placeholder="请选择" style="float:left;width:50%;">
+                <el-select size="mini" v-model="person_id" placeholder="请选择" style="float:left;width:50%;">
                   <el-option
                     v-for="item in person_arr"
                     :key="item.id"
@@ -74,7 +77,7 @@
                 </el-select>
               </div>
               <div v-show="org_flag" class="selectDiv">
-                <el-input
+                <el-input size="mini"
                   placeholder="输入关键字进行过滤"
                   v-model="filterText">
                 </el-input>
@@ -91,7 +94,7 @@
               <!-- <CrewSelect onSelect={this.changeApproval} /> -->
             </div>
             <div class='flex my6'>
-              <button class='flex flex-align-center flex-justify-center color-fff r2 mx6 h24'
+              <button @click="saveAffairApply" class='flex flex-align-center flex-justify-center color-fff r2 mx6 h24'
                 style="border: #E5E9F2; padding: 0 14px; background: #235FF5"
              >提交
               </button>
@@ -149,7 +152,11 @@ export default {
                     code: 3,
                     name: '已驳回'
                 },
-            ]
+            ],
+            incident: '', // 事由
+            type: '201', // 申报事项类型，具体请参考typeMap
+            dateStart: '', // 申请时间起始
+            dateEnd: '' // 申请时间结束
         }
     },
     created() {
@@ -172,7 +179,7 @@ export default {
         this.org_flag = !this.org_flag
       },
       nodeClick(obj){
-        console.log(obj)
+        // console.log(obj)
         this.org_id = obj
         this.person_id = ''
         this.org_flag = false
@@ -203,7 +210,7 @@ export default {
         getOrgData(){
             this.$request.get(`/api/uums-server/organization/tree`)
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 this.dataTree = res.data
             })
             .catch(error => {
@@ -224,6 +231,60 @@ export default {
           if (!value) return true;
           return data.name.indexOf(value) !== -1;
         },
+        // 申请提交
+        saveAffairApply(){
+          // incident: '', // 事由
+          //   type: '201', // 申报事项类型，具体请参考typeMap
+          //   dateStart: '', // 申请时间起始
+          //   dateEnd: '' // 申请时间结束
+          let param = {
+            incident: '11111', // 事由
+            type: '201', // 申报事项类型，具体请参考typeMap
+            dateStart: '2020-02-25', // 申请时间起始
+            dateEnd: '2020-02-29' // 申请时间结束
+          }
+          param = {
+            flowProcess:{
+              flowId:'this.state.flowCode',
+              reportType:'this.state.type',
+              sponsorId:'this.props.userId',
+              sponsorName:'this.props.userName',
+              policeCode:'this.state.userInfo.policeCode',
+              department:'this.state.organizations[0].name',
+              flowHistory:[{
+                node:'item.orders',
+                name:'item.name',
+                approvalId:'this.state.approvalId',
+                approvalName:'this.state.approvalName'
+              }]
+            },
+            applyType:'this.state.type',
+            applyDesc:'this.state.incident',
+            startTime:'2020-02-25', // 申请时间起始
+            applyEnd:'2020-02-29' // 申请时间结束
+          }
+          let param2 = new FormData()
+          for (let key in param) {
+              param2.append(key, param[key])
+          }
+          const _this = this
+          this.$request.post(`/police/gaism-server/affairApply/saveAffairApply`,param)
+          // this.$axios({
+          //   url:'/police/gaism-server/affairApply/saveAffairApply',
+          //   method: 'post',
+          //   data: param2,
+          //   headers:{
+          //     'Content-Type':`multipart/form-data;boundary=${new Date().getTime()};charset=UTF-8`
+          //   }
+          // })
+            .then(res => {
+                console.log(res.data)
+                // this.person_arr = res.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
         // // 清除查询条件
         // clear() {
         //     this.page = 1
@@ -231,10 +292,6 @@ export default {
         //     this.getData()
         // },
         // // 新增或修改敏感词
-        add() {
-            // debugger
-            this.$router.push({ path: '/organizationRequestAdd'})
-        }
     },
 }
 </script>
