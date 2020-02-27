@@ -2,10 +2,22 @@
   <div>
     <el-row>
       <el-col :span="12">
-        <ve-histogram :data="warnStatusStatistics" :legend-visible="false" :settings="chartSettings1"></ve-histogram>
+        <!-- 预警处置情况统计 -->
+        <e-histogram
+          :chartSettings="warnStatusSettings"
+          :title="warnStatusTitle"
+          :chartData="warnStatusStatistics"
+        />
       </el-col>
       <el-col :span="12">
-        <ve-line :data="humanStatistics" :extend="chartExtend" :settings="chartSettings" :legend-visible="false"></ve-line>
+        <!-- 考勤预警人员统计 -->
+        <ve-line
+          :title="title"
+          :data="humanStatistics"
+          :extend="chartExtend"
+          :settings="chartSettings"
+          :legend-visible="false">
+        </ve-line>
       </el-col>
     </el-row>
     <div>
@@ -38,14 +50,14 @@ export default {
     };
     this.chartSettings = {
       labelMap: {
-        warnnum: '数量'
+        warnnum: '次数'
       }
     }
-    this.chartSettings1 = {
-      labelMap: {
-        num: '数量'
-      }
-    }
+    // this.chartSettings1 = {
+    //   labelMap: {
+    //     num: '数量'
+    //   }
+    // }
     return {
       searchData: {
         userName: '',
@@ -93,7 +105,7 @@ export default {
           placeholder: '是否反馈'
         },
       ],
-      tableData: [],
+      tableList: [],
       options: {
         // 每页数据数
         pageSize: 10,
@@ -102,45 +114,55 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'550'
+        height:'500'
       },
       columns: [
         {
-          prop: 'bulletinTitle',
+          prop: 'policeCode',
           label: '警号',
           align: 'left'
         },
         {
-          prop: 'policeCode',
+          prop: 'userName',
           label: '姓名',
           align: 'left'
         },
         {
-          prop: 'bulletinObject',
+          prop: 'department',
           label: '所属部门',
           align: 'left'
         },
         {
-          prop: 'bulletinDate',
+          prop: 'warnTime',
           label: '预警时间',
-          align: 'left'
+          align: 'left',
+          type: 'date',
+          dateFormat: 'yyyy-MM-dd'
         },
         {
-          prop: 'problemNature',
+          prop: 'warnReason',
           label: '预警原因',
           align: 'left'
         },
         {
-          prop: 'problemNature',
+          prop: 'content',
           label: '反馈内容',
           align: 'left'
         },
         {
-          prop: 'problemNature',
+          prop: 'warnLevel',
           label: '预警级别',
           align: 'left'
         }
       ],
+      warnStatusTitle: {
+        text: '预警处置情况统计'
+      },
+      warnStatusSettings: {
+        labelMap: {
+          num: '次数'
+        }
+      },
       warnStatusStatistics: {
         columns: ['status', 'num'],
         rows: []
@@ -148,6 +170,10 @@ export default {
       humanStatistics: {
         columns: ['user_name', 'warnnum'],
         rows: []
+      },
+      title: {
+        text: '考勤预警人员统计',
+        left: 'center'
       }
     }
   },
@@ -155,8 +181,13 @@ export default {
     // 查询
     handleSearch(params) {
       Object.assign(this.searchData, params);
-      console.log(params)
+      // console.log(params)
       this.query();
+    },
+    // 分页点击事件
+    afterCurrentPageClickHandle(val, next) {
+      this.query(val);
+      next();
     },
     // 获取考勤预警按人员名称统计
     getHumanStatistics() {
@@ -164,7 +195,7 @@ export default {
         userId: '5ba98b66cd3549b9b92ea8723e89207e'
       }
       getHumanStatistics(params).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.success) {
           this.humanStatistics.rows = res.data;
         }
@@ -176,8 +207,8 @@ export default {
         userId: '5ba98b66cd3549b9b92ea8723e89207e'
       }
       getWarnStatusStatistics(params).then(res => {
-        console.log(res)
-        if (res.success) {
+        // console.log(res)
+        if (res.success && res.data) {
           let result = [];
           for (let item in res.data) {
             result.push({
@@ -185,7 +216,7 @@ export default {
               num: res.data[item]
             })
           }
-          console.log(result);
+          // console.log(result);
           this.warnStatusStatistics.rows = result;
         }
       })
@@ -201,12 +232,13 @@ export default {
             user_id: '5ba98b66cd3549b9b92ea8723e89207e',
             isAsc: false,
             orderByField: 'warnTime',
-            role: 10
+            role: 10,
+            warnType: 1
           },
           $this.searchData
         )
       ).then(res => {
-        console.log(res)
+        // console.log(res)
         this.$refs.recordSpTableRef.setPageInfo(
           nCurrent,
           res.data.size,

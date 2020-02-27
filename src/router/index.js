@@ -10,6 +10,8 @@ import organizationRequestAdd from "../views/wisdomSupervision/organizationReque
 import organizationRouter from './organization'
 import supervisionRouter from './supervision'
 
+import wisdomReminderRouter from './modules/wisdomreminder';
+
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error => error);
@@ -63,7 +65,7 @@ const routes = [
       //   path: "violation",
       //   component: () => import('@/views/ViolationsCarManage')
       // },
-     
+      ...wisdomReminderRouter,
       ...supervisionRouter,
       ...organizationRouter
     ]

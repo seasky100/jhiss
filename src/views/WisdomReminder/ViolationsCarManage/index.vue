@@ -3,10 +3,22 @@
     <p>违规车管控</p>
     <el-row>
       <el-col :span="12">
-        <ve-histogram :data="chartData"></ve-histogram>
+        <!-- 违规用车按人名统计 -->
+        <e-histogram
+          :chartSettings="violationSettings"
+          :title="violationTitle"
+          :chartData="violationTimesHistogram"
+        />
       </el-col>
       <el-col :span="12">
-        <ve-histogram :data="chartData"></ve-histogram>
+        <!-- 违规用车按月统计 -->
+        <ve-line
+          :title="monthlyTitle"
+          :data="monthlyData"
+          :extend="monthlyExtend"
+          :settings="monthlySettings"
+          :legend-visible="false">
+        </ve-line>
       </el-col>
     </el-row>
     <div>
@@ -37,16 +49,35 @@ import {
 export default {
   data() {
     return {
-      chartData: {
-        columns: ['日期', '访问用户', '下单用户', '下单率'],
-        rows: [
-          { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
-          { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
-          { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
-          { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
-          { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
-          { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
-        ]
+      violationTitle: {
+        text: '违规用车按人名统计'
+      },
+      violationTimesHistogram: {
+        columns: ['user_name', 'warnnum'],
+        rows: []
+      },
+      violationSettings: {
+        labelMap: {
+          warnnum: '违规次数'
+        }
+      },
+      monthlyTitle: {
+        text: '违规用车按月统计',
+        left: 'center'
+      },
+      monthlyData: {
+        columns: ['everymonth', 'warnnum'],
+        rows: []
+      },
+      monthlyExtend: {
+        series: {
+          smooth: false
+        }
+      },
+      monthlySettings: {
+        labelMap: {
+          warnnum: '违规次数'
+        }
       },
       searchData: {
         userName: '',
@@ -84,16 +115,7 @@ export default {
           ]
         },
       ],
-      tableList: [
-        // {
-        //   id: '123',
-        //   enterprise: '123',
-        //   reportedTime: '',
-        //   reportedNum: '丰炳春',
-        //   channelsNum: '局领导',
-        //   isolationNum: '123123'
-        // }
-      ],
+      tableList: [],
       options: {
         // 每页数据数
         pageSize: 10,
@@ -102,7 +124,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'550'
+        height:'500'
       },
       columns: [
         {
@@ -111,32 +133,34 @@ export default {
           align: 'left'
         },
         {
-          prop: 'policeCode',
+          prop: 'userName',
           label: '使用人',
           align: 'left'
         },
         {
-          prop: 'bulletinObject',
+          prop: 'department',
           label: '所属部门',
           align: 'left'
         },
         {
-          prop: 'bulletinDate',
+          prop: 'carNumber',
           label: '车牌号',
           align: 'left'
         },
         {
-          prop: 'problemNature',
+          prop: 'actualStartTime',
           label: '用车时间',
-          align: 'left'
+          align: 'left',
+          type: 'date'
         },
         {
-          prop: 'problemNature',
+          prop: 'actualEndTime',
           label: '还车时间',
-          align: 'left'
+          align: 'left',
+          type: 'date'
         },
         {
-          prop: 'problemNature',
+          prop: 'isException',
           label: '是否异常',
           align: 'left'
         }
@@ -206,7 +230,7 @@ export default {
         );
       })
     },
-    // 图表分析
+    // 违规车按月统计
     getMonthIllUsecarStatistics() {
       const params = {
         userId: '5ba98b66cd3549b9b92ea8723e89207e',
@@ -214,9 +238,17 @@ export default {
         role: '111'
       }
       monthIllUsecarStatistics(params).then(res => {
-        console.log(res)
+        console.log(res);
+        let result = res.data;
+        if (res.success && result && result.length > 0) {
+          result.forEach(item => {
+            item.everymonth = item.everymonth + '月'
+          })
+          this.monthlyData.rows = result;
+        } 
       })
     },
+    // 违规车按人统计
     getIllUsecarHumanStatistics() {
       const params = {
         userId: '5ba98b66cd3549b9b92ea8723e89207e',
@@ -225,6 +257,9 @@ export default {
       }
       illUsecarHumanStatistics(params).then(res => {
         console.log(res)
+        if (res.success) {
+          this.violationTimesHistogram.rows = res.data;
+        }
       })
     }
   },
