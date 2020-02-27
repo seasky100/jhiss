@@ -42,13 +42,13 @@ const routes = [
         name: "PersonalHome2",
         component: PersonalHome2
       },
-      {
-        title: '新增',
-        icon: 'el-icon-menu',
-        path: "/organizationRequestAdd",
-        name: "organizationRequestAdd",
-        component: organizationRequestAdd
-      },
+      // {
+      //   title: '新增',
+      //   icon: 'el-icon-menu',
+      //   path: "/organizationRequestAdd",
+      //   name: "organizationRequestAdd",
+      //   component: organizationRequestAdd
+      // },
       // {
       //   title: '考勤预警管控',
       //   icon: 'el-icon-menu',

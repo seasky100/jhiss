@@ -11,7 +11,7 @@
         <NavMenu :navMenus="item.children"></NavMenu>
       </el-submenu>
       <!-- 最后一级 -->
-      <el-menu-item v-else :key="index" :index="item.path">
+      <el-menu-item v-show="!item.hidden" v-else :key="index" :index="item.path">
         <i :class="item.icon"></i>{{item.title}}
       </el-menu-item>
     </template>

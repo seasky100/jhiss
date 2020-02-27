@@ -1,0 +1,232 @@
+<template>
+  <div class="IndividualReport">
+    <div class="individual_title">
+      个人即报
+    </div>
+		<div class="Individual_type">
+			<span @click="ApplyReport(item)" style="display:inline-block;"
+				v-for="(item,index) of typeList" 
+				:key="index">
+				{{item.name}}
+			</span>
+		</div>
+		<!-- 1111111 -->
+		<div>
+      <p>查询条件</p>
+      <e-search
+        @handleSearch="handleSearch"
+        :searchData="searchData"
+        :searchForm="searchForm" />
+      <e-table
+        ref="recordSpTableRef"
+        :tableList="tableList"
+        :options="options"
+        :columns="columns"
+        @afterCurrentPageClick="afterCurrentPageClickHandle"
+      />
+    </div>
+		<!-- 1111111 -->
+  </div>
+</template>
+<script>
+export default {
+  name: "IndividualReport",
+  data() {
+    return {
+			typeList:[
+				{name:'因私出境',path:'/Private_exit'},
+				{name:'房产变更',path:'/House_property'},
+				{name:'婚姻情况',path:'/Marital_status'},
+				{name:'婚丧宴请',path:'/Weddings'},
+				{name:'收受礼金',path:'/Accepting_gifts'},
+				{name:'亲属从业',path:'/Kinship_work'},
+				{name:'移居国外',path:'/Emigrate'},
+				{name:'境外投资',path:'/Offshore_Touzi'},
+				{name:'亲属经商',path:'/Relatives_business'},
+				{name:'境外存款',path:'/Offshore_deposits'},
+				{name:'担保借贷',path:'/Secured_lending'},
+				{name:'涉纪涉诉事项',path:'/Matters_involved'},
+				{name:'其他',path:'/Other_matters'}
+			],
+			searchData: {
+        userName: '',
+        policeCode: '',
+        department: '',
+        problemType: '',
+        startTime: '',
+        endTime: ''
+			},
+			searchForm: [
+        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
+        {type: 'input', prop: 'userName', width: '120px', placeholder: '发起人姓名'},
+        {
+          type: 'select',
+          prop: 'department',
+          width: '150px',
+          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+          change: row => console.log(row),
+          placeholder: '所属部门'
+        },
+        {
+          type: 'daterange',
+          options: [
+            {
+              prop: 'startTime',
+              format: '',
+              valueformat: '',
+              placeholder: '起始时间'
+            },
+            {
+              prop: 'endTime',
+              format: '',
+              valueformat: '',
+              placeholder: '结束时间'
+            }
+          ]
+				},
+				{
+          type: 'select',
+          prop: 'problemType',
+          width: '150px',
+          options: [
+						{label:'婚姻情况', value:'101'},
+						{label:'婚丧宴请', value:'102'},
+						{label:'收受礼金', value:'103'},
+						{label:'因私出境', value:'104'},
+						{label:'移居国外', value:'105'},
+						{label:'亲属从业', value:'106'},
+						{label:'违法违纪及意外', value:'107'},
+						{label:'房产变更', value:'108'},
+						{label:'境外投资', value:'109'},
+						{label:'担保借贷', value:'110'},
+						{label:'亲属经商', value:'111'},
+						{label:'境外存款', value:'112'},
+						{label:'其他', value:'113'},
+					],
+          change: row => console.log(row),
+          placeholder: '即报类型'
+				},
+				{
+          type: 'select',
+          prop: 'problemType',
+          width: '150px',
+          options: [
+						{label:'审批中', value:'1'},
+						{label:'已通过', value:'2'},
+						{label:'已驳回', value:'3'}
+					],
+          change: row => console.log(row),
+          placeholder: '审批状态'
+        },
+			],
+			tableList:[],
+			options: {
+        // 每页数据数
+        pageSize: 10,
+        hasIndex: false,
+        // 当前页码
+        currentPage: 1,
+        loading: true,
+        maxHeight: null,
+        height:'550'
+			},
+			columns: [
+        {
+          prop: 'bulletinTitle',
+          label: '发起人警号',
+          align: 'left'
+        },
+        {
+          prop: 'policeCode',
+          label: '发起人姓名',
+          align: 'left'
+        },
+        {
+          prop: 'bulletinObject',
+          label: '发起人部门',
+          align: 'left'
+        },
+        {
+          prop: 'bulletinDate',
+          label: '即报类型',
+          align: 'left'
+        },
+        {
+          prop: 'problemNature',
+          label: '申请时间',
+          align: 'left'
+				},
+				{
+          prop: 'problemNature',
+          label: '审批状态',
+          align: 'left'
+        }
+      ]
+    }
+  },
+  watch: {},
+  mounted() {
+    this.init()
+  },
+  methods: {
+		init() {},
+		// 查询
+    handleSearch(params) {
+      Object.assign(this.searchData, params);
+      console.log(params)
+      this.query();
+		},
+		// 分页点击事件
+    afterCurrentPageClickHandle(val, next) {
+			this.query(val);
+			console.log(val)
+      next();
+		},
+		ApplyReport(value){
+			console.log(value.path)
+			this.$router.push({ path: value.path });
+		},
+		// 查询列表
+    query(nCurrent = 1) {
+			console.log(nCurrent)
+      // const $this = this;
+      // findBulletinPage(
+      //   Object.assign(
+      //     {
+      //       nCurrent: nCurrent,
+      //       nSize: 10
+      //     },
+      //     $this.searchData
+      //   )
+      // ).then(res => {
+      //   console.log(res)
+      //   this.$refs.recordSpTableRef.setPageInfo(
+      //     nCurrent,
+      //     res.data.size,
+      //     res.data.total,
+      //     res.data.records
+      //   );
+      // })
+    },
+  }
+}
+</script>
+<style lang="stylus" scoped>
+.individual_title
+	height:40px;
+	line-height:40px;
+	background:#fff;
+	padding:0 10px;
+	font-size 16px
+	font-weight bold
+.Individual_type
+	line-height:40px
+	padding:0 10px
+	span 
+		padding: 0 10px
+		border-radius 5px
+		background #235ff5
+		margin 10px
+		color #fff
+		cursor pointer
+</style>

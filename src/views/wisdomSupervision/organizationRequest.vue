@@ -11,38 +11,40 @@
                       </div>
                       <div class='flex flex-column' style="color: #6C7284; padding: 10px 0 12px 10px">
                         <div class='flex flex-align-center'>
-                          <input type='text' class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2; width: 150px; margin-right: 20px"
+                          <input type='text' v-model="policeNo" class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2; width: 150px; margin-right: 20px"
                             placeholder='发起人警号' />
                           <input class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2; width: 150px; margin-right: 20px" type='text'
-                            placeholder='发起人姓名'/>
+                            v-model="name" placeholder='发起人姓名'/>
                           <select class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2;width: 150px; margin-right: 20px">
                             <option>-- 所属部门 --</option>
                           </select>
                         </div>
                         <div class='flex flex-align-center mt8'>
-                                <!-- <div class="block">
-                                        <span class="demonstration"></span>
-                                        <el-date-picker
-                                          v-model="value1"
-                                          type="daterange"
-                                          range-separator="至"
-                                          start-placeholder="开始日期"
-                                          end-placeholder="结束日期">
-                                        </el-date-picker>
-                                      </div> -->
+                                <div class="block">
+                                  <span class="demonstration"></span>
+                                  <el-date-picker size="mini"
+                                    style="width:320px;margin-right:20px"
+                                    v-model="date_arr"
+                                    type="daterange"
+                                    value-format="yyyy-MM-dd"
+                                    range-separator="-"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期">
+                                  </el-date-picker>
+                                </div>
                             <!-- <DateRange start={this.state.dateStart} end={this.state.dateEnd} onChange={this.changeDate} style={{marginRight: '20px'}} /> -->
-                            <select class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2; width: 150px; margin-right: 20px">
+                            <select v-model="reportType" class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2; width: 150px; margin-right: 20px">
                                 <option v-for="item in typeMap" :key="item.code" :label="item.name" :value="item.code">
                                 </option>
                             </select>
-                            <select class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2; width: 150px; margin-right: 20px">
+                            <select v-model="approvalStatus" class='h32 pl4 r2 border-box' style="border: 1px solid #E5E9F2; width: 150px; margin-right: 20px">
                                 <option v-for="item in statusMap" :key="item.code" :label="item.name" :value="item.code">
                                 </option>
                             </select>
                             <button class='flex flex-no-shrink px8 txt-normal' style="color: #235FF5">
                                 清空
                             </button>
-                            <button class='flex flex-no-shrink r2 mx6 h32 color-fff txt-normal' style="border: '1px solid #E5E9F2'; padding: '0 14px'; background: #235FF5">
+                            <button @click="searchData" class='flex flex-no-shrink r2 mx6 h32 color-fff txt-normal' style="border: '1px solid #E5E9F2'; padding: '0 14px'; background: #235FF5">
                                 查询
                             </button>
                             <button @click='add' class='flex flex-align-center flex-justify-center bg-fff r2 mx6 h32 txt-deco-none' style="border: 1px solid #E5E9F2; padding: 0 14px">
@@ -74,18 +76,14 @@
                                 <td class='pl8'>{{item.policeCode}}</td>
                                 <td class='pl8'>{{item.approvalName}}</td>
                                 <td class='pl8'>{{item.department}}</td>
-                                <td class='pl8'>{{item.reportType}}</td>
+                                <td class='pl8'>{{item.reportType==201?'饮酒':item.reportType==202?'离开辖区':'离开单位'}}</td>
                                 <td class='pl8'>{{JSON.parse(item.formData).applyDesc}}</td>
                                 <td class='pl8'>{{new Date(item.gmtCreate).toLocaleString('chinese', {hour12: false})}}</td>
-                                <td class='pl8'>{{item.approvalStatus}}</td>
+                                <td class='pl8'>{{item.approvalStatus==1?'审批中':item.approvalStatus==2?'已通过':'已驳回'}}</td>
                                 <td class='pl8'>
                                 <template >
-                                        <el-button
-                                            size="mini"
-                                            type="text"
-                          
-                                            @click="addOrModifyNotice(item.flowCode)">
-                                        详情</el-button>
+                                        <el-button @click="handleDetail(item.id,item.flowCode)" 
+                                          size="mini" type="text">详情</el-button>
                                     </template>
                                 </td>
                                 <!-- <td class='pl8'>
@@ -105,6 +103,20 @@
                       total={this.props.total}
                       onChange={this.onPageChange}
                     /> -->
+                    <div class="block" style="text-align: center;margin-top:10px;">
+                      <el-pagination
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="pageNo"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total="normalDataSum">
+                      </el-pagination>
+                      <!-- <el-pagination
+                        layout="prev, pager, next"
+                        @current-change="changePageNum"
+                        :total="1000">
+                      </el-pagination>  -->
+                    </div>
                   </div>
                 </div>
               </div>
@@ -116,7 +128,9 @@ export default {
                     value1: '',
                     pageNo: 1,
                     pageSize:10, 
+                    normalDataSum:0,
                     userId:'5ba98b66cd3549b9b92ea8723e89207e',
+                    date_arr:'',
                     name:'',
                     policeNo:'',
                     approvalId:'',
@@ -125,6 +139,7 @@ export default {
                     dateStart:'',
                     dateEnd:'',
                     tableData:[],
+                    reportType:'',
                     typeMap: [
                         {
                             code: 2,
@@ -143,6 +158,7 @@ export default {
                             name: '离开单位'
                         },
                     ],
+                    approvalStatus:'',
                     statusMap: [
                         {
                             code: 0,
@@ -164,7 +180,7 @@ export default {
                 }
             },
     created() {
-        // debugger
+        debugger
         this.getData()
     },
     methods: {
@@ -172,13 +188,27 @@ export default {
         // handleSelectionChange(val) {
         //     this.checkedList = val
         // },
+        handleCurrentChange(val){
+          this.pageNo = val
+          this.getData()
+        },
+        handleDetail(id,flowCode){
+          this.$router.push({ path: '/organizationRequestDetail' ,query:{id:id,flowCode:flowCode}});
+        },
         // 查询敏感词列表数据
         async getData(){
             // debugger
-            this.$request.get(`/police/gaism-server/weddingBanquet/findReportPage?nCurrent=${this.pageNo}&nSize=${this.pageSize}&userId=${this.userId}&userName=${this.name}&policeCode=${this.policeNo}&approvalId=${this.approvalId}&reportType=${this.type}&status=${this.status}&startTime=${this.dateStart}&endTime=${this.dateEnd}`)
+            let startTime = this.date_arr.length == 0? '':this.date_arr[0]
+            let endTime = this.date_arr.length == 0? '':this.date_arr[1]
+            this.$request.get(`/police/gaism-server/weddingBanquet/findReportPage?nCurrent=${this.pageNo}
+              &nSize=${this.pageSize}&userId=${this.userId}&userName=${this.name}
+              &policeCode=${this.policeNo}&approvalId=${this.approvalId}
+              &reportType=${this.reportType}&approvalStatus=${this.approvalStatus}
+              &startTime=${startTime}&endTime=${endTime}`)
                 .then(res => {
                     if (res.success == true) {
                         this.tableData = res.data.records
+                        this.normalDataSum = res.data.total
                         // this.total = res.result.total
                     } else {
                         console.log(res.message)
@@ -188,6 +218,10 @@ export default {
                     console.log(error)
                 })
         },
+        searchData(){
+          this.pageNo = 1
+          this.getData()
+        },
         // // 清除查询条件
         // clear() {
         //     this.page = 1
@@ -196,15 +230,16 @@ export default {
         // },
         // // 新增或修改敏感词
         add() {
-            // debugger
+            debugger
             this.$router.push({ path: '/organizationRequestAdd'})
         }
     },
 }
 </script>
-<style  scoped>
-        @import'../css/assembly.css';
-        @import "../css/hover-min.css";
-        @import "../css/media.css";
-        @import "../css/pseudo_classes.css";
+<style>
+@import'../css/assembly.css';
+@import "../css/hover-min.css";
+@import "../css/media.css";
+@import "../css/pseudo_classes.css";
+.w-full{height: 100%;}
 </style>
