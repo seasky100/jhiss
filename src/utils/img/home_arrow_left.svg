@@ -1,0 +1,7 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <title>arrow left</title>
+  <g id="svg_6">
+   <line stroke="#ffffff" id="svg_1" y2="32" x2="16" y1="0" x1="48" stroke-linecap="square" stroke-width="6" fill="null"/>
+   <line stroke="#ffffff" id="svg_2" y2="64" x2="48" y1="32" x1="16" stroke-linecap="square" stroke-width="6" fill="null"/>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg width="48" height="48" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g>
+  <title>Layer full screen on</title>
+  <path fill="#235FF6" stroke="#000000" stroke-width="0" d="m0,0l0,16l16,-16l-16,0z" id="svg_2"/>
+  <line stroke-width="4" id="svg_1" y2="16" x2="16" y1="8" x1="8" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke="#235FF6" fill="none"/>
+  <path fill="#235FF6" stroke="#000000" stroke-width="0" d="m0,32l0,16l16,0l-16,-16z" id="svg_2"/>
+  <line stroke-width="4" id="svg_1" y2="32" x2="16" y1="40" x1="8" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke="#235FF6" fill="none"/>
+  <path id="svg_2" d="m32,48l16,0l0,-16l-16,16z" stroke-width="0" stroke="#000000" fill="#235FF6"/>
+  <line fill="none" stroke="#235FF6" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="32" y1="32" x2="40" y2="40" id="svg_1" stroke-width="4"/>
+  <path fill="#235FF6" stroke="#000000" stroke-width="0" d="m32,0l16,0l0,16l-16,-16z" id="svg_2"/>
+  <line stroke-width="4" id="svg_1" y2="16" x2="32" y1="8" x1="40" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke="#235FF6" fill="none"/>
+ </g>
+</svg>

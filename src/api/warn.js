@@ -134,6 +134,38 @@ export function getCarExceptionStatistics (params) {
     params
   })
 }
+// 首页分类风险预警提醒
+export function allWarnByType (params) {
+  return request({
+    url: DEFAULT_URL.warn.allWarnByType,
+    method: 'get',
+    params
+  })
+}
+ //查询七天上班时间统计数据
+export function indexRecordDeatil (params) {
+  return request({
+    url: DEFAULT_URL.warn.indexRecordDeatil,
+    method: 'get',
+    params
+  })
+}
+ //查询上班时间统计数据
+ export function indexRecordCountDeatil (params) {
+  return request({
+    url: DEFAULT_URL.warn.indexRecordCountDeatil,
+    method: 'get',
+    params
+  })
+}
+// 查询部门平均上班时间数据
+export function sectorAverageStatistics (params) {
+  return request({
+    url: DEFAULT_URL.tClockRecord.sectorAverageStatistics,
+    method: 'get',
+    params
+  })
+}
 // addCertificateApportion(params) {
 //   return request({
 //     url: URL.addZSFP,
