@@ -3,7 +3,13 @@ select:focus,
 textarea:focus{
   border-color: #235ff5!important;
 }
+.el-calendar-table .el-calendar-day {
 
+  height: 30px !important;
+}
+.el-calendar__body {
+  padding: 10px 20px 35px !important;
+}
 .login .focus-username:focus,
 .login .focus-password:focus{
   border-color: #00d2ff!important;

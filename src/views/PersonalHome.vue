@@ -18,87 +18,87 @@
         <div class="fengxian_body">
             <div class='flex flex-align-center flex-justify-center' style="font-size: 1.2em">
                 <!-- <img src='/images/home_smile_face@2x.png' /> -->
-                <span class='ml6 color-grey'>当前0项风险内容，请继续保持！</span>
+                <!-- <span class='ml6 color-grey'>当前0项风险内容，请继续保持！</span> -->
               </div>
               <div class='flex flex-justify-center'>
-                  <div>
+                  <div style="width: 39%;">
                     <div class='h12 w12 r-half inline-block' style="background: #1F77B4"/>
                     <span class='ml8'>本月分析</span>
                   </div>
-                  <div>
+                  <div style="width: 36%;">
                     <div class='h12 w12 r-half inline-block' style="background: #FF7F0E" />
                     <span class='ml8'>上月分析</span>
                   </div>
                 </div>
-          <div class='flex flex-column flex-grow flex-justify-between' style="margin-top: 2em; padding: 0 20%;text-align: center">
+          <div class='flex flex-column flex-grow flex-justify-between' style="margin-top: 2em;text-align: center">
             <div class='flex-justify-between h24' style="line-height: 2.5em">
               <div class='flex-inline' style="width: 40%">
                 <span>智慧考勤</span>
-                <span style="margin: 0 0.5em">2</span>
+                <span style="margin: 0 0.5em">{{thismonth[0]||'-'}}</span>
                 <span>项</span>
               </div>
               <div class='flex-inline' style="width: 40%">
                 <span>请假分析</span>
-                <span style="margin: 0 0.5em">3</span>
+                <span style="margin: 0 0.5em">{{thismonth[1]||'-'}}</span>
                 <span>项</span>
               </div>
             <div class='flex-justify-between h24' style="line-height: 2.5em">
               <div class='flex-inline' style="width: 40%">
                 <span>出国预警</span>
-                <span style="margin: 0 0.5em">5</span>
+                <span style="margin: 0 0.5em">{{thismonth[2]||'-'}}</span>
                 <span>项</span>
               </div>
               <div class='flex-inline' style="width: 40%">
                 <span>事项申报</span>
-                <span style="margin: 0 0.5em">4</span>
+                <span style="margin: 0 0.5em">{{thismonth[3]||'-'}}</span>
                 <span>项</span>
               </div>
             </div>
             <div class='flex-justify-between h24'>
               <div class='flex-inline' style="width: 40%">
                 <span>用车预警</span>
-                <span style="margin: 0 0.5em">2</span>
+                <span style="margin: 0 0.5em">{{thismonth[4]||'-'}}</span>
                 <span>项</span>
               </div>
               <div class='flex-inline' style="width: 40%">
                 <span>违规查询</span>
-                <span style="margin: 0 0.5em">8</span>
+                <span style="margin: 0 0.5em">{{thismonth[5]||'-'}}</span>
                 <span>项</span>
               </div>
             </div>
             <div class='flex-justify-between h24'>
               <div class='flex-inline' style="width: 40%">
                 <span>差旅预警</span>
-                <span style="margin: 0 0.5em">6</span>
+                <span style="margin: 0 0.5em">{{thismonth[6]||'-'}}</span>
                 <span>项</span>
               </div>
               <div class='flex-inline' style="width: 40%">
                 <span>日志预警</span>
-                <span style="margin: 0 0.5em">7</span>
+                <span style="margin: 0 0.5em">{{thismonth[7]||'-'}}</span>
                 <span>项</span>
               </div>
             </div>
             <div class='flex-justify-between h24'>
               <div class='flex-inline' style="width: 40%">
                 <span>涉嫌违法</span>
-                <span style="margin: 0 0.5em">4</span>
+                <span style="margin: 0 0.5em">{{thismonth[8]||'-'}}</span>
                 <span>项</span>
               </div>
               <div class='flex-inline' style="width: 40%">
                 <span>刷卡预警</span>
-                <span style="margin: 0 0.5em">2</span>
+                <span style="margin: 0 0.5em">{{thismonth[9]||'-'}}</span>
                 <span>项</span>
               </div>
             </div>
             <div class='flex-justify-between h24'>
               <div class='flex-inline' style="width: 40%">
                 <span>就餐预警</span>
-                <span style="margin: 0 0.5em">3</span>
+                <span style="margin: 0 0.5em">{{thismonth[10]||'-'}}</span>
                 <span>项</span>
               </div>
               <div class='flex-inline' style="width: 40%">
                 <span>审批预警</span>
-                <span style="margin: 0 0.5em">3</span>
+                <span style="margin: 0 0.5em">{{thismonth[11]||'-'}}</span>
                 <span>项</span>
               </div>
             </div>
@@ -157,38 +157,121 @@
         <div class="person_title">
           层级评价
         </div>
-      </div>
+        <div class='' style="width: 61%;float: left;height: 90%">
+              <el-calendar v-model="value" show-date-only :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="'结束时间'" :lang="lang" :position="position" :changePane="dayClick" :pane="1" :range-bus="getBus" :range-status="1"></el-calendar>
+          </div>
+          <div class='' style="float: right;height: 90%;width: 39%;position: relative">
+            <div id='gauge' style="height: 63%;margin-top: 10%;" class='' ></div>
+            <span class='txt-bold' style="color: rgb(35, 95, 246);text-align: center;position: absolute; margin: 0 auto;width: 100%;margin-top: -35px">月平均分</span>
+            </div>
+       </div>
       <div class="fengxian" style="width:32.3%;margin-left:0.7%;">
         <div class="person_title">
           考勤情况
         </div>
+          <div id='kao' class='mt-auto' style="height: 90%"></div>
+          <div class='p_foot'style="height: 10%">
+              <div style=" width: 24%;float: left;margin-left: 48px;margin-top: 10px;">上班：<span style=" color: #9363FF">{{tjData[0]}}小时</span></div>
+              <div style="width: 20%;float: left;margin-top: 10px;">加班：<span style=" color: #F09B38">{{tjData[2]}}小时</span></div>
+              <div style=" width: 20%;float: left;margin-top: 10px;">请假：<span style=" color: #235FF6">{{tjData[1]}}小时</span></div>
+              <div style=" width: 20%;float: left;margin-top: 10px;">出差：<span style=" color: #235FF6">{{tjData[3]}}小时</span></div>
+          </div>   
       </div>
       <div class="fengxian" style="width:33.3%;margin-left:0.7%;">
         <div class="person_title">
           快速入口
         </div>
+        <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em">
+          <div class='flex flex-column flex-grow' style="padding: 0.5em">
+            <div class='flex flex-grow w-full'>
+              <Link to='/organization/log' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">层级评价</span>
+              </Link>
+              <div class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
+                <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_overtime_request@2x.png' /><!--src='/images/home_entrance_overtime_request@2x.png' --> 
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">谈心谈话</span>
+              </div>
+              <Link to='/organization/request' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
+                <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项申报</span>
+              </Link>
+              <Link to='/organization/report' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 0 1px 1px">
+                <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_items_report@2x.png'/><!--src='/images/home_entrance_items_report@2x.png' --> 
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项即报</span>
+              </Link>
+            </div>
+            <div class='flex flex-grow w-full'>
+              <Link to='/xztx/document' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_document_flow@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">公文流转</span>
+              </Link>
+              <Link to='/xztx/approval' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_approval_items@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">审批事项</span>
+              </Link>
+              <Link to='/xztx/travel' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">差旅申请</span>
+              </Link>
+              <Link to='/xztx/car' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 0 0 1px">
+                <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_expense_request@2x.png' /><!--src='/images/home_entrance_expense_request@2x.png' --> 
+                <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">用车申请</span>
+              </Link>
+            </div>
+        </div>
       </div>      
     </div>
-    <!--  -->
+  </div>
   </div>
 </template>
 <script>
+import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil } from '@/api/warn.js';
 export default {
   name: "PersonalHome",
   data() {
     return {
       isCollapse: false,
-      menuList: []
+      menuList: [],
+      premonth:[], //本月风险提醒数据
+      thismonth:[], //上月风险提醒数据
+      worklength:[], //上班时长
+      overtime:[], //加班时长
+      clockDate:[], //考勤日期
+      averageData:[], // 部门平均时长
+      dateStart:'', //开始时间
+      dateEnd:'',//结束时间
+      tjData:'',//考勤数据
+      value: new Date()
     }
   },
-  watch: {},
   mounted() {
-    this.init();
-    this.getData();
+    this.$nextTick((data) => {
+          // 点击前一个月
+          let prevBtn = document.querySelector('.el-calendar__button-group .el-button-group>button:nth-child(1)');
+          prevBtn.addEventListener('click',($this) => {
+            debugger
+            alert(1)
+          })
+        })
+    this.sevenday();
+    this.indexRecordCountDeatil();
+    this.sectorAverageStatistics();
+    this.indexRecordDeatil();
+    this.allWarnByType();
   },
   methods: {
     init() {
       this.getRadar()
+      this.getRadar2()
+      this.getRadar3()
+    },
+    dayClick () {
+      alert(2)
+      debugger
+      console.log(date);
+      console.log(dateStr);
+      console.log(this.value);
     },
     getRadar(){
       let radarDom = this.$echarts.init(document.getElementById('radar'))
@@ -279,51 +362,29 @@ export default {
           },
           data: [
               {
-                  value: [17, 24, 27, 29, 26, 16, 13, 17, 25, 28 , 24, 20],
+                  value: this.thismonth,
                   name: '本月',
                   // 设置区域边框和区域的颜色
                   itemStyle: {
-                      normal: {
-                          color: 'rgba(255,225,0,.3)',
+                    normal: {
+                          color: '#1F77B4',
                           lineStyle: {
-                              color: 'rgba(255,225,0,.3)',
+                              width: 1,
+                              color: '#1F77B4',
                           },
                       },
                   },
-                  //在拐点处显示数值
-                  // label: {
-                  //     normal: {
-                  //         show: true,
-                  //         formatter: (params: any) => {
-                  //             return params.value
-                  //         },
-                  //     },
-                  // },
               },
-              // {
-              //     value: [5, 20, 19, 11, 22, 17, 8, 19, 16],
-              //     name: '上月',
-              //      itemStyle: {
-              //         normal: {
-              //             color: 'rgba(60,135,213,.3)',
-              //             lineStyle: {
-              //                 width: 1,
-              //                 color: 'rgba(60,135,213,.3)',
-              //             },
-              //         },
-              //     },
-              // },
                {
-                  value: [7, 18, 19, 13, 22, 17, 8, 25, 9],
+                  value: this.premonth,
                   name: '上月',
                   itemStyle: {
                       normal: {
-                          color: 'rgba(255,74,74,.3)',
-                          lineStyle: {
-                              width: 1,
-                              color: 'rgba(255,74,74,.3)',
-                          },
-                      },
+                        color: '#FF7F0E',
+                        lineStyle: {
+                            color: '#FF7F0E',
+                        },
+                    },
                   },
               },
           ],
@@ -331,23 +392,184 @@ export default {
       }
       radarDom.setOption(option)
     },
-    // 查询分类风险提醒数据
-    async getData() {
-      // debugger
-      const id =''
-      this.$request.get(`/police/warn/allWarnByType?userId=${id}`)
-        .then(res => {
-          if (res.success == true) {
-            this.tableData = res.data.records
-            // this.total = res.result.total
-          } else {
-            console.log(res.message)
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    getRadar2(){
+      let radarDom2 = this.$echarts.init(document.getElementById('kao'))
+      let option = {
+        tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
     },
+    legend: {
+        padding:[30,0,0,0],
+        data: ['加班', '上班', '部门平均']
+    },
+    grid: {
+        // top: '2%',
+        left: '3%',
+        right: '5%',
+        bottom: '1%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: this.clockDate
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+
+        {
+            name: '加班',
+            type: 'bar',
+            barWidth : 20,
+            color: '#F09B38',
+            stack: '广告',
+            data: this.overtime
+        },
+        {
+            name: '上班',
+            type: 'bar',
+            color: '#9363FF',
+            stack: '广告',
+            data: this.worklength
+        },
+        {
+            name: '部门平均',
+            type: 'line',
+            color: '#235FF6',
+            stack: '广告',
+            data: this.averageData
+        },
+    ]
+  }
+    radarDom2.setOption(option)
+},
+    getRadar3() {
+      let radarDom3 = this.$echarts.init(document.getElementById('gauge'))
+      let option = {
+        tooltip: {
+          formatter: "{a} <br/>{b} {c}分"
+        },
+        series: [
+          {
+            min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
+	          max: 10,
+            name: '月度评分',
+            // radius:'20%',
+            type: 'gauge',
+            detail: { formatter: '{value}' }, //仪表盘显示数据
+            axisLine: { //仪表盘轴线样式
+              lineStyle: {
+                width: 12
+              }
+            },
+            splitLine: { //分割线样式
+              length: 10
+            },
+            data: [{ value: 2, name: '' }],
+
+            markPoint: {
+              symbol: 'circle',
+              symbolSize: 5,
+              data: [
+                //跟你的仪表盘的中心位置对应上，颜色可以和画板底色一样
+                { x: 'center', y: 'center', itemStyle: { color: '#FFF' } }
+              ]
+            },
+          }
+        ]
+      }
+      radarDom3.setOption(option)
+    },
+    // 查询分类风险提醒数据
+    allWarnByType() {
+      const _this=this;
+      const params = {
+        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+      }
+      allWarnByType(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          const tdata = res.data.thismonth
+          const pdata = res.data.premonth
+          _this.thismonth = tdata.map((countnum) => {
+            return countnum.countnum;
+          })
+          _this.premonth = pdata.map((countnum) => {
+            return countnum.countnum;
+          })
+          _this.init();
+        }
+      })
+    },
+    // 查询七天上班时间统计数据
+    indexRecordDeatil() {
+      const _this=this;
+      const params = {
+        userId: '5ba98b66cd3549b9b92ea8723e89207e',
+        startTime:_this.dateStart,
+        endTime:_this.dateEnd
+
+      }
+      indexRecordDeatil(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          const Data =res.data
+          _this.worklength = Data.map(({worklength}) => worklength)
+          _this.overtime = Data.map(({overtime}) => overtime)
+          this.clockDate = Data.map(({clock_date}) => new Date(clock_date).toLocaleDateString().substring(5))
+          _this.init();
+        }
+      })
+    },
+    // 查询上班时间统计数据
+    indexRecordCountDeatil() {
+      const _this = this;
+      const params = {
+        userId: '5ba98b66cd3549b9b92ea8723e89207e',
+        startTime: _this.dateStart,
+        endTime: _this.dateEnd
+
+      }
+      indexRecordCountDeatil(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          _this.tjData = res.data.map(({ worklength }) => worklength)
+        }
+      })
+    },
+     // 查询部门平均上班时间数据
+    sectorAverageStatistics() {
+      const _this=this;
+      const params = {
+        department: '机关纪委',
+        startTime:_this.dateStart,
+        endTime:_this.dateEnd
+
+      }
+      sectorAverageStatistics(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          const Data = res.data
+          _this.averageData =Object.keys(Data).sort().map(item => Data[item]);
+          _this.init();
+        }
+      })
+    },
+    sevenday(){
+      const today = this.$dayjs(new Date());
+      const t7 = today.subtract(7, 'day');
+      this.dateStart = t7.format('YYYY-MM-DD');
+      this.dateEnd = today.format('YYYY-MM-DD');
+    }
+
   }
 }
 </script>
@@ -358,7 +580,7 @@ export default {
   @import './css/pseudo_classes.css';
 .person_home{
   margin: 1%;
-  overflow auto;
+  /* overflow auto; */
 }
 .police_career{
   height: 220px;
@@ -382,7 +604,6 @@ export default {
   border-left:5px solid red
   padding-left: 5px
 }
-
 .flex-grow {
     -webkit-flex-grow: 1!important;
     /* flex-grow: 1!important; */
@@ -1383,6 +1604,12 @@ input:disabled {
 
 .highcharts-tooltip-box {
   stroke-width: 0!important
+}
+.el-calendar-table .el-calendar-day {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 8px;
+    height: 0px !important;
 }
 .fengxian_body
   float:left;

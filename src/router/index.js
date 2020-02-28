@@ -12,7 +12,7 @@ import supervisionRouter from './supervision'
 
 import wisdomReminderRouter from './modules/wisdomreminder';
 import integrityRiskRouter from './modules/integrityRisk';
-
+import userRouter from './user'
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(error => error);
@@ -69,7 +69,9 @@ const routes = [
       ...wisdomReminderRouter,
       ...integrityRiskRouter,
       ...supervisionRouter,
-      ...organizationRouter
+      ...organizationRouter,
+      ...userRouter,
+
     ]
   },
   {

@@ -10,10 +10,11 @@ import echarts from 'echarts';
 import 'echarts/map/js/china';
 
 import './components';
-
+import dayjs from 'dayjs';
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$request = request
 Vue.prototype.$findRouter = findRouter
+Vue.prototype.$dayjs = dayjs;
 // import '@/utils/permission'
 import { findRouter } from '@/utils/findRouter'
 Vue.config.productionTip = false
