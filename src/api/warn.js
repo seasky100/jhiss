@@ -28,6 +28,15 @@ export function getWarnPage (params) {
   })
 }
 
+// 预警详情
+export function getWarnInfo (params) {
+  return request({
+    url: DEFAULT_URL.warn.getWarnInfo,
+    method: 'get',
+    params
+  })
+}
+
 // 检查通报 分页
 export function findBulletinPage (params) {
   return request({

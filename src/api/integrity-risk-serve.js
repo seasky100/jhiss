@@ -27,3 +27,12 @@ export function getVacationExceptionStatistics (params) {
     params
   })
 }
+
+// 护照管理
+export function getAbroadRecordPage (params) {
+  return request({
+    url: DEFAULT_URL.vacation.findAbroadRecordPage,
+    method: 'get',
+    params
+  })
+}

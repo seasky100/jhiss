@@ -68,7 +68,7 @@ const routes = [
       // },
       ...wisdomReminderRouter,
       ...integrityRiskRouter,
-      ...supervisionRouter,
+      // ...supervisionRouter,
       ...organizationRouter
     ]
   },

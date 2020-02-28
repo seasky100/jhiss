@@ -16,6 +16,7 @@ const DEFAULT_URL = {
     humanStatistics: GAISMSERVER + 'warn/humanStatistics', // 考勤预警按人员名称统计
     warnStatusStatistics: GAISMSERVER + 'warn/warnStatusStatistics', // 预警处置情况统计x未反馈，已反馈，y轴对应次数
     findWarnPage: GAISMSERVER + 'warn/findWarnPage', // 获取违规预警信息分页
+    getWarnInfo: GAISMSERVER + 'warn/getWarnInfo', // 考勤预警详情
     // 检测通报
     findBulletinPage: GAISMSERVER + 'tBulletin/findBulletinPage', //
     bulletinTypeStatistics: GAISMSERVER + 'tBulletin/bulletinTypeStatistics', //
@@ -35,9 +36,12 @@ const DEFAULT_URL = {
   },
   // 廉政风险
   vacation: {
+    // 请假管理
     findVacationPage: GAISMSERVER + 'vacationApply/findVacationPage', //获取考勤信息分页
     vacationApplyByMonth: GAISMSERVER + 'vacationApply/vacationApplyByMonth', //请假按月统计
     vacationExceptionStatistics: GAISMSERVER + 'vacationApply/vacationExceptionStatistics', //请假按月统计
+    // 护照管理
+    findAbroadRecordPage: GAISMSERVER + 'tAbroadRecord/findAbroadRecordPage', //获取出勤出境分页
   }
 }
 
