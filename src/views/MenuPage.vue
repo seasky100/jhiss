@@ -65,8 +65,9 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
   min-height: 400px;
+  height: calc(100vh - 50px);
+  overflow-y: auto;
 }
 .MenuPage
 	width:100%
