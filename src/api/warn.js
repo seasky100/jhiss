@@ -166,6 +166,38 @@ export function sectorAverageStatistics (params) {
     params
   })
 }
+// 查询工资数据
+export function findPayroll (params) {
+  return request({
+    url: DEFAULT_URL.payroll.findPayroll,
+    method: 'get',
+    params
+  })
+}
+// 查询奖金数据
+export function findrewardList (params) {
+  return request({
+    url: DEFAULT_URL.payroll.findrewardList,
+    method: 'get',
+    params
+  })
+}
+// 查询其他加班费的数据
+export function findOvertimePay (params) {
+  return request({
+    url: DEFAULT_URL.payroll.findOvertimePay,
+    method: 'get',
+    params
+  })
+}
+// 查询车贴费的数据
+export function findCarSubsidy (params) {
+  return request({
+    url: DEFAULT_URL.carSubsidy.findCarSubsidy,
+    method: 'get',
+    params
+  })
+}
 // addCertificateApportion(params) {
 //   return request({
 //     url: URL.addZSFP,

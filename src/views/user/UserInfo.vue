@@ -123,7 +123,7 @@ import { user } from '../../api/warn.js';
             //         }
             //     })
             // },
-               // 查询分类风险提醒数据
+    // 查看个人信息
     async getData() {
       const _this=this;
       debugger

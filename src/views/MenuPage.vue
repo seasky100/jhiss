@@ -2,42 +2,80 @@
   <div class="MenuPage">
     <div class="pageTop">
         <div class='app flex flex-column h-full'>
-            <header ref='header' class='flex flex-align-center flex-no-shrink border-box' style="height: 100%">
-              <div class='m-left' style="width: 80%"> 
+          <header ref='header' class='flex flex-align-center flex-no-shrink border-box' style="height: 100%">
+            <div class='m-left' style="width: 80%">
               <img src='../utils/img/header_logo2.png' class='h48 m_title m_logal' />
               <img src='../utils/img/header_title.png' class='h48 m_title' />
-            </div>   
+            </div>
             <div v-show='flag' style=" position: relative" @mouseenter="enter()" @mouseleave="leave()">
-                <el-card class="box-card m_info">
-                    <div style="height: 100%; width: 100%">
-                        <div style="line-height: 78px;">
-                            <span style="font-weight: 700;font-size: inherit">楼华安</span>
-                            <el-avatar src="../utils/img/lha.png"></el-avatar>
-                            
-                            <span style="font-family: monospace;font-size: unset;font-weight: 600">机关纪委</span>
-                          </div>
-                            <div style="height: 30%;float: left;margin-left: 10px;">
-                                <img src='../utils/img/star_on.svg' class='w24 h24 mx4' />
-                                <img src='../utils/img/star_on.svg' class='w24 h24 mx4' />
-                                <img src='../utils/img/star_on.svg' class='w24 h24 mx4' />
-                                <img src='../utils/img/star_off.svg' class='w24 h24 mx4' />
-                                <img src='../utils/img/star_off.svg' class='w24 h24 mx4' />
-                            </div>
-                            <div class='' style="border-left: 1px solid #ccc; margin: 0 1em"></div>
-                            <div class='m_conf'>
-                              <!-- <img src={`/images/${politicalStatus === '中共党员' ? 'user_menu_party_on@2x' : 'user_menu_party_off@2x'}.png`} class='w24 h24 px4 r-half' /> -->
-                              <img src='../utils/img/user_menu_passport_on@2x.png' class='' />
-                              <img src='../utils/img/user_menu_salary_on@2x.png' @click='goTo' />
-                              <img src='../utils/img/user_menu_more@2x.png' @click='go' />
-                            </div>
-                    </div>
-                  </el-card>
+              <el-card class="box-card m_info">
+                <div style="height: 100%; width: 100%">
+                  <div style="line-height: 78px;">
+                    <span style="font-weight: 700;font-size: inherit">楼华安</span>
+                    <el-avatar src="../utils/img/lha.png"></el-avatar>
+                    <span style="font-family: monospace;font-size: unset;font-weight: 600">机关纪委</span>
+                  </div>
+                  <div style="height: 30%;float: left;margin-left: 10px;">
+                    <img src='../utils/img/star_on.svg' class='w24 h24 mx4' />
+                    <img src='../utils/img/star_on.svg' class='w24 h24 mx4' />
+                    <img src='../utils/img/star_on.svg' class='w24 h24 mx4' />
+                    <img src='../utils/img/star_off.svg' class='w24 h24 mx4' />
+                    <img src='../utils/img/star_off.svg' class='w24 h24 mx4' />
+                  </div>
+                  <div class='' style="border-left: 1px solid #ccc; margin: 0 1em"></div>
+                  <div class='m_conf'>
+                    <!-- <img src={`/images/${politicalStatus === '中共党员' ? 'user_menu_party_on@2x' : 'user_menu_party_off@2x'}.png`} class='w24 h24 px4 r-half' /> -->
+                    <img src='../utils/img/user_menu_passport_on@2x.png' class='' />
+                    <img src='../utils/img/user_menu_salary_on@2x.png' @click='goTo' />
+                    <img src='../utils/img/user_menu_more@2x.png' @click='go' />
+                  </div>
+                </div>
+              </el-card>
+            </div>
+            <img class='m_img' src='../utils/img/lha.png' />
+            <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()"> 超级管理员</div>
+            <img class='t_img' src='../utils/img/header_alarm@2x.png' @click="dialogVisible = true" />
+          </header>
+          <el-dialog title="" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <div class="m_body" v-for="(item,index) in tabelData" :key="index">
+              <div class='m_message'>
+                <span>{{item.name}}</span>
+                <span class="m_code">{{item.code}}</span>
+                <span class="m_code">{{item.dept}}</span>
               </div>
-            <img class='m_img'  src='../utils/img/lha.png'/>              
-              <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()"> 超级管理员</div>   
-            
-            </header>           
-          </div>
+              <div class="m_things">
+                预警时间：{{item.time}}
+              </div>
+              <div class="m_things">
+                预警原因：{{item.reason}}
+              </div>
+              <div class="m_unusual" v-for="(item1,index2) in item.list" :key="index2">
+                <div class="m_message">
+                  {{item1.name}}
+                </div>
+              </div>
+              <div class="m_message renack">
+                <div class="m_message">本人反馈</div>
+                <div class="m_message m_center">
+                  <div class="m_message m_time">
+                    2020年2月22日 11:35:23
+                  </div>
+                  <div class="m_message m_content">小孩突然发高烧，事关紧急未及时汇报</div>
+                </div>
+              </div>
+              <div class="m_message m_textarea">层级领导反馈</div>
+              <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
+              </el-input>
+              <div class="m_message m_textarea">职能部门反馈</div>
+              <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
+              </el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+          </el-dialog>
+        </div>
     </div>
     <div class="page_body">
       <div style="float:left;height:100%;background:#545c64">
@@ -65,9 +103,31 @@ export default {
   data() {
     return {
       isCollapse: false,
-      flag:false
+      flag:false,
+      dialogVisible: false,
+      textarea: '',
+      tabelData: [
+        {
+          name: '张三',
+          code: '001',
+          dept: '机关纪委',
+          time: '2019年12月20日 11:50:32',
+          reason: '本人累计迟到3次及以上',
+          list: [
+            {
+              name: '异常记录1：2019年12月21日 09:23:56 迟到 考勤方式 门禁'
+            },
+            {
+              name: '异常记录1：2019年12月21日 09:23:56 迟到 考勤方式 门禁'
+            },
+            {
+              name: '异常记录1：2019年12月21日 09:23:56 迟到 考勤方式 门禁'
+            }
+          ]
+        }
+      ]
     }
-  },
+},
   components: { NavMenu },
   watch: {},
   computed: {
@@ -109,11 +169,19 @@ export default {
     },
     goTo(){
       this.$router.push({
-        path: '/salary'
+        path: '/Salary'
       })
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
     }
-  }
+  },
 }
+
 </script>
 <style lang="stylus" scoped>
   @import './css/hover-min.css';
@@ -134,12 +202,37 @@ export default {
 .m_title{
   float: left;
   /* margin-top: 15px; */
-
+}
+.m_textarea{
+  margin-left: 60px !important;
+}
+.m_body{
+  height: 650px;
+  border: 1px solid;
+  margin: 10px;
+  overflow: auto;
 }
 .text {
     font-size: 14px;
   }
-
+.m_things{
+  line-height: 24px;
+  text-align: left;
+  margin-left: 25px;
+}
+.m_message{
+  text-align: left; 
+  margin-left: 25px;
+  line-height: 40px;
+}
+.m_code{
+  margin-left: 10px;
+}
+.m_center{
+  border: 1px solid;
+  width: 90%;
+  margin: 0 auto;
+}
   .item {
     padding: 18px 0;
   }
@@ -196,6 +289,10 @@ img{
     max-width: 100%;
     vertical-align: top;
 }
+.t_img{
+  height: 20px;
+
+}
 .m_info{
   position: absolute;
     margin-top: 38px;
@@ -203,6 +300,7 @@ img{
     height: 180px;
     overflow: inherit;
     left: -159px;
+    z-index: 99;
 }
 .MenuPage
 	width:100%

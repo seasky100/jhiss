@@ -115,7 +115,7 @@
               <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">协作提效</span>
               <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #E8EFFF">
                 <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #235FF6">                  
-                  <Link to='' class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                  <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                     style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'>
                     <span style="font-size: 1.5em">22</span>
                   </Link>
@@ -128,7 +128,7 @@
               <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">队伍精细化</span>
               <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #F4F1FF">
                 <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #8674F6">
-                  <Link to='' class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                  <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                     style="width: '4.4em'; height: 4.4em; background: #8674F6" title='待办箱'>
                     <span style="font-size: 1.5em">1</span>
                   </Link>
@@ -140,7 +140,7 @@
             <div class='flex flex-column flex-align-center flex-grow'>
               <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">层级关系</span>
               <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #FFF5EA">
-                <Link to='' class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                   style="width: 4.4em; height: 4.4em; background: #F09B38" title='待办箱'>
                   <span style="font-size: 1.5em">4</span>
                 </Link>

@@ -49,6 +49,18 @@ const DEFAULT_URL = {
   tClockRecord: {
     sectorAverageStatistics: GAISMSERVER + '/tClockRecord/sectorAverageStatistics', //
   },
+  
+  payroll: {
+    findPayroll: GAISMSERVER + '/payroll/findPayroll', //查询工资数据
+    findrewardList: GAISMSERVER + '/payroll/findrewardList', //查询奖金数据
+    findOvertimePay: GAISMSERVER + '/payroll/findOvertimePay', //查询其他加班费的数据
+    
+  },
+  carSubsidy:{
+    findCarSubsidy: GAISMSERVER + '/carSubsidy/findCarSubsidy', //查询车贴费的数据
+  }
+  
+
 }
 
 export default DEFAULT_URL;

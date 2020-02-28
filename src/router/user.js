@@ -8,9 +8,9 @@ export default [
     },
     {
         title: '工资信息',
-        path: "/salary",
+        path: "/Salary",
         hidden:true,
-        component: () => import('@/views/user/salary.vue')
+        component: () => import('@/views/user/Salary.vue')
 
     },
 ]

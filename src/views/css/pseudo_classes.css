@@ -7,6 +7,24 @@ textarea:focus{
 
   height: 30px !important;
 }
+.el-dialog__footer {
+  line-height: 24px !important;
+  text-align: center !important;
+}
+.el-textarea {
+  /* position: relative; */
+  display: inline-block;
+  width: 84%;
+  vertical-align: bottom;
+  font-size: 14px;
+  margin: 0 auto;
+  margin-top: 0px !important;
+  height: 130px;
+}
+.el-textarea__inner {
+  min-height: 94px !important;
+  margin-left: 7px;
+}
 .el-calendar__body {
   padding: 10px 20px 35px !important;
 }
