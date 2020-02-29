@@ -9,6 +9,36 @@
 					本人、配偶、共同生活的子女房产变更（包括住宅、商用房、厂房、仓库、自建房、车库、车位、储藏间等）、装修等情况（以经备案的房屋买卖合同记载为准），事后7日内报告。
 				</span>
 			</div>
+      <div class="formCon">
+        <div>
+          <span :style="[{background:index==active?'#235ff5':'#ccc'}]"
+            v-for="(item,index) of form_arr" :key="index"
+            @click="checkformobj(item,index)">
+            {{item.type==0?'车库':item.type==1?'车位':'储藏室'}}
+            {{item.input1}}
+          </span>
+        </div>
+        <el-form ref="formobj" :model="formobj" label-width="90px">
+          <el-form-item label="附房类型">
+            <el-select :disabled="formobj.disabled" v-model="formobj.type" placeholder="请选择附房类型">
+              <el-option label="车库" value="0"></el-option>
+              <el-option label="车位" value="1"></el-option>
+              <el-option label="储藏室" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-for="(item, index) in type_arr[formobj.type]" :key="index" :label="item.label">
+            <el-input :disabled="formobj.disabled" 
+              clearable
+              v-model="formobj[item.prop]"
+              :placeholder="item.placeholder"/>
+          </el-form-item>
+          <el-form-item>
+            <el-checkbox style="margin-right:20px;" v-model="formobj.checked">保存</el-checkbox>
+            <el-button @click="deleteformObj">删除当前附房</el-button>
+            <el-button type="primary" @click="checkformobj('')">新增附房</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 			<e-search :inlineFlag="inlineFlag"
 				:label_position="label_position"
         @handleSearch="handleSearch"
@@ -46,7 +76,9 @@ export default {
   data() {
     return {
 			inlineFlag:false,
-			label_position:'top',
+      label_position:'top',
+      checked:false,
+      active: 0,
 			// org_flag: false,
       searchData: {
         userName: '',
@@ -55,36 +87,120 @@ export default {
         problemType: '',
         startTime: '',
         endTime: ''
-			},
+      },
+      formobj:{
+        name:'车库',
+        type:'',
+        disabled: false
+      },
+      form_arr:[],
+      type_arr:[
+        [
+          {label:'号码',type: 'input', prop: 'input1',  placeholder: ''},
+          {label:'面积',type: 'input', prop: 'input2',  placeholder: ''},
+          {label:'地址',type: 'input', prop: 'input3',  placeholder: ''},
+        ],
+        [
+          {label:'车位号码',type: 'input', prop: 'input1',  placeholder: ''},
+          {label:'车位面积',type: 'input', prop: 'input2',  placeholder: ''},
+          {label:'车位地址',type: 'input', prop: 'input3',  placeholder: ''},
+        ],
+        [
+          {label:'储藏室号码',type: 'input', prop: 'input1',  placeholder: ''},
+          {label:'储藏室面积',type: 'input', prop: 'input2',  placeholder: ''},
+          {label:'储藏室地址',type: 'input', prop: 'input3',  placeholder: ''},
+        ],  
+      ],
 			searchForm: [
-        {label:'所到国家（地区）',type: 'input', prop: 'policeCode',  placeholder: ''},
         {
-					label:'事由',
+					label:'房产类型',
           type: 'select',
           prop: 'department',
           width: '100%',
-          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+          options: [
+            {label:'商品房', value:'0'},
+            {label:'福利房', value:'1'},
+            {label:'经济适用房', value:'2'},
+            {label:'限价房', value:'3'},
+            {label:'自建房', value:'4'},
+            {label:'商住房', value:'5'},
+            {label:'厂房', value:'6'},
+            {label:'仓库', value:'7'},
+            {label:'其他', value:'8'},
+          ],
           change: row => console.log(row),
-          placeholder: '所属部门'
+          placeholder: ''
 				},
-				{label:'同行人姓名',type: 'input', prop: 'policeCode',  placeholder: ''},
-				{label:'出发时间',type: 'date', prop: 'date', placeholder: ''},
-				{label:'归国时间',type: 'date', prop: 'date', placeholder: ''},
-				{label:'资金来源',type: 'input', prop: 'policeCode',  placeholder: ''},
+				{label:'房屋坐落',type: 'input', prop: 'policeCode',  placeholder: ''},
+				{label:'建筑面积（平方米）',type: 'input', prop: 'date', placeholder: ''},
 				{
-					label:'证件类型',
+					label:'装修情况',
           type: 'select',
           prop: 'department',
           width: '100%',
-          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+          options: [
+            {label:'毛坯', value:'0'},
+            {label:'简装', value:'1'},
+            {label:'精装', value:'2'},
+          ],
           change: row => console.log(row),
-          placeholder: '所属部门'
+          placeholder: ''
+        },
+        {
+					label:'产权归属',
+          type: 'select',
+          prop: 'department',
+          width: '100%',
+          options: [
+            {label:'本人', value:'0'},
+            {label:'父母', value:'1'},
+            {label:'配偶', value:'2'},
+            {label:'子女', value:'3'},
+          ],
+          change: row => console.log(row),
+          placeholder: ''
 				},
-				{label:'证件号码',type: 'input', prop: 'policeCode',  placeholder: ''},
-				{label:'其他说明',type: 'input', prop: 'policeCode',  placeholder: ''},
+				{label:'房产总额（万元）',type: 'input', prop: 'policeCode',  placeholder: ''},
+				{
+					label:'交易类型',
+          type: 'select',
+          prop: 'department',
+          width: '100%',
+          options: [
+            {label:'购买', value:'0'},
+            {label:'继承', value:'1'},
+            {label:'接受赠与', value:'2'},
+            {label:'分割', value:'3'},
+            {label:'合并', value:'4'},
+            {label:'变更', value:'5'},
+            {label:'交换', value:'6'},
+            {label:'析产', value:'7'},
+            {label:'赠与他人', value:'8'},
+            {label:'其他去向', value:'9'},
+            {label:'其他', value:'10'},
+          ],
+          change: row => console.log(row),
+          placeholder: ''
+				},
+        {label:'交易时间',type: 'date', prop: 'policeCode',  placeholder: ''},
+        {
+					label:'贷款情况',
+          type: 'select',
+          prop: 'department',
+          width: '100%',
+          options: [
+            {label:'全款', value:'0'},
+            {label:'商业贷款', value:'1'},
+            {label:'公积金贷款', value:'2'},
+            {label:'组合贷款', value:'3'}
+          ],
+          change: row => console.log(row),
+          placeholder: ''
+        },
+        {label:'备注',type: 'input', prop: 'policeCode',  placeholder: ''},
 				{label:'附件',type: 'file', prop: 'policeCode',  placeholder: ''},
 				{
-					label:'审批人1',
+					label:'审批人',
           type: 'select_tree',
           prop: 'department',
           width: '100%',
@@ -103,37 +219,24 @@ export default {
             }
           ],
           change: row => console.log(row),
-          placeholder: '所属部门'
-				},
-				{
-					label:'审批人2',
-          type: 'select_tree',
-          prop: 'department',
-          width: '100%',
-          options: [
-            {
-              prop: 'selectOrg',
-              format: '',
-              valueformat: '',
-              placeholder: '请选择机构'
-            },
-            {
-              prop: 'selectPerson',
-              format: '',
-              valueformat: '',
-              placeholder: '请选择审批人'
-            }
-          ],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-				},
+          placeholder: ''
+				}
 			],
     }
   },
   watch: {
 		filterText(val) {
 			this.$refs.tree.filter(val);
-		}
+    },
+    'formobj.checked'(newVal,oldVal){
+      this.$set(this.formobj,'disabled',newVal)
+      if(newVal && (oldVal == undefined || oldVal == null)){
+        this.formobj.disabled = true
+        let arr = [...this.form_arr]
+        arr.push(this.formobj)
+        this.form_arr = arr
+      }
+    }
 	},
   mounted() {
     this.init()
@@ -147,63 +250,32 @@ export default {
       // Object.assign(this.searchData, params);
       console.log(params)
       // this.query();
-		},
-		// onSubmit() {
-		// 	console.log(this.uploadFile)
-		// 	console.log('submit!');
-		// },
-		// onCancle(){
-		// 	this.$router.push({ path: '/talks'});
-		// },
-		// uploadSectionFile (param) {
-    //   const _this = this
-    //   let fileObj = param.file
-    //   const isLt5M = fileObj.size / 1024 / 1024 < 2
-    //   if (!isLt5M) {
-    //     this.$message.error('上传附件大小不能超过 2MB!')
-    //     // this.fileList = []
-    //     return
-    //   }
-    //   if (fileObj.type === 'image/jpeg') {
-		// 		debugger
-    //     this.uploadFile = new File([fileObj], new Date().getTime() + '.jpg', {
-    //       type: 'image/jpeg'
-    //     })
-    //     _this.uploadFileList.push(this.uploadFile)
-    //   } else if (fileObj.type === 'image/png') {
-    //     this.uploadFile = new File([fileObj], new Date().getTime() + '.png', {
-    //       type: 'image/png'
-    //     })
-    //     _this.uploadFileList.push(this.uploadFile)
-    //   } else {
-    //     this.$message.error('只能上传jpg/png文件')
-    //     // this.fileList = []
-    //   }
-    // }, 
-		// changelag(){
-		// 	this.org_flag = !this.org_flag
-		// },
-		// filterNode(value, data) {
-		// 	if (!value) return true;
-		// 	return data.name.indexOf(value) !== -1;
-		// },
-		// nodeClick(obj){
-		// 	// console.log(obj)
-		// 	this.form.name = obj.name
-		// 	this.org_flag = false
-		// 	// console.log(node)
-		// 	// console.log(com)
-		// },
-		// getOrgData(){
-		// 		this.$request.get(`/api/uums-server/organization/tree`)
-		// 		.then(res => {
-		// 				console.log(res.data)
-		// 				this.dataTree = res.data
-		// 		})
-		// 		.catch(error => {
-		// 				console.log(error)
-		// 		})
-		// },
+    },
+    checkformobj(val = '', index = this.form_arr.length - 1){
+      this.active = index
+      if(val == ''){
+        if(!this.formobj.checked){
+          this.$message('请先保存')
+          return
+        }
+        this.formobj = {
+          name:'车库',
+          type:'',
+          disabled: false,
+          checked:null
+        }
+        this.checked = false
+      } else {
+        this.formobj = val
+      }
+    },
+    deleteformObj(){
+      let arr = [...this.form_arr]
+      arr.splice(this.active,1)
+      this.form_arr = arr
+      let index = this.form_arr.length - 1
+      this.checkformobj(arr[index],index)
+    }
   }
 }
 </script>
@@ -232,4 +304,15 @@ export default {
 	padding:0 10px;
 	font-size 16px
 	font-weight bold
+.formCon
+  border 1px solid #ccc
+  padding 5px 0
+.formCon span 
+  display inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #235ff5;
+  margin: 5px;
+  color: #fff;
+  cursor: pointer;
 </style>

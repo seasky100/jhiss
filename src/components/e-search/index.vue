@@ -2,14 +2,14 @@
   <el-form :model="searchData" :rules="rules" ref="ruleForm" :inline="inlineFlag" :label-position="label_position" class="demo-ruleForm" :size="size">
     <el-form-item :label="item.label" :prop="item.prop" v-for="(item, index) in searchForm" :key="index">
       <!-- 输入框 -->
-      <el-input
+      <el-input :disabled="disabled"
         v-if="item.type === 'input'"
         clearable
         v-model="searchData[item.prop]"
         :placeholder="item.placeholder"
         :style="{width: item.width}" />
       <!-- 文本域 -->
-      <el-input
+      <el-input :disabled="disabled"
         v-else-if="item.type === 'textarea'"
         clearable
         type="textarea"
@@ -17,7 +17,7 @@
         :placeholder="item.placeholder"
         :style="{width: item.width}" />
       <!-- 下拉框 -->
-      <el-select
+      <el-select :disabled="disabled"
         v-else-if="item.type==='select'"
         clearable
         :placeholder="item.placeholder"
@@ -32,7 +32,7 @@
           </el-option>
       </el-select>
       <!-- 单选 -->
-      <el-radio-group
+      <el-radio-group :disabled="disabled"
         v-else-if="item.type==='radio'"
         v-model="searchData[item.prop]">
           <el-radio
@@ -41,7 +41,7 @@
             :key="radio.value">{{radio.label}}</el-radio>
       </el-radio-group>
       <!-- 复选框 -->
-      <el-checkbox-group
+      <el-checkbox-group :disabled="disabled"
         v-else-if="item.type==='checkbox'"
         :style="{width: item.width}"
         v-model="searchData[item.prop]" >
@@ -51,7 +51,7 @@
             :key="checkbox.value">{{checkbox.label}}</el-checkbox>
       </el-checkbox-group>
       <!-- 日期 -->
-      <el-date-picker
+      <el-date-picker :disabled="disabled"
         v-else-if="item.type==='date'"
         :placeholder="item.placeholder"
         :value-format="item.valueFormat || 'yyyy-MM-dd'"
@@ -94,11 +94,12 @@
         </el-date-picker>
       </template>
       <!-- 开关 -->
-      <el-switch
+      <el-switch :disabled="disabled"
         v-else-if="item.type==='switch'"
         v-model="searchData[item.prop]" ></el-switch>
       <!-- 选择附件 :on-change="handleChange" -->
       <el-upload v-else-if="item.type==='file'"
+        v-show="!disabled"
         class="upload-demo" :limit=1
         :http-request="uploadSectionFile"
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -109,12 +110,12 @@
       <!-- 审批人 -->
       <template v-else-if="item.type==='select_tree'">
         <el-input readonly @click.native="changelag"
-          size="mini"
+          size="mini" :disabled="disabled"
           style="float:left;width:50%;"
           :placeholder="item.options[0].placeholder"
           v-model="searchData[item.options[0].prop]">
         </el-input>
-        <el-select size="mini" v-model="searchData[item.options[1].prop]" 
+        <el-select size="mini" v-model="searchData[item.options[1].prop]" :disabled="disabled"
           :placeholder="item.options[1].placeholder" style="float:left;width:50%;">
           <el-option
             v-for="item in person_arr"
@@ -142,9 +143,10 @@
 
       </template>
     </el-form-item>
-    <el-form-item>
+    <el-form-item v-if="!disabled">
       <el-button type="primary" @click="submitForm">查询</el-button>
       <el-button @click="resetForm">清空</el-button>
+      <el-button v-if="addForm != ''" @click="addFormClick">新增</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -172,6 +174,14 @@ export default {
     label_position: {
       type: String,
       default: 'left'
+    },
+    addForm: {
+      type: String,
+      default: ''
+    },
+    disabled:{
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -235,6 +245,10 @@ export default {
         }
       })
       this.$emit("handleSearch", this.searchData);
+    },
+    addFormClick(){
+      const _this = this
+      this.$router.push({ path: _this.addForm});
     },
     changelag(){
       this.org_flag = !this.org_flag
@@ -308,8 +322,12 @@ export default {
     width: 100% !important;
 }
 .selectDiv{
+  position: absolute;
+  top: 30px;
+  width: 100%;
   height:350px;
   margin-bottom:55px;
+  z-index:1;
 }
 .el-scrollbar .el-scrollbar__wrap {overflow-y: hidden;}
 .selectDiv .el-tree>.el-tree-node{display:inline-block;}

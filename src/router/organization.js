@@ -35,7 +35,7 @@ export default [
                 component: () => import('@/views/wisdomSupervision/talks')
             },
             {
-                title:'新增谈话谈心',
+                title:'新增谈话谈心', 
                 hidden:true,
                 icon: 'el-icon-menu',
                 path: "/TalkAdd",

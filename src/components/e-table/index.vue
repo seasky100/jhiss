@@ -59,7 +59,7 @@
                   <template v-if="column.formatter">
                     <span
                       v-html="
-                        column.formatter(
+                        $parent[column.formatter](
                           scope.row,
                           column,
                           scope.row[column.prop]
@@ -337,14 +337,10 @@ export default {
       this.columnsCopy = data;
     },
     setTotal(val) {
-      this.optionsComputed = {
-        total: val
-      };
+      this.$set(this.optionsComputed,'total',val)
     },
     setPageSize(val) {
-      this.optionsComputed = {
-        pageSize: val
-      };
+      this.$set(this.optionsComputed,'pageSize',val)
     },
     setPageInfo(current, size, total, tableList) {
       this.setCurrentPage(current);

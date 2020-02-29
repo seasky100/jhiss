@@ -62,7 +62,12 @@ const DEFAULT_URL = {
   },
   carSubsidy:{
     findCarSubsidy: GAISMSERVER + '/carSubsidy/findCarSubsidy', //查询车贴费的数据
-  }
+  },
+    // 报告
+    report: {
+      findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
+      findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
+    }
   
 
 }

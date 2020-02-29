@@ -106,24 +106,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-/*滚动条样式*/
-::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
-::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
-::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
-.date_pick{
-    width: 100% !important;
-}
-.selectDiv{
-  height:350px;
-}
-.el-scrollbar .el-scrollbar__wrap {overflow-y: hidden;}
-.selectDiv .el-tree>.el-tree-node{display:inline-block;}
-.talk_add
-  margin: 2%
-.selectDiv
-	position absolute
-	width 40%
-	z-index 1
 .individual_title
 	height:40px;
 	line-height:40px;
