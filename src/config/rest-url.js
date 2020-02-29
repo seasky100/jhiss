@@ -48,6 +48,10 @@ const DEFAULT_URL = {
     vacationExceptionStatistics: GAISMSERVER + 'vacationApply/vacationExceptionStatistics', //请假按月统计
     // 护照管理
     findAbroadRecordPage: GAISMSERVER + 'tAbroadRecord/findAbroadRecordPage', //获取出勤出境分页
+    // 涉嫌违法管控
+    findIllgalPage: GAISMSERVER + 'warn/findIllgalPage', //涉嫌违法管控分页
+    illgalByDayStatistics: GAISMSERVER + 'warn/illgalByDayStatistics', //涉嫌违法管控统计
+    illgalBySource: GAISMSERVER + 'warn/illgalBySource', //涉嫌违法管控统计
   },
   // 查询部门平均上班时间数据
   tClockRecord: {

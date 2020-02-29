@@ -26,6 +26,13 @@ const integrityRiskRouter = [
         name: 'WisdomAttendance',
         path: "/passport",
         component: () => import('@/views/IntegrityRisk/PassportManage')
+      },
+      {
+        title: '涉嫌违法',
+        icon: 'el-icon-menu',
+        name: 'WisdomAttendance',
+        path: "/suspected",
+        component: () => import('@/views/IntegrityRisk/SuspectedViolation')
       }
     ]
   }

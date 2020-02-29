@@ -207,6 +207,30 @@ export function findCarSubsidy (params) {
     params
   })
 }
+// 涉嫌违法管控分页
+export function findIllgalPage (params) {
+  return request({
+    url: DEFAULT_URL.vacation.findIllgalPage,
+    method: 'get',
+    params
+  })
+}
+// 按天统计
+export function illgalByDayStatistics (params) {
+  return request({
+    url: DEFAULT_URL.vacation.illgalByDayStatistics,
+    method: 'get',
+    params
+  })
+}
+// 来源统计
+export function illgalBySource (params) {
+  return request({
+    url: DEFAULT_URL.vacation.illgalBySource,
+    method: 'get',
+    params
+  })
+}
 // addCertificateApportion(params) {
 //   return request({
 //     url: URL.addZSFP,
