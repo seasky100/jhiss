@@ -414,55 +414,39 @@ export default {
   }
 };
 </script>
-<!--
-<style lang="scss" scoped>
-.e-table {
+
+<style lang="stylus" scoped>
+.e-table 
   width: 100%;
-  .el-row {
-    .pagination-col {
+  .el-row 
+    .pagination-col 
       margin-top: 20px;
       margin-bottom: 20px;
-
-      .pagination {
+      .pagination 
         text-align: center;
-      }
-    }
-
-    .operate-group {
-      .item {
+    .operate-group
+      .item
         padding: 0 3px;
-      }
-    }
-
-    .table-outer {
+    .table-outer 
       height: 100%;
-    }
-  }
-}
 
-/deep/ .el-table {
+/deep/ .el-table 
   border-top: 1px solid rgba(241, 241, 241, 1);
   border-bottom: 1px solid rgba(241, 241, 241, 1);
 
-  th {
+  th
     background-color: #f6fafd !important;
     height: 53px !important;
     font-size: 14px !important;
     font-family: Microsoft YaHei !important;
     font-weight: 400 !important;
     color: rgba(51, 51, 51, 1) !important;
-  }
 
-  .el-table__row--striped td {
+  .el-table__row--striped td
     background-color: rgba(247, 250, 255, 1) !important;
-  }
-}
 
-/deep/ .el-table__header-wrapper {
-  /deep/ .el-table__header {
-    /deep/ .el-checkbox {
+/deep/ .el-table__header-wrapper
+  /deep/ .el-table__header
+    /deep/ .el-checkbox
       display: none;
-    }
-  }
-}
-</style>-->
+</style>

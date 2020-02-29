@@ -12,6 +12,20 @@ const integrityRiskRouter = [
         name: 'WisdomAttendance',
         path: "/leave-overtime",
         component: () => import('@/views/IntegrityRisk/LeaveAndOvertime')
+      },
+      {
+        title: '违规查询',
+        icon: 'el-icon-menu',
+        name: 'WisdomAttendance',
+        path: "/violation-enquiry",
+        component: () => import('@/views/IntegrityRisk/ViolationEnquiry')
+      },
+      {
+        title: '护照管理',
+        icon: 'el-icon-menu',
+        name: 'WisdomAttendance',
+        path: "/passport",
+        component: () => import('@/views/IntegrityRisk/PassportManage')
       }
     ]
   }

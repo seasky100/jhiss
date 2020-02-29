@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="page-title">
-      <span>考勤预警管控</span>
+      <span>违规查询预警管控</span>
     </div>
     <div class="content">
       <el-row class="bg-fff">
         <el-col :span="12">
-          <!-- 预警处置情况统计 -->
+          <!-- 被查询系统次数统计 -->
           <e-histogram
             :chartSettings="warnStatusSettings"
             :title="warnStatusTitle"
@@ -14,7 +14,7 @@
           />
         </el-col>
         <el-col :span="12">
-          <!-- 考勤预警人员统计 -->
+          <!-- 次数统计 -->
           <ve-line
             :title="title"
             :data="humanStatistics"
@@ -38,29 +38,17 @@
           :tableList="tableList"
           :options="options"
           :columns="columns"
-          :operates="operates"
           @afterCurrentPageClick="afterCurrentPageClickHandle"
         />
       </div>
     </div>
-    <!-- 预警详情 -->
-    <warning-detail ref="warningDialog" />
   </div>
 </template>
 
 <script>
-import {
-  getHumanStatistics,
-  getWarnStatusStatistics,
-  getWarnPage
-} from '@/api/warn.js';
-
-import warningDetail from './modal/warningDetail';
+import { getHumanStatistics, getWarnStatusStatistics, getWarnPage } from '@/api/warn.js';
 
 export default {
-  components: {
-    warningDetail
-  },
   data() {
     this.chartExtend = {
       series: {
@@ -174,28 +162,8 @@ export default {
           align: 'left'
         }
       ],
-      operates: {
-        width: 150,
-        fixed: 'right',
-        list: [
-          {
-            id: '1',
-            label: '查看',
-            show: true,
-            underline: false,
-            icon: '<i class="el-icon-view"></i>',
-            disabled: false,
-            method: (key, row) => {
-              this.$refs.warningDialog.open(row);
-            },
-            showCallback: () => {
-              return true;
-            }
-          }
-        ]
-      },
       warnStatusTitle: {
-        text: '预警处置情况统计'
+        text: '被查询系统次数'
       },
       warnStatusSettings: {
         labelMap: {
@@ -211,7 +179,7 @@ export default {
         rows: []
       },
       title: {
-        text: '考勤预警人员统计',
+        text: '次数统计',
         left: 'center'
       }
     }
@@ -272,7 +240,7 @@ export default {
             isAsc: false,
             orderByField: 'warnTime',
             role: 10,
-            warnType: 1
+            warnType: 4
           },
           $this.searchData
         )
@@ -296,5 +264,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../../styles/common.styl"
+@import "../../../styles/common.styl"
 </style>

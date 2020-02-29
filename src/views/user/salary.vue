@@ -17,7 +17,7 @@
                     <button class='hov-date mx6 txt-normal'>
                        {{year}}年
                     </button>
-                    <button class='h24 w24 l_salary'title='后一年' @click='nextYear' >
+                    <button class='h24 w24 l_salary' title='后一年' @click='nextYear' >
                       </button>
                 </div>
             </div>

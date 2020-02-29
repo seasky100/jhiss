@@ -141,10 +141,14 @@ export default {
     }
   },
   mounted() {
+    // this.$root.eventHub.$on("changeParam", (n)=>{
+    //     this.getTraffData()
+    // });
     this.init();
   },
   methods: {
     init() {
+      // this.$router.push({ path: '/PersonalHome' });
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -162,7 +166,6 @@ export default {
       this.flag = false
     },
     go() {
-      debugger
       this.$router.push({
         path: '/UserInfo'
       })
@@ -184,11 +187,7 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
-  @import './css/hover-min.css';
-  @import './css/media.css';
-  @import './css/pseudo_classes.css';
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
   min-height: 400px;
 }
 .h48{
@@ -302,22 +301,26 @@ img{
     left: -159px;
     z-index: 99;
 }
-.MenuPage
-	width:100%
+.MenuPage{
+	width:100%;
 	height:100%
-.pageTop
-  width 100%
-  height 76px
-  background #545c64
-  font-size 20px
-  line-height 100px
-  text-align center
-.page_body
-  width:100%
+}
+.pageTop{
+  width:100%;
+  height:100px;
+  background :#545c64;
+  font-size: 20px;
+  line-height: 100px;
+  text-align: center;
+}
+.page_body{
+  width:100%;
   height:calc(100% - 100px)
-  .bodyContent
-    float left
-    height 100%
-    background:#f2f5f7
-    overflow auto
+}
+  .bodyContent{
+    float:left;
+    height:100%;
+    background:#f2f5f7;
+    overflow:auto
+  }
 </style>
