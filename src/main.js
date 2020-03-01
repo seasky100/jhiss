@@ -22,6 +22,9 @@ Vue.config.productionTip = false
 import VCharts from 'v-charts';
 Vue.use(VCharts);
 
+import Vue2OrgTree from 'vue2-org-tree';
+Vue.use(Vue2OrgTree)
+
 Vue.use(ElementUI)
 import BaiduMap from 'vue-baidu-map';
 Vue.use(BaiduMap, {

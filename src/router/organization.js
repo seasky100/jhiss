@@ -6,6 +6,12 @@ export default [
         component: () => import('@/views/OrganizeManage'),
         children: [
             {
+                title: '层级关系',
+                icon: 'el-icon-menu',
+                path: "/Org_relationship",
+                component: () => import('@/views/wisdomSupervision/Org_relationship')
+            },
+            {
                 title: '事项申报',
                 icon: 'el-icon-menu',
                 path: "/organizationRequest",
