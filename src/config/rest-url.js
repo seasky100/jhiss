@@ -1,12 +1,18 @@
 import GLOBAL from './config';
 
 let GAISMSERVER;
+let UUMSSERVER;
+let GMSSOSERVER;
 if (process.env.NODE_ENV === 'development') {
   // console.log('这是开发环境：'+process.env.VUE_APP_PROXY_GAISM_URL)
   GAISMSERVER = process.env.VUE_APP_PROXY_GAISM_URL;
+  UUMSSERVER = process.env.VUE_APP_PROXY_UUMS_URL;
+  GMSSOSERVER = process.env.VUE_APP_PROXY_GMSSO_URL;
 } else if (process.env.NODE_ENV === 'production') {
   console.log('这是生产环境')
   GAISMSERVER = GLOBAL.GAISM_SERVER;
+  UUMSSERVER = GLOBAL.UUMS_SERVER;
+  GMSSOSERVER = GLOBAL.GMSSO_SERVER;
 }
 
 const DEFAULT_URL = {
@@ -48,6 +54,10 @@ const DEFAULT_URL = {
     vacationExceptionStatistics: GAISMSERVER + 'vacationApply/vacationExceptionStatistics', //请假按月统计
     // 护照管理
     findAbroadRecordPage: GAISMSERVER + 'tAbroadRecord/findAbroadRecordPage', //获取出勤出境分页
+    // 涉嫌违法管控
+    findIllgalPage: GAISMSERVER + 'warn/findIllgalPage', //涉嫌违法管控分页
+    illgalByDayStatistics: GAISMSERVER + 'warn/illgalByDayStatistics', //涉嫌违法管控统计
+    illgalBySource: GAISMSERVER + 'warn/illgalBySource', //涉嫌违法管控统计
   },
   // 查询部门平均上班时间数据
   tClockRecord: {
@@ -71,15 +81,19 @@ const DEFAULT_URL = {
       // 用户相关
   user: {
     // 登录
-    login: `${GLOBAL.GMSSO_SERVER}/login`,
-    checkToken: `${GLOBAL.GMSSO_SERVER}/checkTokenByAppKey`,
+    login: `${GMSSOSERVER}login`,
+    checkToken: `${GMSSOSERVER}checkTokenByAppKey`,
     // // 获取用户相关信息，菜单权限
-    getUserInfo: `${GLOBAL.UUMS_SERVER}/user/get`,
+    getUserInfo: `${UUMSSERVER}user/get`,
     // // 修改密码
     // updatePassword: `${userService}/updatePassword`,
     // 退出登录
-    logout: `${GLOBAL.UUMS_SERVER}/logout`
+    // logout: `${GLOBAL.UUMS_SERVER}/logout`
   },
+    // 层级管理
+    post: {
+      treeAndUser: `${UUMSSERVER}post/treeAndUser`,
+    }
   
 
 }

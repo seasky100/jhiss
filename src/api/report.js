@@ -17,3 +17,12 @@ export function findReportPage (params) {
     params
   })
 }
+
+// 层级管理 查询层级树
+export function treeAndUser (params) {
+  return request({
+    url: DEFAULT_URL.post.treeAndUser,
+    method: 'get',
+    params
+  })
+}

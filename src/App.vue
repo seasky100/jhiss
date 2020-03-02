@@ -11,7 +11,6 @@ export default {
     }
   },
   mounted() {
-    debugger
     const token = sessionStorage.getItem('token')
     if(token){
       this.$router.push({ path: '/PersonalHome' });

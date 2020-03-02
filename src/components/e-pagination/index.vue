@@ -37,57 +37,48 @@ export default {
 };
 </script>
 
-<!--
-<style lang="scss" scoped>
-$color1: #0e90fe;
-$color2: rgba(243, 243, 243, 1);
-$color3: #fff;
-$color4: rgb(244, 244, 244);
-$color5: rgba(220, 220, 220, 1);
-$color6: #303133;
-$radius: 4px;
-$color-size: 14px;
+<style lang="stylus" scoped>
 .sp-pagenation {
   /deep/ .btn-prev,
   /deep/ .btn-next {
-    border: 1px solid $color5 !important;
-    background: center center no-repeat $color4 !important;
+    border: 1px solid rgba(220, 220, 220, 1) !important;
+    background: center center no-repeat rgb(244, 244, 244) !important;
     padding-left: 0;
     padding-right: 0;
     padding: 0 8px;
     border-radius: $radius;
-    font-size: $color-size;
+    font-size: 14px;
   }
   /deep/ .btn-prev:hover,
   /deep/ .btn-next:hover {
-    color: $color1;
+    color: #0e90fe;
   }
   /deep/ .el-pagination__total {
     margin: 0 10px;
-    color: $color6;
-    font-size: $color-size;
+    color: #303133;
+    font-size: 14px;
   }
   /deep/ .el-pagination__jump {
     margin: 0;
-    color: $color6;
-    font-size: $color-size;
+    color: #303133;
+    font-size: 14px;
   }
   /deep/ .el-pager {
     .number {
-      border: 1px solid $color5;
-      border-radius: $radius;
+      border: 1px solid rgba(220, 220, 220, 1);
+      border-radius: 4px;
       margin: 0 5px;
     }
     .number:hover {
-      border: 1px solid $color5;
-      color: $color1;
+      border: 1px solid rgba(220, 220, 220, 1);
+      color: #0e90fe;
     }
     .active {
-      background-color: $color1;
-      border: 1px solid $color5;
-      color: $color3;
+      background-color: #0e90fe;
+      border: 1px solid rgba(220, 220, 220, 1);
+      color: #fff;
       pointer-events: none;
     }
   }
 }
-</style>-->
+</style>
