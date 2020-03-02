@@ -7,7 +7,7 @@
 			{{item.name}}
 		</div>
 		<div class="relationship">
-			<org-tree :data="tree_data"></org-tree>
+			<org-tree :data="tree_data" :path_url="path_url"></org-tree>
 		</div>
   </div>
 </template>
@@ -25,7 +25,9 @@ export default {
 				{name: '年度报告', path: ''},
 				{name: '廉政台账', path: ''}
       ],
-      tree_data: null
+      tree_data: null,
+      // 部门跳转地址
+      path_url: 'Departmental_level'
 			// 
     }
   },

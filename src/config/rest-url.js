@@ -1,12 +1,15 @@
 import GLOBAL from './config';
 
 let GAISMSERVER;
+let UUMSSERVER;
 if (process.env.NODE_ENV === 'development') {
   // console.log('这是开发环境：'+process.env.VUE_APP_PROXY_GAISM_URL)
   GAISMSERVER = process.env.VUE_APP_PROXY_GAISM_URL;
+  UUMSSERVER = process.env.VUE_APP_PROXY_UUMS_URL;
 } else if (process.env.NODE_ENV === 'production') {
   console.log('这是生产环境')
   GAISMSERVER = GLOBAL.GAISM_SERVER;
+  UUMSSERVER = GLOBAL.UUMS_SERVER;
 }
 
 const DEFAULT_URL = {
@@ -67,11 +70,16 @@ const DEFAULT_URL = {
   carSubsidy:{
     findCarSubsidy: GAISMSERVER + '/carSubsidy/findCarSubsidy', //查询车贴费的数据
   },
-    // 报告
-    report: {
-      findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
-      findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
-    }
+  // 报告
+  report: {
+    findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
+    findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
+  },
+
+  // 层级管理
+  post: {
+    treeAndUser: `${UUMSSERVER}post/treeAndUser`,
+  }
   
 
 }

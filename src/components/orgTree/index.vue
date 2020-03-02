@@ -2,7 +2,7 @@
   <div class="com org_tree">
     <div class="container">
       <div class="col-md-10 col-md-offset-1">
-        <div class="row">
+        <div class="row" v-if="settingFlag">
           <div class="col-md-8 col-md-offset-2">
             <form class="form-horizontal row">
               <div class="col-md-4">
@@ -45,9 +45,6 @@
             </form>
           </div>
         </div>
-        <p>
-          <br/>
-        </p>
         <div class="text-center">
           <vue2-org-tree
             name="test"
@@ -87,13 +84,30 @@ export default {
   props: {
     data: {
       type: Object
+    },
+    horizontal: {
+      type: Boolean,
+      default: false
+    },
+    collapsable: {
+      type: Boolean,
+      default: true
+    },
+    expandAll: {
+      type: Boolean,
+      default: false
+    },
+    settingFlag: {
+      type: Boolean,
+      default: false
+    },
+    path_url:{
+      type: String,
+      default: null
     }
   },
   data() {
     return {
-      horizontal: false,
-      collapsable: true,
-      expandAll: false,
       labelClassName: "bg-white",
       dialogFormVisible: false,
       form: {
@@ -106,7 +120,11 @@ export default {
         resource: '',
         desc: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      defaultProps: {
+        children: 'childrens',
+        label: 'name'
+      },
     };
   },
   methods: {
@@ -116,7 +134,7 @@ export default {
       // 弹出框
       return (<el-popover
         placement="bottom"
-        trigger="click"
+        trigger="hover"
         content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
         <p>这是一段内容这是一段内容确定删除吗？</p>
         <div style="text-align: right; margin: 0">
@@ -125,7 +143,7 @@ export default {
           <el-button type="primary" size="mini" onclick={() => this.popoverClick('del', data)}>删除</el-button>
           <el-button type="primary" size="mini" onclick={() => this.popoverClick('add', data)}>新增</el-button>
         </div>
-        <div slot="reference">{data.label}<br/>{data.position}</div>
+        <div slot="reference" class="user_panel" onclick={() => this.nodePanelClick(data)}>{data.label}{data.userNames}<br/>{data.name} {data.orgName}</div>
       </el-popover>)
     },
     popoverClick(key, node){
@@ -163,6 +181,14 @@ export default {
       }else{
         window.open(data.url)
       }
+    },
+    // 几点面板点击事件
+    nodePanelClick(data){
+      console.log(data)
+      if(this.path_url == null){
+        return 
+      }
+      this.$router.push({path: this.path_url})
     },
     collapse(list) {
       var _this = this;
@@ -235,5 +261,16 @@ export default {
 .com.org_tree .text-center{
   font-size: 14px;
   line-height: 20px;
+}
+.com.com.org_tree .org-tree-node-label-inner{
+  border-radius: 20px;
+  padding:0;
+}
+.com.com.org_tree .user_panel{
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+.com.com.org_tree .user_panel:hover{
+  background:red;
 }
 </style>

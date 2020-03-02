@@ -5,12 +5,28 @@ export default [
         path: "/PersonalHome2",
         component: () => import('@/views/OrganizeManage'),
         children: [
+            // 层级关系
             {
                 title: '层级关系',
                 icon: 'el-icon-menu',
                 path: "/Org_relationship",
-                component: () => import('@/views/wisdomSupervision/Org_relationship')
+                component: () => import('@/views/wisdomSupervision/org_relationship/Org_relationship')
             },
+            {
+                title: '部门级别',
+                hidden: true,
+                icon: 'el-icon-menu',
+                path: "/Departmental_level",
+                component: () => import('@/views/wisdomSupervision/org_relationship/Departmental_level')
+            },
+            {
+                title: '人员关系',
+                hidden: true,
+                icon: 'el-icon-menu',
+                path: "/Personnel_relation",
+                component: () => import('@/views/wisdomSupervision/org_relationship/Personnel_relation')
+            },
+            // 事项申报
             {
                 title: '事项申报',
                 icon: 'el-icon-menu',
@@ -33,6 +49,7 @@ export default [
                 name: "organizationRequestDetail",
                 component: () => import('@/views/wisdomSupervision/organizationRequestDetail')
             },
+            // 谈话谈心
             {
                 title:'谈话谈心',
                 icon: 'el-icon-menu',
@@ -48,6 +65,7 @@ export default [
                 name: "TalkAdd",
                 component: () => import('@/views/wisdomSupervision/TalkAdd')
             },
+            // 个人即报
             {
                 title:'个人即报',
                 icon: 'el-icon-menu',
