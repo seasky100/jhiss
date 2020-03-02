@@ -67,7 +67,19 @@ const DEFAULT_URL = {
     report: {
       findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
       findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
-    }
+    },
+      // 用户相关
+  user: {
+    // 登录
+    login: `${GLOBAL.GMSSO_SERVER}/login`,
+    checkToken: `${GLOBAL.GMSSO_SERVER}/checkTokenByAppKey`,
+    // // 获取用户相关信息，菜单权限
+    getUserInfo: `${GLOBAL.UUMS_SERVER}/user/get`,
+    // // 修改密码
+    // updatePassword: `${userService}/updatePassword`,
+    // 退出登录
+    logout: `${GLOBAL.UUMS_SERVER}/logout`
+  },
   
 
 }

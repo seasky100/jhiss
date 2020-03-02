@@ -90,8 +90,7 @@
     </div>
 </template>
 <script>
-// import { user } from '@/api/warn.js';
-import { user } from '../../api/warn.js';
+import { getUserInfo } from '../../api/user-server.js';
     export default {
         name: 'MenuPage',
         data() {
@@ -104,49 +103,33 @@ import { user } from '../../api/warn.js';
             }
         },
         mounted() {
-            this.getData()
+            this.user()
         },
         methods: {
             //查看个人信息
-            // userInfo() {
-            //     const _this = this;
-            //     const params = {
-            //         userId: '5ba98b66cd3549b9b92ea8723e89207e'
-            //       }
-            //       user(params).then(res => {
-            //         debugger
-            //         console.log(res)
-            //         if (res.success) {
-            //             const Data = res.data
-            //             _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
-            //             _this.init();
-            //         }
-            //     })
-            // },
-    // 查看个人信息
-    async getData() {
-      const _this=this;
-      debugger
-      const id ='5ba98b66cd3549b9b92ea8723e89207e'
-      this.$request.get(`http://39.100.4.175:19286/uums-server/user/get?userId=${id}`)
-        .then(res => {        
-          if (res.success == true) {
-              debugger
-             _this.userInfo = res.data.userInfo
-             _this.name = res.data.realName
-            //  const pdata =res.data.premonth
-            // this.total = res.result.total
-            // _this.init();
-          } else {
-            console.log(res.message)
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
+            user() {
+                const _this = this;
+                const params = {
+                    userId: '5ba98b66cd3549b9b92ea8723e89207e'
+                  }
+                  getUserInfo(params).then(res => {
+                    if (res.success == true) {
+                        debugger
+                        _this.userInfo = res.data.userInfo
+                        _this.name = res.data.realName
+                        //  const pdata =res.data.premonth
+                        // this.total = res.result.total
+                        // _this.init();
+                    } else {
+                        console.log(res.message)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            },
         }
-        }
+    }
 </script>
 <style>
 .u_content{

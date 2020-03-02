@@ -11,7 +11,14 @@ export default {
     }
   },
   mounted() {
-    this.$router.push({ path: '/PersonalHome' });
+    debugger
+    const token = sessionStorage.getItem('token')
+    if(token){
+      this.$router.push({ path: '/PersonalHome' });
+    }else{
+      this.$router.push({ path: '/login' });
+    }
+    //this.$router.push({ path: '/PersonalHome' });
     // this.init()
   },
   methods: {

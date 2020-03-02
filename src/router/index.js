@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 // import Home from "../views/Home.vue";
 import MenuPage from "../views/MenuPage.vue";
+import login from "../views/Login.vue";
 // 个人首页
 import PersonalHome from "../views/PersonalHome";
 import PersonalHome2 from "../views/PersonalHome2";
@@ -81,7 +82,13 @@ const routes = [
   }, {
     path: "*", // 此处需特别注意置于最底部
     redirect: "/404"
-  }
+  },
+  {
+    path: "/login",
+    name: "login",
+    hidden:true,
+    component: login
+  },
   //
 ];
 console.log(routes);
