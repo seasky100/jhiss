@@ -172,17 +172,17 @@ module.exports = {
             }
           },
           '/gaism_server': {
-            target: 'http://39.100.4.175:19286/gaism-server/',
+            target: 'http://39.100.4.175:10008/gaism-server/',
             changeOrigin: true,
             pathRewrite: {
               '^/gaism_server': ''
             }
           },
-          '/gmsso-server': {
+          '/gmsso_server': {
             target: 'http://39.100.4.175:19286/gm-sso-server/',
             changeOrigin: true,
             pathRewrite: {
-              '^/gmsso-server': ''
+              '^/gmsso_server': ''
             }
           },
         '/uums_server':  {

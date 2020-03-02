@@ -40,11 +40,11 @@ const DEFAULT_URL = {
     carStatusStatistics: GAISMSERVER + 'carInfo/carStatusStatistics', //车辆状态统计
     carExceptionStatistics: GAISMSERVER + 'carRecord/carExceptionStatistics', //异常统计
     // 首页分类预警提醒
-    allWarnByType: GAISMSERVER + '/warn/allWarnByType', //
+    allWarnByType: GAISMSERVER + 'warn/allWarnByType', //
     //查询七天上班时间统计数据
-    indexRecordDeatil: GAISMSERVER + '/warn/indexRecordDeatil', //
+    indexRecordDeatil: GAISMSERVER + 'warn/indexRecordDeatil', //
     //查询上班时间统计数据
-    indexRecordCountDeatil: GAISMSERVER + '/warn/indexRecordCountDeatil', //
+    indexRecordCountDeatil: GAISMSERVER + 'warn/indexRecordCountDeatil', //
   },
   // 廉政风险
   vacation: {
@@ -61,7 +61,7 @@ const DEFAULT_URL = {
   },
   // 查询部门平均上班时间数据
   tClockRecord: {
-    sectorAverageStatistics: GAISMSERVER + '/tClockRecord/sectorAverageStatistics', //
+    sectorAverageStatistics: GAISMSERVER + 'tClockRecord/sectorAverageStatistics', //
   },
   
   payroll: {
