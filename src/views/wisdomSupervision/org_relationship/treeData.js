@@ -1,4 +1,5 @@
-var treeData = {
+var treeData ={
+treeData1:{
   id: 0,
   label: "度量指标体系",
   name:'222',
@@ -213,5 +214,29 @@ var treeData = {
       ]
     }
   ]
+},
+treeData2: {
+      id: 1,
+      label: "交付质量",
+      expand: true,
+      children: [
+        {
+          id: 11,
+          label: "生产质量"
+        },
+        {
+          id: 12,
+          label: "开发质量"
+        },
+        {
+          id: 13,
+          label: "发布质量"
+        },
+        // {
+        //   id: 14,
+        //   label: "过程质量"
+        // }
+      ]
+}
 }
 export default treeData;
