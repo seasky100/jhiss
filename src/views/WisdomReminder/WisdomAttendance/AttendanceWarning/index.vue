@@ -180,7 +180,7 @@ export default {
         list: [
           {
             id: '1',
-            label: '查看',
+            label: '详情',
             show: true,
             underline: false,
             icon: '<i class="el-icon-view"></i>',

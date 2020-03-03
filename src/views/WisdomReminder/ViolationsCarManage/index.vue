@@ -43,6 +43,7 @@
         />
       </div>
     </div>
+    <coordinate-info ref="coordinateInfo"/>
   </div>
 </template>
 
@@ -52,8 +53,12 @@ import {
   monthIllUsecarStatistics,
   illUsecarHumanStatistics
 } from '@/api/warn.js';
+import CoordinateInfo from './modal/coordinateInfo';
 
 export default {
+  components: {
+    CoordinateInfo
+  },
   data() {
     return {
       violationTitle: {
@@ -178,20 +183,13 @@ export default {
         list: [
           {
             id: '1',
-            label: '查看',
+            label: '详情',
             show: true,
             underline: false,
             icon: '<i class="el-icon-view"></i>',
             disabled: false,
             method: (key, row) => {
-              console.log('row', row);
-              // this.$router.push({
-              //   name: 'enterprise-daily-details',
-              //   query: {
-              //     id: row.companyId,
-              //     reportDate: row.reportTime
-              //   }
-              // });
+              this.$refs.coordinateInfo.open(row);
             },
             showCallback: () => {
               return true;

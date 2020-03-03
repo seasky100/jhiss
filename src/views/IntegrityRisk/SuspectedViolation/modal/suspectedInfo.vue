@@ -10,6 +10,22 @@
               <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
             </div>
             <div class="mb-ten">
+              <span>数据来源：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>带入办案区时间：</span>
+              <span>{{detailInfo.source}}</span>
+            </div>
+            <div class="mb-ten">
+              <span>案由：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>办案地点：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
               <span>预警时间：</span>
               <span>{{detailInfo.warnTime | formatTime}}</span>
             </div>
@@ -59,7 +75,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '预警详情'
+      default: '涉嫌违法管控详情'
     }
   },
   filters: {

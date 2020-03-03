@@ -38,17 +38,23 @@
           :tableList="tableList"
           :options="options"
           :columns="columns"
+          :operates="operates"
           @afterCurrentPageClick="afterCurrentPageClickHandle"
         />
       </div>
     </div>
+    <violation-info ref="violationInfo" />
   </div>
 </template>
 
 <script>
 import { getHumanStatistics, getWarnStatusStatistics, getWarnPage } from '@/api/warn.js';
+import ViolationInfo from './modal/violationInfo';
 
 export default {
+  components: {
+    ViolationInfo
+  },
   data() {
     this.chartExtend = {
       series: {
@@ -162,6 +168,26 @@ export default {
           align: 'left'
         }
       ],
+      operates: {
+        width: 150,
+        fixed: 'right',
+        list: [
+          {
+            id: '1',
+            label: '详情',
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-view"></i>',
+            disabled: false,
+            method: (key, row) => {
+              this.$refs.violationInfo.open(row);
+            },
+            showCallback: () => {
+              return true;
+            }
+          }
+        ]
+      },
       warnStatusTitle: {
         text: '被查询系统次数'
       },

@@ -10,12 +10,44 @@
               <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
             </div>
             <div class="mb-ten">
-              <span>预警时间：</span>
-              <span>{{detailInfo.warnTime | formatTime}}</span>
+              <span>申请时间：</span>
+              <span></span>
             </div>
             <div class="mb-ten">
-              <span>预警原因：</span>
-              <span>{{detailInfo.warnReason ? detailInfo.warnReason : ''}}</span>
+              <span>用车时间：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>还车时间：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>事由：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>审批人：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>审批时间：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>审批结果：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>是否异常：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>异常原因：</span>
+              <span></span>
+            </div>
+            <div class="mb-ten">
+              <span>预警时间：</span>
+              <span></span>
             </div>
             <div class="advice">
               <p>本人反馈：</p>
@@ -53,13 +85,13 @@
 
 <script>
 import { format } from 'date-fns';
-import { getWarnInfo } from '@/api/warn.js';
+import { getCarCoordinates } from '@/api/warn.js';
 
 export default {
   props: {
     title: {
       type: String,
-      default: '预警详情'
+      default: '车辆轨迹详情'
     }
   },
   filters: {
@@ -82,13 +114,18 @@ export default {
     },
     getDetailInfo(option) {
       const params = {
-        userId: option.userId,
-        deptId: option.id
+        flow_id: option.flowId,
+        car_number: option.carNumber
       }
-      getWarnInfo(params).then(res => {
-        // console.log(res);
+      getCarCoordinates(params).then(res => {
+        console.log(res);
         if(res.success) {
           this.detailInfo = res.data;
+        }else {
+          this.$message({
+            type: 'warning',
+            message: res.message
+          })
         }
       })
     }

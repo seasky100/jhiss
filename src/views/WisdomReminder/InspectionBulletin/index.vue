@@ -45,10 +45,12 @@
           :tableList="tableList"
           :options="options"
           :columns="columns"
+          :operates="operates"
           @afterCurrentPageClick="afterCurrentPageClickHandle"
         />
       </div>
     </div>
+    <bulletin-info ref="bulletinInfo" />
   </div>
 </template>
 
@@ -59,8 +61,12 @@ import {
   bulletinExceptionStatistics,
   bulletinTimesStatistics
 } from '@/api/warn.js';
+import BulletinInfo from './modal/bulletinInfo';
 
 export default {
+  components: {
+    BulletinInfo
+  },
   data() {
     return {
       departmentTitle: {
@@ -196,7 +202,27 @@ export default {
           label: '问题性质',
           align: 'left'
         }
-      ]
+      ],
+      operates: {
+        width: 150,
+        fixed: 'right',
+        list: [
+          {
+            id: '1',
+            label: '详情',
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-view"></i>',
+            disabled: false,
+            method: (key, row) => {
+              this.$refs.bulletinInfo.open(row);
+            },
+            showCallback: () => {
+              return true;
+            }
+          }
+        ]
+      }
     }
   },
   methods: {

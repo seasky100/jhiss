@@ -307,7 +307,7 @@ img{
 }
 .pageTop{
   width:100%;
-  height:100px;
+  height:70px;
   background :#545c64;
   font-size: 20px;
   line-height: 100px;
@@ -315,7 +315,7 @@ img{
 }
 .page_body{
   width:100%;
-  height:calc(100% - 100px)
+  height:calc(100% - 70px)
 }
   .bodyContent{
     float:left;

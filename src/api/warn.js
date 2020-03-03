@@ -45,6 +45,14 @@ export function findBulletinPage (params) {
     params
   })
 }
+// 检查通报详情
+export function getBulletinById (params) {
+  return request({
+    url: DEFAULT_URL.warn.getBulletinById,
+    method: 'get',
+    params
+  })
+}
 // 图表
 export function bulletinTypeStatistics (params) {
   return request({
@@ -139,6 +147,14 @@ export function carStatusStatistics (params) {
 export function getCarExceptionStatistics (params) {
   return request({
     url: DEFAULT_URL.warn.carExceptionStatistics,
+    method: 'get',
+    params
+  })
+}
+// 车辆轨迹详情
+export function getCarCoordinates (params) {
+  return request({
+    url: DEFAULT_URL.warn.carCoordinatesStatistics,
     method: 'get',
     params
   })

@@ -130,7 +130,7 @@ export default {
         }
       ],
       operates: {
-        width: 200,
+        width: 150,
         fixed: 'right',
         list: [
           {
@@ -139,34 +139,6 @@ export default {
             show: true,
             underline: false,
             icon: '<i class="el-icon-view"></i>',
-            disabled: false,
-            method: (key, row) => {
-              console.log('row', row);
-            },
-            showCallback: () => {
-              return true;
-            }
-          },
-          {
-            id: '2',
-            label: '编辑',
-            show: true,
-            underline: false,
-            icon: '<i class="el-icon-edit-outline"></i>',
-            disabled: false,
-            method: (key, row) => {
-              console.log('row', row);
-            },
-            showCallback: () => {
-              return true;
-            }
-          },
-          {
-            id: '3',
-            label: '删除',
-            show: true,
-            underline: false,
-            icon: '<i class="el-icon-delete"></i>',
             disabled: false,
             method: (key, row) => {
               console.log('row', row);

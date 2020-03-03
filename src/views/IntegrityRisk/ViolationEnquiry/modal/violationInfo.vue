@@ -9,14 +9,6 @@
               <span>{{detailInfo.policeCode ? detailInfo.policeCode : ''}}</span>
               <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
             </div>
-            <div class="mb-ten">
-              <span>预警时间：</span>
-              <span>{{detailInfo.warnTime | formatTime}}</span>
-            </div>
-            <div class="mb-ten">
-              <span>预警原因：</span>
-              <span>{{detailInfo.warnReason ? detailInfo.warnReason : ''}}</span>
-            </div>
             <div class="advice">
               <p>本人反馈：</p>
               <el-input
@@ -59,7 +51,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '预警详情'
+      default: '违规查询预警详情'
     }
   },
   filters: {
@@ -86,7 +78,7 @@ export default {
         deptId: option.id
       }
       getWarnInfo(params).then(res => {
-        // console.log(res);
+        console.log(res);
         if(res.success) {
           this.detailInfo = res.data;
         }

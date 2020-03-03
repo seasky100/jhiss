@@ -1,24 +1,106 @@
 <template>
-  <div class="container">
+  <div class="container flex flex-direction-column" style="height: 100%;overflow: hidden;">
     <div class="page-title">
       <span>公车使用分析</span>
     </div>
-    <div class="content" style="background: none;padding: 0;">
-      <el-row>
-        <el-col :span="14" style="padding-right: 5px;">
+    <div class="content flex-grow flex" style="background: none;padding: 0;overflow: hidden;">
+      <div class="flex flex-direction-column" style="flex-basis: 58%;padding-right: 5px;">
+        <div class="bg-fff">
+          <div class="title">车辆状态</div>
+          <div class="flex flex-justify-between car-static">
+            <div class="flex" v-for="(item, index) in vehicleCondition" :key="index">
+              <img :src="item.imgUrl" alt="">
+              <div class="flex flex-direction-column flex-justify-between count">
+                <div class="num" :class="item.color">{{item.count}}</div>
+                <div class="text">{{item.status}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px;overflow: hidden;" class="flex-grow flex flex-direction-column">
+          <div class="flex" style="margin-bottom: 10px;height: 50%;">
+            <div class="flex" style="width: 100%;">
+              <div class="echart-item bg-fff flex flex-direction-column" style="margin-right: 10px;">
+                <div class="title">异常统计</div>
+                <div class="flex-grow" ref="echartItem" style="overflow: hidden;">
+                  <ve-ring :data="abnormalStatistics" :height="echartHeight"></ve-ring>
+                </div>
+              </div>
+              <div class="echart-item bg-fff">
+                <div class="title">用车频次</div>
+                <div class="flex-grow" style="overflow: hidden;">
+                  <ve-line
+                    :settings="frequencyChartSettings"
+                    :data="vehicleFrequency"
+                    :legend-visible="false"
+                    :extend="usageChartExtend"
+                    :height="echartHeight"></ve-line>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex" style="height: 50%;">
+            <div class="echart-item bg-fff" style="margin-right: 10px;">
+              <div class="title">部门用车统计</div>
+              <div class="flex-grow" style="overflow: hidden;">
+                <e-histogram
+                  :height="echartHeight"
+                  :chartSettings="departmentSettings"
+                  :chartData="departmentVehicleStatistics"
+                  :xAxis="departxAxisOptions"
+                />
+              </div>
+            </div>
+            <div class="echart-item bg-fff">
+              <div class="title">范围提醒</div>
+              <div class="flex-grow" style="overflow: hidden;">
+                <e-table
+                  :style="{height: echartHeight}"
+                  ref="recordSpTableRef"
+                  :tableList="tableList"
+                  :options="options"
+                  :columns="columns"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-direction-column" style="flex-basis: 42%;padding-left: 5px;">
+        <div class="bg-fff">
+          <div class="title">用车统计</div>
+          <div class="flex flex-justify-between car-static">
+            <div class="flex" v-for="(item, index) in usageStatistics" :key="index">
+              <img :src="item.imgUrl" alt="">
+              <div class="flex flex-direction-column flex-justify-between count">
+                <div class="num" :class="item.color">{{item.count}}</div>
+                <div class="text">{{item.status}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px;overflow: hidden;" class="flex-grow flex flex-direction-column bg-fff">
+          <el-image
+            :src="mapUrl"></el-image>
+        </div>
+      </div>
+      <!-- <el-row>
+        <el-col :span="14" style="padding-right: 5px;" class="flex flex-direction-column">
           <div class="bg-fff">
             <div class="title">车辆状态</div>
             <div class="flex flex-justify-between car-static">
               <div class="flex" v-for="(item, index) in vehicleCondition" :key="index">
                 <img :src="item.imgUrl" alt="">
-                <div class="flex flex-direction-column flex-justify-between">
-                  <div>{{item.count}}</div>
-                  <div>{{item.status}}</div>
+                <div class="flex flex-direction-column flex-justify-between count">
+                  <div class="num" :class="item.color">{{item.count}}</div>
+                  <div class="text">{{item.status}}</div>
                 </div>
               </div>
             </div>
           </div>
-          <div style="margin-top: 10px;">
+          <div style="margin-top: 10px;" class="flex-grow">
             <div class="flex" style="margin-bottom: 10px;">
               <div class="flex" style="width: 100%;">
                 <div class="echart-item bg-fff" style="margin-right: 10px;">
@@ -72,15 +154,15 @@
             <div class="flex flex-justify-between car-static">
               <div class="flex" v-for="(item, index) in usageStatistics" :key="index">
                 <img :src="item.imgUrl" alt="">
-                <div class="flex flex-direction-column flex-justify-between">
-                  <div>{{item.count}}</div>
-                  <div>{{item.status}}</div>
+                <div class="flex flex-direction-column flex-justify-between count">
+                  <div class="num" :class="item.color">{{item.count}}</div>
+                  <div class="text">{{item.status}}</div>
                 </div>
               </div>
             </div>
           </div>
         </el-col>
-      </el-row>
+      </el-row> -->
     </div>
   </div>
 </template>
@@ -97,43 +179,52 @@ import {
 export default {
   data() {
     return {
+      mapUrl: require('../../../assets/images/map.png'),
+      echartHeight: '',
       vehicleCondition: [
         {
           imgUrl: require('../../../assets/images/vehicle_home_gps@2x.png'),
           count: 0,
-          status: '在线'
+          status: '在线',
+          color: 'online'
         },
         {
           imgUrl: require('../../../assets/images/vehicle_home_idle@2x.png'),
           count: 0,
-          status: '空闲'
+          status: '空闲',
+          color: 'free'
         },
         {
           imgUrl: require('../../../assets/images/vehicle_home_occupied@2x.png'),
           count: 0,
-          status: '使用中'
+          status: '使用中',
+          color: 'useing'
         },
         {
           imgUrl: require('../../../assets/images/vehicle_home_maintenance@2x.png'),
           count: 0,
-          status: '维修中'
+          status: '维修中',
+          color: 'maintenance'
         }
       ],
       usageStatistics: [
         {
           imgUrl: require('../../../assets/images/vehicle_home_total_times@2x.png'),
           count: 0,
-          status: '用车总次'
+          status: '用车总次',
+          color: 'total'
         },
         {
           imgUrl: require('../../../assets/images/vehicle_home_month_times@2x.png'),
           count: 0,
-          status: '本月用车次数'
+          status: '本月用车次数',
+          color: 'month'
         },
         {
           imgUrl: require('../../../assets/images/vehicle_home_exception@2x.png'),
           count: 0,
-          status: '异常次数'
+          status: '异常次数',
+          color: 'abnormal'
         }
       ],
       usageChartExtend: {
@@ -226,7 +317,6 @@ export default {
     // 车辆使用统计
     getCarTimes() {
       getCarTimesStatistics().then(res => {
-        // console.log(res);
         if(res.success && res.data){
           let result = [];
           for (let item in res.data) {
@@ -290,6 +380,13 @@ export default {
           }
         })
       })
+    },
+    // 获取高度
+    calcHeight() {
+      const height = this.$refs.echartItem.getBoundingClientRect().height;
+      console.log('前：'+height)
+      this.echartHeight = height + 'px';
+      console.log('后：'+this.echartHeight)
     }
   },
   mounted() {
@@ -298,33 +395,59 @@ export default {
     this.getCarRecord();
     this.getUsedCarsStatistics();
     this.getCarStatusStatistics();
+    this.calcHeight();
+    window.addEventListener('resize', this.calcHeight);
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 @import "../../../styles/common.styl"
-.flex{
+.flex
   display: flex;
-}
-.flex-justify-between {
+
+.flex-justify-between
   justify-content: space-between;
   
-}
-.flex-direction-column {
-  flex-direction: column;
-}
-.flex-wrap {
-  flex-wrap: wrap;
-}
+.flex-direction-column
+  flex-direction: column !important;
+
+.flex-wrap
+  flex-wrap: wrap !important;
+
+.flex-grow
+  flex-grow: 1 !important;
 
 .echart-item
   flex: 1;
 
+.online
+  color: rgb(45, 98, 246);
+.free
+  color: rgb(138, 202, 119);
+.useing
+  color: rgb(240, 160, 57);
+.maintenance
+  color: rgb(233, 67, 78);
+.total
+  color: rgb(138, 104, 246);
+.month
+  color: rgb(241, 161, 58);
+.abnormal
+  color: rgb(233, 63, 75);
+
+.count
+  margin-left: 10px;
+  padding: 5px 0;
+  .num
+    font-size: 18px;
+    font-weight: 700;
+  .text
+    color: rgb(136, 147, 165);
 .title
   height 26px;
   line-height: 26px;
-  padding-left: 20px;
+  padding: 3px 0 3px 20px;
   color: rgb(18, 21, 24);
   font-weight: 700;
   position: relative

@@ -44,6 +44,7 @@
         />
       </div>
     </div>
+    <suspected-info ref="suspectedInfo" />
   </div>
 </template>
 
@@ -53,8 +54,12 @@ import {
   illgalBySource,
   illgalByDayStatistics
 } from '@/api/warn.js';
+import SuspectedInfo from './modal/suspectedInfo';
 
 export default {
+  components: {
+    SuspectedInfo
+  },
   data() {
     this.chartExtend = {
       series: {
@@ -142,7 +147,7 @@ export default {
           align: 'left'
         },
         {
-          prop: 'warnTime',
+          prop: 'source',
           label: '来源',
           align: 'left'
         },
@@ -164,7 +169,7 @@ export default {
             icon: '<i class="el-icon-view"></i>',
             disabled: false,
             method: (key, row) => {
-              // this.$refs.warningDialog.open(row);
+              this.$refs.suspectedInfo.open(row);
             },
             showCallback: () => {
               return true;
@@ -238,7 +243,7 @@ export default {
             nCurrent: nCurrent,
             nSize: 10,
             user_id: '5ba98b66cd3549b9b92ea8723e89207e',
-            dept_id: '123',
+            dept_id: '1000',
             role: '123'
           },
           $this.searchData

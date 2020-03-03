@@ -22,6 +22,7 @@ const DEFAULT_URL = {
     bulletinTypeStatistics: GAISMSERVER + 'tBulletin/bulletinTypeStatistics', //
     bulletinExceptionStatistics: GAISMSERVER + 'tBulletin/bulletinExceptionStatistics', //
     bulletinTimesStatistics: GAISMSERVER + 'tBulletin/bulletinTimesStatistics', //
+    getBulletinById: GAISMSERVER + 'tBulletin/getBulletinById', //获取通报详情
     // 违规用车管控
     findIlluseCarPage: GAISMSERVER + 'warn/findIlluseCarPage', //
     monthIllUsecarStatistics: GAISMSERVER + 'warn/monthIllUsecarStatistics', //
@@ -33,6 +34,7 @@ const DEFAULT_URL = {
     usedCarsStatistics: GAISMSERVER + 'carRecord/usedCarsStatistics', //用车统计
     carStatusStatistics: GAISMSERVER + 'carInfo/carStatusStatistics', //车辆状态统计
     carExceptionStatistics: GAISMSERVER + 'carRecord/carExceptionStatistics', //异常统计
+    carCoordinatesStatistics: GAISMSERVER + 'carCoordinates/carCoordinatesStatistics', //获取车辆轨迹信息
     // 首页分类预警提醒
     allWarnByType: GAISMSERVER + '/warn/allWarnByType', //
     //查询七天上班时间统计数据
