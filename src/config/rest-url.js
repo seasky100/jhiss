@@ -95,9 +95,39 @@ const DEFAULT_URL = {
     // 层级管理
     post: {
       treeAndUser: `${UUMSSERVER}post/treeAndUser`,
-    }
-  
-
+    },
+  // 【智慧考勤分析】
+  findClockPage: GAISMSERVER + "/tClockRecord/findClockPage", // 获取考勤信息分页
+  // 【请销假分析】-【审批记录分析】
+  findVacationPage: GAISMSERVER + "/vacationApply/findVacationPage", // 获取考勤信息分页
+  // 【请销假分析】
+  askForLeave: {
+    vacationTypeStatistics: GAISMSERVER + "/vacationApply/vacationTypeStatistics", // 请假类型统计月
+    vacationExceptionStatistics: GAISMSERVER + "/vacationApply/vacationExceptionStatistics", // 请假异常情况统计
+    applyException: GAISMSERVER + "/vacationApply/applyException", // 审批情况统计
+    vacationApplyByMonth: GAISMSERVER + "/vacationApply/vacationApplyByMonth" // 请假按月份统计
+  },
+  // 【出国（境）分析】
+  goAbroad: {
+    certificateInfoStatistics: GAISMSERVER + "/tCertificateInfo/certificateInfoStatistics", // 显示当前护照在管和在民警手里的数量饼状图
+    palaceInfoStatistics: GAISMSERVER + "/tAbroadRecord/palaceInfoStatistics",  // 按目的地显示今年出国次数top10
+    findAbroadRecordPage: GAISMSERVER + "/tAbroadRecord/findAbroadRecordPage" // 获取出勤出境分页
+  },
+  // 【差旅管理-报销异常分析】
+  travelManagement: {
+    tripPlaceStatistics: GAISMSERVER + '/travel/tripPlaceStatistics', // 出差地点统计今年次数 柱状图x轴地点，y轴次数
+    tripMoneyStatistics: GAISMSERVER + '/reimburse/tripMoneyStatistics', // 报销额统计，今年 折线图x轴每个月，y轴费用
+    findTravelPage: GAISMSERVER + '/travel/findTravelPage' // 获取差旅信息
+  },
+  // 【智慧感知】
+  perceptualWisdom: {
+    // 【刷卡情况分析】
+    timesStatistics: GAISMSERVER + "/mealRecord/timesStatistics", // 刷卡情况（月）柱状图x轴刷卡地点y轴次数
+    dayTimesStatistics: GAISMSERVER + '/mealRecord/dayTimesStatistics', // 刷卡情况（月）x轴每天y轴次数
+    findMealRecordPage: GAISMSERVER + '/mealRecord/findMealRecordPage', // 获取刷卡记录分页
+    // 【提前就餐预警】
+    repastSiteWarnStatistics: GAISMSERVER + '/warnStatistics/repastSiteWarnStatistics' // 就餐地点预警地点统计
+  }
 }
 
 export default DEFAULT_URL;

@@ -8,56 +8,56 @@
 </template>
 
 <script>
-  export default {
+export default {
     props: {
-      chartData: Object,
-      ringColor: Array,
-      limitShowNum: {
-        type: Number,
-        default: 0
-      },
-      title: String
+        chartData: Object,
+        ringColor: Array,
+        limitShowNum: {
+            type: Number,
+            default: 0
+        },
+        title: String
     },
     data() {
-      return {
-        chartExtend: {
-          tooltip: {
-            confine: true // 兼容 overflow: hidden 溢出问题
-          },
-          title: {
-            text: this.title,
-            x: "center",
-            y: "top",
-            textAlign: "center"
-          },
-          legend: {
-            type: "scroll",
-            orient: "vertical",
-            top: "middle",
-            right: 20,
-            icon: "circle",
-            itemGap: 20,
-            textStyle: {
-              fontSize: "12px"
-            }
-          },
-          avoidLabelOverlap: false,
-          series: {
-            color: this.ringColor,
-            label: {
-              show: false
+        return {
+            chartExtend: {
+                tooltip: {
+                    confine: true // 兼容 overflow: hidden 溢出问题
+                },
+                title: {
+                    text: this.title,
+                    x: "center",
+                    y: "top",
+                    textAlign: "center"
+                },
+                legend: {
+                    type: "scroll",
+                    orient: "vertical",
+                    top: "middle",
+                    right: 20,
+                    icon: "circle",
+                    itemGap: 20,
+                    textStyle: {
+                        fontSize: "12px"
+                    }
+                },
+                avoidLabelOverlap: false,
+                series: {
+                    color: this.ringColor,
+                    label: {
+                        show: false
+                    },
+                    center: ["30%", "50%"], // 等同于总面积文本坐标
+                    radius: ["0", "65%"] // 圆环半径大小
+                    // minAngle: 5 // 设置饼图扇区最小角度
+                }
             },
-            center: ["30%", "50%"], // 等同于总面积文本坐标
-            radius: ["0", "65%"] // 圆环半径大小
-            // minAngle: 5 // 设置饼图扇区最小角度
-          }
-        },
-        chartSettings: {
-          limitShowNum: this.limitShowNum
-        }
-      };
+            chartSettings: {
+                limitShowNum: this.limitShowNum
+            }
+        };
     }
-  };
+};
 </script>
 
 <style scoped>

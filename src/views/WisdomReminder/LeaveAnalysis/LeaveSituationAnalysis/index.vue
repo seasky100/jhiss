@@ -1,0 +1,263 @@
+<template>
+    <el-container class="wisdom-attendance-container full-height">
+        <el-header height="40px">请假情况分析</el-header>
+        <el-main>
+            <div class="main">
+                <el-row :gutter="16" class="top-chart">
+                    <el-col :span="12">
+                        <HistogramChart
+                                :chart-data="leaveTime.data"
+                                :label-map="leaveTime.labelMap"
+                                title="请假次数"
+                        />
+                    </el-col>
+                    <el-col :span="12">
+                        <HistogramChart
+                                :chart-data="approvalNumber.data"
+                                :label-map="approvalNumber.labelMap"
+                                title="异常次数"
+                        />
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <div class="comtainer">
+                            <div class="query-condition">
+                                <div class="title">查询条件</div>
+                                <div class="search">
+                                    <el-input placeholder="警号" size="mini"/>
+                                    <el-input placeholder="姓名" size="mini"/>
+                                    <el-select v-model="value1" size="mini" placeholder="--所属部门--">
+                                        <el-option
+                                                v-for="item in options1"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value"
+                                        ></el-option>
+                                    </el-select>
+                                    <br/>
+                                    <div style="margin-bottom: 8px"></div>
+                                    <el-date-picker
+                                            v-model="value2"
+                                            type="daterange"
+                                            range-separator="至"
+                                            start-placeholder="开始日期"
+                                            end-placeholder="结束日期"
+                                            size="mini"
+                                            style="margin-right: 8px"
+                                    >
+                                    </el-date-picker>
+                                    <el-select v-model="value3" size="mini" placeholder="请假类型">
+                                        <el-option
+                                                v-for="item in options3"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value"
+                                        ></el-option>
+                                    </el-select>
+                                    <el-button size="mini">清空</el-button>
+                                    <el-button type="primary" size="mini">查询</el-button>
+                                </div>
+                            </div>
+                            <el-table
+                                    :data="tableData"
+                                    style="width: 100%"
+                                    size="mini"
+                            >
+                                <el-table-column
+                                        prop="jh"
+                                        label="警号"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="name"
+                                        label="姓名"
+                                >
+                                </el-table-column>
+                                <el-table-column
+                                        prop="bm"
+                                        label="部门">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="qjsj"
+                                        label="请假时间">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="qjlx"
+                                        label="请假类型">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="sfyc"
+                                        label="是否异常">
+                                </el-table-column>
+                                <el-table-column label="操作">
+                                    <template slot-scope="scope">
+                                        <el-button type="primary" size="mini">详情</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <div class="pagination">
+                                <el-pagination
+                                        background
+                                        layout="prev, pager, next"
+                                        :total="1000">
+                                </el-pagination>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-main>
+    </el-container>
+</template>
+
+<script>
+import HistogramChart from "@/components/histogram-chart";
+import LineChart from "@/components/line-chart";
+import { getAskForLeave, getVacationExceptionStatistics } from "@/api/wisdom-reminder/leave-analysis.js";
+
+export default {
+  components: {
+    HistogramChart,
+    LineChart
+  },
+  data() {
+    return {
+      // 审批数量
+      approvalNumber: {
+        data: {
+          columns: ["approval", "number"],
+          rows: [
+            { approval: "销假后未打卡", number: 10 },
+            { approval: "当月请假次数大于五次", number: 5 }
+          ]
+        },
+        labelMap: {
+          number: "数量"
+        }
+      },
+      // 请假次数
+      leaveTime: {
+        data: {
+          columns: ["type", "number"],
+          rows: [
+            { type: "事假", number: 0 },
+            { type: "产假", number: 0 },
+            { type: "加班", number: 0 },
+            { type: "病假", number: 0 }
+          ]
+        },
+        labelMap: {
+          date: "月份",
+          duration: "次数"
+        }
+      },
+      value1: "",
+      options1: [
+        { label: "所属部门", value: "ssbm" }
+      ],
+      value2: "",
+      value3: "",
+      options3: [
+        { label: "事假", value: "sj" },
+        { label: "年假", value: "nj" },
+        { label: "病假", value: "bj" },
+        { label: "补调休", value: "btx" }
+      ]
+    };
+  },
+  created() {
+    // 请假次数
+    getAskForLeave({ userId: "" }).then((res) => {
+      let arr = [];
+      for (let key in res) {
+        arr.push({ type: key, number: res[key] });
+      }
+      this.leaveTime.data.rows = arr;
+    });
+
+    // 请假异常
+    getVacationExceptionStatistics();
+  }
+};
+</script>
+
+<style scoped>
+.full-height {
+    height: 100%;
+}
+
+.wisdom-attendance-container {
+    background-color: #f2f5f7;
+}
+
+.wisdom-attendance-container .main {
+    background-color: #fff;
+    padding: 16px;
+}
+
+.wisdom-attendance-container .el-header {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    font-size: 20px;
+}
+
+.wisdom-attendance-container .top-chart {
+    height: 250px;
+}
+
+.wisdom-attendance-container .el-row {
+    margin-bottom: 16px;
+}
+
+.wisdom-attendance-container .el-row:last-of-type {
+    margin-bottom: 0;
+}
+
+.wisdom-attendance-container .table {
+    height: 70%;
+}
+
+.el-col {
+    height: 100%;
+}
+
+.comtainer {
+    height: 100%;
+}
+
+.comtainer .query-condition {
+    border: 1px solid #E5E9F4;
+}
+
+.comtainer .query-condition .title {
+    background-color: #F5F6F7;
+    padding: 8px;
+    border-bottom: 1px solid #E5E9F4;
+}
+
+.comtainer .query-condition .search {
+    padding: 8px;
+}
+
+.comtainer .query-condition .search .el-input {
+    width: 150px;
+    margin-right: 8px;
+}
+
+.comtainer .query-condition .search .el-select {
+    width: 150px;
+    margin-right: 8px;
+}
+
+.comtainer .query-condition .search .el-date-picker {
+    width: 158px;
+}
+
+.comtainer .pagination {
+    display: flex;
+    justify-content: center;
+    padding-top: 16px;
+}
+</style>
