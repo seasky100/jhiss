@@ -175,13 +175,13 @@ export default {
         path: '/Salary'
       })
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    }
+    // handleClose(done) {
+    //   this.$confirm('确认关闭？')
+    //     .then(_ => {
+    //       done();
+    //     })
+    //     .catch(_ => {});
+    // }
   },
 }
 
@@ -189,6 +189,9 @@ export default {
 <style lang="stylus" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   min-height: 400px;
+  height:calc(100vh-100px);
+  height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 .h48{
   height: 2.428em!important;
@@ -315,12 +318,12 @@ img{
 }
 .page_body{
   width:100%;
-  height:calc(100% - 70px)
+  height:calc(100% - 69px)
 }
   .bodyContent{
     float:left;
     height:100%;
     background:#f2f5f7;
-    overflow:auto
+    overflow: auto;
   }
 </style>

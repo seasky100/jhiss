@@ -1,12 +1,18 @@
 import GLOBAL from './config';
 
 let GAISMSERVER;
+let UUMSSERVER;
+let GMSSOSERVER;
 if (process.env.NODE_ENV === 'development') {
   // console.log('这是开发环境：'+process.env.VUE_APP_PROXY_GAISM_URL)
   GAISMSERVER = process.env.VUE_APP_PROXY_GAISM_URL;
+  UUMSSERVER = process.env.VUE_APP_PROXY_UUMS_URL;
+  GMSSOSERVER = process.env.VUE_APP_PROXY_GMSSO_URL;
 } else if (process.env.NODE_ENV === 'production') {
   console.log('这是生产环境')
   GAISMSERVER = GLOBAL.GAISM_SERVER;
+  UUMSSERVER = GLOBAL.UUMS_SERVER;
+  GMSSOSERVER = GLOBAL.GMSSO_SERVER;
 }
 
 const DEFAULT_URL = {
@@ -36,11 +42,11 @@ const DEFAULT_URL = {
     carExceptionStatistics: GAISMSERVER + 'carRecord/carExceptionStatistics', //异常统计
     carCoordinatesStatistics: GAISMSERVER + 'carCoordinates/carCoordinatesStatistics', //获取车辆轨迹信息
     // 首页分类预警提醒
-    allWarnByType: GAISMSERVER + '/warn/allWarnByType', //
+    allWarnByType: GAISMSERVER + 'warn/allWarnByType', //
     //查询七天上班时间统计数据
-    indexRecordDeatil: GAISMSERVER + '/warn/indexRecordDeatil', //
+    indexRecordDeatil: GAISMSERVER + 'warn/indexRecordDeatil', //
     //查询上班时间统计数据
-    indexRecordCountDeatil: GAISMSERVER + '/warn/indexRecordCountDeatil', //
+    indexRecordCountDeatil: GAISMSERVER + 'warn/indexRecordCountDeatil', //
   },
   // 廉政风险
   vacation: {
@@ -57,7 +63,7 @@ const DEFAULT_URL = {
   },
   // 查询部门平均上班时间数据
   tClockRecord: {
-    sectorAverageStatistics: GAISMSERVER + '/tClockRecord/sectorAverageStatistics', //
+    sectorAverageStatistics: GAISMSERVER + 'tClockRecord/sectorAverageStatistics', //
   },
   
   payroll: {
@@ -73,6 +79,22 @@ const DEFAULT_URL = {
     report: {
       findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
       findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
+    },
+      // 用户相关
+  user: {
+    // 登录
+    login: `${GMSSOSERVER}login`,
+    checkToken: `${GMSSOSERVER}checkTokenByAppKey`,
+    // // 获取用户相关信息，菜单权限
+    getUserInfo: `${UUMSSERVER}user/get`,
+    // // 修改密码
+    // updatePassword: `${userService}/updatePassword`,
+    // 退出登录
+    // logout: `${GLOBAL.UUMS_SERVER}/logout`
+  },
+    // 层级管理
+    post: {
+      treeAndUser: `${UUMSSERVER}post/treeAndUser`,
     }
   
 

@@ -177,7 +177,21 @@ module.exports = {
             pathRewrite: {
               '^/gaism_server': ''
             }
+          },
+          '/gmsso_server': {
+            target: 'http://39.100.4.175:19286/gm-sso-server/',
+            changeOrigin: true,
+            pathRewrite: {
+              '^/gmsso_server': ''
+            }
+          },
+        '/uums_server':  {
+          target:  'http://39.100.4.175:19286/uums-server/',
+          changeOrigin:  true,
+          pathRewrite:  {
+            '^/uums_server':  ''
           }
+        }
       },
   },
 }
