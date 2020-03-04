@@ -1,9 +1,6 @@
 <template>
   <div class="Org_relationship">
     <div class="individual_title"></div>
-		<!-- <div class="entrance" v-for="(item,index) of entranceList" :key="index">
-			{{item.name}}
-		</div> -->
 		<div class="relationship">
 			<org-tree :data="tree_data" :path_url="path_url" :dep_list="dep_list"></org-tree>
 		</div>
@@ -15,14 +12,6 @@ export default {
 	name: "Org_relationship",
   data() {
     return {
-			// entranceList: [
-			// 	{name: '事项申报', path: ''},
-			// 	{name: '个人即报', path: ''},
-			// 	{name: '警示教育', path: ''},
-			// 	{name: '廉政教育', path: ''},
-			// 	{name: '年度报告', path: ''},
-			// 	{name: '廉政台账', path: ''}
-      // ],
       tree_data: null,
       // 部门跳转地址
       path_url: 'Departmental_level',

@@ -2,7 +2,9 @@
   <div class="Org_relationship">
     <div class="individual_title"></div>
     <div class="dep_list" style="width:100%;text-align:center;">
-      <div @click="changeScroll('left')" style="display:inline-block;position: relative;bottom: 65px;">《《</div>
+      <div @mousedown="changeScroll('left')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+        <img style="width:30px;" src="@/assets/images/bg/dir_left.png" />
+      </div>
       <div ref="dep_list" class="dep_Con">
         <div class="entrance" @click="handleClickDep(item)"
           :style="[{border:active==item.id?'3px solid #bf1730':'none'}]" 
@@ -13,7 +15,9 @@
           </div>
         </div>
       </div>
-      <div @click="changeScroll('right')" style="display:inline-block;position: relative;bottom: 65px;">》》</div>
+      <div @mousedown="changeScroll('right')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+        <img style="width:30px;" src="@/assets/images/bg/dir_right.png" />
+      </div>
     </div>
     <div class="post_status">
       <span>岗位状态颜色说明：</span>
@@ -27,6 +31,7 @@
         :path_url="path_url" 
         :collapsable="false"
         :expandAll="true"
+        :model="model"
         :settingFlag="false">
       </org-tree>
 		</div>
@@ -39,51 +44,57 @@ export default {
   data() {
     return {
       active: 0,
-			entranceList: [
-				{name: '事项申报', path: ''},
-				{name: '个人即报', path: ''},
-				{name: '警示教育', path: ''},
-				{name: '廉政教育', path: ''},
-				{name: '年度报告', path: ''},
-        {name: '廉政台账', path: ''},
-        {name: '事项申报', path: ''},
-				{name: '个人即报', path: ''},
-				{name: '警示教育', path: ''},
-				{name: '廉政教育', path: ''},
-				{name: '年度报告', path: ''},
-				{name: '廉政台账', path: ''}
-      ],
+      entranceList: [],
       tree_data: null,
       horizontal: true,
       // 人员关系跳转地址
-      path_url: 'Personnel_relation'
+      path_url: 'Personnel_relation',
+      model: '',
+      timer: null,
 			// 
     }
   },
   watch: {},
   mounted() {
-    let query = this.$route.query
-    console.log(query)
-    this.tree_data = query.value
-    this.active = query.value.id
-    this.entranceList = query.list
     this.init()
   },
   methods: {
     init() {
-      // this.getData()
-    },
-    getData(){
-      // const _this = this
-      // _this.tree_data = treeData.treeData1
+      let query = this.$route.query
+      console.log(query)
+      this.tree_data = query.value
+      this.active = query.value.id
+      this.entranceList = query.list
+      this.model = query.model
     },
     changeScroll(direction = 'right'){
+      // const _this = this
       let scroll = this.$refs.dep_list.scrollLeft
+      let width = this.$refs.dep_list.scrollWidth
+      let n = 0
       if(direction == 'left'){
-        this.$refs.dep_list.scrollLeft = scroll - 300
+        // $(this.$refs.dep_list).animate({scrollLeft: scroll - 300 },1000)
+        this.timer = setInterval(() =>{ 
+          if(n > scroll){
+            clearInterval(this.timer)
+          }
+          $(this.$refs.dep_list).animate({scrollLeft: scroll - n },0)
+          n++
+        }, 0);
       }else {
-        this.$refs.dep_list.scrollLeft = scroll + 300
+        // $(this.$refs.dep_list).animate({scrollLeft: width },width - scroll)
+        this.timer = setInterval(() =>{ 
+          if(n + scroll > width){
+            clearInterval(this.timer)
+          }
+          $(this.$refs.dep_list).animate({scrollLeft: scroll + n },0)
+          n++
+        }, 0);
       }
+    },
+    stopScroll(){
+      clearInterval(this.timer)
+      this.timer = null
     },
     handleClickDep(value){
       // console.log(value)
@@ -118,7 +129,7 @@ export default {
 .dep_Con{
   display:inline-block;
   width:calc(100% - 80px);
-  overflow:auto;
+  overflow:hidden;
   white-space: nowrap;
 }
 .Org_relationship{

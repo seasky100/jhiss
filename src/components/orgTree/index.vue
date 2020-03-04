@@ -46,13 +46,14 @@
           </div>
         </div>
         <div class="text-center">
+          <!-- :label-class-name="labelClassName" -->
           <vue2-org-tree style="background:none;"
             name="test"
             :data="data"
             :horizontal="horizontal"
             :collapsable="collapsable"
-            :label-class-name="labelClassName"
             :render-content="renderContent"
+            :label-class-name="labelClassName"
             @on-expand="onExpand"
             @on-node-click="onNodeClick"
           />
@@ -112,11 +113,15 @@ export default {
     dep_list: {
       type: Array,
       default: null
+    },
+    model: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      labelClassName: "bg-white",
+      labelClassName: "",
       dialogFormVisible: false,
       form: {
         name: '',
@@ -179,7 +184,7 @@ export default {
                 {
                   // {id, name, userPname}
                   data.dep.map((item) => 
-                    <div onclick={() => this.nodePanelClick(data, item)}
+                    <div onclick={() => this.nodePanelClick(data, item, 'dep')}
                       class="user_panel level_three" 
                       style="margin-bottom:5px;">
                       <div class="depCon_info">{item.name}</div>
@@ -188,9 +193,25 @@ export default {
                 }
             </div>)
         }else {
-          return (<div class="user_panel_others" onclick={() => this.nodePanelClick(data)}>
-              <span>{data.userPname}</span>
+          if(this.model == 'dep'){
+            return (<div class="user_panel_dep" onclick={() => this.nodePanelClick(data,'','person_info')}>
+              <img class="photo_img" style="border:3px solid #1ACE80;"
+                src={require('../../assets/images/bg/person.png')}></img>
+              <span class={ this.$store.state.user.userId == data.id ? 'current_user' : '' }>
+                {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
+              </span>
             </div>)
+          }else if(this.model == 'person_info'){
+            return (<div class="user_panel_others">
+              <span class={ this.$store.state.user.userId == data.id ? 'current_user' : '' }>
+                {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
+              </span>
+            </div>)
+          }else{
+            return (<div class="user_panel_others">
+              <span>三个字</span>
+            </div>)
+          }
         }
       }
       
@@ -232,13 +253,22 @@ export default {
       }
     },
     // 几点面板点击事件
-    nodePanelClick(data, valueObj){
-      console.log(data)
-      console.log(valueObj)
+    nodePanelClick(data, valueObj, model){
+      // console.log(data)
+      // console.log(valueObj)
       const _this = this
-      let query = {
-        value: valueObj,
-        list: _this.dep_list
+      let query = {}
+      if(valueObj == '') {
+        query.value = data
+        query.model = model
+        // 当前用户才可点击
+        // if(data.id != _this.$store.state.user.userId){
+        //   return 
+        // }
+      }else{
+        query.value = valueObj
+        query.list = _this.dep_list
+        query.model = model
       }
       if(this.path_url == null){
         return 
@@ -383,8 +413,19 @@ export default {
   font-size: 12px;
   -webkit-transform: scale(0.9);
 }
-.com.com.org_tree .user_panel .photo_img{
+.com.com.org_tree .user_panel .photo_img,.com.com.org_tree .user_panel_dep .photo_img{
   width: 45px;
   border-radius: 35px;
+}
+.com.com.org_tree .user_panel_dep{
+  padding: 10px;
+}
+.com.com.org_tree .user_panel_dep span{
+  position: relative;
+  top: 15px;
+  left: 4px;
+}
+.com.com.org_tree .current_user{
+  color:#bf1730;
 }
 </style>
