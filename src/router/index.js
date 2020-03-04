@@ -9,7 +9,6 @@ import PersonalHome2 from "../views/PersonalHome2";
 
 import organizationRequestAdd from "../views/wisdomSupervision/organizationRequestAdd";
 import organizationRouter from './organization'
-import supervisionRouter from './supervision'
 
 import wisdomReminderRouter from './modules/wisdomreminder';
 import integrityRiskRouter from './modules/integrityRisk';
@@ -69,7 +68,6 @@ const routes = [
       // },
       ...wisdomReminderRouter,
       ...integrityRiskRouter,
-      ...supervisionRouter,
       ...organizationRouter,
       ...UserRouter,
 
