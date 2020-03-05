@@ -1,20 +1,23 @@
 <template>
   <div class="Org_relationship">
-    <div class="individual_title">
-      部门领导级别
-    </div>
+    <div class="individual_title"></div>
     <div class="dep_list" style="width:100%;text-align:center;">
-      <span class="dep_list_span" @click="changeScroll('left')" style="right: 10px;">
-        《《
-      </span>
-      <div ref="dep_list" style="display:inline-block;width:90%;overflow:auto;white-space: nowrap;">
-        <div class="entrance" v-for="(item,index) of entranceList" :key="index">
-          {{item.name}}
+      <div @mousedown="changeScroll('left')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+        <img style="width:30px;" src="@/assets/images/bg/dir_left.png" />
+      </div>
+      <div ref="dep_list" class="dep_Con">
+        <div class="entrance" @click="handleClickDep(item)"
+          :style="[{border:active==item.id?'3px solid #bf1730':'none'}]" 
+          v-for="(item,index) of entranceList" :key="index">
+          <div class="panel_info">
+            <span style="display:block;">{{item.name}}</span>
+            <span style="font-weight:normal;color:#ccc;">{{item.userPname}}</span>
+          </div>
         </div>
       </div>
-      <span class="dep_list_span" @click="changeScroll('right')" style="left: 10px;">
-        》》
-      </span>
+      <div @mousedown="changeScroll('right')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+        <img style="width:30px;" src="@/assets/images/bg/dir_right.png" />
+      </div>
     </div>
     <div class="post_status">
       <span>岗位状态颜色说明：</span>
@@ -23,34 +26,31 @@
       <li style="color:#AB2C31;">注意</li>
     </div>
 		<div class="relationship">
-			<org-tree :data="tree_data" :horizontal="horizontal" :path_url="path_url"></org-tree>
+			<org-tree :data="tree_data" 
+        :horizontal="horizontal" 
+        :path_url="path_url" 
+        :collapsable="false"
+        :expandAll="true"
+        :model="model"
+        :settingFlag="false">
+      </org-tree>
 		</div>
   </div>
 </template>
 <script>
-import treeData from './treeData.js';
+// import treeData from './treeData.js';
 export default {
 	name: "Departmental_level",
   data() {
     return {
-			entranceList: [
-				{name: '事项申报', path: ''},
-				{name: '个人即报', path: ''},
-				{name: '警示教育', path: ''},
-				{name: '廉政教育', path: ''},
-				{name: '年度报告', path: ''},
-        {name: '廉政台账', path: ''},
-        {name: '事项申报', path: ''},
-				{name: '个人即报', path: ''},
-				{name: '警示教育', path: ''},
-				{name: '廉政教育', path: ''},
-				{name: '年度报告', path: ''},
-				{name: '廉政台账', path: ''}
-      ],
+      active: 0,
+      entranceList: [],
       tree_data: null,
       horizontal: true,
       // 人员关系跳转地址
-      path_url: 'Personnel_relation'
+      path_url: 'Personnel_relation',
+      model: '',
+      timer: null,
 			// 
     }
   },
@@ -60,20 +60,46 @@ export default {
   },
   methods: {
     init() {
-      this.getData()
-    },
-    getData(){
-      const _this = this
-      _this.tree_data = treeData
+      let query = this.$route.query
+      console.log(query)
+      this.tree_data = query.value
+      this.active = query.value.id
+      this.entranceList = query.list
+      this.model = query.model
     },
     changeScroll(direction = 'right'){
+      // const _this = this
       let scroll = this.$refs.dep_list.scrollLeft
+      let width = this.$refs.dep_list.scrollWidth
+      let n = 0
       if(direction == 'left'){
-        this.$refs.dep_list.scrollLeft = scroll - 300
+        // $(this.$refs.dep_list).animate({scrollLeft: scroll - 300 },1000)
+        this.timer = setInterval(() =>{ 
+          if(n > scroll){
+            clearInterval(this.timer)
+          }
+          $(this.$refs.dep_list).animate({scrollLeft: scroll - n },0)
+          n++
+        }, 0);
       }else {
-        this.$refs.dep_list.scrollLeft = scroll + 300
+        // $(this.$refs.dep_list).animate({scrollLeft: width },width - scroll)
+        this.timer = setInterval(() =>{ 
+          if(n + scroll > width){
+            clearInterval(this.timer)
+          }
+          $(this.$refs.dep_list).animate({scrollLeft: scroll + n },0)
+          n++
+        }, 0);
       }
-      
+    },
+    stopScroll(){
+      clearInterval(this.timer)
+      this.timer = null
+    },
+    handleClickDep(value){
+      // console.log(value)
+      this.active = value.id
+      this.tree_data = value
     }
 		// 
   }
@@ -84,6 +110,33 @@ export default {
 ::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
 ::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
 ::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
+.individual_title{
+  height:70px;
+  background: url('../../../assets/images/bg/top_bg.png');
+  background-size: 100% 100%;
+}
+.entrance{
+  border-radius: 20px;
+  background: url('../../../assets/images/bg/dep_bg.png') no-repeat;
+  background-size: 100% 100%;
+}
+.entrance .panel_info{
+  position: relative;
+  top: 55px;
+  font-weight: bold;
+  color: #bf1730;
+}
+.dep_Con{
+  display:inline-block;
+  width:calc(100% - 80px);
+  overflow:hidden;
+  white-space: nowrap;
+}
+.Org_relationship{
+  height: 100%;
+	width: 100%;
+  font-size: 12px;
+}
 .post_status
   position: fixed
   width: 200px
@@ -102,28 +155,15 @@ export default {
   -moz-user-select:none;
   -ms-user-select:none;
   user-select:none;
-.Org_relationship
-	height 100%
-	width 100%
-.individual_title
-	height:40px;
-	line-height:40px;
-	background:#fff;
-	padding:0 10px;
-	font-size 16px
-	font-weight bold
 .entrance
 	width 120px
 	height 100px
-	line-height 35px
 	display inline-block
 	text-align center
-	background #fff
 	margin 10px 0.8%
 .relationship
 	margin 0 0.8%
-	background #fff
-	height calc(100% - 175px)
+	height calc(100% - 205px)
 	text-align center
 	overflow auto
 </style>

@@ -46,13 +46,14 @@
           </div>
         </div>
         <div class="text-center">
-          <vue2-org-tree
+          <!-- :label-class-name="labelClassName" -->
+          <vue2-org-tree style="background:none;"
             name="test"
             :data="data"
             :horizontal="horizontal"
             :collapsable="collapsable"
-            :label-class-name="labelClassName"
             :render-content="renderContent"
+            :label-class-name="labelClassName"
             @on-expand="onExpand"
             @on-node-click="onNodeClick"
           />
@@ -104,11 +105,23 @@ export default {
     path_url:{
       type: String,
       default: null
+    },
+    popoverFlag: {
+      type: Boolean,
+      default: false
+    },
+    dep_list: {
+      type: Array,
+      default: null
+    },
+    model: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      labelClassName: "bg-white",
+      labelClassName: "",
       dialogFormVisible: false,
       form: {
         name: '',
@@ -132,19 +145,76 @@ export default {
       // return data.label
       // return (<div>{data.label}<br/>{data.position}</div>)
       // 弹出框
-      return (<el-popover
-        placement="bottom"
-        trigger="hover"
-        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-        <p>这是一段内容这是一段内容确定删除吗？</p>
-        <div style="text-align: right; margin: 0">
-          <el-button size="mini" type="text" onclick={() => this.popoverClick('cancle', data)}>取消</el-button>
-          <el-button type="primary" size="mini" onclick={() => this.popoverClick('submit', data)}>确定</el-button>
-          <el-button type="primary" size="mini" onclick={() => this.popoverClick('del', data)}>删除</el-button>
-          <el-button type="primary" size="mini" onclick={() => this.popoverClick('add', data)}>新增</el-button>
-        </div>
-        <div slot="reference" class="user_panel" onclick={() => this.nodePanelClick(data)}>{data.label}{data.userNames}<br/>{data.name} {data.orgName}</div>
-      </el-popover>)
+      if(this.popoverFlag){
+        return (<el-popover
+          placement="bottom"
+          trigger="hover"
+          content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+          <p>这是一段内容这是一段内容确定删除吗？</p>
+          <div style="text-align: right; margin: 0">
+            <el-button size="mini" type="text" onclick={() => this.popoverClick('cancle', data)}>取消</el-button>
+            <el-button type="primary" size="mini" onclick={() => this.popoverClick('submit', data)}>确定</el-button>
+            <el-button type="primary" size="mini" onclick={() => this.popoverClick('del', data)}>删除</el-button>
+            <el-button type="primary" size="mini" onclick={() => this.popoverClick('add', data)}>新增</el-button>
+          </div>
+          <div slot="reference" class="user_panel" onclick={() => this.nodePanelClick(data)}>{data.label}{data.userNames}<br/>{data.name} {data.orgName}</div>
+        </el-popover>)
+      }else{
+        // {require('../../images/logo.png')}
+        if(data.level == 1){
+          return (<div style="height:100px;width:150px;" class="user_panel level_one">
+              <img class="photo_img" src={require('../../assets/images/bg/person.png')}></img>
+              <div class="panel_info">
+                <span style="line-height:20px;">{data.userPname}</span><br/>
+                <span class="post">{data.name}</span>
+                <span class="post">{data.orgPname}</span>
+              </div>
+            </div>)
+        }else if(data.level == 2){
+          return (<div style="height:100px;" class="user_panel level_two">
+              <img class="photo_img" src={require('../../assets/images/bg/person.png')}></img>
+              <div class="panel_info">
+                <span style="line-height:20px;">{data.realName}</span><br/>
+                <span class="post">{data.userInfo.politicalStatus}</span>
+                <span class="post">{data.userInfo.policeRank}</span>
+              </div>
+            </div>)
+        }else if(data.level == 3){
+          return (<div class="user_panel depCon">
+                {
+                  // {id, name, userPname}
+                  data.dep.map((item) => 
+                    <div onclick={() => this.nodePanelClick(data, item, 'dep')}
+                      class="user_panel level_three" 
+                      style="margin-bottom:5px;">
+                      <div class="depCon_info">{item.name}</div>
+                    </div>
+                  )
+                }
+            </div>)
+        }else {
+          if(this.model == 'dep'){
+            return (<div class="user_panel_dep" onclick={() => this.nodePanelClick(data,'','person_info')}>
+              <img class="photo_img" style="border:3px solid #1ACE80;"
+                src={require('../../assets/images/bg/person.png')}></img>
+              <span class={ this.$store.state.user.userId == data.id ? 'current_user' : '' }>
+                {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
+              </span>
+            </div>)
+          }else if(this.model == 'person_info'){
+            return (<div class="user_panel_others">
+              <span class={ this.$store.state.user.userId == data.id ? 'current_user' : '' }>
+                {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
+              </span>
+            </div>)
+          }else{
+            return (<div class="user_panel_others">
+              <span>三个字</span>
+            </div>)
+          }
+        }
+      }
+      
     },
     popoverClick(key, node){
       console.log(key, node)
@@ -183,12 +253,27 @@ export default {
       }
     },
     // 几点面板点击事件
-    nodePanelClick(data){
-      console.log(data)
+    nodePanelClick(data, valueObj, model){
+      // console.log(data)
+      // console.log(valueObj)
+      const _this = this
+      let query = {}
+      if(valueObj == '') {
+        query.value = data
+        query.model = model
+        // 当前用户才可点击
+        // if(data.id != _this.$store.state.user.userId){
+        //   return 
+        // }
+      }else{
+        query.value = valueObj
+        query.list = _this.dep_list
+        query.model = model
+      }
       if(this.path_url == null){
         return 
       }
-      this.$router.push({path: this.path_url})
+      this.$router.push({path: this.path_url, query})
     },
     collapse(list) {
       var _this = this;
@@ -257,6 +342,7 @@ export default {
 .com.org_tree >>>	.org-tree-container{
   height: 100%;
 	padding: 0;
+  background: none;
 }
 .com.org_tree .text-center{
   font-size: 14px;
@@ -265,12 +351,81 @@ export default {
 .com.com.org_tree .org-tree-node-label-inner{
   border-radius: 20px;
   padding:0;
+  box-shadow: none;
 }
 .com.com.org_tree .user_panel{
   padding: 10px 20px;
   border-radius: 20px;
+  width: 75px;
+  height: 75px;
+  word-wrap:break-word;
+  font-size: 12px;
+  line-height:16px;
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  background:#fff;
 }
-.com.com.org_tree .user_panel:hover{
+.com.com.org_tree .user_panel_others{
+  padding: 10px 20px;
+  border-radius: 20px;
+  word-wrap:break-word;
+  font-size: 12px;
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+}
+.com.com.org_tree .depCon{
+  box-shadow:none;
+  padding:0;
+  width: 115px;
+  height: 95px;
+}
+.com.com.org_tree .user_panel22:hover{
   background:red;
+}
+.com.com.org_tree .level_one,.com.com.org_tree .level_two{
+  background: url('../../assets/images/bg/preson_bg.png') no-repeat;
+  background-size: 100% 100%;
+}
+.com.com.org_tree .level_three{
+  background: url('../../assets/images/bg/dep_bg.png') no-repeat;
+  background-size: 100% 100%;
+}
+.com.com.org_tree .level_three:hover{
+  border:2px solid #bf1730;
+}
+.com.com.org_tree .user_panel .panel_info{
+  position: absolute;
+  bottom: 5px;
+  width: calc(100% - 40px);
+  color: #fff;
+  line-height: 18px;
+}
+.com.com.org_tree .user_panel .depCon_info{
+  position: relative;
+  bottom: -47px;
+  width: 100%;
+  font-size: 14px;
+  color:#333;
+  white-space:normal;
+}
+.com.com.org_tree .user_panel .panel_info .post{
+  display: block;
+  font-size: 12px;
+  -webkit-transform: scale(0.9);
+}
+.com.com.org_tree .user_panel .photo_img,.com.com.org_tree .user_panel_dep .photo_img{
+  width: 45px;
+  border-radius: 35px;
+}
+.com.com.org_tree .user_panel_dep{
+  padding: 10px;
+}
+.com.com.org_tree .user_panel_dep span{
+  position: relative;
+  top: 15px;
+  left: 4px;
+}
+.com.com.org_tree .current_user{
+  color:#bf1730;
 }
 </style>

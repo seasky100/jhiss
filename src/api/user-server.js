@@ -78,3 +78,11 @@ export function getNodeByFlowCode (params) {
   })
 }
 
+// 从警生涯数据
+export function getPoliceCareer(params) {
+    return request({
+        url: DEFAULT_URL.user.getPoliceCareer,
+        method: 'get',
+        params
+      })
+}

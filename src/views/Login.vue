@@ -19,21 +19,15 @@
             </div>
             <el-form v-show='!certification' ref='loginForm' :model='form' :rules='rules'>
                 <el-form-item prop='username'>
-                    <input v-model.trim='form.username' placeholder='用户名' class='focus-username w-full color-fff h48' style="border: 1.4px solid #004b77; border-radius: 2% / 12%; padding-left: 13%">
-                    <!-- <i slot='prefix' class='el-icon-user-solid'></i> -->
-                    </input>
+                    <input v-model.trim='form.username' placeholder='用户名' class='focus-username w-full color-fff h48' style="border: 1.4px solid #004b77; border-radius: 2% / 12%; padding-left: 13%"/>
                 </el-form-item>
                 <el-form-item prop='password'>
-                    <input v-model.trim='form.password' placeholder='密码' :type='passwordType' class='focus-password w-full color-fff h48' @keyup.enter.native='onSubmit'
-                        style="border: 1.4px solid #004b77; border-radius: 2% / 12%; padding-left: 13%">
-                    <!-- <i slot='prefix' class='el-icon-lock'></i> -->
-                    <!-- <i slot='suffix' @mousedown="passwordType='input'" @mouseup="passwordType='password'" class='icon iconfont icon-eye'></i> -->
-                    </input>
+                    <input v-model.trim='form.password' placeholder='密码' :type='passwordType' class='focus-password w-full color-fff h48' @keyup.enter.native='onSubmit'style="border: 1.4px solid #004b77; border-radius: 2% / 12%; padding-left: 13%"/>
                 </el-form-item>
                 <div class='flex flex-justify-between' style="margin-top: 6%">
                     <div class='flex flex-align-center'>
                         <label class='flex color-fff' style="letter-spacing: 0.1em">
-                            <input  v-model='checked'  type='checkbox' class='focus-remember-password' />
+                            <input  v-model='checked'  type='checkbox' class='focus-remember-password'/>
                             <span class=''>记住密码</span>
                         </label>
                     </div>
@@ -66,7 +60,7 @@
 </template>
 <script>
 import { encryptByDES, getUrl } from '../utils/common.js'
-import { signIn } from '../api/user-server.js'
+import { signIn,getUserInfo } from '../api/user-server.js'
 export default {
     name: 'login',
     data() {
@@ -128,11 +122,11 @@ export default {
                             }
                             // 调用checkTokenByAppKey 状态管理userName，token，uesrId
                             _this.$store.dispatch('user/loginSaveToken', parameter)
-                                .then(res => {   
-                                    debugger               
-                                    _this.$router.push('/PersonalHome')
-                                    _this.loading = false
-                                 
+                                .then(res => { 
+                                    if (res.data && res.success === true) {
+                                        _this.$store.dispatch('user/getInfo')
+                                        _this.$router.push('/PersonalHome')
+                                    }                                
                                 })
                                 .catch(() => {
                                     // this.loading = false

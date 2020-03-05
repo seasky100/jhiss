@@ -6,7 +6,7 @@
         <div class='u_name'>
             <div class='m_xin'><span>姓名：</span>{{name}}</div>
             <div class='m_xin'><span>警号：</span>{{userInfo.policeCode}}</div>
-            <div class='m_xin'><span>部门：</span>{{userInfo.organizationNames}}</div>
+            <div class='m_xin'><span>部门：</span>{{organizationNames}}</div>
             <div class='m_xin'><span>警衔：</span>{{userInfo.policeRank}}</div>
             <div v-if="userInfo.awardDate !=''&&userInfo.awardDate !=undefined&&userInfo.awardDate !='undefined'">
             <div class='m_xin'>
@@ -103,31 +103,35 @@ import { getUserInfo } from '../../api/user-server.js';
             }
         },
         mounted() {
-            this.user()
+            debugger
+            this.userInfo = JSON.parse(sessionStorage.userInfo)
+            this.name = sessionStorage.userName
+            this.organizationNames = sessionStorage.orgName
+            // this.user()
         },
         methods: {
             //查看个人信息
-            user() {
-                const _this = this;
-                const params = {
-                    userId: '5ba98b66cd3549b9b92ea8723e89207e'
-                  }
-                  getUserInfo(params).then(res => {
-                    if (res.success == true) {
-                        debugger
-                        _this.userInfo = res.data.userInfo
-                        _this.name = res.data.realName
-                        //  const pdata =res.data.premonth
-                        // this.total = res.result.total
-                        // _this.init();
-                    } else {
-                        console.log(res.message)
-                    }
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-            },
+            // user() {
+            //     const _this = this;
+            //     const params = {
+            //         userId: '5ba98b66cd3549b9b92ea8723e89207e'
+            //       }
+            //       getUserInfo(params).then(res => {
+            //         if (res.success == true) {
+            //             debugger
+            //             _this.userInfo = res.data.userInfo
+            //             _this.name = res.data.realName
+            //             //  const pdata =res.data.premonth
+            //             // this.total = res.result.total
+            //             // _this.init();
+            //         } else {
+            //             console.log(res.message)
+            //         }
+            //     })
+            //     .catch(error => {
+            //         console.log(error)
+            //     })
+            // },
         }
     }
 </script>

@@ -74,14 +74,14 @@ module.exports = {
   },
   chainWebpack: config => {
     // 图片压缩
-    config.module
-      .rule('images')
-      .use('image-webpack-loader')
-        .loader('image-webpack-loader')
-        .tap(options => {
-          // 修改它的选项...
-          return options
-        });
+    // config.module
+    //   .rule('images')
+    //   .use('image-webpack-loader')
+    //     .loader('image-webpack-loader')
+    //     .tap(options => {
+    //       // 修改它的选项...
+    //       return options
+    //     });
     // 添加别名
     config.resolve.alias
       .set('@', resolve('src'))
@@ -185,13 +185,16 @@ module.exports = {
               '^/gmsso_server': ''
             }
           },
-        '/uums_server':  {
-          target:  'http://39.100.4.175:19286/uums-server/',
-          changeOrigin:  true,
-          pathRewrite:  {
-            '^/uums_server':  ''
+        '/uums_server': {
+          target: 'http://39.100.4.175:19286/uums-server/',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/uums_server': ''
           }
         }
       },
   },
+  transpileDependencies:[
+    'vue2-org-tree'
+  ]
 }
