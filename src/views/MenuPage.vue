@@ -35,6 +35,9 @@
             <img class='m_img' src='../utils/img/lha.png' />
             <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()"> 超级管理员</div>
             <img class='t_img' src='../utils/img/header_alarm@2x.png' @click="dialogVisible = true" />
+            <button title='退出登录' @click='signOut' >
+              <img className='m_img' style="vertical-align: inherit;margin-left: 10px;" src='../utils/img/header_logout@2x.png' />
+            </button>
           </header>
           <el-dialog title="" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <div class="m_body" v-for="(item,index) in tabelData" :key="index">
@@ -78,7 +81,7 @@
         </div>
     </div>
     <div class="page_body">
-      <div style="float:left;height:100%;background:#545c64">
+      <div class="m_left"  :style="[{maxWidth:isCollapse?'50px':'190px'}]">
         <el-button type="primary" @click="switchClick" style="width:100%;">
           切换
         </el-button>
@@ -87,17 +90,21 @@
           background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
           @open="handleOpen" @close="handleClose" :collapse="isCollapse">
           <!-- 一级 -->
+          <!-- <router-link to="/myiframe/home">Myiframe_主页</router-link> -->
           <NavMenu :navMenus="routes"></NavMenu>
         </el-menu>
+ 
       </div>
-      <div class="bodyContent" :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 205px)'}]">
+      <div class="bodyContent" > <!-- :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 150px)'}]" -->
         <router-view/>
+        <!-- <router-link to="/myiframe/home">Myiframe_主页</router-link> -->
       </div>
     </div>
   </div>
 </template>
 <script>
 import NavMenu from "@/components/NavMenu.vue";
+import {  mapActions } from 'vuex'
 export default {
   name: 'MenuPage',
   data() {
@@ -175,6 +182,15 @@ export default {
         path: '/Salary'
       })
     },
+    ...mapActions('user', [
+            'logout'
+        ]),
+        // 退出登录
+        signOut() {
+            // 清除所有数据
+            this.logout()
+            this.$router.push('/login')
+        },
     // handleClose(done) {
     //   this.$confirm('确认关闭？')
     //     .then(_ => {
@@ -187,12 +203,19 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
+.m_left{
+  float:left;
+  height:100%;
+  background:#545c64
+  }
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
   min-height: 400px;
   height:calc(100vh-100px);
   height: calc(100vh - 100px);
   overflow-y: auto;
+}
+.el-menu--collapse {
+    width: 50px !important;
 }
 .h48{
   height: 2.428em!important;
@@ -215,6 +238,7 @@ export default {
   margin: 10px;
   overflow: auto;
 }
+
 .text {
     font-size: 14px;
   }
@@ -322,9 +346,11 @@ img{
   height:calc(100% - 69px)
 }
   .bodyContent{
-    float:left;
+    /* float:left; */
     height:100%;
     background:#f2f5f7;
     overflow: auto;
+    overflow: auto;
+    overflow-x: hidden;
   }
 </style>

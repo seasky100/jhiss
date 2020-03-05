@@ -9,7 +9,8 @@ const state = {
     orgId: sessionStorage.getItem('orgId') || '',
     userPermissions: sessionStorage.getItem('userPermissions') || [],
     orgCode: sessionStorage.getItem('orgCode') || [],
-    orgName: sessionStorage.getItem('orgName') || []
+    orgName: sessionStorage.getItem('orgName') || [],
+    userInfo: sessionStorage.getItem('userInfo') || {}
 }
 
 const mutations = {
@@ -50,6 +51,10 @@ const mutations = {
         state.orgName = orgName
         sessionStorage.setItem('orgName', orgName)
     },
+    SET_USERINFO: (state, userInfo) => {
+        state.userInfo = userInfo
+        sessionStorage.setItem('userInfo', userInfo)
+    },
     CLEAR_SESSION: (state) => {
         sessionStorage.clear()
     }
@@ -71,6 +76,7 @@ const actions = {
     },
     // 获取用户信息
     getInfo({ commit, state }) {
+        debugger
         return new Promise((resolve, reject) => {
             getUserInfo({ userId: state.userId }).then(res => {
                 // console.log(res)
@@ -87,6 +93,7 @@ const actions = {
                 commit('SET_ORGID', res.data.organizations[0].id)
                 commit('SET_ORGNAME', res.data.organizations[0].name)
                 commit('SET_ORGCODE', res.data.orgCode)
+                commit('SET_USERINFO', JSON.stringify(res.data.userInfo))
                 resolve()
             }).catch(error => {
                 reject(error)

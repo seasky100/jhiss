@@ -1,11 +1,29 @@
 <template>
   <div class="person_home">
     <div class="police_career">
-      <div class="person_title">
+      <div class="person_title p_clear">
         从警生涯
       </div>
-      <div class="w_full">
-        <img />
+      <div class="w_full"  style="height: 190px; width: 100%;float: left;">
+          <div style=" width: 5%;height: calc(100% - 30px);margin-left: 15px;float: left;">
+          <img src='../utils/img/tree_20191225154138.png' class='mb-auto' style="height: 5.5em" />
+        </div>
+          <div ref='career_list' style="overflow: auto;" @mouseenter="penter()" @mouseleave="pleave()"> 
+            <div style="width: 91%;height: 180px;height: calc(100% - 30px);display: -webkit-inline-box!important; margin-bottom: 14px;">
+              <div class='p_card' v-for="(item,index) in careerData" :key="index" id='index' @click="change(index)">
+                  <img src='../utils/img/home_career_reward_unselected@2x.png' style="float: right;margin: 10px;"  />
+                  <div class='p_time'>{{item.endtime}}</div>
+                  <div class='p_name'>{{item.career_desc}}</div>
+              </div>
+            </div> 
+            <el-steps :active="5"  style="margin-bottom: 14px;" :key="index" >
+                <el-step title="" description="2008.10.10至2010.10.10就任于海淀分局"></el-step>
+                <el-step title="" description="2010.10.10至2012.10.10就任于朝阳分局"></el-step>
+                <el-step title="" description="2012.10.10至2014.10.10就任于分局主任"></el-step>
+                <el-step title="" description="2014.10.10至2016.10.10就任于分局局长"></el-step>
+                <el-step title="" description="2016.10.10至2018.10.10就任于海淀分局"></el-step>
+              </el-steps>
+           </div>   
       </div>
     </div>
     <!-- 风险提醒 -->
@@ -111,11 +129,12 @@
             <!-- <img src='/images/home_round_bar@2x.png' /> -->
             <span class='pl8 txt-bold' style="font-size: 1.2em">待办事项</span>         
           <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 3em">
-            <div class='flex flex-column flex-align-center flex-grow'>
+            <div @click='xztxt' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
               <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">协作提效</span>
               <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #E8EFFF">
-                <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #235FF6">                  
-                  <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #235FF6"> 
+                  <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link>                  -->
+                  <Link class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                     style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'>
                     <span style="font-size: 1.5em">22</span>
                   </Link>
@@ -123,11 +142,12 @@
               </div>
               <span style="color: #8092A8">待办</span>
             </div>
-            <div style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
-            <div class='flex flex-column flex-align-center flex-grow'>
+            <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+            <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
               <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">队伍精细化</span>
               <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #F4F1FF">
                 <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #8674F6">
+                  <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #8674F6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link> -->
                   <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                     style="width: '4.4em'; height: 4.4em; background: #8674F6" title='待办箱'>
                     <span style="font-size: 1.5em">1</span>
@@ -170,7 +190,7 @@
           考勤情况
         </div>
           <div id='kao' class='mt-auto' style="height: 90%"></div>
-          <div class='p_foot'style="height: 10%">
+          <div class='p_foot' style="height: 10%">
               <div style=" width: 24%;float: left;margin-left: 48px;margin-top: 10px;">上班：<span style=" color: #9363FF">{{tjData[0]}}小时</span></div>
               <div style="width: 20%;float: left;margin-top: 10px;">加班：<span style=" color: #F09B38">{{tjData[2]}}小时</span></div>
               <div style=" width: 20%;float: left;margin-top: 10px;">请假：<span style=" color: #235FF6">{{tjData[1]}}小时</span></div>
@@ -184,40 +204,40 @@
         <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em">
           <div class='flex flex-column flex-grow' style="padding: 0.5em">
             <div class='flex flex-grow w-full'>
-              <Link to='/organization/log' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+              <router-link to='/organization/log' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">层级评价</span>
-              </Link>
+              </router-link>
               <div class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_overtime_request@2x.png' /><!--src='/images/home_entrance_overtime_request@2x.png' --> 
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">谈心谈话</span>
               </div>
-              <Link to='/organization/request' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
+              <router-link to='/organization/request' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项申报</span>
-              </Link>
-              <Link to='/organization/report' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 0 1px 1px">
+              </router-link>
+              <router-link to='/organization/report' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 0 1px 1px">
                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_items_report@2x.png'/><!--src='/images/home_entrance_items_report@2x.png' --> 
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项即报</span>
-              </Link>
+              </router-link>
             </div>
             <div class='flex flex-grow w-full'>
-              <Link to='/xztx/document' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+              <router-link to='/xztx/document' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_document_flow@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">公文流转</span>
-              </Link>
-              <Link to='/xztx/approval' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+              </router-link>
+              <router-link to='/xztx/approval' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_approval_items@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">审批事项</span>
-              </Link>
-              <Link to='/xztx/travel' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+              </router-link>
+              <router-link to='/xztx/travel' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">差旅申请</span>
-              </Link>
-              <Link to='/xztx/car' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 0 0 1px">
+              </router-link>
+              <router-link to='' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 0 0 1px">
                 <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_expense_request@2x.png' /><!--src='/images/home_entrance_expense_request@2x.png' --> 
                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">用车申请</span>
-              </Link>
+              </router-link>
             </div>
         </div>
       </div>      
@@ -227,6 +247,7 @@
 </template>
 <script>
 import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil } from '@/api/warn.js';
+import { getPoliceCareer } from '@/api/user-server.js';
 export default {
   name: "PersonalHome",
   data() {
@@ -242,18 +263,22 @@ export default {
       dateStart:'', //开始时间
       dateEnd:'',//结束时间
       tjData:'',//考勤数据
-      value: new Date()
+      value: new Date(),
+      timer:'',
+      careerData:[],
+      marksData:[]
     }
   },
   mounted() {
-    this.$nextTick((data) => {
+    this.$nextTick(() => {
           // 点击前一个月
           let prevBtn = document.querySelector('.el-calendar__button-group .el-button-group>button:nth-child(1)');
-          prevBtn.addEventListener('click',($this) => {
+          prevBtn.addEventListener('click',() => {
             debugger
             alert(1)
           })
         })
+    this.getPoliceCareer();
     this.sevenday();
     this.indexRecordCountDeatil();
     this.sectorAverageStatistics();
@@ -269,9 +294,9 @@ export default {
     dayClick () {
       alert(2)
       debugger
-      console.log(date);
-      console.log(dateStr);
-      console.log(this.value);
+      // console.log(date);
+      // console.log(dateStr);
+      // console.log(this.value);
     },
     getRadar(){
       let radarDom = this.$echarts.init(document.getElementById('radar'))
@@ -563,6 +588,45 @@ export default {
         }
       })
     },
+    // 从警生涯数据
+    getPoliceCareer(){
+      const _this=this;
+      const params = {
+        userId: '1D2G3F4H'
+      }
+      getPoliceCareer(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          const Data = res.data
+          _this.careerData = Data.reduce((prev, item) => 
+          (item.career_type === '履历'
+          ? [...prev, {...item, marks: [item]}]
+          : [...prev.slice(0, -1), {...prev.slice(-1)[0], marks: prev.slice(-1)[0].marks.concat(item)}]), []
+        );
+        let width = this.$refs.career_list.scrollWidth
+        $(this.$refs.career_list).animate({scrollLeft:width },8000)
+        for(var i=0; i<_this.careerData.length; i++){
+          this.marksData.push(_this.careerData[i].marks)
+        }
+      }
+    })
+  },
+    jxh(){
+      debugger
+      const userInfo = JSON.parse(sessionStorage.userInfo)
+      const id= userInfo.policeCode
+      this.$router.push({path:'/PersonalHome2',query:{cardId:id}})
+    },
+    xztxt(){
+      const token = sessionStorage.token
+      this.$router.push({path:'/PersonalHome2',query:{token:token}})
+    },
+    // change(data){
+    //   alert(data)
+    //   //:style="[{backgroundColor:isCollapse?'#409eff':'#f1f5fb'}]"
+    //   // this.isCollapse[data] = !this.isCollapse[];
+
+    // },
     sevenday(){
       const today = this.$dayjs(new Date());
       const t7 = today.subtract(7, 'day');
@@ -585,11 +649,53 @@ export default {
 .police_career{
   height: 220px;
   background:#fff;
-  margin-bottom 15px;
+  margin-bottom:15px;
+}
+  /* 定义滚动条样式 */
+  ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: rgba(240, 240, 240, 1);
+}
+ 
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+  border-radius: 10px;
+  background-color: rgba(240, 240, 240, .5);
+}
+ 
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+  background-color: rgba(240, 240, 240, .5);
+}
+.scroll-list ul{
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 0.1rem;
+    margin-bottom: -.2rem;
+    overflow: -moz-scrollbars-none;
+    overflow: -moz-scrollbars-none;
+}
+.scroll-list ul::-webkit-scrollbar{
+    display: none;
+}
+.p_card{
+    min-width: 200px;
+    height: 85px;
+    background-color: #F1F5FB;
+    border-left: 4px solid #409EFF;
+    border-top-right-radius: 19px;
+    border-bottom-right-radius: 19px;
+    margin-left: 19px;
 }
 .fengxian{
   float:left;
-  background #fff;
+  background :#fff;
   height:100%;
 }
 .person_title{
@@ -597,12 +703,23 @@ export default {
   width:100%;
   height:30px;
   margin: 10px;
-  margin-bottom 0;
+  margin-bottom :0;
   font-size:16px;
   font-weight:bold;
   line-height:30px;
-  border-left:5px solid red
+  border-left:5px solid red;
   padding-left: 5px
+}
+.p_clear{
+  margin-bottom: 13px;
+}
+.p_time{
+  margin: 10px;
+    color: #409eff;
+}
+.p_name{
+  margin: 17px 0px 0px 10px;
+  color: #409eff;
 }
 .flex-grow {
     -webkit-flex-grow: 1!important;
@@ -1583,7 +1700,7 @@ input:disabled {
 }
 .hide-scroll-bar {
   height: 0;
-  scrollbar-width: none;
+  scrollbar-width:none;
 }
 .thin-scroll-bar::-webkit-scrollbar {
   width: 0.428em;
@@ -1611,11 +1728,11 @@ input:disabled {
     padding: 8px;
     height: 0px !important;
 }
-.fengxian_body
+.fengxian_body{
   float:left;
-  width 44%;
+  width:44%;
   margin: 3% 3%;
   margin-top:0;
-  height calc(94% - 60px)
-
+  height:calc(94% - 60px)
+}
 </style>

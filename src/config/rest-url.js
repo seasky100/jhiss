@@ -90,7 +90,9 @@ const DEFAULT_URL = {
     // // 修改密码
     // updatePassword: `${userService}/updatePassword`,
     // 退出登录
-    // logout: `${GLOBAL.UUMS_SERVER}/logout`
+    logout: `${GMSSOSERVER}logout`,
+      // 从警生涯数据
+    getPoliceCareer: `${GAISMSERVER}policeCareer/getPoliceCareerByUserId`
   },
     // 层级管理
     post: {
