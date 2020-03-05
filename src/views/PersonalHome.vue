@@ -17,12 +17,12 @@
               </div>
             </div> 
             <el-steps :active="5"  style="margin-bottom: 14px;" :key="index" >
-                <el-step title="" description="2008.10.10至2010.10.10就任于海淀分局"></el-step>
-                <el-step title="" description="2010.10.10至2012.10.10就任于朝阳分局"></el-step>
-                <el-step title="" description="2012.10.10至2014.10.10就任于分局主任"></el-step>
-                <el-step title="" description="2014.10.10至2016.10.10就任于分局局长"></el-step>
-                <el-step title="" description="2016.10.10至2018.10.10就任于海淀分局"></el-step>
-              </el-steps>
+              <el-step title="" description="2008.10.10至2010.10.10就任于海淀分局"></el-step>
+              <el-step title="" description="2010.10.10至2012.10.10就任于朝阳分局"></el-step>
+              <el-step title="" description="2012.10.10至2014.10.10就任于分局主任"></el-step>
+              <el-step title="" description="2014.10.10至2016.10.10就任于分局局长"></el-step>
+              <el-step title="" description="2016.10.10至2018.10.10就任于海淀分局"></el-step>
+            </el-steps>
            </div>   
       </div>
     </div>
@@ -608,6 +608,7 @@ export default {
         for(var i=0; i<_this.careerData.length; i++){
           this.marksData.push(_this.careerData[i].marks)
         }
+        console.log(_this.careerData)
       }
     })
   },

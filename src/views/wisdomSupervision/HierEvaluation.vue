@@ -35,10 +35,10 @@
 				</span>
 				<span>{{infoObj.content}}</span>
 				<span style="text-align:center;margin-top:20px;">
-					总体评分： 
-					<span class="score_con">
+					总体评分
+					<!-- <span class="score_con">
 						{{noteScore}}
-					</span>分
+					</span>分 -->
 				</span>
 				<!-- <el-slider v-model="noteScore" :max="10" style="margin:0 35px;margin-top:10px;"></el-slider> -->
 				<div style="text-align:center;">
@@ -144,6 +144,7 @@ export default {
 							this.dialogVisible = true
 							this.infoObj = row
 							this.disabled = false
+							this.leaderContent = this.infoObj.comment
             },
             showCallback: (row) => {
 							// console.log(row)
@@ -186,8 +187,8 @@ export default {
   watch: {
 		infoObj(){
 			this.noteScore = this.infoObj.noteScore
-			this.activeScore = this.noteScore - 1
 			this.leaderContent = this.infoObj.comment
+			this.activeScore = this.noteScore - 1
 		},
 		dialogVisible(){
 			if(!this.dialogVisible){
@@ -248,7 +249,7 @@ export default {
         Object.assign(
           {
             nCurrent: nCurrent,
-						nSize: 15,
+						nSize: 10,
 						staffed: '',
 						orderByField: 'noteDate',
 						orderFlag: false

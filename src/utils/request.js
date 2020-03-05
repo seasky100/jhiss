@@ -26,7 +26,7 @@ service.interceptors.request.use(config => {
     if (store.state.user.token) {
       // config.data['access_token'] = store.state.user.token
     }
-    if (config.data.hasOwnProperty('file') && config.data['file']) {
+    if(config.data != null && config.data.hasOwnProperty('file') && config.data['file']) {
       let param = new FormData()
       for (let key in config.data) {
         if (key === 'file') {

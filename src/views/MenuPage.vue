@@ -218,7 +218,6 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
-<<<<<<< HEAD
 /*滚动条样式*/
 ::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
 ::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
