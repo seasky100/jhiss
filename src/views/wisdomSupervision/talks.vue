@@ -1,48 +1,63 @@
 <template>
-  <div class="IndividualReport">
-    <div class="individual_title">
-      谈话谈心
+  <div class="container">
+    <div class="page-title">
+      <span>谈话谈心</span>
     </div>
-		<div>
-      <p>查询条件</p>
-      <e-search
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm"
-        :addForm="addForm" />
-      <e-table
-        ref="recordTalksTableRef"
-        :tableList="tableList"
-        :options="options"
-        :columns="columns"
-        :operates="operates"
-        @afterCurrentPageClick="afterCurrentPageClickHandle"
-      />
+		<div class="content">
+      <div class="search-wrap">
+        <div class="section-title">查询条件</div>
+        <e-search
+          class="search-form"
+          @handleSearch="handleSearch"
+          :searchData="searchData"
+          :searchForm="searchForm"
+          :btnsConfig="btnsConfig"
+           @addClickHandle="addClickHandle" />
+      </div>
+      <div>
+        <e-table
+          ref="recordTalksTableRef"
+          :tableList="tableList"
+          :options="options"
+          :columns="columns"
+          :operates="operates"
+          @afterCurrentPageClick="afterCurrentPageClickHandle"
+        />
+      </div> 
     </div>
+    <!-- 新增谈话类容 -->
+    <talk-modal ref="talkModal" />
   </div>
 </template>
 <script>
-import { findInterViewPage } from '@/api/report.js';
+import { findInterViewPage, deleteInterView } from '@/api/report.js';
+
+import TalkModal from './modal/talkModal';
+
 export default {
   name: "IndividualReport",
+  components: {
+    TalkModal
+  },
   data() {
     return {
       userId: '5ba98b66cd3549b9b92ea8723e89207e',
       addForm: '/TalkAdd',
+      btnsConfig: {
+        showAdd: true
+      },
 			searchData: {
         userName: '',
-        policeCode: '',
         department: '',
-        problemType: '',
         startTime: '',
         endTime: ''
 			},
 			searchForm: [
-        {label:'姓名：',type: 'input', prop: 'interviewMan', width: '120px', placeholder: ''},
+        {label:'姓名：',type: 'input', prop: 'userName', width: '120px', placeholder: ''},
         {
           label:'所属部门：',
           type: 'select',
-          prop: 'deptId',
+          prop: 'department',
           width: '150px',
           options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
           change: row => console.log(row),
@@ -114,19 +129,71 @@ export default {
 				}
       ],
       operates: {
-        width: 150,
+        width: 200,
         fixed: 'right',
         list: [
           {
             id: '1',
-            label: '查看',
+            label: '详情',
             show: true,
             underline: false,
             icon: '<i class="el-icon-view"></i>',
             disabled: false,
             method: (key, row) => {
-              // console.log('row', row);
-              this.$router.push({path: '/TalkAdd', query: row})
+              this.$refs.talkModal.open('view', row);
+            },
+            showCallback: () => {
+              return true;
+            }
+          },
+          {
+            id: '2',
+            label: '修改',
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-edit-outline"></i>',
+            disabled: false,
+            method: (key, row) => {
+              this.$refs.talkModal.open('update', row);
+            },
+            showCallback: () => {
+              return true;
+            }
+          },
+          {
+            id: '3',
+            label: '删除',
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-delete"></i>',
+            disabled: false,
+            method: (key, row) => {
+              const $this = this;
+              $this
+                .$confirm('是否删除？', '确认信息', {
+                  distinguishCancelAndClose: true,
+                  confirmButtonText: '删除',
+                  cancelButtonText: '取消'
+                })
+                .then(() => {
+                  deleteInterView({ id: row.id })
+                    .then((res) => {
+                      try {
+                        if (res.success) {
+                          $this.$message({
+                            type: 'success',
+                            message: '删除成功'
+                          });
+                          $this.init();
+                        }
+                      } catch (e) {
+                        console.log('ERROR', e);
+                      }
+                    });
+                })
+                .catch(() => {
+                  return;
+                });
             },
             showCallback: () => {
               return true;
@@ -186,15 +253,13 @@ export default {
         );
       })
     },
+    // 新增
+    addClickHandle() {
+      this.$refs.talkModal.open('add');
+    }
   }
 }
 </script>
 <style lang="stylus" scoped>
-.individual_title
-	height:40px;
-	line-height:40px;
-	background:#fff;
-	padding:0 10px;
-	font-size 16px
-	font-weight bold
+@import "../../styles/common.styl"
 </style>

@@ -77,8 +77,25 @@ const DEFAULT_URL = {
   },
     // 报告
     report: {
-      findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
-      findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
+      findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`, //分页
+      getInterViewById: `${GAISMSERVER}InterView/getInterViewById`, //详情
+      deleteInterView: `${GAISMSERVER}InterView/deleteInterView`, //删除
+      saveInterView: `${GAISMSERVER}InterView/saveInterView`, //新增
+      updateInterView: `${GAISMSERVER}InterView/updateInterView`, //修改
+      findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`,
+      saveDeclareExit: `${GAISMSERVER}declareExit/saveDeclareExit`, //因私出境
+      saveDeclareHouse: `${GAISMSERVER}declareHouse/saveDeclareHouse`, //房产变更
+      saveMarrage: `${GAISMSERVER}marrage/saveMarrage`, //婚姻情况
+      saveWeddingBanquet: `${GAISMSERVER}weddingBanquet/saveWeddingBanquet`, //婚姻宴请
+      saveCashGift: `${GAISMSERVER}cashGift/saveCashGift`, //收受礼金
+      saveRelativesWork: `${GAISMSERVER}relativesWork/saveRelativesWork`, //亲属就业
+      saveRelativesAbroad: `${GAISMSERVER}relativesAbroad/saveRelativesAbroad`, //移居国外
+      saveOverseasInvestment: `${GAISMSERVER}overseasInvestment/saveOverseasInvestment`, //境外投资
+      saveRelativesBusiness: `${GAISMSERVER}relativesBusiness/saveRelativesBusiness`, //亲属经商
+      saveOverseasDeposit: `${GAISMSERVER}overseasDeposit/saveOverseasDeposit`, //境外存款
+      saveSecuredLoan: `${GAISMSERVER}securedLoan/saveSecuredLoan`, //担保借贷
+      saveRelativesIllegal: `${GAISMSERVER}relativesIllegal/saveRelativesIllegal`, //涉纪涉诉事项
+      saveOtherReport: `${GAISMSERVER}otherReport/saveOtherReport`, //其它事项报告
     },
       // 用户相关
   user: {
@@ -91,6 +108,14 @@ const DEFAULT_URL = {
     // updatePassword: `${userService}/updatePassword`,
     // 退出登录
     // logout: `${GLOBAL.UUMS_SERVER}/logout`
+    // 获取所有的机构树
+    getOrganization: `${UUMSSERVER}organization/tree`,
+    // 获取机构下对应的人员
+    getUserList: `${UUMSSERVER}user/getUserListByOrgId`,
+    // 根据type 获取flowcode
+    getFlowByCondition: `${UUMSSERVER}flow/getFlowByCondition`,
+    // 根据flowcode节点
+    getNodeByFlowCode: `${UUMSSERVER}flow/getByFlowCode`
   },
     // 层级管理
     post: {

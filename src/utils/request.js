@@ -24,9 +24,9 @@ service.interceptors.request.use(config => {
   }
   if (config.method === 'post') {
     if (store.state.user.token) {
-      config.data['access_token'] = store.state.user.token
+      // config.data['access_token'] = store.state.user.token
     }
-    //if (config.data.hasOwnProperty('file') && config.data['file']) {
+    if (config.data.hasOwnProperty('file') && config.data['file']) {
       let param = new FormData()
       for (let key in config.data) {
         if (key === 'file') {
@@ -39,7 +39,7 @@ service.interceptors.request.use(config => {
         }
       }
       config.data = param
-    //}
+    }
     // config.data = qs.stringify(config.data)
   } else if (config.method === 'put') {
     if (store.state.user.token) {
