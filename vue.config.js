@@ -194,4 +194,7 @@ module.exports = {
         }
       },
   },
+  transpileDependencies:[
+    'vue2-org-tree'
+  ]
 }
