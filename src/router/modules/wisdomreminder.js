@@ -31,7 +31,7 @@ const wisdomReminderRouter = [
         title: '请销假分析',
         icon: 'el-icon-menu',
         name: 'LeaveAnalysis',
-        path: '/LeaveAnalysis',
+        path: '/leave-analysis',
         component: () => import('@/views/Supervision'),
         children: [
           {
@@ -50,21 +50,21 @@ const wisdomReminderRouter = [
         title: '出国（镜）分析',
         icon: 'el-icon-menu',
         name: 'GoAbroad',
-        path: "/GoAbroad",
+        path: "/go-abroad",
         component: () => import('@/views/WisdomReminder/GoAbroad')
       },
       {
         title: '差旅管理',
         icon: 'el-icon-menu',
         name: 'TravelManagement',
-        path: "/TravelManagement",
+        path: "/travel-management",
         component: () => import('@/views/WisdomReminder/TravelManagement')
       },
       {
         title: '智慧感知',
         icon: 'el-icon-menu',
         name: 'PerceptualWisdom',
-        path: "/PerceptualWisdom",
+        path: "/perceptual-wisdom",
         component: () => import('@/views/Supervision'),
         children: [
           {
@@ -106,6 +106,13 @@ const wisdomReminderRouter = [
             component: () => import('@/views/WisdomReminder/ViolationsCarManage')
           }
         ]
+      },
+      {
+        title: '工作评价',
+        icon: 'el-icon-menu',
+        name: 'EvaluationAnalysis',
+        path: '/evaluation-analysis',
+        component: () => import('@/views/WisdomReminder/EvaluationAnalysis')
       }
     ]
   }

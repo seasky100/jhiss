@@ -129,18 +129,22 @@ const DEFAULT_URL = {
       getUserList: `${GAISMSERVER}user/getUserList`,
     },
   // 【智慧考勤分析】
-  findClockPage: GAISMSERVER + "/tClockRecord/findClockPage", // 获取考勤信息分页
-  // 【请销假分析】-【审批记录分析】
-  findVacationPage: GAISMSERVER + "/vacationApply/findVacationPage", // 获取考勤信息分页
+  clockingIn: {
+    clockWarnReasonStatistics: GAISMSERVER + '/tClockRecord/clockWarnReasonStatistics', // 刷卡地点次数统计
+    clockWarnTimesStatistics: GAISMSERVER + '/tClockRecord/clockWarnTimesStatistics', // 每日工作时长统计
+    findClockPage: GAISMSERVER + "/tClockRecord/findClockPage", // 获取考勤信息分页
+  },
   // 【请销假分析】
   askForLeave: {
     vacationTypeStatistics: GAISMSERVER + "/vacationApply/vacationTypeStatistics", // 请假类型统计月
     vacationExceptionStatistics: GAISMSERVER + "/vacationApply/vacationExceptionStatistics", // 请假异常情况统计
     applyException: GAISMSERVER + "/vacationApply/applyException", // 审批情况统计
-    vacationApplyByMonth: GAISMSERVER + "/vacationApply/vacationApplyByMonth" // 请假按月份统计
+    vacationApplyByMonth: GAISMSERVER + "/vacationApply/vacationApplyByMonth", // 请假按月份统计
+    findVacationPage: GAISMSERVER + "/vacationApply/findVacationPage", // 获取考勤信息分页
   },
   // 【出国（境）分析】
   goAbroad: {
+    countPassport: UUMSSERVER + '/passport/countPassport', // 统计有无护照的管理员数量
     certificateInfoStatistics: GAISMSERVER + "/tCertificateInfo/certificateInfoStatistics", // 显示当前护照在管和在民警手里的数量饼状图
     palaceInfoStatistics: GAISMSERVER + "/tAbroadRecord/palaceInfoStatistics",  // 按目的地显示今年出国次数top10
     findAbroadRecordPage: GAISMSERVER + "/tAbroadRecord/findAbroadRecordPage" // 获取出勤出境分页
@@ -158,7 +162,15 @@ const DEFAULT_URL = {
     dayTimesStatistics: GAISMSERVER + '/mealRecord/dayTimesStatistics', // 刷卡情况（月）x轴每天y轴次数
     findMealRecordPage: GAISMSERVER + '/mealRecord/findMealRecordPage', // 获取刷卡记录分页
     // 【提前就餐预警】
-    repastSiteWarnStatistics: GAISMSERVER + '/warnStatistics/repastSiteWarnStatistics' // 就餐地点预警地点统计
+    repastSiteWarnStatistics: GAISMSERVER + '/warnStatistics/repastSiteWarnStatistics', // 就餐地点预警地点统计
+    repastWarnTimesStatistics: GAISMSERVER + '/warnStatistics/repastWarnTimesStatistics' // 每日就餐预警次数统计
+  },
+  // 【工作评价-评价分析预警】
+  evaluation: {
+    AuditWarnBarChat: GAISMSERVER + '/AuditWarning/AuditWarnBarChat', // 日志预警柱线图
+    AuditWarnLineChat: GAISMSERVER + '/AuditWarning/AuditWarnLineChat', // 日志预警折线图
+    findAuditWarningPage: GAISMSERVER + '/AuditWarning/findAuditWarningPage', // 日志预警分页
+    auditWarningById: GAISMSERVER + '/AuditWarning/auditWarningById' // 日志预警详情
   }
 }
 

@@ -30,8 +30,9 @@ export function getFindTravelPage(params) {
     method: 'get',
     params
   }).then((res) => {
+    let size = res.data.size;
     let data = res.data.records
     let total = res.data.total
-    return { data, total }
+    return { data, total, size }
   })
 }
