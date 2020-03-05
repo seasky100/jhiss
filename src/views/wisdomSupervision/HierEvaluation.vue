@@ -56,6 +56,14 @@
 						v-model="leaderContent">
 					</el-input>
 				</div>
+				<div v-if="disabled" style="margin:5px 5px 0 10px;">
+					<span style="display:inline;color:#333;">是否推送：</span>
+					<el-switch
+						v-model="pushyn"
+						active-color="#13ce66"
+						inactive-color="#ff4949">
+					</el-switch>
+				</div>
 			</div>
 			<span slot="footer" class="dialog-footer">
 				<el-button type="primary" v-if="disabled" @click="handleScoring(infoObj.id)">已 阅</el-button>
@@ -168,6 +176,7 @@ export default {
 							this.infoObj = row
 							this.leaderContent = ''
 							this.disabled = true
+							this.pushyn = false
             },
             showCallback: (row) => {
 							// console.log(row)
@@ -181,7 +190,8 @@ export default {
         ]
 			},
 			disabled: true,
-			activeScore: -1
+			activeScore: -1,
+			pushyn: false
     }
   },
   watch: {
@@ -274,7 +284,8 @@ export default {
 						noteId: noteId,
 						userId: _this.userId,
 						score: _this.noteScore,
-						leaderContent: _this.leaderContent
+						leaderContent: _this.leaderContent,
+						pushyn: _this.pushyn
           },
         )
       ).then(res => {
