@@ -223,13 +223,11 @@ export default {
 ::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
 ::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
 ::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
-=======
 .m_left{
   float:left;
   height:100%;
   background:#545c64
   }
->>>>>>> 890e87317db2f7fd78dc5e71aa7cbadfc32f507d
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   min-height: 400px;
   height:calc(100vh-100px);
