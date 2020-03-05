@@ -15,7 +15,8 @@
         </div>
       </div>
       <div class="person_ul">
-        <li class="person_li" v-for="(item3,index3) of projectList" :key="index3">
+        <li class="person_li" @click="handleClick(item3)"
+          v-for="(item3,index3) of projectList" :key="index3">
           <span>{{item3.name}}</span>
         </li>
       </div>
@@ -24,6 +25,7 @@
 </template>
 <script>
 export default {
+  inject: ['MenuPage'],
   props: {
     data: {
       type: Array,
@@ -32,15 +34,8 @@ export default {
   },
   data() {
     return {
-      // data_arr: [
-      //   {name:'张三'},
-      //   {name:'张三'},
-      //   {name:'张三'},
-      //   {name:'张三'},
-      //   {name:'张三'}
-      // ],
       projectList: [
-        {name: '工作日志'},
+        {name: '工作日志', path: '/HierEvaluation'},
         {name: '岗位预警'},
         {name: '谈话谈心'},
         {name: '责任清单'}
@@ -63,6 +58,10 @@ export default {
     console.log(this.data)
   },
   methods: {
+    handleClick(value){
+      this.MenuPage.activeMenu = value.path
+      this.$router.push({path: value.path})
+    }
   }
 };
 </script>
@@ -90,6 +89,8 @@ export default {
         span 
           font-size 14px
           color #333
+          &:hover
+            color #ab2c31
     .photo_img_con
       .photo_img
         border 3px solid #cccccc

@@ -75,12 +75,12 @@ const DEFAULT_URL = {
   carSubsidy:{
     findCarSubsidy: GAISMSERVER + '/carSubsidy/findCarSubsidy', //查询车贴费的数据
   },
-    // 报告
-    report: {
-      findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
-      findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
-    },
-      // 用户相关
+  // 报告
+  report: {
+    findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`,
+    findReportPage: `${GAISMSERVER}weddingBanquet/findReportPage`
+  },
+  // 用户相关
   user: {
     // 登录
     login: `${GMSSOSERVER}login`,
@@ -95,6 +95,10 @@ const DEFAULT_URL = {
     // 层级管理
     post: {
       treeAndUser: `${UUMSSERVER}post/treeAndUser`,
+      findWorknotePage: `${GAISMSERVER}workNote/findWorknotePage`,
+      noteAduit: `${GAISMSERVER}noteAudit/noteAduit`,
+      countWorkNote: `${GAISMSERVER}workNote/countWorkNote`,
+      getUserList: `${GAISMSERVER}user/getUserList`,
     },
   // 【智慧考勤分析】
   findClockPage: GAISMSERVER + "/tClockRecord/findClockPage", // 获取考勤信息分页

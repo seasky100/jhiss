@@ -1,11 +1,8 @@
 <template>
   <div class="person_home">
     <div class="individual_title"></div>
-    <!-- 风险提醒 -->
     <div class="police_career" style="height:calc(100% - 101px);background:none;">
-			<!-- 个人信息 -->
       <div class="fengxian fengxian_left" style="width:460px;">
-        <!-- <div class="person_title">头部图片</div> -->
         <div class="con photoImg">
           <div class="photo_img_con" style="border:3px solid #afafaf;">
             <img class="photo_img" src="@/assets/images/bg/person.png" />
@@ -22,7 +19,8 @@
         </div>
         <div class="con projectCon" style="height:90px;">
           <span class="top_title">项目</span>
-          <li class="project_li" v-for="(item,index) of projectList" :key="index">
+          <li class="project_li" @click="handleClick(item)"
+            v-for="(item,index) of projectList" :key="index">
             <span>{{item.name}}</span>
           </li>
         </div>
@@ -55,6 +53,7 @@
 import { getUserInfo } from '@/api/user-server.js';
 export default {
   name: "Personnel_relation",
+  inject: ['MenuPage'],
   data() {
     return {
       personInfo:{},
@@ -65,7 +64,7 @@ export default {
         {label: '岗位状态'}
       ],
       projectList: [
-        {name: '工作日志'},
+        {name: '工作日志', path: '/HierEvaluation'},
         {name: '岗位预警'},
         {name: '谈话谈心'},
         {name: '责任清单'}
@@ -157,6 +156,10 @@ export default {
       }else{
         this.person_data = this.tree_data.children.children
       }
+    },
+    handleClick(value){
+      this.MenuPage.activeMenu = value.path
+      this.$router.push({path: value.path})
     }
     // 
   }
@@ -255,6 +258,8 @@ export default {
     span 
       font-size 14px
       color #333
+      &:hover
+        color #ab2c31
 .submenu
   float left 
   height 40px

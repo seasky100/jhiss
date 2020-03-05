@@ -26,3 +26,39 @@ export function treeAndUser (params) {
     params
   })
 }
+
+// 层级评价
+export function findWorknotePage (params) {
+  return request({
+    url: DEFAULT_URL.post.findWorknotePage,
+    method: 'get',
+    params
+  })
+}
+
+// 工作日志统计 
+export function countWorkNote (params) {
+  return request({
+    url: DEFAULT_URL.post.countWorkNote,
+    method: 'get',
+    params
+  })
+}
+
+// 工作日志评分
+export function noteAduit (params) {
+  return request({
+    url: DEFAULT_URL.post.noteAduit,
+    method: 'post',
+    params
+  })
+}
+
+// 年度报告
+export function getUserList (params) {
+  return request({
+    url: DEFAULT_URL.post.getUserList,
+    method: 'get',
+    params
+  })
+}
