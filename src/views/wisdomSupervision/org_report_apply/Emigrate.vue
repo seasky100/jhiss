@@ -1,176 +1,306 @@
 <template>
-  <div class="talk_add">
-		<div class="individual_title">
-      移居国外
+  <div class="report-container">
+		<div class="report-title">
+      <span>移居国外</span>
     </div>
-		<div style="float:left;width:50%;margin:0 20px;">
-			<div style="width:70%;margin:10px;padding:13px;border-radius:5px;font-size:14px;background:#f9f2ec;">
-				<span style="color: #E6A061; background: '#F9F2EC'; userSelect:text;">
-					配偶、子女移居国（境）外的情况，包括子女去国（境）外学习、工作；配偶去国（境）外陪读、学习、工作；配偶及子女移民国（境）外等，事前7日报告。
-				</span>
+		<div class="report-content">
+			<div class="tip">
+        配偶、子女移居国（境）外的情况，包括子女去国（境）外学习、工作；配偶去国（境）外陪读、学习、工作；配偶及子女移民国（境）外等，事前7日报告。
 			</div>
-			<e-search :inlineFlag="inlineFlag"
-				:label_position="label_position"
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm" />
-		</div>
-    <!-- 流程图 -->
-		<div style="float:left;margin:40px 0 0 50px;">
-			<div class="individual_title">
-				移居国外
-			</div>
-			<el-steps direction="vertical" :active="1" finish-status="success">
-				<el-step title="步骤 1">
-					<i class="step01" slot="icon">
-							<!-- <img :src="[commandmenubg==item.class?item.imgSrc_hover:item.imgSrc]"
-									style="position: absolute;top: -6px;left: -6px;" /> -->
-						<img />
-					</i>
-					<i slot="title" style="background:none;">
-							步骤一一
-					</i>
-					<i slot="description" style="background:none;margin:0px 5px 20px;">
-							详情意义
-					</i>
-				</el-step>
-				<el-step title="步骤 2"></el-step>
-				<el-step title="步骤 3" description="这是一段很长很长很长的描述性文字"></el-step>
-			</el-steps>
+
+      <div class="form-content">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="top">
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="与本人关系" prop="relation">
+            <el-select v-model="ruleForm.relation" placeholder="请选择">
+              <el-option
+                v-for="item in relationOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="现居住（工作、生活）城市" prop="city">
+            <el-input v-model="ruleForm.city"></el-input>
+          </el-form-item>
+          <el-form-item label="移居类别" prop="emigrateState">
+            <el-select v-model="ruleForm.emigrateState" placeholder="请选择">
+              <el-option
+                v-for="item in emigrateOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="移居国家（境外）" prop="country">
+            <el-input v-model="ruleForm.country"></el-input>
+          </el-form-item>
+          <el-form-item label="事由" prop="cause">
+            <el-select v-model="ruleForm.cause" placeholder="请选择">
+              <el-option
+                v-for="item in causeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="对方登记日期" prop="strartTime">
+            <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.strartTime" style="width: 100%;"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="停留天数" prop="endTime">
+            <el-input v-model="ruleForm.endTime"></el-input>
+          </el-form-item>
+          <el-form-item label="备注" prop="comment">
+            <el-input v-model="ruleForm.comment"></el-input>
+          </el-form-item>
+          <el-form-item label="附件">
+            <e-upload />
+          </el-form-item>
+          <el-form-item label="审批人" required>
+            <el-col :span="11">
+              <el-form-item prop="department">
+                <select-tree 
+                  v-model="ruleForm.department"
+                  :props="config"
+                  :treeData="orgData"
+                  @change="orgChange"
+                  placeholder="请选择部门" />
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="approvalId">
+                <el-select v-model="ruleForm.approvalId" placeholder="请选择" @change="selectChange">
+                  <el-option
+                    v-for="item in approvalArr"
+                    :key="item.id"
+                    :label="item.realName"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+          <el-form-item style="text-align: center;">
+            <el-button type="primary" @click="submit">提交</el-button>
+            <el-button>取消</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 		</div>
   </div>
 </template>
 <script>
+import { saveRelativesAbroad } from '@/api/report.js';
+import { getUserList } from '@/api/user-server.js';
+
+import getFlowNode from '../../../mixin/getFlowNode.js';
+
+import { mapGetters } from 'vuex';
+
 export default {
-  name: "Emigrate",
+  mixins: [getFlowNode],
   data() {
     return {
-			inlineFlag:false,
-			label_position:'top',
-      searchData: {
-        userName: '',
-        policeCode: '',
+      ruleForm: {
+        name: '',
+        relation: '',
+        city: '',
+        workCompany: '',
+        emigrateState: '',
+        country: '',
+        cause: '',
+        strartTime: '',
+        endTime: '',
+        comment: '',
         department: '',
-        problemType: '',
-        startTime: '',
-        endTime: ''
-			},
-			searchForm: [
-        {label:'姓名',type: 'input', prop: 'policeCode',  placeholder: ''},
-        {
-					label:'与本人关系',
-          type: 'select',
-          prop: 'department',
-          width: '100%',
-          options: [
-            {label:'配偶', value:'0'},
-            {label:'子女', value:'1'},
-          ],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
-        {label:'现居住（工作，生活）城市',type: 'input', prop: 'policeCode',  placeholder: ''},
-        {
-					label:'移居类别',
-          type: 'select',
-          prop: 'department1',
-          width: '100%',
-          options: [
-            {label:'外国国籍', value:'0'},
-            {label:'永久居留资格', value:'1'},
-            {label:'长期居留许可', value:'2'},
-          ],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
-        {label:'移居国家（境外）',type: 'input', prop: 'policeCode',  placeholder: ''},
-        {
-					label:'事由',
-          type: 'select',
-          prop: 'department1',
-          width: '100%',
-          options: [
-            {label:'学习', value:'0'},
-            {label:'工作', value:'1'},
-            {label:'陪读', value:'2'},
-            {label:'移民', value:'3'},
-          ],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
-        {label:'出国时间',type: 'date', prop: 'policeCode',  placeholder: ''},
-        {label:'停留天数',type: 'input', prop: 'policeCode',  placeholder: ''},
-				{label:'备注',type: 'input', prop: 'policeCode',  placeholder: ''},
-				{label:'附件',type: 'file', prop: 'policeCode',  placeholder: ''},
-				{
-					label:'审批人',
-          type: 'select_tree',
-          prop: 'department',
-          width: '100%',
-          options: [
-            {
-              prop: 'selectOrg',
-              format: '',
-              valueformat: '',
-              placeholder: '请选择机构'
-            },
-            {
-              prop: 'selectPerson',
-              format: '',
-              valueformat: '',
-              placeholder: '请选择审批人'
-            }
-          ],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-				}
-			],
+        approvalId: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        relation: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        city: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        emigrateState: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        country: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        cause: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        strartTime: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        endTime: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        department: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        approvalId: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ]
+      },
+      relationOptions: [
+        {label:'配偶', value:'0'},
+        {label:'子女', value:'1'}
+      ],
+      emigrateOptions: [
+        {label:'外国国籍', value:'0'},
+        {label:'永久居留资格', value:'1'},
+        {label:'长期居留许可', value:'2'}
+      ],
+      causeOptions: [
+        {label:'学习', value:'0'},
+        {label:'工作', value:'1'},
+        {label:'陪读', value:'2'},
+        {label:'移民', value:'3'}
+      ],
+      // 部门配置
+      config: {
+        value: 'id',
+        label: 'name',
+        children: 'childrens',
+        disabled: true
+      },
+      // 审批人
+      approvalArr: [],
+      // 审批人对象
+      approvalList: []
     }
   },
-  watch: {
-		filterText(val) {
-			this.$refs.tree.filter(val);
-		}
-	},
-  mounted() {
-    this.init()
+  computed: {
+    ...mapGetters([
+      'orgData'
+    ])
   },
   methods: {
-		init() {
-			// this.getOrgData()
-		},
-		// 查询
-    handleSearch(params) {
-      // Object.assign(this.searchData, params);
-      console.log(params)
-      // this.query();
-		}
+    // 机构人员 下拉change事件
+    orgChange(orgId) {
+      this.getUserListData(orgId);
+    },
+    // 获取机构对应的人员
+    getUserListData(id) {
+      const params = {
+        orgId: id
+      }
+      getUserList(params).then(res => {
+        if(res.success && res.data && res.data.length > 0) {
+          this.approvalArr = res.data;
+        }
+      })
+    },
+    // 提交
+    submit() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          const params = {
+            flowProcess: {
+              flowId: this.flowId,
+              reportType: '105',
+              sponsorId: '5ba98b66cd3549b9b92ea8723e89207e',
+              sponsorName: '超级管理员',
+              policeCode: '12345678',
+              department: '治安支队',
+              flowHistory: this.flowNodeList.map((item, index) => ({
+                node: item.orders,
+                name: item.name,
+                approvalId: this.approvalList[index].id,
+                approvalName: this.approvalList[index].realName
+              }))
+            },
+            name: this.ruleForm.name,
+            cause: this.ruleForm.cause,
+            city: this.ruleForm.city,
+            comment: this.ruleForm.comment,
+            country: this.ruleForm.country,
+            emigrateState: this.ruleForm.emigrateState,
+            endTime: this.ruleForm.endTime,
+            relation: this.ruleForm.relation,
+            strartTime: this.ruleForm.strartTime
+          }
+          saveRelativesAbroad(params).then(res => {
+            // console.log(res);
+            if(res.success) {
+              this.$message({
+                type: 'success',
+                message: '提交成功'
+              })
+              this.$router.push('/IndividualReport')
+            }else {
+              this.$message({
+                type: 'error',
+                message: '提交失败'
+              })
+            }
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '请填写表单'
+          })
+          return false;
+        }
+      });
+    },
+    selectChange(val) {
+      const result = this.approvalArr.filter(item => {
+        return item.id === val;
+      })
+      this.approvalList = result;
+    }
+  },
+  mounted() {
+    this.getData('201')
   }
 }
 </script>
 <style lang="stylus" scoped>
-/*滚动条样式*/
-::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
-::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
-::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
-.date_pick{
-    width: 100% !important;
-}
-.selectDiv{
-  height:350px;
-}
-.el-scrollbar .el-scrollbar__wrap {overflow-y: hidden;}
-.selectDiv .el-tree>.el-tree-node{display:inline-block;}
-.talk_add
-  margin: 2%
-.selectDiv
-	position absolute
-	width 40%
-	z-index 1
-.individual_title
-	height:40px;
-	line-height:40px;
-	padding:0 10px;
-	font-size 16px
-	font-weight bold
+.report-container
+  .report-title
+    padding: 8px 16px;
+    span
+      font-size: 16px;
+      color: #121518;
+      font-weight: 700;
+      height 26px;
+      padding-left: 10px;
+      position: relative
+      &:before
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: ' ';
+        width: 5px;
+        height: 100%;
+        border-radius: 5px;
+        background: #005BFF;
+  .report-content
+    width: 600px;
+    padding: 20px 0 0 40px;
+    box-sizing: border-box;
+    .tip
+      padding: 10px;
+      color: rgb(230, 160, 97);
+      background: rgb(249, 242, 236);
+      user-select: text;
+      margin-bottom: 10px;
+    .line
+      text-align: center;
+/deep/ .el-select
+  width: 100%;
+/deep/ .el-form--label-top .el-form-item__label
+  padding: 0;
 </style>

@@ -42,3 +42,47 @@ export function signOut(params) {
       })
 }
 
+// 用户机构树
+export function getOrganization (params) {
+  return request({
+    url: DEFAULT_URL.user.getOrganization,
+    method: 'get',
+    params
+  })
+}
+
+// 用户机构树对应的用户
+export function getUserList (params) {
+  return request({
+    url: DEFAULT_URL.user.getUserList,
+    method: 'get',
+    params
+  })
+}
+
+// 根据type 获取flowcode
+export function getFlowByCondition (params) {
+  return request({
+    url: DEFAULT_URL.user.getFlowByCondition,
+    method: 'get',
+    params
+  })
+}
+
+// 根据flowcode节点
+export function getNodeByFlowCode (params) {
+  return request({
+    url: DEFAULT_URL.user.getNodeByFlowCode,
+    method: 'get',
+    params
+  })
+}
+
+// 从警生涯数据
+export function getPoliceCareer(params) {
+    return request({
+        url: DEFAULT_URL.user.getPoliceCareer,
+        method: 'get',
+        params
+      })
+}
