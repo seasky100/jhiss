@@ -9,20 +9,20 @@
           <img src='../utils/img/tree_20191225154138.png' class='mb-auto' style="height: 5.5em" />
         </div>
           <div ref='career_list' style="overflow: auto;" @mouseenter="penter()" @mouseleave="pleave()"> 
-            <div style="width: 91%;height: 180px;height: calc(100% - 30px);display: -webkit-inline-box!important; margin-bottom: 14px;">
+            <div style="width: 91%;height: calc(100% - 30px);display: -webkit-inline-box!important; margin-bottom: 14px;">
               <div class='p_card' v-for="(item,index) in careerData" :key="index" id='index' @click="change(index)">
                   <img src='../utils/img/home_career_reward_unselected@2x.png' style="float: right;margin: 10px;"  />
                   <div class='p_time'>{{item.endtime}}</div>
                   <div class='p_name'>{{item.career_desc}}</div>
               </div>
             </div> 
-            <el-steps :active="5"  style="margin-bottom: 14px;" :key="index" >
+            <el-steps :active="5"  style="margin-bottom: 14px">
                 <el-step title="" description="2008.10.10至2010.10.10就任于海淀分局"></el-step>
                 <el-step title="" description="2010.10.10至2012.10.10就任于朝阳分局"></el-step>
                 <el-step title="" description="2012.10.10至2014.10.10就任于分局主任"></el-step>
                 <el-step title="" description="2014.10.10至2016.10.10就任于分局局长"></el-step>
                 <el-step title="" description="2016.10.10至2018.10.10就任于海淀分局"></el-step>
-              </el-steps>
+            </el-steps>
            </div>   
       </div>
     </div>
@@ -595,6 +595,7 @@ export default {
         userId: '1D2G3F4H'
       }
       getPoliceCareer(params).then(res => {
+        debugger
         console.log(res)
         if (res.success) {
           const Data = res.data
@@ -606,7 +607,7 @@ export default {
         let width = this.$refs.career_list.scrollWidth
         $(this.$refs.career_list).animate({scrollLeft:width },8000)
         for(var i=0; i<_this.careerData.length; i++){
-          this.marksData.push(_this.careerData[i].marks)
+          _this.marksData.push(_this.careerData[i].marks[0])
         }
       }
     })
@@ -653,25 +654,27 @@ export default {
 }
   /* 定义滚动条样式 */
   ::-webkit-scrollbar {
-  width: 6px;
+  /* width: 16px; */
   height: 6px;
-  background-color: rgba(240, 240, 240, 1);
+  background-color: rgb(187, 21, 21);
 }
  
 /*定义滚动条轨道 内阴影+圆角*/
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: rgba(240, 240, 240, .5);
-}
+} */
  
 /*定义滑块 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
   background-color: rgba(240, 240, 240, .5);
+  width: 20px;
+  height: 20px;
 }
-.scroll-list ul{
+/* .scroll-list ul{
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
     overflow-x: auto;
@@ -680,7 +683,7 @@ export default {
     margin-bottom: -.2rem;
     overflow: -moz-scrollbars-none;
     overflow: -moz-scrollbars-none;
-}
+} */
 .scroll-list ul::-webkit-scrollbar{
     display: none;
 }
