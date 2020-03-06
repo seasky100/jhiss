@@ -26,6 +26,12 @@ export default [
                 path: "/Personnel_relation",
                 component: () => import('@/views/wisdomSupervision/org_relationship/Personnel_relation')
             },
+            {
+                title: '层级评价',
+                icon: 'el-icon-menu',
+                path: "/HierEvaluation",
+                component: () => import('@/views/wisdomSupervision/HierEvaluation')
+            },
             // 事项申报
             {
                 title: '事项申报',
@@ -179,11 +185,33 @@ export default [
                 component: () => import('@/views/wisdomSupervision/org_report_apply/Other_matters')
             },
             {
+                title:'年度报告',
+                icon: 'el-icon-menu',
+                path: "/AnnualReportList",
+                name: "AnnualReportList",
+                component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportList')
+            },
+            {
+                title:'年度报告详情',
+                hidden: true,
+                icon: 'el-icon-menu',
+                path: "/AnnualReportInfo",
+                name: "AnnualReportInfo",
+                component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportInfo')
+            },
+            {
                 title:'警示教育',
                 icon: 'el-icon-menu',
                 path: "/Caution",
                 name: "Caution",
                 component: () => import('@/views/wisdomSupervision/Caution')
+            },
+            {
+                title:'廉政文化课堂',
+                icon: 'el-icon-menu',
+                path: "/government_Clture",
+                name: "government_Clture",
+                component: () => import('@/views/wisdomSupervision/government_Clture')
             },
             {
                 title: '检查通报',

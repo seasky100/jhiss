@@ -1,34 +1,39 @@
 <template>
-  <div class="IndividualReport">
-    <div class="individual_title">
-      个人即报
+  <div class="container">
+    <div class="page-title">
+      <span>个人即报</span>
     </div>
-		<div class="Individual_type">
-			<span @click="ApplyReport(item)" style="display:inline-block;"
-				v-for="(item,index) of typeList" 
-				:key="index">
-				{{item.name}}
-			</span>
-		</div>
-		<!-- 1111111 -->
-		<div>
-      <p>查询条件</p>
-      <e-search
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm" />
-      <e-table
-        ref="recordSpTableRef"
-        :tableList="tableList"
-        :options="options"
-        :columns="columns"
-        @afterCurrentPageClick="afterCurrentPageClickHandle"
-      />
+    <div class="Individual_type">
+      <span @click="ApplyReport(item)" style="display:inline-block;"
+        v-for="(item,index) of typeList" 
+        :key="index">
+        {{item.name}}
+      </span>
     </div>
-		<!-- 1111111 -->
+    <div class="content">
+      <div class="search-wrap">
+        <div class="section-title">查询条件</div>
+        <e-search
+          class="search-form"
+          @handleSearch="handleSearch"
+          :searchData="searchData"
+          :searchForm="searchForm" />
+      </div>
+      <div>
+        <e-table
+          ref="recordSpTableRef"
+          :tableList="tableList"
+          :options="options"
+          :columns="columns"
+          @afterCurrentPageClick="afterCurrentPageClickHandle"
+        />
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import { findReportPage } from '@/api/report.js';
+
 export default {
   name: "IndividualReport",
   data() {
@@ -52,7 +57,7 @@ export default {
         userName: '',
         policeCode: '',
         department: '',
-        problemType: '',
+        status: '',
         startTime: '',
         endTime: ''
 			},
@@ -108,7 +113,7 @@ export default {
 				},
 				{
           type: 'select',
-          prop: 'problemType',
+          prop: 'status',
           width: '150px',
           options: [
 						{label:'审批中', value:'1'},
@@ -132,32 +137,33 @@ export default {
 			},
 			columns: [
         {
-          prop: 'bulletinTitle',
+          prop: 'policeCode',
           label: '发起人警号',
           align: 'left'
         },
         {
-          prop: 'policeCode',
+          prop: 'approvalName',
           label: '发起人姓名',
           align: 'left'
         },
         {
-          prop: 'bulletinObject',
+          prop: 'department',
           label: '发起人部门',
           align: 'left'
         },
         {
-          prop: 'bulletinDate',
+          prop: 'approvalStatus',
           label: '即报类型',
           align: 'left'
         },
         {
-          prop: 'problemNature',
+          prop: 'gmtCreate',
           label: '申请时间',
-          align: 'left'
+          align: 'left',
+          type: 'date'
 				},
 				{
-          prop: 'problemNature',
+          prop: 'reportType',
           label: '审批状态',
           align: 'left'
         }
@@ -169,64 +175,62 @@ export default {
     this.init()
   },
   methods: {
-		init() {},
+		init() {
+      this.query();
+    },
 		// 查询
     handleSearch(params) {
       Object.assign(this.searchData, params);
-      console.log(params)
       this.query();
 		},
 		// 分页点击事件
     afterCurrentPageClickHandle(val, next) {
 			this.query(val);
-			console.log(val)
       next();
 		},
 		ApplyReport(value){
-			console.log(value.path)
 			this.$router.push({ path: value.path });
 		},
 		// 查询列表
     query(nCurrent = 1) {
-			console.log(nCurrent)
-      // const $this = this;
-      // findBulletinPage(
-      //   Object.assign(
-      //     {
-      //       nCurrent: nCurrent,
-      //       nSize: 10
-      //     },
-      //     $this.searchData
-      //   )
-      // ).then(res => {
-      //   console.log(res)
-      //   this.$refs.recordSpTableRef.setPageInfo(
-      //     nCurrent,
-      //     res.data.size,
-      //     res.data.total,
-      //     res.data.records
-      //   );
-      // })
+      const $this = this;
+      findReportPage(
+        Object.assign(
+          {
+            nCurrent: nCurrent,
+            nSize: 10,
+            userId: '5ba98b66cd3549b9b92ea8723e89207e',
+            approvalId: '',
+            reportType: '1'
+          },
+          $this.searchData
+        )
+      ).then(res => {
+        this.$refs.recordSpTableRef.setPageInfo(
+          nCurrent,
+          res.data.size,
+          res.data.total,
+          res.data.records
+        );
+      })
     },
   }
 }
 </script>
 <style lang="stylus" scoped>
-.individual_title
-	height:40px;
-	line-height:40px;
-	background:#fff;
-	padding:0 10px;
-	font-size 16px
-	font-weight bold
-.Individual_type
-	line-height:40px
-	padding:0 10px
-	span 
-		padding: 0 10px
-		border-radius 5px
-		background #235ff5
-		margin 10px
-		color #fff
-		cursor pointer
+@import "../../styles/common.styl";
+
+.Individual_type{
+  padding: 10px 10px 0;
+  span{
+    margin: 0 10px 5px 0;
+		padding: 3px 14px;
+		border-radius: 2px;
+		background: rgb(35, 95, 245);
+		color: #fff;
+		cursor: pointer;
+  }
+}
+	
+	
 </style>

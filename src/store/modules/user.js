@@ -1,4 +1,4 @@
-import { checkTokenByAppKey, getUserInfo, signOut } from '@/api/user-server.js'
+import { checkTokenByAppKey, getUserInfo, signOut, getOrganization } from '@/api/user-server.js'
 
 const state = {
     token: sessionStorage.getItem('token') || '',
@@ -10,6 +10,7 @@ const state = {
     userPermissions: sessionStorage.getItem('userPermissions') || [],
     orgCode: sessionStorage.getItem('orgCode') || [],
     orgName: sessionStorage.getItem('orgName') || [],
+    orgData: JSON.parse(sessionStorage.getItem('orgData')) || null,
     userInfo: sessionStorage.getItem('userInfo') || {}
 }
 
@@ -57,6 +58,10 @@ const mutations = {
     },
     CLEAR_SESSION: (state) => {
         sessionStorage.clear()
+    },
+    SETORGDATA: (state, data) => {
+        state.orgData = data
+        sessionStorage.setItem('orgData', JSON.stringify(data))
     }
 }
 
@@ -106,6 +111,15 @@ const actions = {
         signOut().then(res => {
             if (res && res.success) {
                 commit('CLEAR_SESSION')
+            }
+        })
+    },
+    // 获取机构
+    getOrgData({ commit }) {
+        getOrganization().then(res => {
+            if (res && res.success) {
+                const { data } = res
+                commit('SETORGDATA', data)
             }
         })
     }

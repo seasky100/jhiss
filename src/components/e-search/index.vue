@@ -146,6 +146,9 @@
     <el-form-item v-if="!disabled">
       <el-button type="primary" @click="submitForm">查询</el-button>
       <el-button @click="resetForm">清空</el-button>
+      <el-button v-if="btnsConfig.showAdd" @click="addClickHandle">新增</el-button>
+
+
       <el-button v-if="addForm != ''" @click="addFormClick">新增</el-button>
     </el-form-item>
   </el-form>
@@ -166,6 +169,14 @@ export default {
     },
     rules: {
       type: Object
+    },
+    btnsConfig: {
+      type: Object,
+      default: () => {
+        return {
+          showAdd: false
+        }
+      }
     },
     inlineFlag: {
       type: Boolean,
@@ -224,9 +235,10 @@ export default {
     };
   },
   mounted(){
-    this.getOrgData()
+    // this.getOrgData()
   },
   methods: {
+    // 提交
     submitForm() {
       if (this.rules) {
         return this.$refs["ruleForm"].validate(valid => {
@@ -236,6 +248,7 @@ export default {
       }
       this.$emit("handleSearch", this.searchData);
     },
+    // 重置
     resetForm() {
       this.$refs['ruleForm'].resetFields();
       this.searchForm.forEach(item => {
@@ -246,6 +259,11 @@ export default {
       })
       this.$emit("handleSearch", this.searchData);
     },
+    // 点击新增
+    addClickHandle() {
+      this.$emit('addClickHandle');
+    },
+
     addFormClick(){
       const _this = this
       this.$router.push({ path: _this.addForm});

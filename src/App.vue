@@ -10,6 +10,9 @@ export default {
     return {
     }
   },
+  created() {
+    this.$store.dispatch('user/getOrgData')
+  },
   mounted() {
     const token = sessionStorage.getItem('token')
     if(token){

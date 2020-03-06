@@ -164,7 +164,7 @@
                           size="14px"
                           :icon="btn"
                         /> -->
-                        {{ btn.label }}
+                        <span style="margin-left:5px;" v-html="btn.label"></span>
                       </el-link>
                     </span>
                   </template>
@@ -437,6 +437,9 @@ export default {
     font-family: Microsoft YaHei !important;
     font-weight: 400 !important;
     color: rgba(51, 51, 51, 1) !important;
+    text-align: center;
+  td
+    text-align: center;
 
   .el-table__row--striped td
     background-color: rgba(247, 250, 255, 1) !important;

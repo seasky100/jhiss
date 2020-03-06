@@ -1,153 +1,267 @@
 <template>
-  <div class="talk_add">
-		<div class="individual_title">
-      境外存款
+  <div class="report-container">
+		<div class="report-title">
+      <span>境外存款</span>
     </div>
-		<div style="float:left;width:50%;margin:0 20px;">
-			<div style="width:70%;margin:10px;padding:13px;border-radius:5px;font-size:14px;background:#f9f2ec;">
-				<span style="color: #E6A061; background: '#F9F2EC'; userSelect:text;">
-					②填报在国（境）外的国家或者地区（包括香港、澳门、台湾）的银行业金融机构的存款情况，包括人民币和外币。③在国（境）外中资银行及其分支机构的存款属于国（境）外的存款，需要报告。在我国境内设立的外资银行及其分支机构的存款不属于国（境）外存款，不需要报告。
-				</span>
+		<div class="report-content">
+			<div class="tip">
+        父母、配偶、子女及其配偶投资非上市公司、企业的情况，注册个体工商户、个人独资企业或合伙企业的情况，以及本人、配偶、共同生活的子女在国（境）外投资、存款等情况，事后7日内报告。
 			</div>
-			<e-search :inlineFlag="inlineFlag"
-				:label_position="label_position"
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm" />
-		</div>
-    <!-- 流程图 -->
-		<div style="float:left;margin:40px 0 0 50px;">
-			<div class="individual_title">
-				境外存款
-			</div>
-			<el-steps direction="vertical" :active="1" finish-status="success">
-				<el-step title="步骤 1">
-					<i class="step01" slot="icon">
-							<!-- <img :src="[commandmenubg==item.class?item.imgSrc_hover:item.imgSrc]"
-									style="position: absolute;top: -6px;left: -6px;" /> -->
-						<img />
-					</i>
-					<i slot="title" style="background:none;">
-							步骤一一
-					</i>
-					<i slot="description" style="background:none;margin:0px 5px 20px;">
-							详情意义
-					</i>
-				</el-step>
-				<el-step title="步骤 2"></el-step>
-				<el-step title="步骤 3" description="这是一段很长很长很长的描述性文字"></el-step>
-			</el-steps>
+
+      <div class="form-content">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="top">
+          <el-form-item label="存款人姓名" prop="name">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="与本人关系" prop="relation">
+            <el-select v-model="ruleForm.relation" placeholder="请选择">
+              <el-option
+                v-for="item in relationOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="存款的国家（地区）及城市" prop="country">
+            <el-input v-model="ruleForm.country"></el-input>
+          </el-form-item>
+          <el-form-item label="开户银行或金融机构全称" prop="bankAccount">
+            <el-input v-model="ruleForm.bankAccount"></el-input>
+          </el-form-item>
+          <el-form-item label="币种" prop="currency">
+            <el-input v-model="ruleForm.currency"></el-input>
+          </el-form-item>
+          <el-form-item label="存款金额（万元）" prop="amountPaid">
+            <el-input v-model="ruleForm.amountPaid"></el-input>
+          </el-form-item>
+          <el-form-item label="备注" prop="comment">
+            <el-input v-model="ruleForm.comment"></el-input>
+          </el-form-item>
+          <el-form-item label="附件">
+            <e-upload />
+          </el-form-item>
+          <el-form-item label="审批人" required>
+            <el-col :span="11">
+              <el-form-item prop="department">
+                <select-tree 
+                  v-model="ruleForm.department"
+                  :props="config"
+                  :treeData="orgData"
+                  @change="orgChange"
+                  placeholder="请选择部门" />
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="approvalId">
+                <el-select v-model="ruleForm.approvalId" placeholder="请选择" @change="selectChange">
+                  <el-option
+                    v-for="item in approvalArr"
+                    :key="item.id"
+                    :label="item.realName"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+          <el-form-item style="text-align: center;">
+            <el-button type="primary" @click="submit">提交</el-button>
+            <el-button>取消</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 		</div>
   </div>
 </template>
 <script>
+import { saveOverseasDeposit } from '@/api/report.js';
+import { getUserList } from '@/api/user-server.js';
+
+import getFlowNode from '../../../mixin/getFlowNode.js';
+
+import { mapGetters } from 'vuex';
+
 export default {
-  name: "Offshore_deposits",
+  mixins: [getFlowNode],
   data() {
     return {
-			inlineFlag:false,
-			label_position:'top',
-			// org_flag: false,
-      searchData: {
-        userName: '',
-        policeCode: '',
+      ruleForm: {
+        name: '',
+        relation: '',
+        country: '',
+        bankAccount: '',
+        currency: '',
+        amountPaid: '',
+        comment: '',
         department: '',
-        problemType: '',
-        startTime: '',
-        endTime: ''
-			},
-			searchForm: [
-        {label:'存款人姓名',type: 'input', prop: 'policeCode',  placeholder: ''},
-        {
-					label:'与本人关系',
-          type: 'select',
-          prop: 'department',
-          width: '100%',
-          options: [
-            {label:'本人', value:'0'},
-            {label:'妻子', value:'1'},
-            {label:'丈夫', value:'2'},
-            {label:'儿子（共同生活）', value:'3'},
-            {label:'女儿（共同生活）', value:'4'}
-          ],
-          change: row => console.log(row),
-          placeholder: ''
-        },
-        {label:'存款的国家（地区）及城市',type: 'input', prop: 'policeCode',  placeholder: ''},
-        {label:'开户银行或金融机构全称',type: 'input', prop: 'policeCode',  placeholder: ''},
-        {label:'币种',type: 'input', prop: 'policeCode',  placeholder: ''},
-        {label:'存款金额（万元）',type: 'input', prop: 'policeCode',  placeholder: ''},
-				{label:'备注',type: 'input', prop: 'policeCode',  placeholder: ''},
-				{label:'附件',type: 'file', prop: 'policeCode',  placeholder: ''},
-				{
-					label:'审批人',
-          type: 'select_tree',
-          prop: 'department',
-          width: '100%',
-          options: [
-            {
-              prop: 'selectOrg',
-              format: '',
-              valueformat: '',
-              placeholder: '请选择机构'
-            },
-            {
-              prop: 'selectPerson',
-              format: '',
-              valueformat: '',
-              placeholder: '请选择审批人'
-            }
-          ],
-          change: row => console.log(row),
-          placeholder: ''
-				}
-			],
+        approvalId: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        relation: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        country: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        bankAccount: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        currency: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        amountPaid: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        department: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        approvalId: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ]
+      },
+      relationOptions: [
+        {label:'本人', value:'0'},
+        {label:'妻子', value:'1'},
+        {label:'丈夫', value:'2'},
+        {label:'儿子（共同生活）', value:'3'},
+        {label:'女儿（共同生活）', value:'4'}
+      ],
+      // 部门配置
+      config: {
+        value: 'id',
+        label: 'name',
+        children: 'childrens',
+        disabled: true
+      },
+      // 审批人
+      approvalArr: [],
+      // 审批人对象
+      approvalList: []
     }
   },
-  watch: {
-		filterText(val) {
-			this.$refs.tree.filter(val);
-		}
-	},
-  mounted() {
-    this.init()
+  computed: {
+    ...mapGetters([
+      'orgData'
+    ])
   },
   methods: {
-		init() {
-			// this.getOrgData()
-		},
-		// 查询
-    handleSearch(params) {
-      // Object.assign(this.searchData, params);
-      console.log(params)
-      // this.query();
-		}
+    // 机构人员 下拉change事件
+    orgChange(orgId) {
+      this.getUserListData(orgId);
+    },
+    // 获取机构对应的人员
+    getUserListData(id) {
+      const params = {
+        orgId: id
+      }
+      getUserList(params).then(res => {
+        if(res.success && res.data && res.data.length > 0) {
+          this.approvalArr = res.data;
+        }
+      })
+    },
+    // 提交
+    submit() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          const params = {
+            flowProcess: {
+              flowId: this.flowId,
+              reportType: '112',
+              sponsorId: '5ba98b66cd3549b9b92ea8723e89207e',
+              sponsorName: '超级管理员',
+              policeCode: '12345678',
+              department: '治安支队',
+              flowHistory: this.flowNodeList.map((item, index) => ({
+                node: item.orders,
+                name: item.name,
+                approvalId: this.approvalList[index].id,
+                approvalName: this.approvalList[index].realName
+              }))
+            },
+            amountPaid: this.ruleForm.amountPaid,
+            bankAccount: this.ruleForm.bankAccount,
+            comment: this.ruleForm.comment,
+            country: this.ruleForm.country,
+            currency: this.ruleForm.currency,
+            name: this.ruleForm.name,
+            relation: this.ruleForm.relation
+          }
+          saveOverseasDeposit(params).then(res => {
+            // console.log(res);
+            if(res.success) {
+              this.$message({
+                type: 'success',
+                message: '提交成功'
+              })
+              this.$router.push('/IndividualReport')
+            }else {
+              this.$message({
+                type: 'error',
+                message: '提交失败'
+              })
+            }
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '请填写表单'
+          })
+          return false;
+        }
+      });
+    },
+    selectChange(val) {
+      const result = this.approvalArr.filter(item => {
+        return item.id === val;
+      })
+      this.approvalList = result;
+    }
+  },
+  mounted() {
+    this.getData('201')
   }
 }
 </script>
 <style lang="stylus" scoped>
-/*滚动条样式*/
-::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
-::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
-::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
-.date_pick{
-    width: 100% !important;
-}
-.selectDiv{
-  height:350px;
-}
-.el-scrollbar .el-scrollbar__wrap {overflow-y: hidden;}
-.selectDiv .el-tree>.el-tree-node{display:inline-block;}
-.talk_add
-  margin: 2%
-.selectDiv
-	position absolute
-	width 40%
-	z-index 1
-.individual_title
-	height:40px;
-	line-height:40px;
-	padding:0 10px;
-	font-size 16px
-	font-weight bold
+.report-container
+  .report-title
+    padding: 8px 16px;
+    span
+      font-size: 16px;
+      color: #121518;
+      font-weight: 700;
+      height 26px;
+      padding-left: 10px;
+      position: relative
+      &:before
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: ' ';
+        width: 5px;
+        height: 100%;
+        border-radius: 5px;
+        background: #005BFF;
+  .report-content
+    width: 600px;
+    padding: 20px 0 0 40px;
+    box-sizing: border-box;
+    .tip
+      padding: 10px;
+      color: rgb(230, 160, 97);
+      background: rgb(249, 242, 236);
+      user-select: text;
+      margin-bottom: 10px;
+    .line
+      text-align: center;
+/deep/ .el-select
+  width: 100%;
+/deep/ .el-form--label-top .el-form-item__label
+  padding: 0;
 </style>

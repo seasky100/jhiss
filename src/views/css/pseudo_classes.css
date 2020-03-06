@@ -11,6 +11,17 @@ textarea:focus{
   line-height: 24px !important;
   text-align: center !important;
 }
+.el-step__main {
+  white-space:pre !important;
+  /* text-align: left; */
+}
+.my_timeline_item_line {
+  width: 180% !important;
+  height: 10px;
+  margin: -14px 0 0 -64px !important;
+  border-top: 2px solid #e4e7ed;
+  border-left: none;
+}
 .el-textarea {
   /* position: relative; */
   display: inline-block;
