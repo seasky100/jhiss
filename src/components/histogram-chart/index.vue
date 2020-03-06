@@ -6,7 +6,7 @@
       :extend="chartExtend"
       :settings="chartSettings"
       :events="events"
-      height="100%"
+      :height="height"
     ></ve-histogram>
     <div v-else class="text-secondary flex-center full-height">
       暂无数据
@@ -18,6 +18,7 @@
 export default {
   props: {
     chartData: Object,
+    height: {type: String, default: '400px'},
     color: {
       type: Array,
       default: () => {
@@ -45,9 +46,7 @@ export default {
         color: this.color,
         title: {
           text: this.title,
-          x:'center',
-          y:'top',
-          textAlign: 'center'
+          left: 'center'
         },
         // 图例（即上方显示的数据类型）
         legend: {
@@ -117,9 +116,6 @@ export default {
 }
 .overflow-hidden {
   overflow: hidden;
-}
-.full-height {
-  height: 100%;
 }
 /* .flex-center {
   display: flex;

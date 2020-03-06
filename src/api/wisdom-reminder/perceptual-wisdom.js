@@ -32,7 +32,12 @@ export function getFindMealRecordPage(params) {
     url: DEFAULT_URL.perceptualWisdom.findMealRecordPage,
     method: 'get',
     params
-  }).then(() => {})
+  }).then((res) => {
+    let size = res.data.size;
+    let data = res.data.records;
+    let total = res.data.total;
+    return { data, total, size }
+  })
 }
 
 // 【提前就餐预警】
@@ -42,5 +47,18 @@ export function getRepastSiteWarnStatistics(params) {
     url: DEFAULT_URL.perceptualWisdom.repastSiteWarnStatistics,
     method: 'get',
     params
-  }).then(() => {})
+  }).then((res) => {
+    return res.data
+  })
+}
+
+// 每日就餐预警次数统计
+export function getRepastWarnTimesStatistics(params) {
+  return request({
+    url: DEFAULT_URL.perceptualWisdom.repastWarnTimesStatistics,
+    method: 'get',
+    params
+  }).then((res) => {
+    return res.data
+  })
 }

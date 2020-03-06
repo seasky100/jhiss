@@ -86,9 +86,9 @@
           切换
         </el-button>
         <!-- router="true" -->
-        <el-menu :default-active="routes[0].path"  class="el-menu-vertical-demo" :router="true"
+        <el-menu :default-active="activeMenu" :active="activeMenu"  class="el-menu-vertical-demo" :router="true"
           background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
-          @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+          @open="handleOpen" @close="handleClose" @select="handleSelect" :collapse="isCollapse">
           <!-- 一级 -->
           <!-- <router-link to="/myiframe/home">Myiframe_主页</router-link> -->
           <NavMenu :navMenus="routes"></NavMenu>
@@ -107,6 +107,11 @@ import NavMenu from "@/components/NavMenu.vue";
 import {  mapActions } from 'vuex'
 export default {
   name: 'MenuPage',
+  provide () {
+    return {
+      MenuPage: this
+    }
+  },
   data() {
     return {
       isCollapse: false,
@@ -132,11 +137,13 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      activeMenu: '',
     }
 },
   components: { NavMenu },
-  watch: {},
+  watch: {
+  },
   computed: {
     // 获取当前路由的子路由
     routes(){
@@ -144,7 +151,9 @@ export default {
         children: this.$router.options.routes
       };
       console.log(routes)
-      return routes.children[0].children
+      var routesArr = routes.children[0].children
+      // this.activeMenu = routes.routes[0].path
+      return routesArr
     }
   },
   mounted() {
@@ -155,9 +164,15 @@ export default {
   },
   methods: {
     init() {
-      // this.$router.push({ path: '/PersonalHome' });
+      if(this.routes != null && this.routes != undefined){
+        this.activeMenu = this.routes[0].path
+      }
     },
     handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleSelect(key, keyPath) {
+      this.activeMenu = key
       console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
@@ -203,6 +218,10 @@ export default {
 
 </script>
 <style lang="stylus" scoped>
+/*滚动条样式*/
+::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
+::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
+::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
 .m_left{
   float:left;
   height:100%;

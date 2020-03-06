@@ -17,12 +17,18 @@
               </div>
             </div> 
             <el-steps :active="5"  style="margin-bottom: 14px;" :key="index" >
-                <el-step title="" description="2008.10.10至2010.10.10就任于海淀分局"></el-step>
-                <el-step title="" description="2010.10.10至2012.10.10就任于朝阳分局"></el-step>
-                <el-step title="" description="2012.10.10至2014.10.10就任于分局主任"></el-step>
-                <el-step title="" description="2014.10.10至2016.10.10就任于分局局长"></el-step>
-                <el-step title="" description="2016.10.10至2018.10.10就任于海淀分局"></el-step>
-              </el-steps>
+              <!-- <el-step title="" description="2008.10.10至2010.10.10就任于海淀分局"></el-step>
+              <el-step title="" description="2010.10.10至2012.10.10就任于朝阳分局"></el-step>
+              <el-step title="" description="2012.10.10至2014.10.10就任于分局主任"></el-step>
+              <el-step title="" description="2014.10.10至2016.10.10就任于分局局长"></el-step>
+              <el-step title="" description="2016.10.10至2018.10.10就任于海淀分局"></el-step> -->
+              <el-step v-for="(item,index) of stepList" :key="index">
+                <span slot="title">{{item.user_name}}</span>
+                <span slot="description">
+                  {{item.happen_time}}至{{item.endtime}}就任于{{item.dept_name}}
+                </span>
+              </el-step>
+            </el-steps>
            </div>   
       </div>
     </div>
@@ -266,7 +272,16 @@ export default {
       value: new Date(),
       timer:'',
       careerData:[],
-      marksData:[]
+      marksData:[],
+      stepList: []
+    }
+  },
+  watch:{
+    careerData(){
+      // console.log(this.careerData)
+      this.stepList = this.careerData.map(value => {
+        return value.marks[0]
+      })
     }
   },
   mounted() {

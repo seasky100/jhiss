@@ -1,270 +1,265 @@
 <template>
-    <el-container class="wisdom-attendance-container full-height">
-        <el-header height="40px">审批记录分析</el-header>
-        <el-main>
-            <div class="main">
-                <el-row :gutter="16" class="top-chart">
-                    <el-col :span="12">
-                        <RingChart
-                                :chart-data="checkingInResult.data"
-                                :label-map="checkingInResult.labelMap"
-                                title="数量"
-                        />
-                    </el-col>
-                    <el-col :span="12">
-                        <LineChart
-                                :chart-data="workTime.data"
-                                :label-map="workTime.labelMap"
-                                :yAxisName="workTime.yAxisName"
-                                title="请假次数"
-                        />
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col>
-                        <div class="comtainer">
-                                <div class="query-condition">
-                                    <div class="title">查询条件</div>
-                                    <div class="search">
-                                        <el-input placeholder="警号" size="mini" />
-                                        <el-input placeholder="姓名" size="mini" />
-                                        <el-select v-model="value" size="mini">
-                                            <el-option
-                                                    v-for="item in options"
-                                                    :key="item.value"
-                                                    :label="item.label"
-                                                    :value="item.value"
-                                            ></el-option>
-                                        </el-select>
-                                        <br />
-                                        <div style="margin-bottom: 8px"></div>
-                                        <el-date-picker
-                                                v-model="value1"
-                                                type="daterange"
-                                                range-separator="至"
-                                                start-placeholder="开始日期"
-                                                end-placeholder="结束日期"
-                                                size="mini"
-                                                style="margin-right: 8px"
-                                        >
-                                        </el-date-picker>
-                                        <el-select v-model="value3" size="mini">
-                                            <el-option
-                                                    v-for="item in options3"
-                                                    :key="item.value"
-                                                    :label="item.label"
-                                                    :value="item.value"
-                                            ></el-option>
-                                        </el-select>
-                                        <el-button size="mini">清空</el-button>
-                                        <el-button type="primary" size="mini">查询</el-button>
-                                    </div>
-                                </div>
-                                <el-table
-                                        :data="tableData"
-                                        style="width: 100%"
-                                        size="mini"
-                                >
-                                    <el-table-column
-                                            prop="userId"
-                                            label="警号"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="userName"
-                                            label="姓名"
-                                    >
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="department"
-                                            label="部门">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="applyTime"
-                                            label="请假时间">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="applyType"
-                                            label="请假类型">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="approvalState"
-                                            label="审核状态">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="isException"
-                                            label="是否异常">
-                                    </el-table-column>
-                                    <el-table-column
-                                            prop="operation"
-                                            label="操作">
-                                        <template  slot-scope="scope">
-                                            <el-button @click="handleClick(scope.row)" size="mini">详情</el-button>
-                                        </template>
-                                    </el-table-column>
-                                </el-table>
-                                <div class="pagination">
-                                    <el-pagination
-                                            background
-                                            layout="prev, pager, next"
-                                            :total="total"
-                                            :current-page="current"
-                                            :page-size="10"
-                                            @current-change="handleCurrentChange"
-                                    >
-                                    </el-pagination>
-                                </div>
-                            </div>
-                    </el-col>
-                </el-row>
+    <div class="container">
+        <div class="page-title">
+            <span>审批记录分析</span>
+        </div>
+        <div class="content">
+            <el-row class="bg-fff">
+                <el-col :span="12">
+                    <HistogramChart
+                            :chart-data="checkingInResult.data"
+                            :label-map="checkingInResult.labelMap"
+                            title="数量"
+                    />
+                </el-col>
+                <el-col :span="12">
+                    <LineChart
+                            :chart-data="workTime.data"
+                            :label-map="workTime.labelMap"
+                            :yAxisName="workTime.yAxisName"
+                            title="请假次数"
+                    />
+                </el-col>
+            </el-row>
+            <div class="search-wrap">
+                <div class="section-title">查询条件</div>
+                <e-search
+                        class="search-form"
+                        @handleSearch="handleSearch"
+                        :searchData="searchData"
+                        :searchForm="searchForm"
+                />
             </div>
-        </el-main>
-    </el-container>
+            <div>
+                <e-table
+                        ref="recordSpTableRef"
+                        :options="options"
+                        :columns="columns"
+                        :operates="operates"
+                        :tableList="tableList"
+                        @afterCurrentPageClick="afterCurrentPageClickHandle"
+                />
+            </div>
+        </div>
+        <!--详情-->
+        <LeaveSituationDetails ref="leaveSituationDetails" />
+    </div>
 </template>
 
 <script>
-  import HistogramChart from "@/components/histogram-chart";
-  import LineChart from '@/components/line-chart';
-  import RingChart from '@/components/ring-chart';
-  import { getApplyException, getVacationApplyByMonth, getFindVacationPage } from '@/api/wisdom-reminder/leave-analysis.js'
+import HistogramChart from "@/components/histogram-chart";
+import LineChart from '@/components/line-chart';
+import {getApplyException, getVacationApplyByMonth, getFindVacationPage} from '@/api/wisdom-reminder/leave-analysis.js'
+import LeaveSituationDetails from './model/leaveSituationDetails'
 
-  export default {
+export default {
     components: {
-      HistogramChart,
-      LineChart,
-      RingChart
+        HistogramChart,
+        LineChart,
+        LeaveSituationDetails
     },
     data() {
-      return {
-        // 审批情况
-        checkingInResult: {
-          data: {
-            columns: ['type', 'num'],
-            rows: []
-          },
-          labelMap: {
-            num: '数量'
-          }
-        },
-        // 请假次数
-        workTime: {
-          data: {
-            columns: ['month', 'applynum'],
-            rows: []
-          },
-          labelMap: {
-            applynum: '次数'
-          }
-        },
-        // 审批记录分析表格
-        tableData: [],
-        total: 0,
-        params: {
-          userId: '123',
-          deptId: '123',
-          role: '123'
+        return {
+            // 审批情况
+            checkingInResult: {
+                data: {
+                    columns: ['type', 'num'],
+                    rows: []
+                },
+                labelMap: {
+                    num: '数量'
+                }
+            },
+            // 请假次数
+            workTime: {
+                data: {
+                    columns: ['month', 'applynum'],
+                    rows: []
+                },
+                labelMap: {
+                    applynum: '次数'
+                }
+            },
+            // 审批记录分析表格
+            searchData: {
+                policeCode: '',
+                userName: '',
+                department: '',
+                startTime: '',
+                endTime: '',
+                applyType: ''
+            },
+            searchForm: [
+                {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
+                {type: 'input', prop: 'user_name', width: '120px', placeholder: '姓名'},
+                {
+                    type: 'select',
+                    prop: 'department',
+                    width: '150px',
+                    options: [],
+                    change: row => console.log(row),
+                    placeholder: '所属部门'
+                },
+                {
+                    type: 'daterange',
+                    options: [
+                        {
+                            prop: 'startTime',
+                            format: '',
+                            valueformat: '',
+                            placeholder: '起始时间'
+                        },
+                        {
+                            prop: 'endTime',
+                            format: '',
+                            valueformat: '',
+                            placeholder: '结束时间'
+                        }
+                    ]
+                },
+                {
+                    type: 'select',
+                    prop: 'applyType',
+                    width: '150px',
+                    options: [],
+                    change: row => console.log(row),
+                    placeholder: '请假类型'
+                }
+            ],
+            options: {
+                pageSize: 10,
+                hasIndex: false,
+                currentPage: 1,
+                loading: true,
+                maxHeight: null,
+                height: '500'
+            },
+            columns: [
+                {
+                    prop: 'policeCode',
+                    label: '警号',
+                    align: 'left'
+                },
+                {
+                    prop: 'userName',
+                    label: '姓名',
+                    align: 'left'
+                },
+                {
+                    prop: 'department',
+                    label: '部门',
+                    align: 'left'
+                },
+                {
+                    prop: 'leaveTime',
+                    label: '请假时间',
+                    align: 'left',
+                    // type: 'date',
+                    // dateFormat: 'yyyy-MM-dd'
+                },
+                {
+                    prop: 'applyType',
+                    label: '请假类型',
+                    align: 'left'
+                },
+                {
+                    prop: 'approvalState',
+                    label: '审批状态',
+                    align: 'left'
+                },
+                {
+                    prop: 'isException',
+                    label: '是否异常',
+                    align: 'left'
+                }
+            ],
+            operates: {
+                width: 150,
+                fixed: 'right',
+                list: [
+                    {
+                        id: '1',
+                        label: '详情',
+                        show: true,
+                        underline: false,
+                        icon: '<i class="el-icon-view"></i>',
+                        disabled: false,
+                        method: (key, row) => {
+                            this.$refs.leaveSituationDetails.open(row);
+                        },
+                        showCallback: () => {
+                            return true;
+                        }
+                    }
+                ]
+            },
+            tableList: [],
+            userParams: {
+                userId: '2020',
+                deptId: '2020',
+                role: '2020'
+            }
         }
-      }
     },
     methods: {
-      // getTableData(current) {
-      //   console.log(current);
-      // }
+        // 查询
+        handleSearch(params) {
+            Object.assign(this.searchData, params);
+            this.query();
+        },
+
+        // 分页点击事件
+        afterCurrentPageClickHandle(val, next) {
+            this.query(val);
+            next();
+        },
+
+        // 查询列表
+        query(nCurrent = 1) {
+            const $this = this;
+            getFindVacationPage(Object.assign({
+                nCurrent: nCurrent,
+                nSize: 10
+            }, $this.searchData, {userId: $this.userParams.userId})).then((res) => {
+                console.log(res);
+                this.$refs.recordSpTableRef.setPageInfo(
+                    nCurrent,
+                    res.size,
+                    res.total,
+                    res.data
+                );
+            })
+        }
     },
     created() {
-      // 审批情况统计
-      getApplyException(this.params).then((res) => {
-        let arr = []
-        for (let key in res) {
-          arr.push({
-            type: key,
-            num: res[key]
-          })
-        }
-        this.checkingInResult.data.rows = arr
-      })
-
-      // 请假按月份统计
-      getVacationApplyByMonth(this.params).then((res) => {
-         this.workTime.data.rows = res.map((item) => {
-            return {
-                month: item.month + '月',
-                applynum: item.applynum
+        // 审批情况统计
+        getApplyException(this.userParams).then((res) => {
+            let arr = []
+            for (let key in res) {
+                arr.push({
+                    type: key,
+                    num: res[key]
+                })
             }
-         })
-      })
+            this.checkingInResult.data.rows = arr
+        });
 
-      // getFindVacationPage().then((res) => {
-      //   console.log(res);
-      //   this.tableData= res.data
-      //   this.total= res.total
-      // })
+        // 请假按月份统计
+        getVacationApplyByMonth(this.userParams).then((res) => {
+            this.workTime.data.rows = res.map((item) => {
+                return {
+                    month: item.month + '月',
+                    applynum: item.applynum
+                }
+            })
+        });
+
+        // 分页表格
+        this.query();
     }
-  };
+};
 </script>
 
-<style scoped>
-    .full-height {
-        height: 100%;
-    }
-    .wisdom-attendance-container {
-        background-color: #f2f5f7;
-    }
-    .wisdom-attendance-container .main {
-        background-color: #fff;
-        padding: 16px;
-    }
-    .wisdom-attendance-container .el-header {
-        display: flex;
-        align-items: center;
-        background-color: #fff;
-        font-size: 20px;
-    }
-    .wisdom-attendance-container .top-chart {
-        height: 250px;
-    }
-    .wisdom-attendance-container .el-row {
-        margin-bottom: 16px;
-    }
-    .wisdom-attendance-container .el-row:last-of-type {
-        margin-bottom: 0;
-    }
-
-    .wisdom-attendance-container .table {
-        height: 70%;
-    }
-    .el-col {
-        height: 100%;
-    }
-
-    .comtainer {
-        height: 100%;
-    }
-    .comtainer  .query-condition {
-        border: 1px solid #E5E9F4;
-    }
-    .comtainer  .query-condition .title {
-        background-color: #F5F6F7;
-        padding: 8px;
-        border-bottom: 1px solid #E5E9F4;
-    }
-    .comtainer  .query-condition  .search {
-        padding: 8px;
-    }
-    .comtainer  .query-condition  .search .el-input {
-        width: 150px;
-        margin-right: 8px;
-    }
-    .comtainer  .query-condition  .search .el-select {
-        width: 150px;
-        margin-right: 8px;
-    }
-    .comtainer  .query-condition  .search  .el-date-picker {
-        width: 158px;
-    }
-    .comtainer  .pagination {
-        display: flex;
-        justify-content: center;
-        padding-top: 16px;
-    }
+<style lang="stylus" scoped>
+@import "../../../../styles/common.styl"
 </style>

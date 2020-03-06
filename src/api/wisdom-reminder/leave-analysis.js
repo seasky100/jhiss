@@ -19,10 +19,12 @@ export function getVacationExceptionStatistics(params) {
     url: DEFAULT_URL.askForLeave.vacationExceptionStatistics,
     method: 'get',
     params: params
-  }).then(() => {})
+  }).then((res) => {
+    return res.data
+  })
 }
 
-// 【请销假分析】- 【请假情况分析】
+// 【请销假分析】- 【审批记录分析】
 // 审批情况统计
 export function getApplyException(params) {
   return request({
@@ -45,16 +47,16 @@ export function getVacationApplyByMonth(params) {
   })
 }
 
-// 获取考勤信息分页（底部表格）
+// 获取考勤信息分页（底部表格）- (两个页面共用一个分页表格)
 export function getFindVacationPage(params) {
   return request({
-    url: DEFAULT_URL.findVacationPage,
+    url: DEFAULT_URL.askForLeave.findVacationPage,
     method: 'get',
     params: params
   }).then((res) => {
-    console.log(res);
-    let data = res.data.records
-    let total = res.data.total
-    return { data, total }
+    let size = res.data.size;
+    let data = res.data.records;
+    let total = res.data.total;
+    return { data, total, size }
   });
 }
