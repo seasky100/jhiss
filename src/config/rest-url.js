@@ -96,6 +96,8 @@ const DEFAULT_URL = {
       saveSecuredLoan: `${GAISMSERVER}securedLoan/saveSecuredLoan`, //担保借贷
       saveRelativesIllegal: `${GAISMSERVER}relativesIllegal/saveRelativesIllegal`, //涉纪涉诉事项
       saveOtherReport: `${GAISMSERVER}otherReport/saveOtherReport`, //其它事项报告
+      saveAffairApply: `${GAISMSERVER}affairApply/saveAffairApply`, //事项报告新增
+      getApprovalById: `${GAISMSERVER}weddingBanquet/getApprovalById`, //事项个人报告详情
     },
       // 用户相关
   user: {
