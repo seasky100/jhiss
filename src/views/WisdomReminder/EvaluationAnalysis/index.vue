@@ -1,22 +1,22 @@
 <template>
     <div class="container">
         <div class="page-title">
-            <span>请假情况分析</span>
+            <span>评价分析预警</span>
         </div>
         <div class="content">
             <el-row class="bg-fff">
                 <el-col :span="12">
                     <HistogramChart
-                            :chart-data="leaveTime.data"
-                            :label-map="leaveTime.labelMap"
-                            title="请假次数"
+                            :chart-data="warningType.data"
+                            :label-map="warningType.labelMap"
+                            title="预警次数"
                     />
                 </el-col>
                 <el-col :span="12">
-                    <HistogramChart
-                            :chart-data="approvalNumber.data"
-                            :label-map="approvalNumber.labelMap"
-                            title="异常次数"
+                    <LineChart
+                            :chart-data="warningNumber.data"
+                            :label-map="warningNumber.labelMap"
+                            title="次数"
                     />
                 </el-col>
             </el-row>
@@ -41,54 +41,34 @@
             </div>
         </div>
         <!--详情-->
-        <LeaveSituationDetails ref="leaveSituationDetails" />
+        <EvaluationInfo ref="evaluationInfo"/>
     </div>
 </template>
 
 <script>
 import HistogramChart from "@/components/histogram-chart";
+import LineChart from "@/components/line-chart";
 import {
-    getAskForLeave,
-    getVacationExceptionStatistics,
-    getFindVacationPage
-} from "@/api/wisdom-reminder/leave-analysis.js";
-import LeaveSituationDetails from './model/leaveSituationDetails'
+    getAuditWarnBarChat,
+    getAuditWarnLineChat,
+    getFindAuditWarningPage
+} from "@/api/wisdom-reminder/evaluation-analysis.js";
+import EvaluationInfo from './modal/evaluationInfo'
 
 export default {
     components: {
         HistogramChart,
-        LeaveSituationDetails
+        LineChart,
+        EvaluationInfo
     },
     data() {
         return {
-            // 请假次数
-            leaveTime: {
-                data: {
-                    columns: ["type", "number"],
-                    rows: []
-                },
-                labelMap: {
-                    number: "次数"
-                }
-            },
-            // 审批异常数量
-            approvalNumber: {
-                data: {
-                    columns: ["type", "number"],
-                    rows: []
-                },
-                labelMap: {
-                    number: "数量"
-                }
-            },
-            // 分页表格
             searchData: {
-                policeCode: '',
-                userName: '',
+                police_code: '',
+                user_name: '',
                 department: '',
                 startTime: '',
-                endTime: '',
-                applyType: ''
+                endTime: ''
             },
             searchForm: [
                 {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
@@ -97,7 +77,7 @@ export default {
                     type: 'select',
                     prop: 'department',
                     width: '150px',
-                    options: [],
+                    options: [{label: '十分局', value: '十分局'}],
                     change: row => console.log(row),
                     placeholder: '所属部门'
                 },
@@ -117,18 +97,33 @@ export default {
                             placeholder: '结束时间'
                         }
                     ]
-                },
-                {
-                    type: 'select',
-                    prop: 'applyType',
-                    width: '150px',
-                    options: [],
-                    change: row => console.log(row),
-                    placeholder: '请假类型'
                 }
             ],
-            userId: {
-              userId: '2020'
+            // 预警类型次数
+            warningType: {
+                data: {
+                    columns: ["matter", "warnnum"],
+                    rows: []
+                },
+                labelMap: {
+                    warnnum: "数量"
+                }
+            },
+            // 预警次数
+            warningNumber: {
+                data: {
+                    columns: ["everyday", "warnnum"],
+                    rows: []
+                },
+                labelMap: {
+                    warnnum: "数量"
+                }
+            },
+            // 评价分析预警分页
+            userParams: {
+                userId: '123',
+                deptId: '123',
+                role: '123'
             },
             options: {
                 pageSize: 10,
@@ -140,12 +135,12 @@ export default {
             },
             columns: [
                 {
-                    prop: 'policeCode',
+                    prop: 'police_code',
                     label: '警号',
                     align: 'left'
                 },
                 {
-                    prop: 'userName',
+                    prop: 'user_name',
                     label: '姓名',
                     align: 'left'
                 },
@@ -155,20 +150,20 @@ export default {
                     align: 'left'
                 },
                 {
-                    prop: 'leaveTime',
-                    label: '请假时间',
+                    prop: 'warn_time',
+                    label: '预警时间',
                     align: 'left',
-                    // type: 'date',
-                    // dateFormat: 'yyyy-MM-dd'
+                    type: 'date',
+                    dateFormat: 'yyyy-MM-dd'
                 },
                 {
-                    prop: 'applyType',
-                    label: '请假类型',
+                    prop: 'warn_reason',
+                    label: '预警原因',
                     align: 'left'
                 },
                 {
-                    prop: 'isException',
-                    label: '是否异常',
+                    prop: 'note_score',
+                    label: '得分',
                     align: 'left'
                 }
             ],
@@ -184,7 +179,7 @@ export default {
                         icon: '<i class="el-icon-view"></i>',
                         disabled: false,
                         method: (key, row) => {
-                            this.$refs.leaveSituationDetails.open(row);
+                            this.$refs.evaluationInfo.open(row);
                         },
                         showCallback: () => {
                             return true;
@@ -211,11 +206,10 @@ export default {
         // 查询列表
         query(nCurrent = 1) {
             const $this = this;
-            getFindVacationPage(Object.assign({
+            getFindAuditWarningPage(Object.assign({
                 nCurrent: nCurrent,
                 nSize: 10
-            }, $this.searchData, $this.userId)).then((res) => {
-                console.log(res);
+            }, $this.searchData, $this.userParams)).then((res) => {
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
                     res.size,
@@ -226,30 +220,22 @@ export default {
         }
     },
     created() {
-        // 请假次数
-        getAskForLeave({userId: "5ba98b66cd3549b9b92ea8723e89207e"}).then((res) => {
-            let arr = [];
-            for (let key in res) {
-                arr.push({type: key, number: res[key]});
-            }
-            this.leaveTime.data.rows = arr;
+        // 日志预警柱线图
+        getAuditWarnBarChat(this.userParams).then((res) => {
+            this.warningType.data.rows = res
         });
 
-        // 请假异常情况统计
-        getVacationExceptionStatistics().then((res) => {
-            let arr = [];
-            for (let key in res) {
-                arr.push({type: key, number: res[key]});
-            }
-            this.approvalNumber.data.rows = arr;
+        // 日志预警柱线图
+        getAuditWarnLineChat(this.userParams).then((res) => {
+            this.warningNumber.data.rows = res
         });
 
-        // 分页表格
+        // 日志预警分页
         this.query();
     }
 };
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../../styles/common.styl"
+@import "../../../styles/common.styl"
 </style>
