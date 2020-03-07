@@ -220,6 +220,13 @@ export default [
                 path: "/inspectionbulletin",
                 component: () => import('@/views/WisdomReminder/InspectionBulletin')
             },
+            {
+                title: '台账管理',
+                icon: 'el-icon-menu',
+                name: 'PersonnelParameter',
+                path: '/personnel-parameter',
+                component: () => import('@/views/wisdomSupervision/PersonnelParameter')
+            }
         ]
     },
 ]

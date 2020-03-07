@@ -1,5 +1,4 @@
 <template>
-    <div class="full-height overflow-hidden">
         <ve-line
                 v-if="chartData.rows && chartData.rows.length"
                 :data="chartData"
@@ -8,10 +7,6 @@
                 :events="events"
                 :height="height"
         ></ve-line>
-        <div v-else class="text-secondary flex-center full-height">
-            暂无数据
-        </div>
-    </div>
 </template>
 
 <script>
@@ -109,18 +104,4 @@
 </script>
 
 <style scoped>
-    .full-height {
-        height: 100%;
-    }
-    .overflow-hidden {
-        overflow: hidden;
-    }
-    .full-height {
-        height: 100%;
-    }
-    .flex-center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 </style>

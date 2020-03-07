@@ -5,53 +5,53 @@
                 <el-scrollbar style="height: 100%;">
                     <div class="detail-info">
                         <div class="user-info mb-ten">
-                            <span>张三</span>
-                            <span>001</span>
-                            <span>机关纪委</span>
+                            <span>{{detailInfo.userName ? detailInfo.userName : ''}}</span>
+                            <span>{{detailInfo.policeCode ? detailInfo.policeCode : ''}}</span>
+                            <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>请假时间：</span>
-                            <span>2019年12月4日 12:33:05</span>
+                            <span>{{detailInfo.leaveTime | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>请假开始时间：</span>
-                            <span>2019年12月3日</span>
+                            <span>{{detailInfo.startTime | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>请假结束时间：</span>
-                            <span>2019年12月4日 11:44:55</span>
+                            <span>{{detailInfo.endTime | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>请假事由：</span>
-                            <span>看病</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>请假时长：</span>
-                            <span>1天</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>审批人：</span>
-                            <span>张三</span>
+                            <span>{{detailInfo.approvalUserName ? detailInfo.approvalUserName : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>审批时间：</span>
-                            <span>2019年12月20日 11:45:48</span>
+                            <span>{{detailInfo.applyTime | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>审批意见：</span>
-                            <span>同意</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>预警时间：</span>
-                            <span>2019年12月4日 11:55:18</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>预警原因：</span>
-                            <span>请假时间结束后未及时上班</span>
+                            <span>{{detailInfo.exceptionReason ? detailInfo.exceptionReason : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>预警内容：</span>
-                            <span>2019年12月4日 未打卡</span>
+                            <span></span>
                         </div>
                         <div class="advice">
                             <p>本人反馈：</p>
@@ -59,6 +59,7 @@
                                     type="textarea"
                                     :autosize="{ minRows: 3, maxRows: 6}"
                                     placeholder="请输入内容"
+                                    v-model="detailInfo.userCreate"
                             >
                             </el-input>
                         </div>
@@ -88,8 +89,7 @@
 </template>
 
 <script>
-// import { format } from 'date-fns';
-// import {getFindVacationPage} from "@/api/wisdom-reminder/leave-analysis.js";
+import { format } from 'date-fns';
 
 export default {
     props: {
@@ -98,30 +98,24 @@ export default {
             default: '评价预警'
         }
     },
+    filters: {
+        formatTime(val, type = 'yyyy-MM-dd HH:mm:ss') {
+            if(val) {
+                return format(val, type);
+            }
+        }
+    },
     data() {
         return {
-            visible: false
+            visible: false,
+            detailInfo: {}
         }
     },
     methods: {
-        open() {
-            // console.log(option);
+        open(option) {
             this.visible = true;
-            // this.getDetailInfo(option)
-        },
-        // getDetailInfo(option) {
-        //     console.log(option);
-        //     const params = {
-        //         userId: option.userId,
-        //         deptId: option.id
-        //     };
-        //     getFindVacationPage().then(res => {
-        //         // console.log(res);
-        //         if(res.success) {
-        //             this.detailInfo = res.data;
-        //         }
-        //     })
-        // }
+            this.detailInfo = option
+        }
     }
 }
 </script>
