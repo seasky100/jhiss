@@ -1,23 +1,28 @@
 <template>
-  <div class="IndividualReport">
-    <div class="individual_title">
-      事项申报
+  <div class="container">
+    <div class="page-title">
+      <span>事项申报</span>
     </div>
-		<div>
-      <p>查询条件</p>
-      <e-search
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm"
-        :addForm="addForm" />
-      <e-table
-        ref="recordTableRef"
-        :tableList="tableList"
-        :options="options"
-        :columns="columns"
-        :operates="operates"
-        @afterCurrentPageClick="afterCurrentPageClickHandle"
-      />
+		<div class="content">
+      <div class="search-wrap">
+        <div class="section-title">查询条件</div>
+        <e-search
+          class="search-form"
+          @handleSearch="handleSearch"
+          :searchData="searchData"
+          :searchForm="searchForm"
+          :addForm="addForm" />
+      </div>
+      <div>
+        <e-table
+          ref="recordTableRef"
+          :tableList="tableList"
+          :options="options"
+          :columns="columns"
+          :operates="operates"
+          @afterCurrentPageClick="afterCurrentPageClickHandle"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +37,7 @@ export default {
 			searchData: {
         userName: '',
         policeCode: '',
-        department: '',
+        approvalId: '',
         problemType: '',
         startTime: '',
         endTime: ''
@@ -42,7 +47,7 @@ export default {
         {type: 'input', prop: 'approvalName', width: '120px', placeholder: '发起人姓名'},
         {
           type: 'select',
-          prop: 'deptId',
+          prop: 'approvalId',
           width: '150px',
           options: [
             {label:'治安部门', value:'0'},
@@ -102,7 +107,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'550'
+        height:'560'
 			},
 			columns: [
         {
@@ -162,7 +167,7 @@ export default {
         list: [
           {
             id: '1',
-            label: '查看',
+            label: '详情',
             show: true,
             underline: false,
             icon: '<i class="el-icon-view"></i>',
@@ -218,7 +223,8 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: _this.userId
+            userId: '5ba98b66cd3549b9b92ea8723e89207e',
+            reportType: '2'
           },
           _this.searchData
         )
@@ -236,11 +242,5 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-.individual_title
-	height:40px;
-	line-height:40px;
-	background:#fff;
-	padding:0 10px;
-	font-size 16px
-	font-weight bold
+@import "../../styles/common.styl";
 </style>

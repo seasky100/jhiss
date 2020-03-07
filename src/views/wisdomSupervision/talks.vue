@@ -50,10 +50,12 @@ export default {
         userName: '',
         department: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        policeCode: ''
 			},
 			searchForm: [
         {label:'姓名：',type: 'input', prop: 'userName', width: '120px', placeholder: ''},
+        {label:'警号：',type: 'input', prop: 'policeCode', width: '120px', placeholder: ''},
         {
           label:'所属部门：',
           type: 'select',

@@ -254,3 +254,20 @@ export function illgalBySource (params) {
 //     data: params
 //   });
 // }
+
+// 曝光内容
+export function findExposurePage (params) {
+  return request({
+    url: DEFAULT_URL.exposure.findExposurePage,
+    method: 'get',
+    params
+  })
+}
+
+export function queryPeriodStudy (params) {
+  return request({
+    url: DEFAULT_URL.exposure.queryPeriodStudy,
+    method: 'get',
+    params
+  })
+}

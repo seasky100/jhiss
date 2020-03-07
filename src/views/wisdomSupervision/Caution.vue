@@ -1,11 +1,11 @@
 <template>
-  <div class="Caution">
-    <div class='organization_alarm flex flex-column w-full'>
+  <div class="Caution" style="height:100%;">
+    <div class='organization_alarm flex flex-column w-full' style="height:100%;">
         <div class='flex flex-align-center flex-no-shrink bg-fff' style="height:40px; padding:0 12px">
           <span class='font14 txt-bold'>警示曝光栏</span>
         </div>
-        <div class='flex flex-column' style="padding:8px 12px">
-          <div class='flex flex-justify-between w-full' style="minHeight:300px">
+        <div class='flex flex-column' style="padding:8px 12px;height:100%;">
+          <div class='flex flex-justify-between w-full' style="min-height:300px;height: 50%;">
             <div class='bg-fff r5 border-box' style="width:32.8%; padding:6px 8px 8px 14px">
               <div class='flex flex-align-center h24 w-full border-box' style="color:#121518">
                 <div class='flex-inline' style="width:5px; height:21px; borderRadius:2.5px; background:#235FF6"></div>
@@ -13,8 +13,8 @@
               </div>
               <div class='flex flex-column mt4' style="overflow:auto;">
                     <div v-for="(item,index) of ExposureList" :key="index"
-						class='flex flex-align-center flex-justify-between h32'>
-						<span>{{item.title}}</span>
+											class='flex flex-align-center flex-justify-between h32'>
+											<span>{{item.title}}</span>
                       <span class='color-grey' style="">{{new Date(item.gmtCreate).toLocaleDateString()}}</span>
                     </div>
               </div>
@@ -74,15 +74,15 @@
               </div>
               <div ref='learnContainer' class='flex flex-grow flex-column mt8'>
                 <div ref='learnContent' class='flex flex-column'>
-                      <div v-for="(item,index) of xuexi" :key="index" class='flex flex-align-center h32'> 
-                        <span style="color:blue; padding:0px 6px 0px 0px">{{index + 1}}.</span>
-                        <span>{{item.title}}</span>
-                      </div>
+										<div v-for="(item,index) of xuexi" :key="index" class='flex flex-align-center h32'> 
+											<span style="color:blue; padding:0px 6px 0px 0px">{{index + 1}}.</span>
+											<span>{{item.title}}</span>
+										</div>
                 </div>
               </div>
             </div>
           </div>
-          <div class='flex flex-justify-between w-full mt8' style="minHeight:300px">
+          <div class='flex flex-justify-between w-full mt8' style="min-height:300px;min-height:50%;">
             <div class='flex flex-column bg-fff r5 border-box' style="width:32.8%; padding:6px 8px 8px 14px">
               <div class='flex flex-align-center h24 w-full border-box' style="color:#121518">
                 <div class='flex-inline' style="width:5px; height:21px; borderRadius:2.5px; background:#235FF6"></div>
@@ -110,11 +110,12 @@
   </div>
 </template>
 <script>
+import { findExposurePage, queryPeriodStudy } from '@/api/warn.js'
 export default {
   name: "Caution",
   data() {
     return {
-		userId:'5ba98b66cd3549b9b92ea8723e89207e',
+			userId:'5ba98b66cd3549b9b92ea8723e89207e',
       typeMap: {
 				0: '违反政治纪律',
 				1: '违反组织纪律',
@@ -152,41 +153,36 @@ export default {
 			this.createChart()
 			this.creatPie()
 			this.findExposurePage()
-			this.findXuexiPage()
 			this.queryPeriodStudy()
-		},
-		findXuexiPage(){
-			const _this = this
-			this.$request.get(`/police/gaism-server/exposure/findExposurePage?nCurrent=${this.nCurrent}&nSize=${this.nSize}`)
-                .then(res => {
-					console.log(res.data)
-					let data = res.data.records
-					_this.xuexi = data
-					_this.xuexi_total = res.data.total
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-			
 		},
 		findExposurePage(){
 			const _this = this
-			this.$request.get(`/police/gaism-server/exposure/findExposurePage?nCurrent=${this.nCurrent}&nSize=${this.nSize}`)
-                .then(res => {
-					let data = res.data.records
-					console.log(data)
-					_this.ExposureList = data
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-			
+			findExposurePage(
+        Object.assign(
+          {
+						nCurrent: 1,
+						nSize: 15
+          },
+        )
+      ).then(res => {
+				// console.log(res)
+				let data = res.data.records
+				_this.xuexi = data
+				_this.ExposureList = data
+				_this.xuexi_total = res.data.total
+			})
 		},
 		queryPeriodStudy(){
 			const _this = this
-			this.$request.get(`/police/gaism-server/exposureBrowse/queryPeriodStudy?user_id=${this.userId}`)
-                .then(res => {
-					let data = res.data
+			queryPeriodStudy(
+        Object.assign(
+          {
+						user_id: _this.userId
+          },
+        )
+      ).then(res => {
+				// console.log(res)
+				let data = res.data
 					console.log(data)
 					data = data.map(obj => {
 						if(obj.timefrom == 'afternoon'){
@@ -207,25 +203,21 @@ export default {
 					let study_time_statistics = this.$echarts.init(document.getElementById('study_time_statistics'))
 					let option = this.getPieOption('学习时长',data)
 					study_time_statistics.setOption(option)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-			
+			})
 		},
 		creatPie(){
 			// let study_time_statistics = this.$echarts.init(document.getElementById('study_time_statistics'))
 			let political_type_statistics = this.$echarts.init(document.getElementById('political_type_statistics'))
 			let data =  [
-							{value: 335, name: '派出所'},
-							{value: 310, name: '交管所'},
-							{value: 234, name: '扫毒所'},
-							{value: 135, name: '巡特警'},
-							{value: 1548, name: '治安'},
-							{value: 1548, name: '警保'},
-							{value: 1548, name: '政工'},
-							{value: 1548, name: '其他'}
-						]
+				{value: 335, name: '派出所'},
+				{value: 310, name: '交管所'},
+				{value: 234, name: '扫毒所'},
+				{value: 135, name: '巡特警'},
+				{value: 1548, name: '治安'},
+				{value: 1548, name: '警保'},
+				{value: 1548, name: '政工'},
+				{value: 1548, name: '其他'}
+			]
 			let option = this.getPieOption('违纪警钟',data)
 			// study_time_statistics.setOption(option)
 			option.series[0].radius = ['30%', '90%']
@@ -252,32 +244,31 @@ export default {
 				// 		data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
 				// },
 				series: [
-						{
-								name: name,
-								type: 'pie',
-								radius: ['70%', '90%'],
-								avoidLabelOverlap: false,
-								label: {
-										normal: {
-												show: false,
-												position: 'center'
-										},
-										emphasis: {
-												show: false,
-												textStyle: {
-														fontSize: '30',
-														fontWeight: 'bold'
-												}
-										}
-								},
-								labelLine: {
-										normal: {
-												show: false
-										}
-								},
-								data: data
-								
-						}
+					{
+						name: name,
+						type: 'pie',
+						radius: ['70%', '90%'],
+						avoidLabelOverlap: false,
+						label: {
+							normal: {
+								show: false,
+								position: 'center'
+							},
+							emphasis: {
+								show: false,
+								textStyle: {
+									fontSize: '30',
+									fontWeight: 'bold'
+								}
+							}
+						},
+						labelLine: {
+								normal: {
+										show: false
+								}
+						},
+						data: data
+					}
 				]
 			}
 			return option
@@ -286,53 +277,52 @@ export default {
 			let option = {
 				color: ['#3398DB'],
 				tooltip: {
-						trigger: 'axis',
-						axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-								type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-						}
+					trigger: 'axis',
+					axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+							type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+					}
 				},
 				grid: {
-						top:'15%',
-						left: '3%',
-						right: '4%',
-						bottom: '3%',
-						containLabel: true
+					top:'15%',
+					left: '3%',
+					right: '4%',
+					bottom: '3%',
+					containLabel: true
 				},
 				xAxis: [
-						{
-								type: 'category',
-								data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-								axisLabel:{
-										rotate: 0
-								},
-								axisTick: {
-										alignWithLabel: true
-								}
+					{
+						type: 'category',
+						data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+						axisLabel:{
+							rotate: 0
+						},
+						axisTick: {
+							alignWithLabel: true
 						}
+					}
 				],
 				yAxis: [
-						{
-								name: '违纪数量',
-								type: 'value'
-						}
+					{
+						name: '违纪数量',
+						type: 'value'
+					}
 				],
 				series: [
-						{
-								name: '直接访问',
-								type: 'bar',
-								barWidth: '60%',
-								// barWidth: 14,
-								itemStyle: {
-										emphasis: {
-												barBorderRadius: [7,7,0,0]
-
-										},
-										normal: {
-												barBorderRadius: [7,7,0,0]
-										}
-								},
-								data: [10, 52, 200, 334, 390, 330, 220]
-						}
+					{
+						name: '直接访问',
+						type: 'bar',
+						barWidth: '60%',
+						// barWidth: 14,
+						itemStyle: {
+							emphasis: {
+								barBorderRadius: [7,7,0,0]
+							},
+							normal: {
+								barBorderRadius: [7,7,0,0]
+							}
+						},
+						data: [10, 52, 200, 334, 390, 330, 220]
+					}
 				]
 			}
 			return option

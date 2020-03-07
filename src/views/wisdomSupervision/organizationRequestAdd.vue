@@ -1,127 +1,243 @@
 <template>
-  <div class="talk_add">
-		<div class="individual_title">
-      个人事项申报
+  <div class="report-container">
+		<div class="report-title">
+      <span>个人事项申报</span>
     </div>
-		<div style="float:left;width:50%;margin:0 20px;">
-			<e-search :inlineFlag="inlineFlag"
-        :disabled="disabled"
-				:label_position="label_position"
-        @handleSearch="handleSearch"
-        :searchData="searchData"
-        :searchForm="searchForm" />
-		</div>
-    <!-- 流程图 -->
-		<div style="float:left;margin:40px 0 0 50px;">
-			<div class="individual_title">
-				其他报告事项
-			</div>
-			<el-steps direction="vertical" :active="1" finish-status="success">
-				<el-step title="步骤 1">
-					<i class="step01" slot="icon">
-							<!-- <img :src="[commandmenubg==item.class?item.imgSrc_hover:item.imgSrc]"
-									style="position: absolute;top: -6px;left: -6px;" /> -->
-						<img />
-					</i>
-					<i slot="title" style="background:none;">
-							步骤一一
-					</i>
-					<i slot="description" style="background:none;margin:0px 5px 20px;">
-							详情意义
-					</i>
-				</el-step>
-				<el-step title="步骤 2"></el-step>
-				<el-step title="步骤 3" description="这是一段很长很长很长的描述性文字"></el-step>
-			</el-steps>
+		<div class="report-content">
+      <div class="form-content">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="top">
+          <el-form-item label="事项类型" prop="applyType">
+            <el-select v-model="ruleForm.applyType" placeholder="请选择">
+              <el-option
+                v-for="item in applyOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="申报开始时间" prop="applyTime">
+            <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.applyTime" style="width: 100%;"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="申报结束时间" prop="applyEnd">
+            <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="事由" prop="applyDesc">
+            <el-input type="textarea" v-model="ruleForm.applyDesc" :rows="4"></el-input>
+          </el-form-item>
+          <el-form-item label="附件">
+            <e-upload />
+          </el-form-item>
+          <el-form-item label="审批人" required>
+            <el-col :span="11">
+              <el-form-item prop="department">
+                <select-tree 
+                  v-model="ruleForm.department"
+                  :props="config"
+                  :treeData="orgData"
+                  @change="orgChange"
+                  placeholder="请选择部门" />
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="approvalId">
+                <el-select v-model="ruleForm.approvalId" placeholder="请选择" @change="selectChange">
+                  <el-option
+                    v-for="item in approvalArr"
+                    :key="item.id"
+                    :label="item.realName"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+          <el-form-item style="text-align: center;">
+            <el-button type="primary" @click="submit">提交</el-button>
+            <el-button>取消</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
 		</div>
   </div>
 </template>
 <script>
+import { saveAffairApply } from '@/api/report.js';
+import { getUserList } from '@/api/user-server.js';
+
+import getFlowNode from '../../mixin/getFlowNode.js';
+
+import { mapGetters } from 'vuex';
+
 export default {
-  name: "organizationRequestAdd",
+  mixins: [getFlowNode],
   data() {
     return {
-			inlineFlag:false,
-      label_position:'top',
-      disabled: false,
-			// org_flag: false,
-      searchData: {
-        userName: '',
-        policeCode: '',
+      ruleForm: {
+        applyType: '',
+        applyTime: '',
+        applyEnd: '',
+        applyDesc: '',
         department: '',
-        problemType: '',
-        startTime: '',
-        endTime: ''
-			},
-			searchForm: [
-        {label:'事由',type: 'input', prop: 'formData',  placeholder: '请输入事由'},
-				{
-					label:'事项类型',
-          type: 'select',
-          prop: 'reportType',
-          width: '100%',
-          options: [
-            {label:'饮酒', value:'201'},
-            {label:'离开单位', value:'202'},
-            {label:'离开辖区', value:'203'}
-          ],
-          change: row => console.log(row),
-          placeholder: ''
-        },
-        {label:'申报开始时间',type: 'date', prop: 'gmtCreate',  placeholder: '请输入事由'},
-        {label:'申报结束时间',type: 'date', prop: 'gmtCreate',  placeholder: '请输入事由'},
-				{
-					label:'审批人',
-          type: 'select_tree',
-          prop: 'department',
-          width: '100%',
-          options: [
-            {
-              prop: 'department',
-              placeholder: '请选择机构'
-            },
-            {
-              prop: 'sponsorName',
-              placeholder: '请选择审批人'
-            }
-          ],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-				}
-			],
+        approvalId: ''
+      },
+      rules: {
+        applyType: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        applyTime: [
+          { required: true, message: '请选择日期', trigger: 'change' }
+        ],
+        applyEnd: [
+          { required: true, message: '请选择日期', trigger: 'change' }
+        ],
+        applyDesc: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        department: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        approvalId: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ]
+      },
+      applyOptions: [
+        {label:'饮酒', value:'201'},
+        {label:'离开辖区', value:'202'},
+        {label:'离开单位', value:'203'}
+      ],
+      // 部门配置
+      config: {
+        value: 'id',
+        label: 'name',
+        children: 'childrens',
+        disabled: true
+      },
+      // 审批人
+      approvalArr: [],
+      // 审批人对象
+      approvalList: []
     }
   },
-  watch: {
-		filterText(val) {
-			this.$refs.tree.filter(val);
-		}
-	},
-  mounted() {
-    this.init()
+  computed: {
+    ...mapGetters([
+      'orgData'
+    ])
   },
   methods: {
-		init() {
-			let row = this.$route.query
-      console.log(row)
-      if(Object.keys(row).length > 0){
-        this.disabled = true
-        this.searchData = row
+    // 机构人员 下拉change事件
+    orgChange(orgId) {
+      this.getUserListData(orgId);
+    },
+    // 获取机构对应的人员
+    getUserListData(id) {
+      const params = {
+        orgId: id
       }
-		},
-		// 查询
-    handleSearch(params) {
-      // Object.assign(this.searchData, params);
-      console.log(params)
-      // this.query();
-		}
+      getUserList(params).then(res => {
+        if(res.success && res.data && res.data.length > 0) {
+          this.approvalArr = res.data;
+        }
+      })
+    },
+    // 提交
+    submit() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          let flowNode = this.flowNodeList.shift();
+          const params = {
+            flowProcess: {
+              flowId: this.flowId,
+              reportType: '104',
+              sponsorId: '5ba98b66cd3549b9b92ea8723e89207e',
+              sponsorName: '超级管理员',
+              policeCode: '12345678',
+              department: '治安支队',
+              flowHistory: this.flowNodeList.map((item, index) => ({
+                node: item.orders,
+                name: item.name,
+                approvalId: this.approvalList[index].id,
+                approvalName: this.approvalList[index].realName
+              }))
+            },
+            applyType: this.ruleForm.applyType,
+            applyTime: this.ruleForm.applyTime,
+            applyEnd: this.ruleForm.applyEnd,
+            applyDesc: this.ruleForm.applyDesc
+          }
+          saveAffairApply(params).then(res => {
+            // console.log(res);
+            if(res.success) {
+              this.$message({
+                type: 'success',
+                message: '提交成功'
+              })
+              this.$router.push('/IndividualReport')
+            }else {
+              this.$message({
+                type: 'error',
+                message: '提交失败'
+              })
+            }
+          })
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '请填写表单'
+          })
+          return false;
+        }
+      });
+    },
+    selectChange(val) {
+      const result = this.approvalArr.filter(item => {
+        return item.id === val;
+      })
+      this.approvalList = result;
+    }
+  },
+  mounted() {
+    this.getData('104')
   }
 }
 </script>
 <style lang="stylus" scoped>
-.individual_title
-	height:40px;
-	line-height:40px;
-	padding:0 10px;
-	font-size 16px
-	font-weight bold
+.report-container
+  .report-title
+    padding: 8px 16px;
+    span
+      font-size: 16px;
+      color: #121518;
+      font-weight: 700;
+      height 26px;
+      padding-left: 10px;
+      position: relative
+      &:before
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: ' ';
+        width: 5px;
+        height: 100%;
+        border-radius: 5px;
+        background: #005BFF;
+  .report-content
+    width: 600px;
+    padding: 20px 0 0 40px;
+    box-sizing: border-box;
+    .tip
+      padding: 10px;
+      color: rgb(230, 160, 97);
+      background: rgb(249, 242, 236);
+      user-select: text;
+      margin-bottom: 10px;
+    .line
+      text-align: center;
+/deep/ .el-select
+  width: 100%;
+/deep/ .el-form--label-top .el-form-item__label
+  padding: 0;
+/deep/ .el-textarea
+  width: 100%;
 </style>

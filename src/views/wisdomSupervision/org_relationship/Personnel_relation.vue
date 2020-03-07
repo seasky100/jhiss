@@ -46,11 +46,30 @@
         </div>
       </div>      
     </div>
+    <!-- 岗位预警 -->
+    <el-dialog v-if="warningInfo != null" class="dialog_info" title="人员信息" :visible.sync="dialogVisible">
+      <div>
+        <img style="float:left;" class="photo_img" src="@/assets/images/bg/person.png" />
+        <div style="float:left;padding:15px;line-height:25px;">
+          <span class="dialogName">{{warningInfo.userName}}</span>
+          <span style="color:#ccc;">警号：</span>{{warningInfo.policeCode}}
+          <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.orgName}}
+          <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.postName}}
+          <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}}
+        </div>
+      </div>
+      <el-table :data="warningInfo.riskContentList" class="diaTab">
+        <el-table-column property="workMatters" label="工作事项"></el-table-column>
+        <el-table-column property="riskContent" label="岗位廉政风险"></el-table-column>
+        <el-table-column property="riskMesure" label="防控措施"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 <script>
 // import treeData from './treeData.js';
 import { getUserInfo } from '@/api/user-server.js';
+import { getRiskByUserId } from '@/api/report.js';
 export default {
   name: "Personnel_relation",
   inject: ['MenuPage'],
@@ -66,7 +85,7 @@ export default {
       projectList: [
         {name: '工作日志', path: '/HierEvaluation'},
         {name: '岗位预警'},
-        {name: '谈话谈心'},
+        {name: '谈话谈心', path: '/talks'},
         {name: '责任清单'}
       ],
       submenuList: [
@@ -82,6 +101,25 @@ export default {
       ],
       model: '',
       level: 2, // 1: 只有上级；2：上下级都有；3：只有下级
+      dialogVisible: false,
+      warningInfo: null,
+      gridData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }],
     }
   },
   watch:{
@@ -158,8 +196,37 @@ export default {
       }
     },
     handleClick(value){
-      this.MenuPage.activeMenu = value.path
-      this.$router.push({path: value.path})
+      if(value.path == null){
+        if(value.name=='岗位预警') {
+          let userId = this.personInfo.id
+          this.getRiskByUserData(userId)
+        }else{
+          console.log('责任清单')
+        }
+      }else {
+        this.MenuPage.activeMenu = value.path
+        this.$router.push({path: value.path})
+      }
+    },
+    // 个人岗位预警
+    getRiskByUserData(userId){
+      const _this = this
+      console.log(userId)
+      getRiskByUserId(
+        Object.assign(
+          {
+						userId: '27b50377217444538a041e15d9b83bcc'
+          },
+        )
+      ).then(res => {
+				// console.log(res)
+				if (res.success == true) {
+          this.warningInfo = res.data[0]
+          _this.dialogVisible = true
+        } else {
+          console.log(res.message)
+        }
+			})
     }
     // 
   }
@@ -271,4 +338,17 @@ export default {
   height calc(100% - 60px)
   margin 10px
   overflow-x auto
+.dialog_info
+  .dialogName
+    display block
+    font-size 16px
+    font-weight bold
+    color #2070c1
+  .diaTab >>> td,.diaTab >>> th
+    text-align center
+  >>> .el-dialog__body
+    padding 30px 35px
+	>>> .el-dialog__header
+		border 1px solid #cccccc
+  
 </style>

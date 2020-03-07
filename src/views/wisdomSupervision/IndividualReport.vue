@@ -56,7 +56,7 @@ export default {
 			searchData: {
         userName: '',
         policeCode: '',
-        department: '',
+        approvalId: '',
         status: '',
         startTime: '',
         endTime: ''
@@ -66,7 +66,7 @@ export default {
         {type: 'input', prop: 'userName', width: '120px', placeholder: '发起人姓名'},
         {
           type: 'select',
-          prop: 'department',
+          prop: 'approvalId',
           width: '150px',
           options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
           change: row => console.log(row),
@@ -163,7 +163,13 @@ export default {
           type: 'date'
 				},
 				{
-          prop: 'reportType',
+          prop: 'approvalStatus',
+          formatter: 'reportType_format',
+          options: {
+            1: '审批中',
+            2: '已通过',
+            3: '已驳回'
+          },
           label: '审批状态',
           align: 'left'
         }
@@ -177,6 +183,10 @@ export default {
   methods: {
 		init() {
       this.query();
+    },
+    reportType_format(row, column, prop){
+      // console.log(column.options)
+      return column.options[prop]
     },
 		// 查询
     handleSearch(params) {
@@ -200,7 +210,6 @@ export default {
             nCurrent: nCurrent,
             nSize: 10,
             userId: '5ba98b66cd3549b9b92ea8723e89207e',
-            approvalId: '',
             reportType: '1'
           },
           $this.searchData

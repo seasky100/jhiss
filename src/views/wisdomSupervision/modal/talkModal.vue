@@ -35,6 +35,9 @@
       <el-form-item label="谈话类容" prop="interviewContent">
         <el-input type="textarea" v-model="form.interviewContent"></el-input>
       </el-form-item>
+      <el-form-item label="附件" prop="interviewContent">
+        <e-upload @changeHandler="changeHandler" />
+      </el-form-item>
       <div style="text-align: center;">
         <el-button v-if="opeart === 'view'" type="primary" @click="visible = false;" size="small">确认</el-button>
         <el-button v-if="opeart === 'add'" type="primary" @click="onSubmit" size="small">保存</el-button>
@@ -91,7 +94,8 @@ export default {
           label: '其他'
         }
       ],
-      interviewMans: []
+      interviewMans: [],
+      files: []
     }
   },
   computed: {
@@ -142,9 +146,22 @@ export default {
         }
       })
     },
+    // 文件
+    changeHandler(fileList) {
+      this.files = fileList;
+    },
     // 保存
     onSubmit() {
-
+      let filesParam = new FormData();
+      filesParam.append('departId', 'd96ed9abd18c4f0caa357ab83348ec56');
+      filesParam.append('time', '2020-03-05');
+      filesParam.append('content', 'ABCDEFG');
+      this.files.forEach(item => {
+        filesParam.append('file', item.raw);
+      })
+      saveInterView(filesParam).then(res => {
+        console.log(res)
+      })
     },
     // 修改
     updateHandler() {
