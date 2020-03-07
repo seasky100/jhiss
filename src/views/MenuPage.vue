@@ -34,12 +34,12 @@
             </div>
             <img class='m_img' src='../utils/img/lha.png' />
             <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()"> 超级管理员</div>
-            <img class='t_img' src='../utils/img/header_alarm@2x.png' @click="dialogVisible = true" />
+            <img class='t_img' src='../utils/img/header_alarm@2x.png' @click='agency' /> <!--@click="dialogVisible = true" -->
             <button title='退出登录' @click='signOut' >
               <img className='m_img' style="vertical-align: inherit;margin-left: 10px;" src='../utils/img/header_logout@2x.png' />
             </button>
           </header>
-          <el-dialog title="" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+          <!-- <el-dialog title="" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <div class="m_body" v-for="(item,index) in tabelData" :key="index">
               <div class='m_message'>
                 <span>{{item.name}}</span>
@@ -77,7 +77,9 @@
               <el-button @click="dialogVisible = false">取 消</el-button>
               <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
-          </el-dialog>
+          </el-dialog> -->
+          <!-- 代办箱 -->
+         <!-- <agencyBox ref="agencyBox" /> -->
         </div>
     </div>
     <div class="page_body">
@@ -90,16 +92,15 @@
           background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
           @open="handleOpen" @close="handleClose" @select="handleSelect" :collapse="isCollapse">
           <!-- 一级 -->
-          <!-- <router-link to="/myiframe/home">Myiframe_主页</router-link> -->
           <NavMenu :navMenus="routes"></NavMenu>
         </el-menu>
  
       </div>
       <div class="bodyContent" > <!-- :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 150px)'}]" -->
         <router-view/>
-        <!-- <router-link to="/myiframe/home">Myiframe_主页</router-link> -->
       </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -163,6 +164,12 @@ export default {
     this.init();
   },
   methods: {
+    // agency(){
+    //   this.$refs.agencyBox.open();
+    // },
+    agency(){
+      this.$router.push('/agency')
+    },
     init() {
       if(this.routes != null && this.routes != undefined){
         this.activeMenu = this.routes[0].path
@@ -197,6 +204,9 @@ export default {
         path: '/Salary'
       })
     },
+    // agencyBox(){
+    //   this.$refs.agencyBox.open();
+    // },
     ...mapActions('user', [
             'logout'
         ]),
