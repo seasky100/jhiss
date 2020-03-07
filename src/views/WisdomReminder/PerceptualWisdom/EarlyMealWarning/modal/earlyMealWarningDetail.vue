@@ -5,33 +5,33 @@
                 <el-scrollbar style="height: 100%;">
                     <div class="detail-info">
                         <div class="user-info mb-ten">
-                            <span>张三</span>
-                            <span>001</span>
-                            <span>机关纪委</span>
+                            <span>{{detailInfo.user_name ? detailInfo.user_name : ''}}</span>
+                            <span>{{detailInfo.police_code ? detailInfo.police_code : ''}}</span>
+                            <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>刷卡时间：</span>
-                            <span>2019年12月2日 16:00:52</span>
+                            <span>{{detailInfo.record_time | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>刷卡地点：</span>
-                            <span>1食堂刷卡</span>
+                            <span>{{detailInfo.record_place ? detailInfo.record_place : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>刷卡金额：</span>
-                            <span>12元</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>卡号：</span>
-                            <span>scsd02023423</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>预警时间：</span>
-                            <span>2019年12月4日 12:31:16</span>
+                            <span>{{detailInfo.warn_time | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>预警内容：</span>
-                            <span>早于规定时间就餐</span>
+                            <span></span>
                         </div>
                         <div class="advice">
                             <p>反馈时间：.2019年12月2日 16:00:52</p>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
+
 export default {
     props: {
         title: {
@@ -57,14 +59,23 @@ export default {
             default: '详情'
         }
     },
+    filters: {
+        formatTime(val, type = 'yyyy-MM-dd HH:mm:ss') {
+            if(val) {
+                return format(val, type);
+            }
+        }
+    },
     data() {
         return {
-            visible: false
+            visible: false,
+            detailInfo: {}
         }
     },
     methods: {
-        open() {
+        open(option) {
             this.visible = true;
+            this.detailInfo = option
         },
     }
 }

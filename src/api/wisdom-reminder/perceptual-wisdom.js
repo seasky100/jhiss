@@ -62,3 +62,17 @@ export function getRepastWarnTimesStatistics(params) {
     return res.data
   })
 }
+
+// 提前就餐分页
+export function getFindMealCardPage(params) {
+  return request({
+    url: DEFAULT_URL.perceptualWisdom.findMealCardPage,
+    method: 'get',
+    params
+  }).then((res) => {
+    let data = res.data.records;
+    let total = res.data.total;
+    let size = res.data.size;
+    return { data, total, size }
+  })
+}

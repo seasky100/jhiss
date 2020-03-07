@@ -48,7 +48,7 @@
 <script>
 import HistogramChart from "@/components/histogram-chart";
 import LineChart from '@/components/line-chart';
-import { getRepastSiteWarnStatistics, getRepastWarnTimesStatistics } from '@/api/wisdom-reminder/perceptual-wisdom.js'
+import { getRepastSiteWarnStatistics, getRepastWarnTimesStatistics, getFindMealCardPage } from '@/api/wisdom-reminder/perceptual-wisdom.js'
 import EarlyMealWarningDetail from './modal/earlyMealWarningDetail'
 
 export default {
@@ -62,38 +62,21 @@ export default {
       // 就餐预警地点统计
       repastPlace: {
         data: {
-          columns: ['place', 'num'],
-          rows: [
-            { place: '食堂1', num: 1 },
-            { place: '食堂2', num: 2 },
-            { place: '超市', num: 3 }
-          ]
+          columns: ['record_place', 'warnnum'],
+          rows: []
         },
         labelMap: {
-          num: '次数'
+          warnnum: '次数'
         }
       },
       // 就餐预警次数统计
       creditCardTime: {
         data: {
-          columns: ['date', 'num'],
-          rows: [
-            { date: '1', num: 2300 },
-            { date: '2', num: 1300 },
-            { date: '3', num: 2800 },
-            { date: '4', num: 1500 },
-            { date: '5', num: 3400 },
-            { date: '6', num: 1500 },
-            { date: '7', num: 1600 },
-            { date: '8', num: 1230 },
-            { date: '9', num: 5300 },
-            { date: '10', num: 1200 },
-            { date: '11', num: 1400 },
-            { date: '12', num: 3300 },
-          ]
+          columns: ['record_time', 'warnnum'],
+          rows: []
         },
         labelMap: {
-          num: '次数'
+          warnnum: '次数'
         }
       },
       // 表格
@@ -103,7 +86,7 @@ export default {
           department: '',
           startTime: '',
           endTime: '',
-          cardPlace: ''
+          recordPlace: ''
       },
       searchForm: [
             {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
@@ -132,6 +115,14 @@ export default {
                         placeholder: '结束日期'
                     }
                 ]
+            },
+            {
+                type: 'select',
+                prop: 'recordPlace',
+                width: '150px',
+                options: [{label: '超市', value: '超市'},{label: '食堂', value: '食堂'}],
+                change: row => console.log(row),
+                placeholder: '刷卡地点'
             }
       ],
       options: {
@@ -144,12 +135,12 @@ export default {
         },
       columns: [
             {
-                prop: 'policeCode',
+                prop: 'police_code',
                 label: '警号',
                 align: 'left'
             },
             {
-                prop: 'userName',
+                prop: 'user_name',
                 label: '姓名',
                 align: 'left'
             },
@@ -159,14 +150,14 @@ export default {
                 align: 'left'
             },
             {
-                prop: 'recordTime',
+                prop: 'record_time',
                 label: '刷卡时间',
                 align: 'left',
                 type: 'date',
                 dateFormat: 'yyyy-MM-dd'
             },
             {
-                prop: 'recordPlace',
+                prop: 'record_place',
                 label: '刷卡地点',
                 align: 'left',
             }
@@ -193,51 +184,56 @@ export default {
         },
       tableList: [],
       userParams: {
-          userID: '',
-          deptId: '',
-          role: ''
+          userID: '2020',
+          deptId: '2020',
+          role: '2020'
       }
     }
   },
   methods: {
         // 查询
         handleSearch(params) {
-            // Object.assign(this.searchData, params);
-            // this.query();
+            Object.assign(this.searchData, params);
+            this.query();
         },
 
         // 分页点击事件
         afterCurrentPageClickHandle(val, next) {
-            // this.query(val);
-            // next();
+            this.query(val);
+            next();
         },
 
         // 查询列表
-        // query(nCurrent = 1) {
-        //     const $this = this;
-        //     getFindMealRecordPage(Object.assign({
-        //         nCurrent: nCurrent,
-        //         nSize: 10,
-        //         orderByField: '',
-        //         bulletinType: '',
-        //         // isAsc: ''
-        //     }, $this.searchData, $this.userId)).then((res) => {
-        //         console.log(res);
-        //         this.$refs.recordSpTableRef.setPageInfo(
-        //             nCurrent,
-        //             res.size,
-        //             res.total,
-        //             res.data
-        //         );
-        //     });
-        // }
+        query(nCurrent = 1) {
+            const $this = this;
+            getFindMealCardPage(Object.assign({
+                nCurrent: nCurrent,
+                nSize: 10,
+                orderByField: ''
+            }, $this.searchData, {userId: '2020', role: '2020'})).then((res) => {
+                console.log(res);
+                this.$refs.recordSpTableRef.setPageInfo(
+                    nCurrent,
+                    res.size,
+                    res.total,
+                    res.data
+                );
+            });
+        }
     },
   created() {
-    // 就餐地点预警地点统计
-    getRepastSiteWarnStatistics(this.userParams).then(() => {})
+    // 就餐地点预警地点统计 (给参数userParams会无数据)
+    getRepastSiteWarnStatistics().then((res) => {
+        this.repastPlace.data.rows = res
+    })
 
-    // 每日就餐预警次数统计
-    getRepastWarnTimesStatistics(this.userParams).then(() => {})
+    // 每日就餐预警次数统计 (给参数userParams会无数据)
+    getRepastWarnTimesStatistics().then((res) => {
+        this.creditCardTime.data.rows = res
+    })
+
+    // 提前就餐分页
+    this.query()
   }
 };
 </script>

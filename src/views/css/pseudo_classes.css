@@ -11,6 +11,83 @@ textarea:focus{
   line-height: 24px !important;
   text-align: center !important;
 }
+.el-step__main {
+  white-space:pre !important;
+  /* text-align: left; */
+}
+
+.my_timeline_item_line {
+  width: 180% !important;
+  height: 10px;
+  margin: -14px 0 0 -64px !important;
+  border-top: 2px solid #e4e7ed;
+  border-left: none;
+}
+/* .a_body .el-dialog__header {
+  height: 0px;
+} */
+.a_body .selected{
+  background: #235FF5;
+  color:rgb(250, 244, 244);
+}
+ /* .selected{
+   background: #235FF5;
+  color:red;
+} */
+/* .a_body .bg{
+  color:pink;
+}
+.a_body{
+  height: 100%;
+}
+.a_body .el-container {
+  flex-direction: column;
+}
+.a_body .el-tabs--left, .el-tabs--right {
+  height: 100% !important;
+  width: 100%;
+}
+.a_body .el-dialog__body {
+  padding: 0px 0px;
+  height: 500px !important;
+  display: flex;
+} */
+.a_head{
+  height: 10%;
+  text-align: center;
+  font-size: larger;
+  margin-top: 15px;
+  font-weight: 700;
+}
+.a_left{
+  width: 100%;
+  height: 100%;
+  line-height: 50px;
+  cursor: pointer;
+  background: white;
+}
+a_conent{
+  height: 90%;
+}
+.a_menu{
+  height: 42px;
+  cursor: pointer;
+}
+/* a_right{
+  width: 80% !important;
+  background: aliceblue;
+  margin-left: 15px; 
+} */
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+background: #f0f9eb;
+}
+.a_body .el-table thead {
+line-height: 10px !important;
+}
 .el-textarea {
   /* position: relative; */
   display: inline-block;

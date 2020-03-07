@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="person_ul">
-        <li class="person_li" @click="handleClick(item3)"
+        <li class="person_li" @click="handleClick(item3, item)"
           v-for="(item3,index3) of projectList" :key="index3">
           <span>{{item3.name}}</span>
         </li>
@@ -37,7 +37,7 @@ export default {
       projectList: [
         {name: '工作日志', path: '/HierEvaluation'},
         {name: '岗位预警'},
-        {name: '谈话谈心'},
+        {name: '谈话谈心', path: '/talks'},
         {name: '责任清单'}
       ],
       labelList: [
@@ -58,10 +58,20 @@ export default {
     console.log(this.data)
   },
   methods: {
-    handleClick(value){
-      this.MenuPage.activeMenu = value.path
-      this.$router.push({path: value.path})
+    handleClick(value, personInfo){
+      if(value.path == null){
+        if(value.name=='岗位预警') {
+          let userId = personInfo.id
+          this.$parent.getRiskByUserData(userId)
+        }else{
+          console.log('责任清单')
+        }
+      }else {
+        this.MenuPage.activeMenu = value.path
+        this.$router.push({path: value.path})
+      }
     }
+    // 
   }
 };
 </script>

@@ -5,19 +5,19 @@
                 <el-scrollbar style="height: 100%;">
                     <div class="detail-info">
                         <div class="user-info mb-ten">
-                            <span>张三</span>
-                            <span>001</span>
-                            <span>机关纪委</span>
+                            <span>{{detailInfo.userName ? detailInfo.userName : ''}}</span>
+                            <span>{{detailInfo.policeCode ? detailInfo.policeCode : ''}}</span>
+                            <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
                         </div>
-                        <div>报销读取协作提效内容</div>
-                        <div>钉钉出差期间打卡位置</div>
+                        <!--                        <div>报销读取协作提效内容</div>-->
+                        <!--                        <div>钉钉出差期间打卡位置</div>-->
                         <div class="mb-ten">
                             <span>预警时间：</span>
-                            <span>2019年12月4日 12:14:29</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>预警原因：</span>
-                            <span>出差地点与报销地点城市不符</span>
+                            <span></span>
                         </div>
                         <div class="advice">
                             <p>本人反馈：</p>
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import {format} from 'date-fns';
+
 export default {
     props: {
         title: {
@@ -61,14 +63,23 @@ export default {
             default: '详情'
         }
     },
+    filters: {
+        formatTime(val, type = 'yyyy-MM-dd HH:mm:ss') {
+            if (val) {
+                return format(val, type);
+            }
+        }
+    },
     data() {
         return {
-            visible: false
+            visible: false,
+            detailInfo: {}
         }
     },
     methods: {
-        open() {
+        open(option) {
             this.visible = true;
+            this.detailInfo = option
         },
     }
 }
@@ -77,15 +88,19 @@ export default {
 <style lang="stylus" scoped>
 .detail-wrapper
     height: 55vh;
+
     .detail-info
         padding: 5px 20px;
         color: #606266;
+
         .user-info
             span
                 margin-right: 10px;
+
         .advice
             p
                 margin-bottom: 10px;
+
 .dic-select
     width: 100%;
 

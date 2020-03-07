@@ -5,25 +5,25 @@
                 <el-scrollbar style="height: 100%;">
                     <div class="detail-info">
                         <div class="user-info mb-ten">
-                            <span>张三</span>
-                            <span>001</span>
-                            <span>机关纪委</span>
+                            <span>{{detailInfo.userName ? detailInfo.userName : ''}}</span>
+                            <span>{{detailInfo.policeCode ? detailInfo.policeCode : ''}}</span>
+                            <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>刷卡时间：</span>
-                            <span>2019年12月2日 16:00:52</span>
+                            <span>{{detailInfo.recordTime  | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>刷卡地点：</span>
-                            <span>1食堂刷卡</span>
+                            <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>刷卡金额：</span>
-                            <span>12元</span>
+                            <span>{{detailInfo.money ? detailInfo.money : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>卡号：</span>
-                            <span>scsd02023423</span>
+                            <span>{{detailInfo.cardNumber ? detailInfo.cardNumber : ''}}</span>
                         </div>
                     </div>
                 </el-scrollbar>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
+
 export default {
     props: {
         title: {
@@ -40,15 +42,24 @@ export default {
             default: '详情'
         }
     },
+    filters: {
+        formatTime(val, type = 'yyyy-MM-dd HH:mm:ss') {
+            if(val) {
+                return format(val, type);
+            }
+        }
+    },
     data() {
         return {
-            visible: false
+            visible: false,
+            detailInfo: {}
         }
     },
     methods: {
-        open() {
+        open(option) {
             this.visible = true;
-        },
+            this.detailInfo = option
+        }
     }
 }
 </script>

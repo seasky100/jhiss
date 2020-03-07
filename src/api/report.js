@@ -86,6 +86,15 @@ export function noteAduit (params) {
   })
 }
 
+// 个人廉政风险岗位预警 GET /risk/getRiskByUserId
+export function getRiskByUserId (params) {
+  return request({
+    url: DEFAULT_URL.post.getRiskByUserId,
+    method: 'get',
+    params
+  })
+}
+
 // 年度报告
 export function getUserList (params) {
   return request({
