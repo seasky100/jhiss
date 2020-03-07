@@ -30,7 +30,7 @@ export function saveInterView (params) {
   return request({
     url: DEFAULT_URL.report.saveInterView,
     method: 'post',
-    params
+    data: params
   })
 }
 // 谈话谈心列表 修改
@@ -206,5 +206,21 @@ export function saveOtherReport (params) {
     url: DEFAULT_URL.report.saveOtherReport,
     method: 'post',
     data: params
+  })
+}
+// 事项报告新增
+export function saveAffairApply (params) {
+  return request({
+    url: DEFAULT_URL.report.saveAffairApply,
+    method: 'post',
+    data: params
+  })
+}
+// 事项，个人报告列表 详情
+export function getApprovalById (params) {
+  return request({
+    url: DEFAULT_URL.report.getApprovalById,
+    method: 'get',
+    params
   })
 }

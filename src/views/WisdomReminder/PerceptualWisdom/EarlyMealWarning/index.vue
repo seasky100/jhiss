@@ -1,139 +1,64 @@
 <template>
-    <el-container class="wisdom-attendance-container full-height">
-        <el-header height="40px">提前就餐预警</el-header>
-        <el-main>
-            <div class="main">
-                <el-row :gutter="16" class="top-chart">
-                    <el-col :span="12">
-                        <HistogramChart
-                                :chart-data="repastPlace.data"
-                                :label-map="repastPlace.labelMap"
-                                title="预警次数(接口无数据)"
-                        />
-                    </el-col>
-                    <el-col :span="12">
-                        <LineChart
-                                :chart-data="creditCardTime.data"
-                                :label-map="creditCardTime.labelMap"
-                                title="次数(接口无数据)"
-                        />
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col>
-                        <div class="search-comtainer">
-                            <div class="query-condition">
-                                <div class="title">查询条件</div>
-                                <div class="search">
-                                    <e-search
-                                            class="search-form"
-                                            @handleSearch="handleSearch"
-                                            :searchData="searchData"
-                                            :searchForm="searchForm" />
-                                </div>
-                            </div>
-                            <el-table
-                                    :data="tableData"
-                                    style="width: 100%"
-                                    size="mini">
-                                <el-table-column
-                                        prop="policeCode"
-                                        label="警号">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="userName"
-                                        label="姓名">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="department"
-                                        label="部门">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="reasons"
-                                        label="刷卡时间">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="reimbursementTime"
-                                        label="刷卡地点">
-                                </el-table-column>
-                                <el-table-column label="操作">
-                                    <template slot-scope="scope">
-                                        <el-button size="mini" >详情</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <div class="pagination">
-                                <el-pagination
-                                        background
-                                        layout="prev, pager, next"
-                                        :total="total">
-                                </el-pagination>
-                            </div>
-                        </div>
-                    </el-col>
-                </el-row>
+    <div class="container">
+        <div class="page-title">
+            <span>提前就餐预警</span>
+        </div>
+        <div class="content">
+            <el-row class="bg-fff">
+                <el-col :span="12">
+                    <HistogramChart
+                            :chart-data="repastPlace.data"
+                            :label-map="repastPlace.labelMap"
+                            title="预警次数"
+                    />
+                </el-col>
+                <el-col :span="12">
+                    <LineChart
+                            :chart-data="creditCardTime.data"
+                            :label-map="creditCardTime.labelMap"
+                            title="次数"
+                    />
+                </el-col>
+            </el-row>
+            <div class="search-wrap">
+                <div class="section-title">查询条件</div>
+                <e-search
+                        class="search-form"
+                        @handleSearch="handleSearch"
+                        :searchData="searchData"
+                        :searchForm="searchForm"
+                />
             </div>
-        </el-main>
-    </el-container>
+            <div>
+                <e-table
+                        ref="recordSpTableRef"
+                        :options="options"
+                        :columns="columns"
+                        :operates="operates"
+                        :tableList="tableList"
+                        @afterCurrentPageClick="afterCurrentPageClickHandle"
+                />
+            </div>
+        </div>
+        <!--详情-->
+        <EarlyMealWarningDetail ref="earlyMealWarningDetail" />
+    </div>
 </template>
 
 <script>
 import HistogramChart from "@/components/histogram-chart";
 import LineChart from '@/components/line-chart';
-import { getRepastSiteWarnStatistics } from '@/api/wisdom-reminder/perceptual-wisdom.js'
+import { getRepastSiteWarnStatistics, getRepastWarnTimesStatistics } from '@/api/wisdom-reminder/perceptual-wisdom.js'
+import EarlyMealWarningDetail from './modal/earlyMealWarningDetail'
 
 export default {
   components: {
     HistogramChart,
-    LineChart
+    LineChart,
+    EarlyMealWarningDetail
   },
   data() {
     return {
-      searchData: {
-        policeCode: '',
-        userName: '',
-        department: '',
-        startTime: '',
-        endTime: '',
-        cardPlace: ''
-      },
-      searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
-        {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
-        {
-          type: 'select',
-          prop: 'dept_id',
-          width: '150px',
-          options: [],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
-        {
-          type: 'daterange',
-          options: [
-            {
-              prop: 'startTime',
-              format: '',
-              valueformat: '',
-              placeholder: '起始日期'
-            },
-            {
-              prop: 'endTime',
-              format: '',
-              valueformat: '',
-              placeholder: '结束日期'
-            }
-          ]
-        },
-        {
-          type: 'select',
-          prop: 'cardPlace',
-          width: '150px',
-          options: [{label: '超市', value: 'cs'},{label: '食堂', value: 'st'},{label: '等等', value: 'dd'}],
-          change: row => console.log(row),
-          placeholder: '刷卡地点'
-        }
-      ],
       // 就餐预警地点统计
       repastPlace: {
         data: {
@@ -172,74 +97,151 @@ export default {
         }
       },
       // 表格
-      params: {},
-      tableData: [],
-      total: 0
+      searchData: {
+          policeCode: '',
+          userName: '',
+          department: '',
+          startTime: '',
+          endTime: '',
+          cardPlace: ''
+      },
+      searchForm: [
+            {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+            {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
+            {
+                type: 'select',
+                prop: 'department',
+                width: '150px',
+                options: [],
+                change: row => console.log(row),
+                placeholder: '所属部门'
+            },
+            {
+                type: 'daterange',
+                options: [
+                    {
+                        prop: 'startTime',
+                        format: '',
+                        valueformat: '',
+                        placeholder: '起始日期'
+                    },
+                    {
+                        prop: 'endTime',
+                        format: '',
+                        valueformat: '',
+                        placeholder: '结束日期'
+                    }
+                ]
+            }
+      ],
+      options: {
+            pageSize: 10,
+            hasIndex: false,
+            currentPage: 1,
+            loading: true,
+            maxHeight: null,
+            height: '500'
+        },
+      columns: [
+            {
+                prop: 'policeCode',
+                label: '警号',
+                align: 'left'
+            },
+            {
+                prop: 'userName',
+                label: '姓名',
+                align: 'left'
+            },
+            {
+                prop: 'department',
+                label: '部门',
+                align: 'left'
+            },
+            {
+                prop: 'recordTime',
+                label: '刷卡时间',
+                align: 'left',
+                type: 'date',
+                dateFormat: 'yyyy-MM-dd'
+            },
+            {
+                prop: 'recordPlace',
+                label: '刷卡地点',
+                align: 'left',
+            }
+        ],
+      operates: {
+            width: 150,
+            fixed: 'right',
+            list: [
+                {
+                    id: '1',
+                    label: '详情',
+                    show: true,
+                    underline: false,
+                    icon: '<i class="el-icon-view"></i>',
+                    disabled: false,
+                    method: (key, row) => {
+                        this.$refs.earlyMealWarningDetail.open(row);
+                    },
+                    showCallback: () => {
+                        return true;
+                    }
+                }
+            ]
+        },
+      tableList: [],
+      userParams: {
+          userID: '',
+          deptId: '',
+          role: ''
+      }
     }
   },
   methods: {
-    handleSearch() {}
-  },
+        // 查询
+        handleSearch(params) {
+            // Object.assign(this.searchData, params);
+            // this.query();
+        },
+
+        // 分页点击事件
+        afterCurrentPageClickHandle(val, next) {
+            // this.query(val);
+            // next();
+        },
+
+        // 查询列表
+        // query(nCurrent = 1) {
+        //     const $this = this;
+        //     getFindMealRecordPage(Object.assign({
+        //         nCurrent: nCurrent,
+        //         nSize: 10,
+        //         orderByField: '',
+        //         bulletinType: '',
+        //         // isAsc: ''
+        //     }, $this.searchData, $this.userId)).then((res) => {
+        //         console.log(res);
+        //         this.$refs.recordSpTableRef.setPageInfo(
+        //             nCurrent,
+        //             res.size,
+        //             res.total,
+        //             res.data
+        //         );
+        //     });
+        // }
+    },
   created() {
     // 就餐地点预警地点统计
-    getRepastSiteWarnStatistics({userID: '',deptId: '',role: ''}).then(() => {})
+    getRepastSiteWarnStatistics(this.userParams).then(() => {})
+
+    // 每日就餐预警次数统计
+    getRepastWarnTimesStatistics(this.userParams).then(() => {})
   }
 };
 </script>
 
-<style scoped>
-.full-height {
-    height: 100%;
-}
-.wisdom-attendance-container {
-    background-color: #f2f5f7;
-}
-.wisdom-attendance-container .main {
-    background-color: #fff;
-    padding: 16px;
-}
-.wisdom-attendance-container .el-header {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    font-size: 20px;
-}
-.wisdom-attendance-container .top-chart {
-    height: 250px;
-}
-.wisdom-attendance-container .el-row {
-    margin-bottom: 16px;
-}
-.wisdom-attendance-container .el-row:last-of-type {
-    margin-bottom: 0;
-}
-
-.wisdom-attendance-container .table {
-    height: 70%;
-}
-.el-col {
-    height: 100%;
-}
-.search-comtainer {
-    height: 100%;
-}
-
-.search-comtainer .query-condition {
-    border: 1px solid #E5E9F4;
-}
-
-.search-comtainer .query-condition .title {
-    background-color: #F5F6F7;
-    padding: 8px;
-    border-bottom: 1px solid #E5E9F4;
-}
-
-.search-comtainer .query-condition .search {
-    padding: 8px;
-}
-.search-comtainer .pagination {
-    display: flex;
-    justify-content: center;
-    padding-top: 16px;
-}
+<style lang="stylus" scoped>
+@import "../../../../styles/common.styl"
 </style>

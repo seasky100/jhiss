@@ -29,7 +29,6 @@ export default {
         const data = res.data[0];
         return _this.getFlowNode(data);
       }).then(res => {
-        console.log(res)
         if(res.success) {
           _this.flowId = res.data.id;
           _this.flowNodeList = res.data.flowNodeList;
