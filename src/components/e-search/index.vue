@@ -214,7 +214,6 @@ export default {
   },
   watch: {
     filterText(val) {
-      debugger
       this.$refs.tree.filter(val);
     }
   },

@@ -50,6 +50,7 @@
 <script>
 import { getHumanStatistics, getWarnStatusStatistics, getWarnPage } from '@/api/warn.js';
 import ViolationInfo from './modal/violationInfo';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -210,6 +211,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
+  },
   methods: {
     // 查询
     handleSearch(params) {
@@ -225,7 +231,7 @@ export default {
     // 获取考勤预警按人员名称统计
     getHumanStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       getHumanStatistics(params).then(res => {
         // console.log(res)
@@ -237,7 +243,7 @@ export default {
     // 预警处置情况统计x未反馈，已反馈，y轴对应次数
     getWarnStatusStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       getWarnStatusStatistics(params).then(res => {
         // console.log(res)
@@ -262,7 +268,7 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            user_id: '5ba98b66cd3549b9b92ea8723e89207e',
+            user_id: $this.userId,
             isAsc: false,
             orderByField: 'warnTime',
             role: 10,

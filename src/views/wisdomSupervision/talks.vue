@@ -26,7 +26,7 @@
       </div> 
     </div>
     <!-- 新增谈话类容 -->
-    <talk-modal ref="talkModal" />
+    <talk-modal ref="talkModal" @query="query" />
   </div>
 </template>
 <script>

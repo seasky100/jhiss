@@ -11,7 +11,7 @@ const state = {
     orgCode: sessionStorage.getItem('orgCode') || [],
     orgName: sessionStorage.getItem('orgName') || [],
     orgData: JSON.parse(sessionStorage.getItem('orgData')) || null,
-    userInfo: sessionStorage.getItem('userInfo') || {}
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || {}
 }
 
 const mutations = {
@@ -67,7 +67,6 @@ const mutations = {
 
 const actions = {
     loginSaveToken({ commit }, params) {
-        debugger
         return new Promise((resolve, reject) => {
             checkTokenByAppKey(params).then(res => {
                 commit('SET_USERNAME', res.data.userName)
@@ -81,7 +80,6 @@ const actions = {
     },
     // 获取用户信息
     getInfo({ commit, state }) {
-        debugger
         return new Promise((resolve, reject) => {
             getUserInfo({ userId: state.userId }).then(res => {
                 // console.log(res)
@@ -107,7 +105,6 @@ const actions = {
     },
     // 退出登录
     logout({ commit, state }) {
-        debugger
         signOut().then(res => {
             if (res && res.success) {
                 commit('CLEAR_SESSION')

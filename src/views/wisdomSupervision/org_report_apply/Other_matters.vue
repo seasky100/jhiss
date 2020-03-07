@@ -120,11 +120,11 @@ export default {
           const params = {
             flowProcess: {
               flowId: this.flowId,
-              reportType: '112',
-              sponsorId: '5ba98b66cd3549b9b92ea8723e89207e',
-              sponsorName: '超级管理员',
-              policeCode: '12345678',
-              department: '治安支队',
+              reportType: '113',
+              sponsorId: this.userId,
+              sponsorName: this.realName,
+              department: this.orgName,
+              policeCode: this.userInfo.policeCode,
               flowHistory: this.flowNodeList.map((item, index) => ({
                 node: item.orders,
                 name: item.name,

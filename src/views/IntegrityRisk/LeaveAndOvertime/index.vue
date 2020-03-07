@@ -11,6 +11,7 @@
             :chartSettings="warnStatusSettings"
             :title="warnStatusTitle"
             :chartData="warnStatusStatistics"
+            :xAxis="axisOptions"
           />
         </el-col>
         <el-col :span="12">
@@ -53,6 +54,7 @@ import {
   getVacationApplyByMonth,
   getVacationExceptionStatistics
   } from '@/api/integrity-risk-serve.js';
+  import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -63,14 +65,14 @@ export default {
     };
     this.chartSettings = {
       labelMap: {
-        warnnum: '次数'
+        applynum: '次数'
       }
     }
-    // this.chartSettings1 = {
-    //   labelMap: {
-    //     num: '数量'
-    //   }
-    // }
+    this.axisOptions = {
+      axisLabel: {
+        rotate: 30
+      }
+    }
     return {
       searchData: {
         userName: '',
@@ -124,7 +126,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'500'
+        height:'560'
       },
       columns: [
         {
@@ -175,7 +177,7 @@ export default {
         }
       ],
       warnStatusTitle: {
-        text: '预警处置情况统计'
+        text: '请假异常情况统计'
       },
       warnStatusSettings: {
         labelMap: {
@@ -196,6 +198,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
+  },
   methods: {
     // 查询
     handleSearch(params) {
@@ -211,7 +218,7 @@ export default {
     // 请假按月统计
     getVacationApply() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e',
+        userId: this.userId,
         deptId: '111',
         role: '10'
       }
@@ -229,20 +236,20 @@ export default {
     // 请假异常情况统计
     getExceptionStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       getVacationExceptionStatistics(params).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.success && res.data) {
-          // let result = [];
-          // for (let item in res.data) {
-          //   result.push({
-          //     status: item,
-          //     num: res.data[item]
-          //   })
-          // }
-          // // console.log(result);
-          // this.warnStatusStatistics.rows = result;
+          let result = [];
+          for (let item in res.data) {
+            result.push({
+              status: item,
+              num: res.data[item]
+            })
+          }
+          // console.log(result);
+          this.warnStatusStatistics.rows = result;
         } else {
           this.$message({
             type: 'warning',
@@ -259,12 +266,12 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            user_id: '5ba98b66cd3549b9b92ea8723e89207e'
+            user_id: $this.userId
           },
           $this.searchData
         )
       ).then(res => {
-        console.log(res)
+        // console.log(res)
         this.$refs.recordSpTableRef.setPageInfo(
           nCurrent,
           res.data.size,

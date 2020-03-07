@@ -77,7 +77,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'500'
+        height:'560'
       },
       columns: [
         {
@@ -175,7 +175,7 @@ export default {
           $this.searchData
         )
       ).then(res => {
-        console.log(res)
+        // console.log(res)
         this.$refs.recordSpTableRef.setPageInfo(
           nCurrent,
           res.data.size,

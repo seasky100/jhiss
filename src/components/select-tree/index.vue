@@ -1,6 +1,7 @@
 <template>
   <el-popover
     ref="popover"
+    :disabled="disabled"
     placement="bottom-start"
     trigger="click"
     @show="onShowPopover"
@@ -22,6 +23,7 @@
       ref="input"
       v-model="labelModel"
       clearable
+      :disabled="disabled"
       :style="`width: ${width}px`"
       :class="{ 'rotate': showStatus }"
       suffix-icon="el-icon-arrow-down"
@@ -70,6 +72,10 @@ export default {
         label: "label",
         children: "children"
       })
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
   UUMSSERVER = process.env.VUE_APP_PROXY_UUMS_URL;
   GMSSOSERVER = process.env.VUE_APP_PROXY_GMSSO_URL;
 } else if (process.env.NODE_ENV === 'production') {
-  console.log('这是生产环境')
+  // console.log('这是生产环境')
   GAISMSERVER = GLOBAL.GAISM_SERVER;
   UUMSSERVER = GLOBAL.UUMS_SERVER;
   GMSSOSERVER = GLOBAL.GMSSO_SERVER;
