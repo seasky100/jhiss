@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 // import Home from "../views/Home.vue";
 import MenuPage from "../views/MenuPage.vue";
 import login from "../views/Login.vue";
+
 // 个人首页
 import PersonalHome from "../views/PersonalHome";
 
@@ -57,6 +58,12 @@ const routes = [
     hidden:true,
     component: login
   },
+  // {
+  //   path: "/agency",
+  //   name: "agency",
+  //   hidden:true,
+  //   component: agency
+  // },
   //
 ];
 console.log(routes);

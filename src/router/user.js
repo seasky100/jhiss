@@ -13,4 +13,11 @@ export default [
         component: () => import('../views/user/salary.vue')
 
     },
+    {
+        title: '代办箱',
+        path: "/agency",
+        hidden:true,
+        component: () => import('../views/user/agency.vue')
+
+    },
 ]

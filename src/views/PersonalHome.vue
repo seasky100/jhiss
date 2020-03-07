@@ -10,7 +10,7 @@
           </div>
             <div ref='career_list' style="overflow: auto;height: 100%;overflow-y: hidden;" @mouseenter="penter()" @mouseleave="pleave()"> 
               <div style="width: 91%;height: calc(100% - 30px);display: -webkit-inline-box!important; margin-bottom: 14px;">
-                <div class='p_card' v-for="(item,index) in careerData" :key="index" id='index' @click="change(index)">
+                <div class='p_card' v-for="(item,index) in careerData" :key="index" @click="agency(item,index)" > <!--:class='index==selected?"selected":""'-->
                     <img src='../utils/img/home_career_reward_unselected@2x.png' style="float: right;margin: 10px;"  />
                     <div class='p_time'>{{item.endtime}}</div>
                     <div class='p_name'>{{item.career_desc}}</div>
@@ -32,9 +32,7 @@
                         </div>
                     </div>
                 </div>
-
               </div> 
-
           </div>   
         </div>
       </div>
@@ -72,6 +70,7 @@
                   <span style="margin: 0 0.5em">{{thismonth[1]||'-'}}</span>
                   <span>项</span>
                 </div>
+                
               <div class='flex-justify-between h24' style="line-height: 2.5em">
                 <div class='flex-inline' style="width: 40%">
                   <span>出国预警</span>
@@ -279,16 +278,15 @@
         timer:'',
         careerData:[],
         marksData:[],
+        selected: 0,
         timeIndex: 0,
-              timeLineList: [ {
-                    timestamp: '2019年',
-                    color: '#999',
-                    fontsize: 18,
-                    year: '2019',
-                    bgcolor: '#e4e7ed',
-                    size: '28',
-                    info: '工作室更名为：西安拓美网络科技有限公司'
-                  }]
+        warnList:[
+          { name:'出国分析',name2:'事项申报'},
+          { name:'用车预警',name2:'违规查询'},
+          { name:'差旅管理',name2:'日志预警'},
+          { name:'涉嫌违法',name2:'刷卡预警'},
+          { name:'就餐预警',name2:'审批预警'},
+          ]
       }
     },
     mounted() {
@@ -610,6 +608,10 @@
           }
         })
       },
+    //   agency(item, key) {
+    //     debugger
+    //     this.selected = key;
+    // },
       // 从警生涯数据
       getPoliceCareer(){
         const _this=this;
