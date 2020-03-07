@@ -255,7 +255,7 @@ export default {
                 );
             })
         }
-    },
+  },
   created() {
     // 统计有无护照的警员数量
     getCountPassport().then((res) => {
@@ -279,7 +279,7 @@ export default {
       for (let key in res) {
         this.goingAbroad.data.rows.push({ place: key, num: res[key] })
       }
-    })
+    });
 
     // 获取出勤出境分页
     this.query()
