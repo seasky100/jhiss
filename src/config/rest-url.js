@@ -127,6 +127,11 @@ const DEFAULT_URL = {
       noteAduit: `${GAISMSERVER}noteAudit/noteAduit`,
       countWorkNote: `${GAISMSERVER}workNote/countWorkNote`,
       getUserList: `${GAISMSERVER}user/getUserList`,
+      getRiskByUserId: `${UUMSSERVER}risk/getRiskByUserId`,
+    },
+    exposure: {
+      findExposurePage: `${GAISMSERVER}exposure/findExposurePage`,
+      queryPeriodStudy: `${GAISMSERVER}exposureBrowse/queryPeriodStudy`,
     },
   // 【智慧考勤分析】
   findClockPage: GAISMSERVER + "/tClockRecord/findClockPage", // 获取考勤信息分页
