@@ -61,11 +61,17 @@ import {
   bulletinExceptionStatistics,
   bulletinTimesStatistics
 } from '@/api/warn.js';
+import { mapGetters } from 'vuex';
 import BulletinInfo from './modal/bulletinInfo';
 
 export default {
   components: {
     BulletinInfo
+  },
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
   },
   data() {
     return {
@@ -174,7 +180,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'500'
+        height:'560'
       },
       columns: [
         {
@@ -261,7 +267,7 @@ export default {
     // 部门通报次数
     getBulletinTypeStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       bulletinTypeStatistics(params).then(res => {
         // console.log(res)
@@ -280,7 +286,7 @@ export default {
     // 问题性质
     getBulletinExceptionStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       bulletinExceptionStatistics(params).then(res => {
         // console.log(res)
@@ -299,7 +305,7 @@ export default {
     // 按月统计
     getBulletinTimesStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       bulletinTimesStatistics(params).then(res => {
         // console.log(res)

@@ -11,7 +11,7 @@ const state = {
     orgCode: sessionStorage.getItem('orgCode') || [],
     orgName: sessionStorage.getItem('orgName') || [],
     orgData: JSON.parse(sessionStorage.getItem('orgData')) || null,
-    userInfo: sessionStorage.getItem('userInfo') || {}
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || {}
 }
 
 const mutations = {
@@ -66,7 +66,7 @@ const mutations = {
 }
 
 const actions = {
-    loginSaveToken({ commit }, params) {        
+    loginSaveToken({ commit }, params) {
         return new Promise((resolve, reject) => {
             checkTokenByAppKey(params).then(res => {
                 commit('SET_USERNAME', res.data.userName)

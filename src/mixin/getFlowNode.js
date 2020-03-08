@@ -1,4 +1,5 @@
 import { getFlowByCondition, getNodeByFlowCode } from '@/api/user-server.js';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -6,6 +7,14 @@ export default {
       flowId: '',
       flowNodeList: []
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userId',
+      'realName',
+      'orgName',
+      'userInfo'
+    ])
   },
   methods: {
     // 获取code

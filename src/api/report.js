@@ -38,7 +38,7 @@ export function updateInterView (params) {
   return request({
     url: DEFAULT_URL.report.updateInterView,
     method: 'put',
-    params
+    data: params
   })
 }
 // 事项申报列表 分页

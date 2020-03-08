@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
   UUMSSERVER = process.env.VUE_APP_PROXY_UUMS_URL;
   GMSSOSERVER = process.env.VUE_APP_PROXY_GMSSO_URL;
 } else if (process.env.NODE_ENV === 'production') {
-  console.log('这是生产环境')
+  // console.log('这是生产环境')
   GAISMSERVER = GLOBAL.GAISM_SERVER;
   UUMSSERVER = GLOBAL.UUMS_SERVER;
   GMSSOSERVER = GLOBAL.GMSSO_SERVER;
@@ -170,7 +170,8 @@ const DEFAULT_URL = {
     findMealRecordPage: GAISMSERVER + '/mealRecord/findMealRecordPage', // 获取刷卡记录分页
     // 【提前就餐预警】
     repastSiteWarnStatistics: GAISMSERVER + '/warnStatistics/repastSiteWarnStatistics', // 就餐地点预警地点统计
-    repastWarnTimesStatistics: GAISMSERVER + '/warnStatistics/repastWarnTimesStatistics' // 每日就餐预警次数统计
+    repastWarnTimesStatistics: GAISMSERVER + '/warnStatistics/repastWarnTimesStatistics', // 每日就餐预警次数统计
+    findMealCardPage: GAISMSERVER + '/warn/findMealCardPage' // 提前就餐分页
   },
   // 【工作评价-评价分析预警】
   evaluation: {
@@ -178,6 +179,11 @@ const DEFAULT_URL = {
     AuditWarnLineChat: GAISMSERVER + '/AuditWarning/AuditWarnLineChat', // 日志预警折线图
     findAuditWarningPage: GAISMSERVER + '/AuditWarning/findAuditWarningPage', // 日志预警分页
     auditWarningById: GAISMSERVER + '/AuditWarning/auditWarningById' // 日志预警详情
+  },
+  // 【台账管理】-【人员台账】
+  standingBook: {
+    getUserList: '/user/getUserList', // 人员台账分页
+    getUserById: '/user/getUserById' // 人员台账详情
   }
 }
 

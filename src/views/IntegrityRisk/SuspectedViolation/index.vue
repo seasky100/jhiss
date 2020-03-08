@@ -55,6 +55,7 @@ import {
   illgalByDayStatistics
 } from '@/api/warn.js';
 import SuspectedInfo from './modal/suspectedInfo';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -199,6 +200,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
+  },
   methods: {
     // 查询
     handleSearch(params) {
@@ -214,10 +220,10 @@ export default {
     // 折线图
     getillgalByDayStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       illgalByDayStatistics(params).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.success) {
           this.humanStatistics.rows = res.data;
         }
@@ -226,7 +232,7 @@ export default {
     // 柱状图
     getillgalBySource() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e'
+        userId: this.userId
       }
       illgalBySource(params).then(res => {
         if (res.success) {
@@ -242,7 +248,7 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            user_id: '5ba98b66cd3549b9b92ea8723e89207e',
+            user_id: $this.userId,
             dept_id: '1000',
             role: '123'
           },

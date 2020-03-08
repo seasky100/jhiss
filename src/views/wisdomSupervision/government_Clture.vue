@@ -8,8 +8,8 @@ export default {
   name: "government_Clture",
   data() {
     return {
-      // http://10.121.128.2:9300/
-			src_path: 'https://www.baidu.com/'
+      // http://10.121.128.2:9300/ https://www.baidu.com/
+			src_path: 'http://10.121.128.2:9300/'
     }
   },
   watch: {

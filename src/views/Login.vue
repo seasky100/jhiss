@@ -105,7 +105,7 @@ export default {
                         base64Code: '',
                         service: getUrl() + '/police/',
                         appKey: 'JHGA'
-                    }                    
+                    }
                     signIn(params).then(res => {
                         const _this=this;
                         // console.log(res)

@@ -33,9 +33,15 @@
 </template>
 <script>
 import { findReportPage } from '@/api/report.js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: "IndividualReport",
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
+  },
   data() {
     return {
 			typeList:[
@@ -133,7 +139,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'550'
+        height:'560'
 			},
 			columns: [
         {
@@ -152,8 +158,24 @@ export default {
           align: 'left'
         },
         {
-          prop: 'approvalStatus',
+          prop: 'reportType',
           label: '即报类型',
+          formatter: 'reportType_format',
+          options: {
+            101: '婚姻情况',
+            102: '婚丧宴请',
+            103: '收受礼金',
+            104: '因私出境',
+            105: '移居国外',
+            106: '亲属从业',
+            107: '违法违纪及意外',
+            108: '房产变更',
+            109: '境外投资',
+            110: '担保借贷',
+            111: '亲属经商',
+            112: '境外存款',
+            113: '其他'
+          },
           align: 'left'
         },
         {
@@ -164,7 +186,7 @@ export default {
 				},
 				{
           prop: 'approvalStatus',
-          formatter: 'reportType_format',
+          formatter: 'approval_format',
           options: {
             1: '审批中',
             2: '已通过',
@@ -183,6 +205,9 @@ export default {
   methods: {
 		init() {
       this.query();
+    },
+    approval_format(row, column, prop) {
+      return column.options[prop]
     },
     reportType_format(row, column, prop){
       // console.log(column.options)
@@ -209,7 +234,7 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: '5ba98b66cd3549b9b92ea8723e89207e',
+            userId: $this.userId,
             reportType: '1'
           },
           $this.searchData

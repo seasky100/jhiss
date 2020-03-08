@@ -86,83 +86,6 @@
             :src="mapUrl"></el-image>
         </div>
       </div>
-      <!-- <el-row>
-        <el-col :span="14" style="padding-right: 5px;" class="flex flex-direction-column">
-          <div class="bg-fff">
-            <div class="title">车辆状态</div>
-            <div class="flex flex-justify-between car-static">
-              <div class="flex" v-for="(item, index) in vehicleCondition" :key="index">
-                <img :src="item.imgUrl" alt="">
-                <div class="flex flex-direction-column flex-justify-between count">
-                  <div class="num" :class="item.color">{{item.count}}</div>
-                  <div class="text">{{item.status}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div style="margin-top: 10px;" class="flex-grow">
-            <div class="flex" style="margin-bottom: 10px;">
-              <div class="flex" style="width: 100%;">
-                <div class="echart-item bg-fff" style="margin-right: 10px;">
-                  <div class="title">异常统计</div>
-                  <div>
-                    <ve-ring :data="abnormalStatistics" height="350px"></ve-ring>
-                  </div>
-                </div>
-                <div class="echart-item bg-fff">
-                  <div class="title">用车频次</div>
-                  <div>
-                    <ve-line
-                      :settings="frequencyChartSettings"
-                      :data="vehicleFrequency"
-                      :legend-visible="false"
-                      :extend="usageChartExtend"
-                      height="350px"></ve-line>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex" style="width: 100%;">
-              <div class="echart-item bg-fff" style="margin-right: 10px;">
-                <div class="title">部门用车统计</div>
-                <div>
-                  <e-histogram
-                    :height="'350px'"
-                    :chartSettings="departmentSettings"
-                    :chartData="departmentVehicleStatistics"
-                    :xAxis="departxAxisOptions"
-                  />
-                </div>
-              </div>
-              <div class="echart-item bg-fff">
-                <div class="title">范围提醒</div>
-                <div>
-                  <e-table
-                    ref="recordSpTableRef"
-                    :tableList="tableList"
-                    :options="options"
-                    :columns="columns"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="10" style="padding-left: 5px;">
-          <div class="bg-fff">
-            <div class="title">用车统计</div>
-            <div class="flex flex-justify-between car-static">
-              <div class="flex" v-for="(item, index) in usageStatistics" :key="index">
-                <img :src="item.imgUrl" alt="">
-                <div class="flex flex-direction-column flex-justify-between count">
-                  <div class="num" :class="item.color">{{item.count}}</div>
-                  <div class="text">{{item.status}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </el-col>
-      </el-row> -->
     </div>
   </div>
 </template>
@@ -348,7 +271,7 @@ export default {
     // 范围提醒列表
     getCarRecord() {
       getCarRecordPage().then(res => {
-        console.log(res)
+        // console.log(res)
         this.$refs.recordSpTableRef.setPageInfo(
           1,
           res.data.size,
@@ -384,9 +307,7 @@ export default {
     // 获取高度
     calcHeight() {
       const height = this.$refs.echartItem.getBoundingClientRect().height;
-      console.log('前：'+height)
       this.echartHeight = height + 'px';
-      console.log('后：'+this.echartHeight)
     }
   },
   mounted() {

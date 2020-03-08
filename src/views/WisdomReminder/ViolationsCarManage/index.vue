@@ -54,10 +54,16 @@ import {
   illUsecarHumanStatistics
 } from '@/api/warn.js';
 import CoordinateInfo from './modal/coordinateInfo';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     CoordinateInfo
+  },
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
   },
   data() {
     return {
@@ -203,7 +209,7 @@ export default {
     // 查询
     handleSearch(params) {
       Object.assign(this.searchData, params);
-      console.log(params)
+      // console.log(params)
       this.query();
     },
     // 分页点击事件
@@ -219,14 +225,14 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: '5ba98b66cd3549b9b92ea8723e89207e',
+            userId: $this.userId,
             role: '123',
             recordPlace: ''
           },
           $this.searchData
         )
       ).then(res => {
-        console.log(res)
+        // console.log(res)
         this.$refs.recordSpTableRef.setPageInfo(
           nCurrent,
           res.data.size,
@@ -238,12 +244,12 @@ export default {
     // 违规车按月统计
     getMonthIllUsecarStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e',
+        userId: this.userId,
         deptId: '111',
         role: '111'
       }
       monthIllUsecarStatistics(params).then(res => {
-        console.log(res);
+        // console.log(res);
         let result = res.data;
         if (res.success && result && result.length > 0) {
           result.forEach(item => {
@@ -256,12 +262,12 @@ export default {
     // 违规车按人统计
     getIllUsecarHumanStatistics() {
       const params = {
-        userId: '5ba98b66cd3549b9b92ea8723e89207e',
+        userId: this.userId,
         deptId: '111',
         role: '111'
       }
       illUsecarHumanStatistics(params).then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.success) {
           this.violationTimesHistogram.rows = res.data;
         }

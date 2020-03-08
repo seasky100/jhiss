@@ -21,6 +21,7 @@ const getters = {
   userPermissions: state => state.user.userPermissions,
   orgId: state => state.user.orgId,
   orgCode: state => state.user.orgCode,
-  orgName: state => state.user.orgName
+  orgName: state => state.user.orgName,
+  userInfo: state => state.user.userInfo
 }
 export default getters

@@ -28,11 +28,17 @@
 </template>
 <script>
 import { findReportPage } from '@/api/report.js';
+import { mapGetters } from 'vuex';
+
 export default {
   name: "IndividualReport",
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
+  },
   data() {
     return {
-      userId: '5ba98b66cd3549b9b92ea8723e89207e',
       addForm: '/organizationRequestAdd',
 			searchData: {
         userName: '',
@@ -174,7 +180,7 @@ export default {
             disabled: false,
             method: (key, row) => {
               console.log('row', row);
-              this.$router.push({path: '/organizationRequestAdd', query: row})
+              this.$router.push({path: '/organizationRequestAdd', query: { flowCode: row.flowCode }})
             },
             showCallback: () => {
               return true;
@@ -186,7 +192,7 @@ export default {
   },
   watch: {},
   mounted() {
-    this.init()
+    this.init();
   },
   methods: {
 		init() {
@@ -223,7 +229,7 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: '5ba98b66cd3549b9b92ea8723e89207e',
+            userId: _this.userId,
             reportType: '2'
           },
           _this.searchData

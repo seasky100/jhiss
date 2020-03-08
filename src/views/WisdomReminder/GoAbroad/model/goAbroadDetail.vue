@@ -5,25 +5,25 @@
                 <el-scrollbar style="height: 100%;">
                     <div class="detail-info">
                         <div class="user-info mb-ten">
-                            <span>张三</span>
-                            <span>001</span>
-                            <span>机关纪委</span>
+                            <span>{{detailInfo.userName ? detailInfo.userName : ''}}</span>
+                            <span>{{detailInfo.policeCode ? detailInfo.policeCode : ''}}</span>
+                            <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>借出时间：</span>
-                            <span>2019年12月4日 12:14:29</span>
+                            <span>{{detailInfo.startTime | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>归还时间：</span>
-                            <span>无</span>
+                            <span>{{detailInfo.endTime | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>预警时间：</span>
-                            <span>2019年12月4日 11:55:18</span>
+                            <span></span>
                         </div>
                         <div class="mb-ten">
                             <span>预警原因：</span>
-                            <span>超过7天未归还</span>
+                            <span></span>
                         </div>
                         <div class="advice">
                             <p>本人反馈：</p>
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
+
 export default {
     props: {
         title: {
@@ -67,14 +69,23 @@ export default {
             default: '详情'
         }
     },
+    filters: {
+        formatTime(val, type = 'yyyy-MM-dd HH:mm:ss') {
+            if(val) {
+                return format(val, type);
+            }
+        }
+    },
     data() {
         return {
-            visible: false
+            visible: false,
+            detailInfo: {}
         }
     },
     methods: {
-        open() {
+        open(option) {
             this.visible = true;
+            this.detailInfo = option
         },
     }
 }
