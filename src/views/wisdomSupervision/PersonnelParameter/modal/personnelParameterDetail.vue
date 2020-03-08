@@ -310,12 +310,12 @@
                         <div class="section-title">事项即报</div>
                         <div>
                             <div class="feedback">
-                                <div>2019年12月3日 11:50:26  房产变更  购买xx地xx小区3-2-1402号  金额13200000元，贷款500000元</div>
+                                <div>2019年12月3日 11:50:26 房产变更 购买xx地xx小区3-2-1402号 金额13200000元，贷款500000元</div>
                             </div>
                         </div>
                         <div>
                             <div class="feedback">
-                                <div>2019年12月3日 11:50:26  因私出境 目的地 法国  旅游</div>
+                                <div>2019年12月3日 11:50:26 因私出境 目的地 法国 旅游</div>
                             </div>
                         </div>
                         <div>
@@ -370,6 +370,8 @@
 </template>
 
 <script>
+// import { getUserById } from '@/api/wisdom-reminder/personnel-parameter.js'
+
 export default {
     props: {
         title: {
@@ -392,24 +394,10 @@ export default {
 
 <style lang="stylus" scoped>
 @import "../../../../styles/common.styl"
-/*
-.detail-wrapper
-    height: 55vh;
-
-    .detail-info
-        padding: 5px 20px;
-        color: #606266;
-
-        .user-info
-            span
-                margin-right: 10px;
-
-        .advice
-            p
-                margin-bottom: 10px;*/
 
 .mb-ten
     margin-bottom: 10px;
+
 .mb-twe
     margin-bottom 20px;
 
@@ -427,14 +415,18 @@ export default {
 
 .mr-tweFive
     margin-right 25px;
+
 .detail-box
     padding 20px
+
 .text-message
     color: #333;
     font-weight 700;
+
 .summary-score
     display flex;
     justify-content space-around;
+
     .summary-score-box
         display flex;
         justify-content center;
@@ -442,25 +434,33 @@ export default {
         border 1px solid #E5E9F4;
         height 70px;
         width 100%
+
     .color-number
         font-size 30px;
         font-weight 700;
         margin 0 10px;
+
     .color-red
         color #DE2810;
+
     .color-blue
         color #235FF6;
+
     .color-orange
         color #F09B38;
+
     .color-purple
         color #8674F6;
+
     .color-green
         color #73CD6C;
+
 .feedback
     background-color #F5F6F7;
     margin: 10px;
     padding: 10px;
     color: #333;
+
     .warning-title
         display inline-block;
         background-color #235FF5;
@@ -468,8 +468,10 @@ export default {
         border-radius 5px;
         text-align center;
         padding 2px 30px;
+
 .punishment
     background-color #FFF9EB;
+
     .origin
         color red;
 </style>

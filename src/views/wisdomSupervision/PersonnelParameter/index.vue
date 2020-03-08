@@ -29,11 +29,12 @@
 </template>
 
 <script>
+// 接口无数据暂时使用预警接口
 import {
     getWarnPage
 } from '@/api/warn.js';
 import PersonnelParameterDetail from './modal/personnelParameterDetail'
-// import { getUserList, getUserById } from '@/api/wisdom-reminder/personnel-parameter.js'
+// import { getUserList } from '@/api/wisdom-reminder/personnel-parameter.js'
 
 export default {
     components: {
