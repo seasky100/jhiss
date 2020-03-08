@@ -66,8 +66,7 @@ const mutations = {
 }
 
 const actions = {
-    loginSaveToken({ commit }, params) {
-        debugger
+    loginSaveToken({ commit }, params) {        
         return new Promise((resolve, reject) => {
             checkTokenByAppKey(params).then(res => {
                 commit('SET_USERNAME', res.data.userName)
@@ -81,7 +80,6 @@ const actions = {
     },
     // 获取用户信息
     getInfo({ commit, state }) {
-        debugger
         return new Promise((resolve, reject) => {
             getUserInfo({ userId: state.userId }).then(res => {
                 // console.log(res)
@@ -107,7 +105,6 @@ const actions = {
     },
     // 退出登录
     logout({ commit, state }) {
-        debugger
         signOut().then(res => {
             if (res && res.success) {
                 commit('CLEAR_SESSION')

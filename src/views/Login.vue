@@ -105,12 +105,10 @@ export default {
                         base64Code: '',
                         service: getUrl() + '/police/',
                         appKey: 'JHGA'
-                    }
-                    debugger
+                    }                    
                     signIn(params).then(res => {
                         const _this=this;
                         // console.log(res)
-                        debugger
                         if (res.data && res.success === true) {
                             _this.$message({
                                 type: 'success',

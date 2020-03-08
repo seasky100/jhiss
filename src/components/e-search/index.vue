@@ -214,7 +214,6 @@ export default {
   },
   watch: {
     filterText(val) {
-      debugger
       this.$refs.tree.filter(val);
     }
   },
@@ -311,8 +310,7 @@ export default {
         // this.fileList = []
         return
       }
-      if (fileObj.type === 'image/jpeg') {
-				debugger
+      if (fileObj.type === 'image/jpeg') {				
         this.uploadFile = new File([fileObj], new Date().getTime() + '.jpg', {
           type: 'image/jpeg'
         })

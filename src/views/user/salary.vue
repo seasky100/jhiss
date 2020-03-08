@@ -77,8 +77,7 @@ export default {
       this.findOvertimePay();
     },
     // 查询基本工资数据
-    findPayroll() {
-      debugger
+    findPayroll() {      
       const _this = this;
       const params = {
         idNumber: _this.idNumber,
@@ -93,7 +92,6 @@ export default {
     },
     // 查询车贴数据
     findCarSubsidy() {
-      debugger
       const _this = this;
       const params = {
         idNumber: _this.idNumber,
@@ -109,7 +107,6 @@ export default {
     },
     // 查询奖金数据
     findrewardList() {
-      debugger
       const _this = this;
       const params = {
         idNumber: _this.idNumber,
@@ -130,7 +127,6 @@ export default {
     },
     // 查询加班费数据
     findOvertimePay() {
-      debugger
       const _this = this;
       const params = {
         idNumber: _this.idNumber,

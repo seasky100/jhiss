@@ -103,7 +103,6 @@ import { getUserInfo } from '../../api/user-server.js';
             }
         },
         mounted() {
-            debugger
             this.userInfo = JSON.parse(sessionStorage.userInfo)
             this.name = sessionStorage.userName
             this.organizationNames = sessionStorage.orgName
@@ -118,7 +117,6 @@ import { getUserInfo } from '../../api/user-server.js';
             //       }
             //       getUserInfo(params).then(res => {
             //         if (res.success == true) {
-            //             debugger
             //             _this.userInfo = res.data.userInfo
             //             _this.name = res.data.realName
             //             //  const pdata =res.data.premonth

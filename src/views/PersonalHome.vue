@@ -215,19 +215,19 @@
           <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em">
             <div class='flex flex-column flex-grow' style="padding: 0.5em">
               <div class='flex flex-grow w-full'>
-                <router-link to='/organization/log' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                <router-link to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
                    <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
                   <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">层级评价</span>
                 </router-link>
-                <div class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_overtime_request@2x.png' /><!--src='/images/home_entrance_overtime_request@2x.png' --> 
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">谈心谈话</span>
-                </div>
-                <router-link to='/organization/request' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
+                <router-link to='/talks' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_overtime_request@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">谈心谈话</span>
+               </router-link>
+                <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
                   <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
                   <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项申报</span>
                 </router-link>
-                <router-link to='/organization/report' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 0 1px 1px">
+                <router-link to='/IndividualReport' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 0 1px 1px">
                   <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_items_report@2x.png'/><!--src='/images/home_entrance_items_report@2x.png' --> 
                   <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项即报</span>
                 </router-link>
@@ -294,8 +294,6 @@
             // 点击前一个月
             let prevBtn = document.querySelector('.el-calendar__button-group .el-button-group>button:nth-child(1)');
             prevBtn.addEventListener('click',() => {
-              debugger
-              alert(1)
             })
           })
       this.getPoliceCareer();
@@ -312,8 +310,6 @@
         this.getRadar3()
       },
       dayClick () {
-        alert(2)
-        debugger
         // console.log(date);
         // console.log(dateStr);
         // console.log(this.value);
@@ -608,8 +604,7 @@
           }
         })
       },
-    //   agency(item, key) {
-    //     debugger
+    //   agency(item, key) {    //     
     //     this.selected = key;
     // },
       // 从警生涯数据
@@ -618,8 +613,7 @@
         const params = {
           userId: '1D2G3F4H'
         }
-        getPoliceCareer(params).then(res => {
-          debugger
+        getPoliceCareer(params).then(res => {          
           console.log(res)
           if (res.success) {
             const Data = res.data
@@ -641,7 +635,6 @@
       })
     },
       jxh(){
-        debugger
         const userInfo = JSON.parse(sessionStorage.userInfo)
         const id= userInfo.policeCode
         this.$router.push({path:'/PersonalHome2',query:{cardId:id}})

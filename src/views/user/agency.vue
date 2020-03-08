@@ -144,8 +144,7 @@ import AgencyRequest from '../wisdomSupervision/AgencyRequest';
         next();
       },
     // 查找列表数据
-    query(nCurrent = 1) {
-        debugger
+    query(nCurrent = 1) {        
         const $this = this;
         getWarnPage(
           Object.assign(
