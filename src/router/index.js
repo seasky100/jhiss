@@ -32,7 +32,9 @@ const routes = [
     children: [
       {
         title: '个人首页',
-        icon: 'el-icon-location',
+        img: 'left_home@2x.png',
+        icon: 'el-icon-s-home',
+        // icon: 'el-icon-location',
         path: "/PersonalHome",
         name: "PersonalHome",
         component: PersonalHome

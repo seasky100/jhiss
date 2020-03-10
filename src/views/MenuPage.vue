@@ -232,6 +232,10 @@ export default {
 ::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
 ::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
 ::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
+.page_body >>> .el-menu-item.is-active{
+  background: #409EFF !important;
+  color: #fff !important;
+}
 .m_left{
   float:left;
   height:100%;
