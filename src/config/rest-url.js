@@ -120,7 +120,9 @@ const DEFAULT_URL = {
     getNodeByFlowCode: `${UUMSSERVER}flow/getByFlowCode`,
     logout: `${GMSSOSERVER}logout`,
       // 从警生涯数据
-    getPoliceCareer: `${GAISMSERVER}policeCareer/getPoliceCareerByUserId`
+    getPoliceCareer: `${GAISMSERVER}policeCareer/getPoliceCareerByUserId`,
+    // 根据userId查询相应层级成员的id列表 层级评价列表使用
+    getUserListByUserId: `${UUMSSERVER}post/getUserListByUserId`,
   },
     // 层级管理
     post: {

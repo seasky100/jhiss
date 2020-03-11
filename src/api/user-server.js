@@ -86,3 +86,11 @@ export function getPoliceCareer(params) {
         params
       })
 }
+// 从根据userId查询相应层级成员的id列表
+export function getUserListByUserId(params) {
+  return request({
+      url: DEFAULT_URL.user.getUserListByUserId,
+      method: 'get',
+      params
+    })
+}

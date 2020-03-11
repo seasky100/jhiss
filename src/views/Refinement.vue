@@ -10,13 +10,14 @@ export default {
     return {
       src: '',
       userInfo:'',
-      policeCard:''
+      cardNum:''
     }
   },
   mounted() {
+    debugger
     this.userInfo = JSON.parse(sessionStorage.userInfo)
-    this.policeCard = this.userInfo.policeCode
-    this.src = `http://10.121.252.53:1001/login.aspx?cardId=${this.policeCard}`
+    this.cardNum = this.userInfo.cardNum
+    this.src = `http://10.121.252.53:1001/login.aspx?cardId=${this.cardNum}`
     //  http://10.121.252.53:1001/login.aspx?cardId=${cardId}` //精细化
 
   },

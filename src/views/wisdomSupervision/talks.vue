@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      userId: '5ba98b66cd3549b9b92ea8723e89207e',
+      userId: '',
       addForm: '/TalkAdd',
       btnsConfig: {
         showAdd: true
@@ -207,6 +207,7 @@ export default {
   },
   watch: {},
   mounted() {
+    this.userId = sessionStorage.userId
     this.init()
   },
   methods: {

@@ -274,7 +274,8 @@
         dateStart:'', //开始时间
         dateEnd:'',//结束时间
         tjData:'',//考勤数据
-        xztxNum:'',
+        xztxNum: 0,
+        userId:'',
         value: new Date(),
         timer:'',
         careerData:[],
@@ -291,6 +292,8 @@
       }
     },
     mounted() {
+      debugger
+      this.userId = sessionStorage.userId
       this.$nextTick(() => {
             // 点击前一个月
             let prevBtn = document.querySelector('.el-calendar__button-group .el-button-group>button:nth-child(1)');
@@ -353,7 +356,8 @@
                     },
             },
             indicator: [{
-                name: '智慧考勤', max: 30,
+                name: '智慧考勤',
+                max: 30,
                 //若将此属性放在radar下，则每条indicator都会显示圈上的数值，放在这儿，只在通信这条indicator上显示
                 axisLabel: {
                     show: true,
@@ -534,7 +538,7 @@
       allWarnByType() {
         const _this=this;
         const params = {
-          userId: '5ba98b66cd3549b9b92ea8723e89207e'
+          userId: _this.userId
         }
         allWarnByType(params).then(res => {
           console.log(res)
@@ -555,7 +559,7 @@
       indexRecordDeatil() {
         const _this=this;
         const params = {
-          userId: '5ba98b66cd3549b9b92ea8723e89207e',
+          userId: _this.userId,
           startTime:_this.dateStart,
           endTime:_this.dateEnd
   
@@ -575,7 +579,7 @@
       indexRecordCountDeatil() {
         const _this = this;
         const params = {
-          userId: '5ba98b66cd3549b9b92ea8723e89207e',
+          userId: this.userId,
           startTime: _this.dateStart,
           endTime: _this.dateEnd
   
@@ -612,7 +616,7 @@
       getPoliceCareer(){
         const _this=this;
         const params = {
-          userId: '1D2G3F4H'
+          userId: this.userId,
         }
         getPoliceCareer(params).then(res => {          
           console.log(res)

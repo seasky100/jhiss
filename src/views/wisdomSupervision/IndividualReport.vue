@@ -148,7 +148,7 @@ export default {
           align: 'left'
         },
         {
-          prop: 'approvalName',
+          prop: 'sponsorName',
           label: '发起人姓名',
           align: 'left'
         },

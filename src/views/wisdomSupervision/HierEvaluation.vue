@@ -74,6 +74,7 @@
 </template>
 <script>
 import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
+import { getUserListByUserId } from '@/api/user-server.js';
 export default {
   name: "HierEvaluation",
   data() {
@@ -89,6 +90,7 @@ export default {
 			noteScore: 0,
 			leaderContent: '',
 			tableList:[],
+			userIds:'',
 			options: {
         // 每页数据数
         pageSize: 10,
@@ -208,6 +210,7 @@ export default {
 		}
 	},
   mounted() {
+		this.getUserListByUserId()
     this.init()
   },
   methods: {
@@ -260,7 +263,7 @@ export default {
           {
             nCurrent: nCurrent,
 						nSize: 10,
-						staffed: '',
+						staffed: _this.userIds,
 						orderByField: 'noteDate',
 						orderFlag: false
             // userId: _this.userId
@@ -276,6 +279,19 @@ export default {
         );
       })
 		},
+		// 根据用户ID查询所有下属用户
+		getUserListByUserId() {
+			debugger
+        const _this= this;
+        const params = {
+          userId: _this.userId 
+        }
+        getUserListByUserId(params).then(res => {
+          if (res.success) {
+						_this.userIds = res.data.map(item => item.userInfo.info).join()
+          }
+        })
+      },
 		handleScoring(noteId) {
 			const _this = this
 			noteAduit(
