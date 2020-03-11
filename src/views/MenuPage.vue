@@ -11,9 +11,9 @@
               <el-card class="box-card m_info">
                 <div style="height: 100%; width: 100%">
                   <div style="line-height: 78px;">
-                    <span style="font-weight: 700;font-size: inherit">楼华安</span>
+                    <span style="font-weight: 700;font-size: inherit">{{name}}</span>
                     <el-avatar src="../utils/img/lha.png"></el-avatar>
-                    <span style="font-family: monospace;font-size: unset;font-weight: 600">机关纪委</span>
+                    <span style="font-family: monospace;font-size: unset;font-weight: 600">{{organizationNames}}</span>
                   </div>
                   <div style="height: 30%;float: left;margin-left: 10px;">
                     <img src='../utils/img/star_on.svg' class='w24 h24 mx4' />
@@ -32,8 +32,8 @@
                 </div>
               </el-card>
             </div>
-            <img class='m_img' src='../utils/img/lha.png' />
-            <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()"> 超级管理员</div>
+            <img class='m_img' :src='src' />
+            <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()">{{name}}</div>
             <img class='t_img' src='../utils/img/header_alarm@2x.png' @click='agency' /> <!--@click="dialogVisible = true" -->
             <button title='退出登录' @click='signOut' >
               <img className='m_img' style="vertical-align: inherit;margin-left: 10px;" src='../utils/img/header_logout@2x.png' />
@@ -105,6 +105,7 @@
 </template>
 <script>
 import NavMenu from "@/components/NavMenu.vue";
+import { myPhotoSrc } from '../utils/common.js'
 import {  mapActions } from 'vuex'
 export default {
   name: 'MenuPage',
@@ -119,6 +120,9 @@ export default {
       flag:false,
       dialogVisible: false,
       textarea: '',
+      src:'',
+      name:'',
+      organizationNames:'',
       tabelData: [
         {
           name: '张三',
@@ -161,6 +165,10 @@ export default {
     // this.$root.eventHub.$on("changeParam", (n)=>{
     //     this.getTraffData()
     // });
+    this.userInfo = JSON.parse(sessionStorage.userInfo)
+    this.name = sessionStorage.userName
+    this.organizationNames = sessionStorage.orgName
+    this.src = myPhotoSrc(this.userInfo)
     this.init();
   },
   methods: {
@@ -232,6 +240,10 @@ export default {
 ::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
 ::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
 ::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
+.page_body >>> .el-menu-item.is-active{
+  background: #409EFF !important;
+  color: #fff !important;
+}
 .m_left{
   float:left;
   height:100%;

@@ -1,7 +1,8 @@
 <template>
     <div class='u_content'>
         <div class='u_img'>
-                <img src='../../utils/img/lha.png' class='' style="max-height: 100px;border-radius: 24px;float: right;margin-top: 20%"/>
+                <img :src='src' class='' style="max-height: 100px;border-radius: 24px;float: right;margin-top: 20%"/>
+                <!-- src={myPhotoSrc(userInfo)} -->
         </div>
         <div class='u_name'>
             <div class='m_xin'><span>姓名：</span>{{name}}</div>
@@ -91,6 +92,7 @@
 </template>
 <script>
 import { getUserInfo } from '../../api/user-server.js';
+import { myPhotoSrc } from '../../utils/common.js'
     export default {
         name: 'MenuPage',
         data() {
@@ -98,14 +100,17 @@ import { getUserInfo } from '../../api/user-server.js';
                 isCollapse: false,
                 flag: false,
                 userInfo:[],
+                src:'',
                 name:'',
                 organizationNames:''
             }
         },
         mounted() {
+            debugger
             this.userInfo = JSON.parse(sessionStorage.userInfo)
             this.name = sessionStorage.userName
             this.organizationNames = sessionStorage.orgName
+            this.src = myPhotoSrc(this.userInfo)
             // this.user()
         },
         methods: {

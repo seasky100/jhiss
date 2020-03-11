@@ -23,3 +23,15 @@ export const getUrl = () => {
     var port = window.location.port || '80'
     return protocol + '//' + hostname + ':' + port
 }
+
+export const myPhotoSrc = ({userInfo: {fileId = '', sex = 1} = {}} = {}) =>
+  fileId
+  ? `http://10.121.252.53:1001/View_file/UserImage/${fileId.split('\\').slice(-1)[0]}`
+  : `/images/${sex === 0 ? 'default_female' : 'default_male'}.png`;
+  
+// export const getToken = () => {
+//   const tokenRaw = document.cookie.split(';').find(item =>
+//     /token=([a-zA-Z0-9]+)/.test(item)
+//   );
+//   return tokenRaw ? RegExp.$1 : '';
+// };

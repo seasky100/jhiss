@@ -147,7 +147,7 @@
                     <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link>                  -->
                     <Link class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                       style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'>
-                      <span style="font-size: 1.5em">22</span>
+                      <span style="font-size: 1.5em">{{xztxNum}}</span>
                     </Link>
                   </div>
                 </div>
@@ -274,6 +274,7 @@
         dateStart:'', //开始时间
         dateEnd:'',//结束时间
         tjData:'',//考勤数据
+        xztxNum:'',
         value: new Date(),
         timer:'',
         careerData:[],
@@ -643,6 +644,22 @@
         const token = sessionStorage.token
         this.$router.push({path:'/PersonalHome2',query:{token:token}})
       },
+      // 协作提效总数  http://192.168.1.102/sys/sysPendings/getAllDealCount
+      getData() {
+            var _this = this
+            const data = {
+              sysId:'ZHJD',
+              token: sessionStorage.token
+            }
+            this.$request
+                .get(`http://192.168.1.102/sys/sysPendings/getAllDealCount`,data)
+                .then(res => {
+                  _this.xztxNum = res.data.number
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
       changeActive(index) {
               this.timeIndex = index;
           },

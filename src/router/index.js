@@ -6,6 +6,9 @@ import login from "../views/Login.vue";
 
 // 个人首页
 import PersonalHome from "../views/PersonalHome";
+import Gateway from "../views/Gateway";
+import Cooperation from "../views/Cooperation";
+import Refinement from "../views/Refinement";
 
 import organizationRouter from './organization'
 
@@ -32,10 +35,39 @@ const routes = [
     children: [
       {
         title: '个人首页',
-        icon: 'el-icon-location',
+        img: 'left_home@2x.png',
+        icon: 'el-icon-s-home',
+        // icon: 'el-icon-location',
         path: "/PersonalHome",
         name: "PersonalHome",
         component: PersonalHome
+      },
+      {
+        title: '市局门户',
+        img: 'left_attendance@2x.png',
+        icon: 'el-icon-s-home',
+        // icon: 'el-icon-location',
+        path: "/Gateway",
+        name: "Gateway",
+        component: Gateway
+      },
+      {
+        title: '协作提效',
+        img: 'left_sensing@2x.png',
+        icon: 'el-icon-s-home',
+        // icon: 'el-icon-location',
+        path: "/Cooperation",
+        name: "Cooperation",
+        component: Cooperation
+      },
+      {
+        title: '精细管理',
+        img: 'left_ledger@2x.png',
+        icon: 'el-icon-s-home',
+        // icon: 'el-icon-location', left_organization@2x.png
+        path: "/Refinement",
+        name: "Refinement",
+        component: Refinement
       },
       ...wisdomReminderRouter,
       ...integrityRiskRouter,

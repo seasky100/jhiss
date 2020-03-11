@@ -1,14 +1,16 @@
 export default [
     {
         title: '层级管理',
-        icon: 'el-icon-menu',
+        icon: 'el-icon-user-solid',
+        img: 'left_organization@2x.png',
         path: "/PersonalHome2",
         component: () => import('@/views/OrganizeManage'),
         children: [
             // 层级关系
             {
                 title: '层级关系',
-                icon: 'el-icon-menu',
+                icon: 'left_organization@2x.png',
+                img: 'left_organization@2x.png',
                 path: "/Org_relationship",
                 component: () => import('@/views/wisdomSupervision/org_relationship/Org_relationship')
             },
@@ -16,6 +18,7 @@ export default [
                 title: '部门级别',
                 hidden: true,
                 icon: 'el-icon-menu',
+                img: 'left_organization@2x.png',
                 path: "/Departmental_level",
                 component: () => import('@/views/wisdomSupervision/org_relationship/Departmental_level')
             },
@@ -23,12 +26,14 @@ export default [
                 title: '人员关系',
                 hidden: true,
                 icon: 'el-icon-menu',
+                img: 'left_organization@2x.png',
                 path: "/Personnel_relation",
                 component: () => import('@/views/wisdomSupervision/org_relationship/Personnel_relation')
             },
             {
                 title: '层级评价',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_evaluate.png',
                 path: "/HierEvaluation",
                 component: () => import('@/views/wisdomSupervision/HierEvaluation')
             },
@@ -36,6 +41,7 @@ export default [
             {
                 title: '事项申报',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_declare.png',
                 path: "/organizationRequest",
                 component: () => import('@/views/wisdomSupervision/organizationRequest')
             },
@@ -43,6 +49,7 @@ export default [
                 title:'事项申报新增',
                 hidden:true,
                 icon: 'el-icon-menu',
+                img: 'left_organization@2x.png',
                 path: "/organizationRequestAdd",
                 name: "organizationRequestAdd",
                 component: () => import('@/views/wisdomSupervision/organizationRequestAdd')
@@ -51,6 +58,7 @@ export default [
                 title:'事项申报详情',
                 hidden:true,
                 icon: 'el-icon-menu',
+                img: 'left_organization@2x.png',
                 path: "/organizationRequestDetail",
                 name: "organizationRequestDetail",
                 component: () => import('@/views/wisdomSupervision/organizationRequestDetail')
@@ -59,6 +67,7 @@ export default [
             {
                 title:'谈话谈心',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_talk.png',
                 path: "/talks",
                 name: "talks",
                 component: () => import('@/views/wisdomSupervision/talks')
@@ -75,6 +84,7 @@ export default [
             {
                 title:'个人即报',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_instant.png',
                 path: "/IndividualReport",
                 name: "IndividualReport",
                 component: () => import('@/views/wisdomSupervision/IndividualReport')
@@ -187,6 +197,7 @@ export default [
             {
                 title:'年度报告',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_year.png',
                 path: "/AnnualReportList",
                 name: "AnnualReportList",
                 component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportList')
@@ -202,6 +213,7 @@ export default [
             {
                 title:'警示教育',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_caution.png',
                 path: "/Caution",
                 name: "Caution",
                 component: () => import('@/views/wisdomSupervision/Caution')
@@ -209,6 +221,7 @@ export default [
             {
                 title:'廉政文化课堂',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_education.png',
                 path: "/government_Clture",
                 name: "government_Clture",
                 component: () => import('@/views/wisdomSupervision/government_Clture')
@@ -216,6 +229,7 @@ export default [
             {
                 title: '检查通报',
                 icon: 'el-icon-menu',
+                img: 'left_organization@2x.png',
                 name: 'InspectionBulletin',
                 path: "/inspectionbulletin",
                 component: () => import('@/views/WisdomReminder/InspectionBulletin')
@@ -223,6 +237,7 @@ export default [
             {
                 title: '台账管理',
                 icon: 'el-icon-menu',
+                img: 'left_menu_sub_ledger.png',
                 name: 'PersonnelParameter',
                 path: '/personnel-parameter',
                 component: () => import('@/views/wisdomSupervision/PersonnelParameter')
