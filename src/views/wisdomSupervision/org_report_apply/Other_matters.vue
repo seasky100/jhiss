@@ -14,7 +14,7 @@
             <el-input type="textarea" v-model="ruleForm.reportDesc" :rows="4"></el-input>
           </el-form-item>
           <el-form-item label="附件">
-            <e-upload />
+            <e-upload @changeHandler="changeHandler" />
           </el-form-item>
           <el-form-item label="审批人" required>
             <el-col :span="11">
@@ -89,7 +89,8 @@ export default {
       // 审批人
       approvalArr: [],
       // 审批人对象
-      approvalList: []
+      approvalList: [],
+      files: [],
     }
   },
   computed: {
@@ -112,6 +113,10 @@ export default {
           this.approvalArr = res.data;
         }
       })
+    },
+    // 文件
+    changeHandler(fileList) {
+      this.files = fileList;
     },
     // 提交
     submit() {
