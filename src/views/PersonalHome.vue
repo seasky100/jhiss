@@ -276,6 +276,7 @@
         tjData:'',//考勤数据
         xztxNum: 0,
         userId:'',
+        userInfo:'',
         value: new Date(),
         timer:'',
         careerData:[],
@@ -292,8 +293,8 @@
       }
     },
     mounted() {
-      debugger
       this.userId = sessionStorage.userId
+      this.userInfo = JSON.parse(sessionStorage.userInfo)
       this.$nextTick(() => {
             // 点击前一个月
             let prevBtn = document.querySelector('.el-calendar__button-group .el-button-group>button:nth-child(1)');
@@ -306,6 +307,7 @@
       this.sectorAverageStatistics();
       this.indexRecordDeatil();
       this.allWarnByType();
+      this.getData();
     },
     methods: {
       init() {
@@ -538,7 +540,7 @@
       allWarnByType() {
         const _this=this;
         const params = {
-          userId: _this.userId
+          userId: this.userInfo.info
         }
         allWarnByType(params).then(res => {
           console.log(res)
@@ -559,7 +561,7 @@
       indexRecordDeatil() {
         const _this=this;
         const params = {
-          userId: _this.userId,
+          userId: this.userInfo.info,
           startTime:_this.dateStart,
           endTime:_this.dateEnd
   
@@ -579,7 +581,7 @@
       indexRecordCountDeatil() {
         const _this = this;
         const params = {
-          userId: this.userId,
+          userId: this.userInfo.info,
           startTime: _this.dateStart,
           endTime: _this.dateEnd
   
@@ -595,7 +597,7 @@
       sectorAverageStatistics() {
         const _this=this;
         const params = {
-          department: '机关纪委',
+          department: sessionStorage.orgId,
           startTime:_this.dateStart,
           endTime:_this.dateEnd
   
@@ -650,20 +652,20 @@
       },
       // 协作提效总数  http://192.168.1.102/sys/sysPendings/getAllDealCount
       getData() {
-            var _this = this
-            const data = {
-              sysId:'ZHJD',
-              token: sessionStorage.token
-            }
-            this.$request
-                .get(`http://192.168.1.102/sys/sysPendings/getAllDealCount`,data)
-                .then(res => {
-                  _this.xztxNum = res.data.number
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        },
+        var _this = this
+        const data = {
+          sysId: 'ZHJD',
+          token: sessionStorage.token
+        }
+        this.$request
+          .get(`http://192.168.1.102/sys/sysPendings/getAllDealCount`, data)
+          .then(res => {
+            _this.xztxNum = res.data.number
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
       changeActive(index) {
               this.timeIndex = index;
           },

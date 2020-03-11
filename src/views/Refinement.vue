@@ -14,7 +14,6 @@ export default {
     }
   },
   mounted() {
-    debugger
     this.userInfo = JSON.parse(sessionStorage.userInfo)
     this.cardNum = this.userInfo.cardNum
     this.src = `http://10.121.252.53:1001/login.aspx?cardId=${this.cardNum}`

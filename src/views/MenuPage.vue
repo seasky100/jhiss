@@ -100,13 +100,12 @@
         <router-view/>
       </div>
     </div>
-
   </div>
 </template>
 <script>
 import NavMenu from "@/components/NavMenu.vue";
 import { myPhotoSrc } from '../utils/common.js'
-import {  mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'MenuPage',
   provide () {

@@ -106,9 +106,8 @@ import { myPhotoSrc } from '../../utils/common.js'
             }
         },
         mounted() {
-            debugger
             this.userInfo = JSON.parse(sessionStorage.userInfo)
-            this.name = sessionStorage.userName
+            this.name = sessionStorage.realName
             this.organizationNames = sessionStorage.orgName
             this.src = myPhotoSrc(this.userInfo)
             // this.user()

@@ -12,7 +12,6 @@ export default {
     }
   },
   mounted() {
-      debugger
       const token = sessionStorage.token
       this.src = `http://41.232.3.207/sys/sysPendings/toDealIndex.html?ownerUnit=&sysId=ZHJD&token=${token}`
      // http://41.232.3.207/sys/sysPendings/toDealIndex.html?ownerUnit=&sysId=ZHJD&token=${token}` // 协作提效

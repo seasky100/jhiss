@@ -241,8 +241,8 @@ export default {
 			countWorkNote(
         Object.assign(
           {
-						// user_id: _this.userId
-						user_id: '2020'
+						user_id: _this.userId
+						// user_id: '2020'
           },
         )
       ).then(res => {
@@ -281,7 +281,6 @@ export default {
 		},
 		// 根据用户ID查询所有下属用户
 		getUserListByUserId() {
-			debugger
         const _this= this;
         const params = {
           userId: _this.userId 
