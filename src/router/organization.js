@@ -241,7 +241,15 @@ export default [
                 name: 'PersonnelParameter',
                 path: '/personnel-parameter',
                 component: () => import('@/views/wisdomSupervision/PersonnelParameter')
-            }
+            },
+            // {
+            //     title: '树图DEMO',
+            //     icon: 'el-icon-menu',
+            //     img: 'left_menu_sub_ledger.png',
+            //     name: 'Tree',
+            //     path: '/Tree',
+            //     component: () => import('@/views/Tree')
+            // }
         ]
     },
 ]
