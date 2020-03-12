@@ -214,8 +214,9 @@ export default {
                 nSize: 10,
                 orderByField: 'recordTime',
                 bulletinType: '',
-                isAsc : false
-            }, $this.searchData, $this.userId)).then((res) => {
+                isAsc : false,
+                userId :  $this.userId
+            }, $this.searchData)).then((res) => {
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
                     res.size,
@@ -227,8 +228,11 @@ export default {
     },
   created() {
       this.userId = sessionStorage.userId
+      const data = {
+          userId : this.userId
+      }
     // 刷卡情况（月）柱状图x轴刷卡地点y轴次数
-    getTimesStatistics(this.userId).then((res) => {
+    getTimesStatistics(data).then((res) => {
         for (let key in res) {
             this.creditCardSite.data.rows.push({
                 place: key,
@@ -238,7 +242,7 @@ export default {
     });
 
     // 刷卡情况（月）x轴每天y轴次数
-    getDayTimesStatistics(this.userId).then((res) => {
+    getDayTimesStatistics(data).then((res) => {
         this.creditCardTime.data.rows = res
     });
 

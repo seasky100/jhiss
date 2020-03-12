@@ -219,8 +219,9 @@ export default {
             const $this = this;
             getFindVacationPage(Object.assign({
                 nCurrent: nCurrent,
-                nSize: 10
-            }, $this.searchData, {userId: $this.userParams.userId})).then((res) => {
+                nSize: 10,
+                userId: $this.userParams.userId
+            }, $this.searchData)).then((res) => {
                 console.log(res);
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
