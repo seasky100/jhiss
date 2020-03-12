@@ -189,7 +189,7 @@ export default {
         },
       tableList: [],
       userId: {
-          userId: '2020'
+          userId: ''
       }
     }
   },
@@ -212,9 +212,9 @@ export default {
             getFindMealRecordPage(Object.assign({
                 nCurrent: nCurrent,
                 nSize: 10,
-                orderByField: '',
+                orderByField: 'recordTime',
                 bulletinType: '',
-                // isAsc: ''
+                isAsc : false
             }, $this.searchData, $this.userId)).then((res) => {
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
@@ -226,6 +226,7 @@ export default {
         }
     },
   created() {
+      this.userId = sessionStorage.userId
     // 刷卡情况（月）柱状图x轴刷卡地点y轴次数
     getTimesStatistics(this.userId).then((res) => {
         for (let key in res) {

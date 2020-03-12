@@ -137,7 +137,8 @@ export default {
                     placeholder: "考勤结果"
                 }
             ],
-            userId: {userId: '2020'},
+            userId: '',
+            userInfo:'',
             options: {
                 pageSize: 10,
                 hasIndex: false,
@@ -231,6 +232,8 @@ export default {
         }
     },
     created() {
+        this.userInfo = JSON.parse(sessionStorage.userInfo)
+        this.userId = this.userInfo.info
         // 刷卡地点次数统计
         getClockWarnReasonStatistics(this.userId).then((res) => {
             console.log(res);

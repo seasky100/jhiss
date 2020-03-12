@@ -192,7 +192,8 @@ export default {
                     }
                 ]
             },
-            tableList: []
+            tableList: [],
+            id:''
         };
     },
     methods: {
@@ -214,7 +215,7 @@ export default {
             getFindVacationPage(Object.assign({
                 nCurrent: nCurrent,
                 nSize: 10
-            }, $this.searchData, $this.userId)).then((res) => {
+            }, $this.searchData, $this.id)).then((res) => {
                 console.log(res);
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
@@ -226,8 +227,10 @@ export default {
         }
     },
     created() {
+        const userInfo = JSON.parse(sessionStorage.userInfo)
+        this.id = userInfo.info
         // 请假次数
-        getAskForLeave({userId: "5ba98b66cd3549b9b92ea8723e89207e"}).then((res) => {
+        getAskForLeave({userId: this.id}).then((res) => {
             let arr = [];
             for (let key in res) {
                 arr.push({type: key, number: res[key]});
@@ -236,7 +239,7 @@ export default {
         });
 
         // 请假异常情况统计
-        getVacationExceptionStatistics().then((res) => {
+        getVacationExceptionStatistics({userId: this.id}).then((res) => {
             let arr = [];
             for (let key in res) {
                 arr.push({type: key, number: res[key]});

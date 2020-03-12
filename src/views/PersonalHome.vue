@@ -233,19 +233,19 @@
                 </router-link>
               </div>
               <div class='flex flex-grow w-full'>
-                <router-link to='/xztx/document' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                <router-link to='/DocumentLiu' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
                   <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_document_flow@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
                   <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">公文流转</span>
                 </router-link>
-                <router-link to='/xztx/approval' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                <router-link to='/ApprovalMatters' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
                   <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_approval_items@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
                   <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">审批事项</span>
                 </router-link>
-                <router-link to='/xztx/travel' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
                   <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
                   <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">差旅申请</span>
                 </router-link>
-                <router-link to='' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 0 0 1px">
+                <router-link to='/CarApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 0 0 1px">
                   <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_expense_request@2x.png' /><!--src='/images/home_entrance_expense_request@2x.png' --> 
                   <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">用车申请</span>
                 </router-link>
@@ -492,6 +492,7 @@
               name: '部门平均',
               type: 'line',
               color: '#235FF6',
+              yAxisIndex: 1,
               stack: '广告',
               data: this.averageData
           },

@@ -184,9 +184,9 @@ export default {
         },
       tableList: [],
       userParams: {
-          userID: '2020',
-          deptId: '2020',
-          role: '2020'
+          userID: '',
+          deptId: '123',
+          role: '11'
       }
     }
   },
@@ -210,7 +210,7 @@ export default {
                 nCurrent: nCurrent,
                 nSize: 10,
                 orderByField: ''
-            }, $this.searchData, {userId: '2020', role: '2020'})).then((res) => {
+            }, $this.searchData, {userId: $this.userParams.userID, role: '2020'})).then((res) => {
                 console.log(res);
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
@@ -222,6 +222,7 @@ export default {
         }
     },
   created() {
+    this.userParams.userID = sessionStorage.userId
     // 就餐地点预警地点统计 (给参数userParams会无数据)
     getRepastSiteWarnStatistics().then((res) => {
         this.repastPlace.data.rows = res
@@ -239,5 +240,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../../styles/common.styl"
+@import "../../../../styles/common.styl";
 </style>

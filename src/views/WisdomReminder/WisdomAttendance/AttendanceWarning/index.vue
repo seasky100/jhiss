@@ -267,13 +267,15 @@ export default {
     },
     // 查找列表数据
     query(nCurrent = 1) {
+      const userInfo = JSON.parse(sessionStorage.userInfo)
+      const userId = userInfo.info
       const $this = this;
       getWarnPage(
         Object.assign(
           {
             nCurrent: nCurrent,
             nSize: 10,
-            user_id: $this.userId,
+            user_id: userId,
             isAsc: false,
             orderByField: 'warnTime',
             role: 10,

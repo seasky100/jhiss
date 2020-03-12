@@ -3,7 +3,7 @@
     <div class="pageTop">
         <div class='app flex flex-column h-full'>
           <header ref='header' class='flex flex-align-center flex-no-shrink border-box' style="height: 100%">
-            <div class='m-left' style="width: 80%">
+            <div class='m-left' style="width: 87%">
               <img src='../utils/img/header_logo2.png' class='h48 m_title m_logal' />
               <img src='../utils/img/header_title.png' class='h48 m_title' />
             </div>

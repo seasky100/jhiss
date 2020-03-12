@@ -195,9 +195,9 @@ export default {
             },
             tableList: [],
             userParams: {
-                userId: '2020',
-                deptId: '2020',
-                role: '2020'
+                userId: '',
+                deptId: '111',
+                role: '111'
             }
         }
     },
@@ -232,6 +232,8 @@ export default {
         }
     },
     created() {
+        const userInfo = JSON.parse(sessionStorage.userInfo)
+        this.params.userId = userInfo.info
         // 审批情况统计
         getApplyException(this.userParams).then((res) => {
             let arr = []
