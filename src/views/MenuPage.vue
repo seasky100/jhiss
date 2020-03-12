@@ -165,7 +165,7 @@ export default {
     //     this.getTraffData()
     // });
     this.userInfo = JSON.parse(sessionStorage.userInfo)
-    this.name = sessionStorage.userName
+    this.name = sessionStorage.realName
     this.organizationNames = sessionStorage.orgName
     this.src = myPhotoSrc(this.userInfo)
     this.init();

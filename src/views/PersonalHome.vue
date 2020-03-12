@@ -641,14 +641,11 @@
         }
       })
     },
-      jxh(){
-        const userInfo = JSON.parse(sessionStorage.userInfo)
-        const id= userInfo.policeCode
-        this.$router.push({path:'/PersonalHome2',query:{cardId:id}})
+      jxh(){s
+        this.$router.push({path:'/Refinement'})
       },
       xztxt(){
-        const token = sessionStorage.token
-        this.$router.push({path:'/PersonalHome2',query:{token:token}})
+        this.$router.push({path:'/CooperationAgency'})
       },
       // 协作提效总数  http://192.168.1.102/sys/sysPendings/getAllDealCount
       getData() {

@@ -20,4 +20,11 @@ export default [
         component: () => import('../views/user/agency.vue')
 
     },
+    {
+        title: '代办箱',
+        path: "/CooperationAgency",
+        hidden:true,
+        component: () => import('../views/AgencyJump/CooperationAgency.vue')
+
+    },
 ]

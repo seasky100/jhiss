@@ -6,9 +6,9 @@ import login from "../views/Login.vue";
 
 // 个人首页
 import PersonalHome from "../views/PersonalHome";
-import Gateway from "../views/Gateway";
-import Cooperation from "../views/Cooperation";
-import Refinement from "../views/Refinement";
+import Gateway from "../views/AgencyJump/Gateway.vue";
+import Cooperation from "../views/AgencyJump/Cooperation.vue";
+import Refinement from "../views/AgencyJump/Refinement.vue";
 
 import organizationRouter from './organization'
 
