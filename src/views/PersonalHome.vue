@@ -492,7 +492,6 @@
               name: '部门平均',
               type: 'line',
               color: '#235FF6',
-              yAxisIndex: 1,
               stack: '广告',
               data: this.averageData
           },

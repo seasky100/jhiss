@@ -214,8 +214,9 @@ export default {
             const $this = this;
             getFindVacationPage(Object.assign({
                 nCurrent: nCurrent,
-                nSize: 10
-            }, $this.searchData, $this.id)).then((res) => {
+                nSize: 10,
+                userId: $this.id
+            }, $this.searchData)).then((res) => {
                 console.log(res);
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
@@ -229,8 +230,11 @@ export default {
     created() {
         const userInfo = JSON.parse(sessionStorage.userInfo)
         this.id = userInfo.info
+        const data ={
+            userId : this.id
+        }
         // 请假次数
-        getAskForLeave({userId: this.id}).then((res) => {
+        getAskForLeave(data).then((res) => {
             let arr = [];
             for (let key in res) {
                 arr.push({type: key, number: res[key]});
@@ -239,7 +243,7 @@ export default {
         });
 
         // 请假异常情况统计
-        getVacationExceptionStatistics({userId: this.id}).then((res) => {
+        getVacationExceptionStatistics(data).then((res) => {
             let arr = [];
             for (let key in res) {
                 arr.push({type: key, number: res[key]});
@@ -254,5 +258,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../../styles/common.styl"
+@import "../../../../styles/common.styl";
 </style>

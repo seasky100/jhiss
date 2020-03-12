@@ -137,7 +137,6 @@ export default {
                     placeholder: "考勤结果"
                 }
             ],
-            userId: '',
             userInfo:'',
             options: {
                 pageSize: 10,
@@ -199,7 +198,8 @@ export default {
                     align: 'left'
                 }
             ],
-            tableList: []
+            tableList: [],
+            id:''
         };
     },
     methods: {
@@ -217,11 +217,13 @@ export default {
 
         // 查询列表
         query(nCurrent = 1) {
+            debugger
             const $this = this;
             getFindClockPage(Object.assign({
                 nCurrent: nCurrent,
-                nSize: 10
-            }, $this.searchData, $this.userId)).then((res) => {
+                nSize: 10,
+                userId: $this.id
+            }, $this.searchData)).then((res) => {
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
                     res.size,
@@ -233,9 +235,12 @@ export default {
     },
     created() {
         this.userInfo = JSON.parse(sessionStorage.userInfo)
-        this.userId = this.userInfo.info
+        this.id = this.userInfo.info
+        const data = {
+            userId : this.id
+        }
         // 刷卡地点次数统计
-        getClockWarnReasonStatistics(this.userId).then((res) => {
+        getClockWarnReasonStatistics(data).then((res) => {
             console.log(res);
             for (let key in res) {
                 this.checkingInResult.data.rows.push({type: key, num: res[key]})
@@ -243,7 +248,7 @@ export default {
         });
 
         // 每日工作时长统计
-        getClockWarnTimesStatistics(this.userId).then((res) => {
+        getClockWarnTimesStatistics(data).then((res) => {
             for (let key in res) {
                 this.workTime.data.rows.push({date: key.slice(0, 10), duration: res[key]})
             }
