@@ -12,7 +12,7 @@
                 <div style="height: 100%; width: 100%">
                   <div style="line-height: 78px;">
                     <span style="font-weight: 700;font-size: inherit">{{name}}</span>
-                    <el-avatar src="../utils/img/lha.png"></el-avatar>
+                    <el-avatar :src="src"></el-avatar>
                     <span style="font-family: monospace;font-size: unset;font-weight: 600">{{organizationNames}}</span>
                   </div>
                   <div style="height: 30%;float: left;margin-left: 10px;">

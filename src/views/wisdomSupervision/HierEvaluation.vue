@@ -263,7 +263,7 @@ export default {
           {
             nCurrent: nCurrent,
 						nSize: 10,
-						staffed: _this.userIds,
+						staffed: this.userIds,
 						orderByField: 'noteDate',
 						orderFlag: false
             // userId: _this.userId
