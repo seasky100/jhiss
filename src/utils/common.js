@@ -24,7 +24,7 @@ export const getUrl = () => {
     return protocol + '//' + hostname + ':' + port
 }
 
-export const myPhotoSrc = ({userInfo: {fileId = '', sex = 1} = {}} = {}) =>
+export const myPhotoSrc = ({fileId = '', sex = 1}  = {}) =>
   fileId
   ? `http://10.121.252.53:1001/View_file/UserImage/${fileId.split('\\').slice(-1)[0]}`
   : `/images/${sex === 0 ? 'default_female' : 'default_male'}.png`;

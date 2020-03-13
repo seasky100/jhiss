@@ -110,30 +110,8 @@ import { myPhotoSrc } from '../../utils/common.js'
             this.name = sessionStorage.realName
             this.organizationNames = sessionStorage.orgName
             this.src = myPhotoSrc(this.userInfo)
-            // this.user()
         },
         methods: {
-            //查看个人信息
-            // user() {
-            //     const _this = this;
-            //     const params = {
-            //         userId: '5ba98b66cd3549b9b92ea8723e89207e'
-            //       }
-            //       getUserInfo(params).then(res => {
-            //         if (res.success == true) {
-            //             _this.userInfo = res.data.userInfo
-            //             _this.name = res.data.realName
-            //             //  const pdata =res.data.premonth
-            //             // this.total = res.result.total
-            //             // _this.init();
-            //         } else {
-            //             console.log(res.message)
-            //         }
-            //     })
-            //     .catch(error => {
-            //         console.log(error)
-            //     })
-            // },
         }
     }
 </script>
