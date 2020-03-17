@@ -211,12 +211,12 @@ export default {
 	},
   mounted() {
 		this.getUserListByUserId()
-    this.init()
+    // this.init()
   },
   methods: {
 		init() {
-			this.query();
-			this.countWorkNote()
+			
+			// this.countWorkNote()
     },
     noteDate_format(row, column, prop){
       return new Date(prop).toLocaleString('chinese', {hour12: false})
@@ -241,7 +241,7 @@ export default {
 			countWorkNote(
         Object.assign(
           {
-						user_id: _this.userId
+						user_id: _this.userIds
 						// user_id: '2020'
           },
         )
@@ -257,6 +257,7 @@ export default {
 		},
 		// 查询列表
     query(nCurrent = 1) {
+			debugger
       // const _this = this;
       findWorknotePage(
         Object.assign(
@@ -281,13 +282,16 @@ export default {
 		},
 		// 根据用户ID查询所有下属用户
 		getUserListByUserId() {
-        const _this= this;
+			debugger
+        const _this = this;
         const params = {
           userId: _this.userId 
         }
         getUserListByUserId(params).then(res => {
           if (res.success) {
 						_this.userIds = res.data.map(item => item.userInfo.info).join()
+						_this.query();
+						_this.countWorkNote();
           }
         })
       },

@@ -196,6 +196,7 @@ export default {
     // 提交
     submit() {
       this.$refs.ruleForm.validate((valid) => {
+        debugger
         if (valid) {
           let flowNode = this.flowNodeList.shift();
           const params = {

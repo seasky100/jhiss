@@ -29,22 +29,68 @@ export default [
                 img: 'left_organization@2x.png',
                 path: "/Personnel_relation",
                 component: () => import('@/views/wisdomSupervision/org_relationship/Personnel_relation')
-            },
+            }, 
             {
-                title: '层级评价',
+                title: '层级履职',
                 icon: 'el-icon-menu',
-                img: 'left_menu_sub_evaluate.png',
-                path: "/HierEvaluation",
-                component: () => import('@/views/wisdomSupervision/HierEvaluation')
-            },
-            // 事项申报
-            {
+                img: 'left_menu_sub_talk.png',
+                name: '',
+                path: "",
+                component: () => import('@/views/OrganizeManage'),
+                children: [
+                    {
+                        title: '层级评价',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_evaluate.png',
+                        path: "/HierEvaluation",
+                        component: () => import('@/views/wisdomSupervision/HierEvaluation')
+                    },
+                    // 谈话谈心
+                    {
+                        title:'谈话谈心',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_talk.png',
+                        path: "/talks",
+                        name: "talks",
+                        component: () => import('@/views/wisdomSupervision/talks')
+                    }, 
+                ]
+              },
+              {
                 title: '事项申报',
                 icon: 'el-icon-menu',
-                img: 'left_menu_sub_declare.png',
-                path: "/organizationRequest",
-                component: () => import('@/views/wisdomSupervision/organizationRequest')
-            },
+                img: 'left_menu_sub_year.png',
+                name: '',
+                path: "",
+                component: () => import('@/views/OrganizeManage'),
+                children: [
+                    // 个人即报
+                    {
+                        title:'个人即报',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_instant.png',
+                        path: "/IndividualReport",
+                        name: "IndividualReport",
+                        component: () => import('@/views/wisdomSupervision/IndividualReport')
+                    },
+                    // 事项申报
+                    {
+                        title: '事项申报',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_declare.png',
+                        path: "/organizationRequest",
+                        component: () => import('@/views/wisdomSupervision/organizationRequest')
+                    },
+                    {
+                        title:'年度报告',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_year.png',
+                        path: "/AnnualReportList",
+                        name: "AnnualReportList",
+                        component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportList')
+                    },
+                ]
+              },              
             {
                 title:'事项申报新增',
                 hidden:true,
@@ -63,15 +109,6 @@ export default [
                 name: "organizationRequestDetail",
                 component: () => import('@/views/wisdomSupervision/organizationRequestDetail')
             },
-            // 谈话谈心
-            {
-                title:'谈话谈心',
-                icon: 'el-icon-menu',
-                img: 'left_menu_sub_talk.png',
-                path: "/talks",
-                name: "talks",
-                component: () => import('@/views/wisdomSupervision/talks')
-            },
             {
                 title:'新增谈话谈心', 
                 hidden:true,
@@ -79,15 +116,6 @@ export default [
                 path: "/TalkAdd",
                 name: "TalkAdd",
                 component: () => import('@/views/wisdomSupervision/TalkAdd')
-            },
-            // 个人即报
-            {
-                title:'个人即报',
-                icon: 'el-icon-menu',
-                img: 'left_menu_sub_instant.png',
-                path: "/IndividualReport",
-                name: "IndividualReport",
-                component: () => import('@/views/wisdomSupervision/IndividualReport')
             },
             // 个人即报类型申请
             {
@@ -193,14 +221,6 @@ export default [
                 path: "/Other_matters",
                 name: "Other_matters",
                 component: () => import('@/views/wisdomSupervision/org_report_apply/Other_matters')
-            },
-            {
-                title:'年度报告',
-                icon: 'el-icon-menu',
-                img: 'left_menu_sub_year.png',
-                path: "/AnnualReportList",
-                name: "AnnualReportList",
-                component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportList')
             },
             {
                 title:'年度报告详情',

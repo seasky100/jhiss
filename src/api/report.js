@@ -224,3 +224,12 @@ export function getApprovalById (params) {
     params
   })
 }
+// 申报 即报 审批
+export function updateApproval (params) {
+  return request({
+    url: DEFAULT_URL.report.updateApproval,
+    method: 'post',
+    data: params
+  })
+}
+
