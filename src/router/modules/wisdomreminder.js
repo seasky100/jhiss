@@ -1,7 +1,7 @@
 const wisdomReminderRouter = [
   {
     title: '智慧提醒',
-    path: '/wisdom-reminder',
+    path: '/CreditCard',
     name: 'WisdomReminder',
     icon: 'el-icon-s-opportunity',
     img: 'left_inspection@2x.png',
@@ -12,7 +12,7 @@ const wisdomReminderRouter = [
         icon: 'el-icon-menu',
         img: 'float_attendance@2x.png',
         name: 'WisdomAttendance',
-        path: "",
+        path: "/AttendanceAnalysis",
         component: () => import('@/views/Supervision'),
         children: [
           {
@@ -62,19 +62,11 @@ const wisdomReminderRouter = [
         ]
       },
       {
-        title: '差旅管理',
-        icon: 'el-icon-menu',
-        img: 'float_travel@2x.png',
-        name: 'TravelManagement',
-        path: "/travel-management",
-        component: () => import('@/views/WisdomReminder/TravelManagement')
-      },
-      {
         title: '智慧感知',
         icon: 'el-icon-menu',
         img: 'left_sensing@2x.png',
         name: 'PerceptualWisdom',
-        path: "/perceptual-wisdom",
+        path: "/CreditCard",
         component: () => import('@/views/Supervision'),
         children: [
           {
@@ -91,6 +83,15 @@ const wisdomReminderRouter = [
           }
         ]
       },
+      {
+        title: '差旅管理',
+        icon: 'el-icon-menu',
+        img: 'float_travel@2x.png',
+        name: 'TravelManagement',
+        path: "/travel-management",
+        component: () => import('@/views/WisdomReminder/TravelManagement')
+      },
+      // 
       {
         title: '检查通报',
         icon: 'el-icon-menu',
