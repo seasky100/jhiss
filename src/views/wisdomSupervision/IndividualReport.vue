@@ -25,6 +25,7 @@
           :tableList="tableList"
           :options="options"
           :columns="columns"
+          :operates="operates"
           @afterCurrentPageClick="afterCurrentPageClickHandle"
         />
       </div>
@@ -32,6 +33,7 @@
   </div>
 </template>
 <script>
+import { getUserListByUserId } from '@/api/user-server.js';
 import { findReportPage } from '@/api/report.js';
 import { mapGetters } from 'vuex';
 
@@ -59,10 +61,11 @@ export default {
 				{name:'涉纪涉诉事项',path:'/Matters_involved'},
 				{name:'其他',path:'/Other_matters'}
 			],
+      userIds:'',
 			searchData: {
         userName: '',
         policeCode: '',
-        approvalId: '',
+        // approvalId: '',
         status: '',
         startTime: '',
         endTime: ''
@@ -195,17 +198,53 @@ export default {
           label: '审批状态',
           align: 'left'
         }
-      ]
+      ],
+      operates: {
+        width: 150,
+        fixed: 'right',
+        list: [
+          {
+            id: '1',
+            label: '详情',
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-view"></i>',
+            disabled: false,
+            method: (key, row) => {
+              console.log('row', row);
+              this.$router.push({path: '/organizationRequestDetail', query: { flowCode: row.flowCode }})
+            },
+            showCallback: () => {
+              return true;
+            }
+          }
+        ]
+      },
     }
   },
   watch: {},
   mounted() {
-    this.init()
+    this.getUserListByUserId()
+    // this.init()
   },
   methods: {
 		init() {
       this.query();
     },
+    	// 根据用户ID查询所有下属用户
+		getUserListByUserId() {
+        const _this= this;
+        const params = {
+          userId: _this.userId 
+        }
+        getUserListByUserId(params).then(res => {
+          if (res.success) {
+            debugger
+            _this.userIds = res.data.map(item => item.id).join()
+            this.query();
+          }
+        })
+      },
     approval_format(row, column, prop) {
       return column.options[prop]
     },
@@ -234,7 +273,8 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: $this.userId,
+            userId: $this.userId + ','+ $this.userIds,
+            approvalId: '',
             reportType: '1'
           },
           $this.searchData

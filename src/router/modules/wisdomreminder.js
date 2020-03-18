@@ -100,6 +100,30 @@ const wisdomReminderRouter = [
         component: () => import('@/views/WisdomReminder/InspectionBulletin')
       },
       {
+        title: '违规查询',
+        icon: 'el-icon-menu',
+        img: 'left_ledger@2x.png',
+        name: 'WisdomAttendance',
+        path: "/violation-enquiry",
+        component: () => import('@/views/IntegrityRisk/ViolationEnquiry')
+      },
+      {
+        title: '护照管理',
+        icon: 'el-icon-menu',
+        img: 'left_ledger@2x.png',
+        name: 'WisdomAttendance',
+        path: "/passport",
+        component: () => import('@/views/IntegrityRisk/PassportManage')
+      },
+      {
+        title: '涉嫌违法',
+        icon: 'el-icon-menu',
+        img: 'left_ledger@2x.png',
+        name: 'WisdomAttendance',
+        path: "/suspected",
+        component: () => import('@/views/IntegrityRisk/SuspectedViolation')
+      },
+      {
         title: '用车分析',
         icon: 'el-icon-menu',
         img: 'float_absence@2x.png',

@@ -13,7 +13,7 @@ import Refinement from "../views/AgencyJump/Refinement.vue";
 import organizationRouter from './organization'
 
 import wisdomReminderRouter from './modules/wisdomreminder';
-import integrityRiskRouter from './modules/integrityRisk';
+// import integrityRiskRouter from './modules/integrityRisk';
 import UserRouter from './user'
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
@@ -42,15 +42,16 @@ const routes = [
         name: "PersonalHome",
         component: PersonalHome
       },
-      {
-        title: '市局门户',
-        img: 'left_attendance@2x.png',
-        icon: 'el-icon-s-home',
-        // icon: 'el-icon-location',
-        path: "/Gateway",
-        name: "Gateway",
-        component: Gateway
-      },
+      // {
+      //   title: '市局门户',
+      //   img: 'left_attendance@2x.png',
+      //   icon: 'el-icon-s-home',
+      //   // icon: 'el-icon-location',
+      //   path: "/Gateway",
+      //   name: "Gateway",
+      //   component: Gateway
+      // },
+      ...organizationRouter,
       {
         title: '协作提效',
         img: 'left_sensing@2x.png',
@@ -70,8 +71,8 @@ const routes = [
         component: Refinement
       },
       ...wisdomReminderRouter,
-      ...integrityRiskRouter,
-      ...organizationRouter,
+      // ...integrityRiskRouter,
+      
       ...UserRouter,
 
     ]

@@ -97,7 +97,8 @@ const DEFAULT_URL = {
       saveRelativesIllegal: `${GAISMSERVER}relativesIllegal/saveRelativesIllegal`, //涉纪涉诉事项
       saveOtherReport: `${GAISMSERVER}otherReport/saveOtherReport`, //其它事项报告
       saveAffairApply: `${GAISMSERVER}affairApply/saveAffairApply`, //事项报告新增
-      getApprovalById: `${GAISMSERVER}weddingBanquet/getApprovalById`, //事项个人报告详情
+      getApprovalById: `${GAISMSERVER}weddingBanquet/getApprovalById`, //事项个人报告详情 
+      updateApproval: `${GAISMSERVER}weddingBanquet/updateApproval`, // 审批申报 即报 
     },
       // 用户相关
   user: {

@@ -180,7 +180,7 @@ export default {
             disabled: false,
             method: (key, row) => {
               console.log('row', row);
-              this.$router.push({path: '/organizationRequestAdd', query: { flowCode: row.flowCode }})
+              this.$router.push({path: '/organizationRequestDetail', query: { flowCode: row.flowCode }})
             },
             showCallback: () => {
               return true;
