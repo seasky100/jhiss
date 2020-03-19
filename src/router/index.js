@@ -42,15 +42,15 @@ const routes = [
         name: "PersonalHome",
         component: PersonalHome
       },
-      // {
-      //   title: '市局门户',
-      //   img: 'left_attendance@2x.png',
-      //   icon: 'el-icon-s-home',
-      //   // icon: 'el-icon-location',
-      //   path: "/Gateway",
-      //   name: "Gateway",
-      //   component: Gateway
-      // },
+      {
+        title: '市局门户',
+        img: 'left_attendance@2x.png',
+        icon: 'el-icon-s-home',
+        // icon: 'el-icon-location',
+        path: "/Gateway",
+        name: "Gateway",
+        component: Gateway
+      },
       ...organizationRouter,
       {
         title: '协作提效',
