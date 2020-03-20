@@ -1,7 +1,6 @@
 // const StylelintPlugin = require('stylelint-webpack-plugin')
 const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir);
-// const webpack = require('webpack')
 const CompressionPlugin = require("compression-webpack-plugin")
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
 const TerserPlugin = require('terser-webpack-plugin')
