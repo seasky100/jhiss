@@ -12,6 +12,7 @@
         <el-col :xs="12" :sm="8" :md="8" :lg="8" :xl="6">
           <div class='person_left'>
               <div class="person_title">
+                  <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
                   风险提醒
                 </div>
                 <div class="fengxian_body radar" id="radar"></div>
@@ -38,27 +39,168 @@
           <div class='person_center'>
             <div class='p_top'>
                 <div class="person_title">
+                    <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
                     考勤情况
                   </div>
                 <div id='kao' class='p_attendance'></div>
             </div>
             <div class='p_foot'>
                 <div class="person_title">
+                    <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
                     层级评价
                   </div>
-                  <div class='p_evaluate' style="float : left; height: 90%">
+                  <div class='p_evaluate' style="float : left; height: 90%; margin-left: 20px;">
                       <el-calendar v-model="value" show-date-only :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="'结束时间'" :lang="lang" :position="position" :changePane="dayClick" :pane="1" :range-bus="getBus" :range-status="1"></el-calendar>
                   </div>
+                  <div class='p_eright'>
                   <div class='p_watch'>
                       <div id='gauge'  class='p_gauge' ></div>
                   </div>
+                  <div class='p_score'>
+                    <div class='p_tscore'>
+                      <div class='p_lscore'>
+                        <div class=''>
+                          <span class='tscore'>80</span>
+                        </div>
+                        <div class='h32'>
+                          <span class=''>今日评分</span>
+                        </div>
+                      </div>
+                      <!-- <div class='p_rscore'>部门评分</div> -->
+
+                      <div class='p_rscore'>
+                        <div id='pbar' class='pbar'></div>
+                      </div> 
+                    </div>
+                    <div class='p_tscore'>
+                      <div class='p_lscore'>
+                        <div class=''>
+                          <span class='bscore'>60</span>
+                        </div>
+                        <div class='h32'>
+                          <span class=''>部门评分</span>
+                        </div>
+                      </div>
+                      <!-- <div class='p_rscore'>部门评分</div> -->
+
+                      <div class='p_rscore'>
+                        <div id='bbar' class='bbar'></div>
+                      </div> 
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </el-col>
         <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="6">
           <div class='person_right'>
-            <div class='p_top'>上</div>
-            <div class='p_foot'>下</div>
+            <div class='p_top'>
+              <div class="person_title">
+                <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
+                <span class='pl8 txt-bold' style="">待办事项</span>         
+              <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 3em">
+                <div @click='xztxt' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">协作提效</span>
+                  <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #E8EFFF">
+                    <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #235FF6"> 
+                      <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link>                  -->
+                      <Link class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'>
+                        <span style="font-size: 1.5em">{{xztxNum}}</span>
+                      </Link>
+                    </div>
+                  </div> 
+                  <span style="color: #8092A8; font-size: 14px; font-weight: 700">待办</span>
+                </div>
+                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+                <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">队伍精细化</span>
+                  <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #F4F1FF">
+                    <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #CC00FF">
+                      <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #8674F6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link> -->
+                      <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        style="width: '4.4em'; height: 4.4em; background: #CC00FF" title='待办箱'>
+                        <span style="font-size: 1.5em">1</span>
+                      </Link>
+                    </div>
+                  </div>
+                  <span style="color: #8092A8; font-size: 14px; font-weight: 700">待办</span>
+                </div>
+                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+                <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
+                  <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #F4F1FF">
+                    <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #F09B38">
+                      <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #8674F6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link> -->
+                      <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        style="width: '4.4em'; height: 4.4em; background: #F09B38" title='待办箱'>
+                        <span style="font-size: 1.5em">1</span>
+                      </Link>
+                    </div>
+                  </div>
+                  <span style="color: #8092A8; font-size: 14px; font-weight: 700">待办</span>
+                </div>
+                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+                
+            </div>
+          </div>
+        </div>
+            <div class='p_foot'>
+              <div class="person_title">
+                <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
+                快速入口
+              </div>
+              <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em;margin-left: 2em;">
+                <div class='flex flex-column flex-grow' style="padding: 0.5em">
+                  <div class='flex flex-grow w-full'>
+                    <router-link to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                       <img class='cursor-pointer'  src='../../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                      <span class='cursor-pointer p_inter'>层级评价</span>
+                    </router-link>
+                    <router-link to='/talks' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                      <img class='cursor-pointer'  src='../../utils/img/home_entrance_overtime_request@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                     <span class='cursor-pointer p_inter'>谈心谈话</span>
+                   </router-link>
+                    <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
+                      <img class='cursor-pointer'  src='../../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
+                      <span class='cursor-pointer p_inter'>事项申报</span>
+                    </router-link>
+             
+                  </div>
+                  <div class='flex flex-grow w-full'>
+                    
+                    <router-link to='/IndividualReport' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                      <img class='cursor-pointer'  src='../../utils/img/home_entrance_items_report@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>事项即报</span>
+                    </router-link>
+                    <router-link to='/DocumentLiu' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer'  src='../../utils/img/home_entrance_document_flow@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
+                      <span class='cursor-pointer p_inter'>公文流转</span>
+                    </router-link>
+                    <router-link to='/ApprovalMatters' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer' src='../../utils/img/home_entrance_approval_items@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>审批事项</span>
+                    </router-link>
+         
+                  </div>
+                  <div class='flex flex-grow w-full'>
+                    <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                      <img class='cursor-pointer'  src='../../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>差旅申请</span>
+                    </router-link>
+                    <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer'  src='../../utils/img/home_entrance_expense_request@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
+                      <span class='cursor-pointer p_inter'>用车申请</span>
+                    </router-link>
+                    <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer'  src='../../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>差旅申请</span>
+                    </router-link>
+        
+                  </div>
+              </div>
+            </div>  
+            </div>
           </div>
         </el-col>
       </el-row>
@@ -112,6 +254,8 @@ export default {
     this.getRadar()
     this.getRadar2()
     this.getRadar3()
+    this.getRadar4()
+    this.getRadar5()
     // this.allWarnByType();
 
   },
@@ -374,12 +518,6 @@ export default {
           tooltip: {
             formatter: '{a} <br/>{b} : {c}分'
         },
-        toolbox: {
-            feature: {
-                restore: {},
-                saveAsImage: {}
-            }
-        },
           series: [
             {
               startAngle: 180, //开始角度 左侧角度
@@ -388,8 +526,9 @@ export default {
               min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
               max: 10,
               radius: '100%',
+			        center: ['50%', '65%'],//
               axisLabel: {
-                distance: -30
+                distance: -20
               },
               axisLine: {
                 lineStyle: {
@@ -424,8 +563,8 @@ export default {
               // 刻度线
               axisTick: {
                 show: true,
-                length: 1,
-                splitNumber: 1,
+                length: 0,
+                splitNumber: 0,
                 lineStyle: {
                   color: "auto"
                 }
@@ -445,11 +584,12 @@ export default {
               endAngle: 0, //结束角度 右侧
               type: 'gauge',
               axisLabel: {
-                distance: -10
+                distance: -52
               },
               min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
               max: 10,
               radius: '60%',
+              center: ['50%', '65%'],//
               axisLine: {
                 lineStyle: {
                   width: 15,
@@ -502,9 +642,174 @@ export default {
     }
       radarDom3.setOption(option)
       // $(window).resize(function() {//这是能够让图表自适应的代码
-      //     radarDom.resize();
-      //   }); 
+        window.addEventListener("resize", () => { radarDom3.resize();});
   },
+    getRadar4() {
+      let category = ['服务器数（台）'];
+      // var barData = [0, ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100)];
+      let barData = [6];
+      let lineData = [8]
+      let radarDom4 = this.$echarts.init(document.getElementById('pbar'))
+      // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
+      let option = {
+        backgroundColor: 'white',
+        grid: [{ //控制显示位置的属性grid
+            left: '10%',
+            bottom: '',
+            top: '',
+            right: '30%' //在此图中可用于控制柱子的长度
+        }],
+        xAxis: {
+            show: false
+        },
+        yAxis: {
+            data: category,
+            show: true,
+            axisLabel: {
+                verticalAlign: 'left',
+                color: 'white',
+                fontSize: '30'
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            }
+        },
+        series: [
+    
+            { // 蓝柱下面方块
+                name: '',
+                type: 'pictorialBar',
+                symbol: 'roundRect',
+                barWidth: '35%',
+                symbolOffset: ['200%', '-30%'],
+                itemStyle: {
+                    normal: {
+    
+                        color: '#838d9e'
+                    }
+                },
+                z: -41,
+                symbolRepeat: true,
+                symbolSize: ['50%', '150%'],
+                data: lineData,
+                barGap: 10,
+                barCategoryGap:20,
+                animationEasing: 'elasticOut',
+    
+            },
+    
+    
+            { // 蓝柱
+                name: '', // blue bar
+                type: 'pictorialBar',
+                symbol: 'roundRect',
+                barWidth: '35%',
+                symbolOffset: ['200%', '-30%'],
+                itemStyle: {
+                    normal: {
+                        barMaxWidth: '20%',
+                        barBorderRadius: 100,
+                        color: '#409eff',
+                    }
+                },
+                symbolRepeat: true,
+                symbolSize: ['50%', '150%'],
+                // symbolClip: true,
+                data: barData,
+            },
+    
+        ],
+      }
+      radarDom4.setOption(option)
+      // $(window).resize(function() {//这是能够让图表自适应的代码
+      // window.addEventListener("resize", () => { radarDom3.resize(); });
+    },
+    getRadar5() {
+      let category = ['服务器数（台）'];
+      // var barData = [0, ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100)];
+      let barData = [6];
+      let lineData = [10]
+      let radarDom5 = this.$echarts.init(document.getElementById('bbar'))
+      // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
+      let option = {
+        backgroundColor: 'white',
+        grid: [{ //控制显示位置的属性grid
+            left: '10%',
+            bottom: '',
+            top: '',
+            right: '30%' //在此图中可用于控制柱子的长度
+        }],
+        xAxis: {
+            show: false
+        },
+        yAxis: {
+            data: category,
+            show: true,
+            axisLabel: {
+                verticalAlign: 'left',
+                color: 'white',
+                fontSize: '20'
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            }
+        },
+        series: [
+    
+            { // 蓝柱下面方块
+                name: '',
+                type: 'pictorialBar',
+                symbol: 'roundRect',
+                barWidth: '35%',
+                symbolOffset: ['200%', '-30%'],
+                itemStyle: {
+                    normal: {
+    
+                        color: '#838d9e'
+                    }
+                },
+                z: -41,
+                symbolRepeat: true,
+                symbolSize: ['50%', '150%'],
+                data: lineData,
+                barGap: 10,
+                barCategoryGap:20,
+                animationEasing: 'elasticOut',
+    
+            },
+    
+    
+            { // 蓝柱
+                name: '', // blue bar
+                type: 'pictorialBar',
+                symbol: 'roundRect',
+                barWidth: '35%',
+                symbolOffset: ['200%', '-30%'],
+                itemStyle: {
+                    normal: {
+                        barMaxWidth: '20%',
+                        barBorderRadius: 10,
+                        color: '#CC00FF',
+                    }
+                },
+                symbolRepeat: true,
+                symbolSize: ['50%', '150%'],
+                // symbolClip: true,
+                data: barData,
+            },
+    
+        ],
+      }
+      radarDom5.setOption(option)
+      // $(window).resize(function() {//这是能够让图表自适应的代码
+      // window.addEventListener("resize", () => { radarDom3.resize(); });
+    },
     // 查询分类风险提醒数据
     allWarnByType() {
       const _this = this;
@@ -566,6 +871,15 @@ export default {
   height: 74%;
   
 }
+.h-full {
+    height: 88%!important;
+}
+.w-full {
+    width: 98%!important;
+}
+.w-full {
+    width: 98%!important;
+}
 .p_top{
   background-color: white;
   height: 50%;
@@ -611,7 +925,7 @@ export default {
     font-size:16px;
     font-weight:bold;
     line-height:30px;
-    border-left:5px solid #409eff;
+    /* border-left:5px solid #409eff; */
     padding-left: 5px
   }
   .fengxian_body{
@@ -657,6 +971,12 @@ export default {
     margin-top: 3%;
     color: #838D9E;
 }
+.p_inter{
+    margin-top: 1em;
+    color: #838d9e;
+    font-size: 14px;
+    font-weight: 700;
+}
 .ptotal{
   margin: 10px;
   color: red;
@@ -668,12 +988,52 @@ export default {
 } 
 .p_watch{
   float: left;
-    width: 58%;
-    height: 70%;
+    /* width: 58%; */
+    height: 50%;
+    width: 100%
 }
 .p_gauge{
   height: 100%;
   width: 100%;
+}
+.p_tscore{
+  width: 100%;
+  height: 50%;
+  margin-left: 63px;
+}
+.p_score{
+  float: left;
+  height: 34%;
+    width: 100%;
+  text-align: center;
+}
+.p_lscore{
+  width: 20%;
+  height: 100%;
+  float: left;
+}
+.p_rscore{
+  width: 55%;
+  height: 100%;
+  float: left;
+}
+.pbar{
+  height: 100%;
+  width: 100%;
+}
+.bbar{
+  height: 100%;
+  width: 100%;
+}
+.p_eright{
+    height: 100%;
+    float: left;
+}
+.tscore{
+  color:  rgb(51, 11, 230)
+}
+.bscore{
+  color: #CC00FF
 }
   /* .left-score-image {
         width: 100% !important;

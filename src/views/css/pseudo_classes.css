@@ -264,6 +264,16 @@ line-height: 10px !important;
     width: 40%;
   }
 }
+@media (max-width: 1280px) {
+  .p_eright{
+    width: 39% !important;
+  }
+  }
+  @media (max-width: 1920px) {
+    .p_eright{
+      width: 54%;
+    }
+  }
 table>tbody.hov-tr-bg>tr:hover{
   background-color: #ebf8ff!important
 }
