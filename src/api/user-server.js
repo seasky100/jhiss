@@ -36,7 +36,7 @@ export function getUserInfo (params) {
 // 退出登录
 export function signOut(params) {
     return request({
-        url: DEFAULT_URL.user.getUserInfo,
+        url: DEFAULT_URL.user.logout,
         method: 'post',
         params
       })

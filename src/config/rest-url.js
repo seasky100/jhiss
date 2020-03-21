@@ -110,7 +110,7 @@ const DEFAULT_URL = {
     // // 修改密码
     // updatePassword: `${userService}/updatePassword`,
     // 退出登录
-    // logout: `${GLOBAL.UUMS_SERVER}/logout`
+    logout: `${GMSSOSERVER}logout`,
     // 获取所有的机构树
     getOrganization: `${UUMSSERVER}organization/tree`,
     // 获取机构下对应的人员
@@ -119,7 +119,6 @@ const DEFAULT_URL = {
     getFlowByCondition: `${UUMSSERVER}flow/getFlowByCondition`,
     // 根据flowcode节点
     getNodeByFlowCode: `${UUMSSERVER}flow/getByFlowCode`,
-    logout: `${GMSSOSERVER}logout`,
       // 从警生涯数据
     getPoliceCareer: `${GAISMSERVER}policeCareer/getPoliceCareerByUserId`,
     // 根据userId查询相应层级成员的id列表 层级评价列表使用
