@@ -1,15 +1,28 @@
 <template>
   <div class='person_home'>
     <div class='person_body'>
-      <div class='person_head police_career'>Header</div>
-      <!-- <el-row :gutter="10">
-            <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="1"><div class="grid-content bg-purple"></div></el-col>
-            <el-col :xs="12" :sm="8" :md="8" :lg="9" :xl="11"><div class="grid-content bg-purple-light"></div></el-col>
-            <el-col :xs="24" :sm="8" :md="8" :lg="9" :xl="11"><div class="grid-content bg-purple"></div></el-col>
-          </el-row>    -->
-  
+      <div class='person_head police_career'>
+        <div class="person_title p_clear">
+          <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
+          从警生涯
+        </div>
+        <div class='person_career' ref='career_list'>
+        <div class='p_career' v-for="(item,index) in careerData" :key="index" >
+        <div v-for="(item1,index1) in item.marks" :key="index1" @click="agency()"  >     
+        <div class='p_card'>
+          <el-divider content-position="left"><img src='../../utils/img/num2.png' /> </el-divider>
+          <div class='p_year'>{{item1.happen_time}}</div>
+          <div class='p_name'>{{item1.career_title}}</div>
+        </div>
+      </div>
+        <div class='p_node'>
+          <el-divider content-position="left"><div style=" margin-left: -9px; color: blue;">{{item.endtime}}</div><img src='../../utils/img/stage.png' /> </el-divider>
+        </div>
+      </div>
+        </div>
+      </div>
       <el-row class='content' :gutter="10">
-        <el-col :xs="12" :sm="8" :md="8" :lg="8" :xl="6">
+        <el-col :xs="12" :sm="8" :md="8" :lg="8" :xl="7">
           <div class='person_left'>
               <div class="person_title">
                   <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
@@ -23,19 +36,13 @@
                       <div class='h32'><span class='pname'>{{item.name}}</span></div>
                     </div>
                   </div>
-                  <div class='pcenter'>
-                      <div class='pli' v-for="(item2,index2) in warnList2" :key="index2">
-                          <div class='h32'><span class='pnum'>{{item2.num}}</span></div>
-                          <div class='h32'><span class='pname'>{{item2.name}}</span></div>
-                        </div>                  
-                  </div>
                   <div class='pfoot'>
                     <div class='pft'>当前<span class='ptotal' >8</span>项风险内容，请谨慎！！！</div>
                   </div>
                 </div>
           </div>
         </el-col>
-        <el-col :xs="12" :sm="8" :md="8" :lg="8" :xl="12">
+        <el-col :xs="12" :sm="8" :md="8" :lg="8" :xl="10">
           <div class='person_center'>
             <div class='p_top'>
                 <div class="person_title">
@@ -49,9 +56,33 @@
                     <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
                     层级评价
                   </div>
-                  <div class='p_evaluate' style="float : left; height: 90%; margin-left: 20px;">
-                      <el-calendar v-model="value" show-date-only :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="'结束时间'" :lang="lang" :position="position" :changePane="dayClick" :pane="1" :range-bus="getBus" :range-status="1"></el-calendar>
-                  </div>
+                  <div class='p_evaluate' style="float : left; height: 90%; margin-left: 4em;">
+                    <el-calendar v-model="value" id="calendar">
+                      <template
+                       slot="dateCell"
+                       slot-scope="{date, data}">
+                          <div>
+                             <div class="calendar-day">{{ data.day.split('-').slice(2).join('-') }}</div>
+                                <div v-for="item in calendarData">
+                                   <div v-if="(item.months).indexOf(data.day.split('-').slice(1)[0])!=-1">
+                                     <div v-if="(item.days).indexOf(data.day.split('-').slice(2).join('-'))!=-1">
+                                          <el-tooltip class="item" effect="dark" :content="item.things"  placement="right">
+                                            <div v-if='item.things >= 8'>
+                                               <div class="is-selected">{{item.things}}</div>
+                                              </div>
+                                            <div v-else>
+                                              <div class="is-selected">{{item.things}}</div>
+                                              </div>
+                                          </el-tooltip>
+                                       </div>
+                                    <div v-else></div>
+                                   </div>
+                               <div v-else></div>
+                             </div>
+                          </div>
+                      </template>
+                </el-calendar>
+              </div>
                   <div class='p_eright'>
                   <div class='p_watch'>
                       <div id='gauge'  class='p_gauge' ></div>
@@ -66,8 +97,6 @@
                           <span class=''>今日评分</span>
                         </div>
                       </div>
-                      <!-- <div class='p_rscore'>部门评分</div> -->
-
                       <div class='p_rscore'>
                         <div id='pbar' class='pbar'></div>
                       </div> 
@@ -81,8 +110,6 @@
                           <span class=''>部门评分</span>
                         </div>
                       </div>
-                      <!-- <div class='p_rscore'>部门评分</div> -->
-
                       <div class='p_rscore'>
                         <div id='bbar' class='bbar'></div>
                       </div> 
@@ -92,18 +119,17 @@
             </div>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="6">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="7">
           <div class='person_right'>
             <div class='p_top'>
               <div class="person_title">
                 <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
                 <span class='pl8 txt-bold' style="">待办事项</span>         
-              <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 3em">
+              <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 3em;margin-left: 1.35em;">
                 <div @click='xztxt' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
                   <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">协作提效</span>
                   <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #E8EFFF">
                     <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #235FF6"> 
-                      <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link>                  -->
                       <Link class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                         style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'>
                         <span style="font-size: 1.5em">{{xztxNum}}</span>
@@ -117,7 +143,6 @@
                   <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">队伍精细化</span>
                   <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #F4F1FF">
                     <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #CC00FF">
-                      <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #8674F6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link> -->
                       <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                         style="width: '4.4em'; height: 4.4em; background: #CC00FF" title='待办箱'>
                         <span style="font-size: 1.5em">1</span>
@@ -131,7 +156,6 @@
                   <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
                   <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #F4F1FF">
                     <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #F09B38">
-                      <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #8674F6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link> -->
                       <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                         style="width: '4.4em'; height: 4.4em; background: #F09B38" title='待办箱'>
                         <span style="font-size: 1.5em">1</span>
@@ -140,8 +164,7 @@
                   </div>
                   <span style="color: #8092A8; font-size: 14px; font-weight: 700">待办</span>
                 </div>
-                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
-                
+                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>               
             </div>
           </div>
         </div>
@@ -164,11 +187,9 @@
                     <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
                       <img class='cursor-pointer'  src='../../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
                       <span class='cursor-pointer p_inter'>事项申报</span>
-                    </router-link>
-             
+                    </router-link>            
                   </div>
-                  <div class='flex flex-grow w-full'>
-                    
+                  <div class='flex flex-grow w-full'>                    
                     <router-link to='/IndividualReport' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
                       <img class='cursor-pointer'  src='../../utils/img/home_entrance_items_report@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
                       <span class='cursor-pointer p_inter'>事项即报</span>
@@ -180,8 +201,7 @@
                     <router-link to='/ApprovalMatters' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
                       <img class='cursor-pointer' src='../../utils/img/home_entrance_approval_items@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
                       <span class='cursor-pointer p_inter'>审批事项</span>
-                    </router-link>
-         
+                    </router-link>         
                   </div>
                   <div class='flex flex-grow w-full'>
                     <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
@@ -195,8 +215,7 @@
                     <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
                       <img class='cursor-pointer'  src='../../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
                       <span class='cursor-pointer p_inter'>差旅申请</span>
-                    </router-link>
-        
+                    </router-link>        
                   </div>
               </div>
             </div>  
@@ -210,6 +229,7 @@
 <script>
   import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil } from '../../api/warn.js';
   import { getPoliceCareer } from '../../api/user-server.js';
+  import { findWorknotePage } from '../../api/wisdom-reminder/evaluation-analysis.js';
   import { subDays,format } from 'date-fns';
 export default {
   name: "PersonalHome",
@@ -235,31 +255,59 @@ export default {
         marksData:[],
         selected: 0,
         timeIndex: 0,
+
+        calendarData: [
+                    { months: ['01', '02','03', '04','05','06','07','08','09','10','11','12'],days: ['12','13','14','15','16','17','18','26'],things: 8 },
+                ],
+                value: new Date(),
         warnList:[
           { name:'刷卡预警',num:'1'},
           { name:'出国分析',num:'1'},
           { name:'涉嫌违法',num:'1'},
-          { name:'请假分析',num:'1'}
-          ],
-          warnList2:[
+          { name:'请假分析',num:'1'},
           { name:'日志预警',num:'1'},
           { name:'事项申报',num:'1'},
           { name:'用车预警',num:'1'},
           { name:'智慧考勤',num:'1'}
-          ]          
+          ],         
     }
   },
   mounted() {
-
+    this.getPoliceCareer();
     this.getRadar()
     this.getRadar2()
     this.getRadar3()
     this.getRadar4()
     this.getRadar5()
     // this.allWarnByType();
-
   },
   methods: {
+    aa(){
+      alert(33)
+
+    },
+    jxh(){
+        this.$router.push({path:'/Refinement'})
+      },
+      xztxt(){
+        this.$router.push({path:'/CooperationAgency'})
+      },
+      // 协作提效总数  http://192.168.1.102/sys/sysPendings/getAllDealCount
+      getData() {
+        var _this = this
+        const data = {
+          sysId: 'ZHJD',
+          token: sessionStorage.token
+        }
+        this.$request
+          .get(`http://192.168.1.102/sys/sysPendings/getAllDealCount`, data)
+          .then(res => {
+            _this.xztxNum = res.data.number
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      },
     getRadar(){
         let radarDom = this.$echarts.init(document.getElementById('radar'))
         let option = {
@@ -286,7 +334,7 @@ export default {
             enterable: true, //鼠标是否可以移动到tooltip区域内
          },
         radar: {
-            shape: 'circle',
+            shape: '',
             splitNumber: 6, // 雷达图圈数设置
             name: {
                 textStyle: {
@@ -390,7 +438,6 @@ export default {
         var colors = ['#8ec6ad', '#947DFF', '#386db3'];
         let option = {
           color: colors,
-
           tooltip: {
               trigger: 'none',
               axisPointer: {
@@ -398,7 +445,9 @@ export default {
               }
           },
           legend: {
-              data:['2015 降水量', '2016 降水量']
+              data:['加班', '上班','部门平均'],
+              icon:'rect',
+              top: '15'
           },
           grid: {
               top: 70,
@@ -419,7 +468,7 @@ export default {
                   axisPointer: {
                       label: {
                           formatter: function (params) {
-                              return '降水量  ' + params.value
+                              return '小时' + params.value
                                   + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
                           }
                       }
@@ -435,7 +484,7 @@ export default {
           ],
           series: [
             {
-              name: '2016 降水量',
+              name: '加班',
               type: 'line',
               smooth: true,
               symbol: 'none', // 去掉折点
@@ -460,7 +509,7 @@ export default {
               data: [9, 8, 11.1, 18.7, 8.3, 9.2, 21.6, 4.6, 5.4, 18.4, 10.3, 10.7]
             },
             {
-              name: '2016 降水量',
+              name: '上班',
               type: 'line',
               smooth: true,
               symbol: 'none',
@@ -486,13 +535,13 @@ export default {
               data: [19, 15, 11.1, 21.7, 34.3, 46.2, 21.6, 40.6, 45.4, 31.4, 10.3, 20.7]
             },
             {
-              name: '2016 降水量',
+              name: '部门平均',
               type: 'line',
               smooth: true,
               symbol: 'none',
               itemStyle: {
                 normal: {
-                  color: "#947DFF",//折线点的颜色
+                  color: "red",//折线点的颜色
                   lineStyle: {
                     color: "red"//折线的颜色
                   }
@@ -507,9 +556,6 @@ export default {
           window.onresize = function () {
             radarDom2.resize();
         }
-      // $(window).resize(function() {//这是能够让图表自适应的代码
-      //     radarDom.resize();
-      //   }); 
   },
   getRadar3(){
         let radarDom3 = this.$echarts.init(document.getElementById('gauge'))
@@ -641,23 +687,20 @@ export default {
           ]
     }
       radarDom3.setOption(option)
-      // $(window).resize(function() {//这是能够让图表自适应的代码
         window.addEventListener("resize", () => { radarDom3.resize();});
   },
     getRadar4() {
       let category = ['服务器数（台）'];
-      // var barData = [0, ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100)];
-      let barData = [6];
-      let lineData = [8]
+      let barData = [8];
+      let lineData = [10]
       let radarDom4 = this.$echarts.init(document.getElementById('pbar'))
-      // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
       let option = {
         backgroundColor: 'white',
         grid: [{ //控制显示位置的属性grid
-            left: '10%',
+            left: '',
             bottom: '',
             top: '',
-            right: '30%' //在此图中可用于控制柱子的长度
+            right: '48%' //在此图中可用于控制柱子的长度
         }],
         xAxis: {
             show: false
@@ -683,7 +726,7 @@ export default {
                 name: '',
                 type: 'pictorialBar',
                 symbol: 'roundRect',
-                barWidth: '35%',
+                barWidth: '30%',
                 symbolOffset: ['200%', '-30%'],
                 itemStyle: {
                     normal: {
@@ -706,7 +749,7 @@ export default {
                 name: '', // blue bar
                 type: 'pictorialBar',
                 symbol: 'roundRect',
-                barWidth: '35%',
+                barWidth: '30%',
                 symbolOffset: ['200%', '-30%'],
                 itemStyle: {
                     normal: {
@@ -724,23 +767,20 @@ export default {
         ],
       }
       radarDom4.setOption(option)
-      // $(window).resize(function() {//这是能够让图表自适应的代码
-      // window.addEventListener("resize", () => { radarDom3.resize(); });
+      window.addEventListener("resize", () => { radarDom3.resize(); });
     },
     getRadar5() {
       let category = ['服务器数（台）'];
-      // var barData = [0, ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100), ~~(Math.random() * 100)];
       let barData = [6];
       let lineData = [10]
       let radarDom5 = this.$echarts.init(document.getElementById('bbar'))
-      // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
       let option = {
         backgroundColor: 'white',
         grid: [{ //控制显示位置的属性grid
-            left: '10%',
+            left: '',
             bottom: '',
             top: '',
-            right: '30%' //在此图中可用于控制柱子的长度
+            right: '48%' //在此图中可用于控制柱子的长度
         }],
         xAxis: {
             show: false
@@ -761,12 +801,11 @@ export default {
             }
         },
         series: [
-    
             { // 蓝柱下面方块
                 name: '',
                 type: 'pictorialBar',
                 symbol: 'roundRect',
-                barWidth: '35%',
+                barWidth: '30%',
                 symbolOffset: ['200%', '-30%'],
                 itemStyle: {
                     normal: {
@@ -783,13 +822,11 @@ export default {
                 animationEasing: 'elasticOut',
     
             },
-    
-    
             { // 蓝柱
                 name: '', // blue bar
                 type: 'pictorialBar',
                 symbol: 'roundRect',
-                barWidth: '35%',
+                barWidth: '30%',
                 symbolOffset: ['200%', '-30%'],
                 itemStyle: {
                     normal: {
@@ -803,12 +840,11 @@ export default {
                 // symbolClip: true,
                 data: barData,
             },
-    
         ],
       }
       radarDom5.setOption(option)
       // $(window).resize(function() {//这是能够让图表自适应的代码
-      // window.addEventListener("resize", () => { radarDom3.resize(); });
+      window.addEventListener("resize", () => { radarDom3.resize(); });
     },
     // 查询分类风险提醒数据
     allWarnByType() {
@@ -831,6 +867,116 @@ export default {
         }
       })
     },
+    agency(){
+      alert(1)
+    },
+    // 从警生涯数据
+    getPoliceCareer() {
+      const _this = this;
+      const params = {
+        userId: '1D2G3F4H',
+      }
+      getPoliceCareer(params).then(res => {
+       debugger
+        if (res.success) {
+          const Data = res.data
+          _this.careerData = Data.reduce((prev, item) =>
+            (item.career_type === '履历'
+              ? [...prev, { ...item, marks: [item] }]
+              : [...prev.slice(0, -1), { ...prev.slice(-1)[0], marks: prev.slice(-1)[0].marks.concat(item) }]), []
+          );
+          let width = _this.$refs.career_list.scrollWidth
+          $(_this.$refs.career_list).animate({ scrollLeft: width }, 8000)
+          for (var i = 0; i < _this.careerData.length; i++) {
+            _this.marksData.push(_this.careerData[i].marks[i])
+            _this.careerData[i].happen_time = _this.conversion(
+              _this.careerData[i].happen_time
+            )
+            _this.careerData[i].endtime = _this.conversion(
+              _this.careerData[i].endtime
+            )
+            if (_this.careerData[i].marks != null) {
+                                var data = _this.careerData[i].marks
+                                for (var j = 0; j < data.length; j++) {
+                                    data[j].happen_time = _this.conversion(data[j].happen_time) // 把时间戳转化为时间格式
+                                    data[j].endtime = _this.conversion(data[j].endtime) // 把时间戳转化为时间格式
+                                }
+                            }
+            _this.careerData[_this.careerData.length - 1].marks[0].endtime = "至今"
+            _this.careerData[_this.careerData.length - 1].endtime = "至今"
+          }
+        }
+      })
+    },
+    conversion(timestamp) {
+            // 时间戳转化为时间格式
+            var date = new Date(timestamp) // 时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear() + '.'
+            var M =
+        (date.getMonth() + 1 < 10
+            ? '0' + (date.getMonth() + 1)
+            : date.getMonth() + 1) + '.'
+            var D = date.getDate() + ' '
+            // var h = date.getHours() + ':'
+            // var m = date.getMinutes() + ':'
+            // var s = date.getSeconds()
+            return Y + M + D 
+    },
+    // 查询七天上班时间统计数据
+    indexRecordDeatil() {
+      const _this = this;
+      const params = {
+        userId: this.userInfo.info,
+        startTime: _this.dateStart,
+        endTime: _this.dateEnd
+
+      }
+      indexRecordDeatil(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          const Data = res.data
+          _this.worklength = Data.map(({ worklength }) => worklength)
+          _this.overtime = Data.map(({ overtime }) => overtime)
+          this.clockDate = Data.map(({ clock_date }) => new Date(clock_date).toLocaleDateString().substring(5))
+        }
+      })
+    },
+    // 查询部门平均上班时间数据
+    sectorAverageStatistics() {
+      const _this = this;
+      const params = {
+        department: sessionStorage.orgId,
+        startTime: _this.dateStart,
+        endTime: _this.dateEnd
+
+      }
+      sectorAverageStatistics(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          const Data = res.data
+          _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
+          _this.init();
+        }
+      })
+    },   
+    // 查询首页日历评分数据
+    findWorknotePage() {
+      const _this = this;
+      const params = {
+        department: sessionStorage.orgId,
+        startTime: _this.dateStart,
+        endTime: _this.dateEnd
+
+      }
+      findWorknotePage(params).then(res => {
+        console.log(res)
+        if (res.success) {
+          // const Data = res.data
+          // _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
+          // _this.init();
+        }
+      })
+    },  
   }
 }
 </script>
@@ -841,15 +987,100 @@ export default {
   height: 100%;
   width: 100%;
 }
+.p_career{
+  display: flex;
+
+}
+.p_person {
+    float: left;
+    width: 249px;
+    margin-top: 28px;
+}
+.p_name{
+  text-align: center;
+    margin-left: 4px;
+    width: 142px;
+    height: 13px;
+    font-size: 12px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #8593a7;
+    line-height: 20px;
+}
+.p_year{
+  text-align: center;
+    margin-top: 39px;
+    color: blue;
+    margin-left: 19px;
+    line-height: 29px;
+}
+.p_title{
+  float: left;
+   width: 10%;
+  margin-top: 28px;
+}
+.person_career{
+  width: 100%;
+  height: calc(88% - 30px);
+  overflow: auto hidden; 
+  display: flex;
+}
 .person_body{
   height: 100%;
   width: 98%;
   margin: 1%;
 }
 .person_head{
-  height: 25% !important;
-  background-color: white;
-  margin-bottom: 15px;
+    height: 25% !important;
+    background-color: #fff;
+    margin-bottom: 15px;
+    width: 100%;
+    /* overflow: auto hidden; */
+}
+.p_card{
+  /* float: left; */
+  width: 136px;
+   margin-top: 28px;
+}
+    /* 定义滚动条样式 */
+    ::-webkit-scrollbar {
+    /* width: 16px; */
+    height: 6px;
+    background-color: rgb(238, 236, 236);
+  }
+   
+  /*定义滚动条轨道 内阴影+圆角*/
+  /* ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+    border-radius: 5px;
+    background-color: rgba(240, 240, 240, .5);
+  } */
+   
+  /*定义滑块 内阴影+圆角*/
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 0px rgba(19, 13, 13, 0.5);
+    background-color: rgba(19, 13, 13, 0.5);
+    width: 20px;
+    height: 20px;
+  }
+  /* .scroll-list ul{
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0 0.1rem;
+      margin-bottom: -.2rem;
+      overflow: -moz-scrollbars-none;
+      overflow: -moz-scrollbars-none;
+  } */
+  .scroll-list ul::-webkit-scrollbar{
+      display: none;
+  }
+.p_node{
+  /* float: left; */
+  width: 136px;
+  margin-top: 4px;
 }
 .person_left{
   background-color: #fff;
@@ -935,11 +1166,14 @@ export default {
   }
   .p_warn{
     height: 50%;
-    float: left;
+    /* float: left; */
+    /* display: grid; */
     width: 100%;
   }
   .ptop{
-    height: 30%;
+    height: 70%;
+    float: left;
+    width: 100%;
   }
   .pcenter{
     height: 35%;
@@ -949,7 +1183,7 @@ export default {
   }
   .pli{
     width: 25%;
-    height: 100%;
+    /* height: 100%; */
     display: inline-block;
     margin-top: 7%;
   }
@@ -968,7 +1202,7 @@ export default {
   }
 .pft{
     text-align: center;
-    margin-top: 3%;
+    /* margin-top: 3%; */
     color: #838D9E;
 }
 .p_inter{
@@ -997,9 +1231,9 @@ export default {
   width: 100%;
 }
 .p_tscore{
-  width: 100%;
+  width: 74%;
   height: 50%;
-  margin-left: 63px;
+  margin-left: 27%;
 }
 .p_score{
   float: left;
@@ -1008,12 +1242,12 @@ export default {
   text-align: center;
 }
 .p_lscore{
-  width: 20%;
-  height: 100%;
-  float: left;
+  width: 24%;
+    height: 100%;
+    float: left;
 }
 .p_rscore{
-  width: 55%;
+  width: 76%;
   height: 100%;
   float: left;
 }
@@ -1035,6 +1269,31 @@ export default {
 .bscore{
   color: #CC00FF
 }
+.crea_left{
+  width: 12%;
+    float: left;
+}
+
+.calendar-day{
+        text-align: center;
+        color: #202535;
+        line-height: 30px;
+        font-size: 12px;
+    }
+    .is-selected{
+        color: green;
+        background-color: green;
+        font-size: 10px;
+        margin-top: 20px;
+        width: 13px;
+        height: 13px;
+        margin-left: 8px;
+        border-radius: 10px;
+
+    }
+    #calendar .el-button-group>.el-button:not(:first-child):not(:last-child):after{
+        content: '当月';
+    }
   /* .left-score-image {
         width: 100% !important;
         height: 100% !important;

@@ -3,8 +3,8 @@ const path = require('path');
 const resolve = (dir) => path.join(__dirname, dir);
 // const webpack = require('webpack')
 const CompressionPlugin = require("compression-webpack-plugin")
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
-const TerserPlugin = require('terser-webpack-plugin')
+// const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
+// const TerserPlugin = require('terser-webpack-plugin')
 const productionGzipExtensions = ['js', 'css'];
 const cdn = {
   css: [],
@@ -68,34 +68,34 @@ module.exports = {
       //   'crypto-js': 'CryptoJS'
       // }
       // 去除console
-      config.plugins.push(
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            compress: {
-              // warnings: false,
-              drop_debugger: true,
-              drop_console: true,
-              pure_funcs: ['console.log'] //移除console
-            },
-          },
-          sourceMap: false,
-          parallel: true,
-        })
-      )
+      // config.plugins.push(
+      //   new UglifyJsPlugin({
+      //     uglifyOptions: {
+      //       compress: {
+      //         // warnings: false,
+      //         drop_debugger: true,
+      //         drop_console: true,
+      //         pure_funcs: ['console.log'] //移除console
+      //       },
+      //     },
+      //     sourceMap: false,
+      //     parallel: true,
+      //   })
+      // )
       // 插件terser
-      config.plugins.push(
-        new TerserPlugin({
-          cache: true,
-          parallel: true, // 多线程打开
-          sourceMap: true, // Must be set to true if using source-maps in production
-          terserOptions: {
-            compress: {
-              drop_console: true,
-              drop_debugger: true
-            }
-          }
-        })
-      )
+      // config.plugins.push(
+      //   new TerserPlugin({
+      //     cache: true,
+      //     parallel: true, // 多线程打开
+      //     sourceMap: true, // Must be set to true if using source-maps in production
+      //     terserOptions: {
+      //       compress: {
+      //         drop_console: true,
+      //         drop_debugger: true
+      //       }
+      //     }
+      //   })
+      // )
       // 
     }
 

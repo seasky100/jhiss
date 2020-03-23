@@ -308,7 +308,7 @@
       this.sectorAverageStatistics();
       this.indexRecordDeatil();
       this.allWarnByType();
-      this.getData();
+      // this.getData();
     },
     methods: {
       init() {
@@ -619,7 +619,7 @@
       getPoliceCareer(){
         const _this=this;
         const params = {
-          userId: this.userId,
+          userId: '1D2G3F4H',
         }
         getPoliceCareer(params).then(res => {          
           console.log(res)
@@ -642,7 +642,7 @@
         }
       })
     },
-      jxh(){s
+      jxh(){
         this.$router.push({path:'/Refinement'})
       },
       xztxt(){

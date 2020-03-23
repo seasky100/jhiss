@@ -51,3 +51,14 @@ export function getAuditWarningById(params) {
         return res
     })
 }
+
+// 首页日历评分
+export function findWorknotePage(params) {
+    return request({
+        url: DEFAULT_URL.evaluation.findWorknotePage,
+        method: 'get',
+        params
+    }).then((res) => {
+        return res
+    })
+}

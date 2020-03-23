@@ -181,7 +181,10 @@ const DEFAULT_URL = {
     AuditWarnBarChat: GAISMSERVER + '/AuditWarning/AuditWarnBarChat', // 日志预警柱线图
     AuditWarnLineChat: GAISMSERVER + '/AuditWarning/AuditWarnLineChat', // 日志预警折线图
     findAuditWarningPage: GAISMSERVER + '/AuditWarning/findAuditWarningPage', // 日志预警分页
-    auditWarningById: GAISMSERVER + '/AuditWarning/auditWarningById' // 日志预警详情
+    auditWarningById: GAISMSERVER + '/AuditWarning/auditWarningById', // 日志预警详情
+    findWorknotePage: GAISMSERVER + '/workNote/findWorknotePage' // 层级评分
+
+    
   },
   // 【台账管理】-【人员台账】
   standingBook: {
