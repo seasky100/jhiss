@@ -29,12 +29,6 @@ const routes = [
   // },
   // 根目录导航页
   {
-    path: "/login",
-    name: "login",
-    hidden:true,
-    component: login
-  },
-  {
     path: "/",
     name: "MenuPaage",
     component: MenuPage,
@@ -83,7 +77,12 @@ const routes = [
 
     ]
   },
-  
+  {
+    path: "/login",
+    name: "login",
+    hidden:true,
+    component: login
+  },
   {
     path: "/404",
     name: "notFound",
