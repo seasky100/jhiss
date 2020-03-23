@@ -92,7 +92,7 @@
           background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
           @open="handleOpen" @close="handleClose" @select="handleSelect" :collapse="isCollapse">
           <!-- 一级 -->
-          <NavMenu :navMenus="routes"></NavMenu>
+          <nav-menu :navMenus="routes"></nav-menu>
         </el-menu>
  
       </div>

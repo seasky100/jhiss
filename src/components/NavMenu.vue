@@ -8,7 +8,7 @@
           <img v-if="item.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${item.img}`)" />
           <span slot="title">{{item.title}}</span>
         </template>
-        <NavMenu :navMenus="item.children"></NavMenu>
+        <nav-menu :navMenus="item.children"></nav-menu>
       </el-submenu>
       <!-- 最后一级 -->
       <!-- <el-menu-item v-show="!item.hidden" v-else :key="index" :index="item.path"> -->
