@@ -21,16 +21,9 @@ Vue.config.productionTip = false
 
 import VCharts from 'v-charts';
 Vue.use(VCharts);
-
 import Vue2OrgTree from 'vue2-org-tree';
 Vue.use(Vue2OrgTree)
-
 Vue.use(ElementUI)
-import BaiduMap from 'vue-baidu-map';
-Vue.use(BaiduMap, {
-      /* Visit http://lbsyun.baidu.com/apiconsole/key for details about app key. */
-      ak: '0hn8QhIIdXY3F5WnW7X3jYMaKQp1dr6O'
-})
 Vue.config.productionTip = false
 new Vue({
   router,
