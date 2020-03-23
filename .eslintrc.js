@@ -11,6 +11,7 @@ module.exports = {
     'eslint:recommended'
   ],
   rules: {
+    "no-unused-vars":"off",
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     "vue/max-attributes-per-line": 'off' //关闭template中对象的属性换行

@@ -29,6 +29,12 @@ const routes = [
   // },
   // 根目录导航页
   {
+    path: "/login",
+    name: "login",
+    hidden:true,
+    component: login
+  },
+  {
     path: "/",
     name: "MenuPaage",
     component: MenuPage,
@@ -42,15 +48,15 @@ const routes = [
         name: "PersonalHome",
         component: PersonalHome
       },
-      // {
-      //   title: '市局门户',
-      //   img: 'left_attendance@2x.png',
-      //   icon: 'el-icon-s-home',
-      //   // icon: 'el-icon-location',
-      //   path: "/Gateway",
-      //   name: "Gateway",
-      //   component: Gateway
-      // },
+      {
+        title: '市局门户',
+        img: 'left_attendance@2x.png',
+        icon: 'el-icon-s-home',
+        // icon: 'el-icon-location',
+        path: "/Gateway",
+        name: "Gateway",
+        component: Gateway
+      },
       ...organizationRouter,
       {
         title: '协作提效',
@@ -77,6 +83,7 @@ const routes = [
 
     ]
   },
+  
   {
     path: "/404",
     name: "notFound",
@@ -85,12 +92,7 @@ const routes = [
     path: "*", // 此处需特别注意置于最底部
     redirect: "/404"
   },
-  {
-    path: "/login",
-    name: "login",
-    hidden:true,
-    component: login
-  },
+  
   // {
   //   path: "/agency",
   //   name: "agency",

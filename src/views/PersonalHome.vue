@@ -259,6 +259,7 @@
   <script>
   import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil } from '@/api/warn.js';
   import { getPoliceCareer } from '@/api/user-server.js';
+  import { subDays,format } from 'date-fns';
   export default {
     name: "PersonalHome",
     data() {
@@ -686,12 +687,11 @@
   
       // },
       sevenday(){
-        const today = this.$dayjs(new Date());
-        const t7 = today.subtract(7, 'day');
-        this.dateStart = t7.format('YYYY-MM-DD');
-        this.dateEnd = today.format('YYYY-MM-DD');
+        const  day  =  new  Date();
+        const t7 = subDays(day, 7);
+        this.dateStart=format(t7,'yyyy-MM-dd');
+        this.dateEnd = format(day,'yyyy-MM-dd'); 
       }
-  
     }
   }
   </script>
