@@ -47,6 +47,7 @@ const DEFAULT_URL = {
     indexRecordDeatil: GAISMSERVER + 'warn/indexRecordDeatil', //
     //查询上班时间统计数据
     indexRecordCountDeatil: GAISMSERVER + 'warn/indexRecordCountDeatil', //
+    indexCalendar: GAISMSERVER + '/warn/indexCalendar' // 首页个人评分 部门评分
   },
   // 廉政风险
   vacation: {
@@ -181,7 +182,7 @@ const DEFAULT_URL = {
     AuditWarnLineChat: GAISMSERVER + '/AuditWarning/AuditWarnLineChat', // 日志预警折线图
     findAuditWarningPage: GAISMSERVER + '/AuditWarning/findAuditWarningPage', // 日志预警分页
     auditWarningById: GAISMSERVER + '/AuditWarning/auditWarningById', // 日志预警详情
-    findWorknotePage: GAISMSERVER + '/workNote/findWorknotePage' // 层级评分
+    findWorknotePage: GAISMSERVER + '/workNote/findWorknotePage' // 首页日历层级评分
 
     
   },

@@ -66,13 +66,8 @@
                                 <div v-for="item in calendarData">
                                    <div v-if="(item.months).indexOf(data.day.split('-').slice(1)[0])!=-1">
                                      <div v-if="(item.days).indexOf(data.day.split('-').slice(2).join('-'))!=-1">
-                                          <el-tooltip class="item" effect="dark" :content="item.things"  placement="right">
-                                            <div v-if='item.things >= 8'>
+                                          <el-tooltip class="item" effect="dark" :content="item.things"  placement="right">                                    
                                                <div class="is-selected">{{item.things}}</div>
-                                              </div>
-                                            <div v-else>
-                                              <div class="is-selected">{{item.things}}</div>
-                                              </div>
                                           </el-tooltip>
                                        </div>
                                     <div v-else></div>
@@ -82,6 +77,14 @@
                           </div>
                       </template>
                 </el-calendar>
+                <!-- <ele-calendar 
+                  defaultValue="2019-05" 
+                  @date-change="change"
+                  @pick="pick"
+                  :render-content="renderContent" 
+                  :data="datedef"
+                  :prop="prop">
+                </ele-calendar> -->
               </div>
                   <div class='p_eright'>
                   <div class='p_watch'>
@@ -227,10 +230,12 @@
   </div>
 </template>
 <script>
-  import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil } from '../../api/warn.js';
+  import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil,indexCalendar } from '../../api/warn.js';
   import { getPoliceCareer } from '../../api/user-server.js';
   import { findWorknotePage } from '../../api/wisdom-reminder/evaluation-analysis.js';
   import { subDays,format } from 'date-fns';
+  import eleCalendar from 'ele-calendar'
+  import 'ele-calendar/dist/vue-calendar.css'
 export default {
   name: "PersonalHome",
   data() {
@@ -255,6 +260,25 @@ export default {
         marksData:[],
         selected: 0,
         timeIndex: 0,
+        value1: '',
+      highPrice: '', //最高价格
+      normalPrice: '', //正常价格
+
+      dayStart: '', //入住日期字符串(yyyy-mm-dd)
+      startTime: 0, //入住日期时间戳
+      startMoney: 0, //入住日期租金
+
+      dayEnd: '', //离开日期字符串(yyyy-mm-dd)
+      endTime: 0, //离开日期时间戳
+      endMoney: 0, //离开日期租金
+
+      totalMoney: 0, //总金额
+      clickNum: 0 ,//点击计数器
+      datedef:[
+                    {"date":"2020-03-03","content":'休息',"cid":null},
+                    {"date":"2020-03-26","content":'休息',"cid":null},
+                ],
+                prop:'date' ,//对应日期字段名
 
         calendarData: [
                     { months: ['01', '02','03', '04','05','06','07','08','09','10','11','12'],days: ['12','13','14','15','16','17','18','26'],things: 8 },
@@ -272,7 +296,11 @@ export default {
           ],         
     }
   },
+  components: {
+            eleCalendar
+        },
   mounted() {
+    this.indexCalendar();
     this.getPoliceCareer();
     this.getRadar()
     this.getRadar2()
@@ -285,6 +313,165 @@ export default {
     aa(){
       alert(33)
 
+    },
+    renderContent(h, parmas) {
+      const loop = data => {
+        debugger
+        //判断星期六 价格变动
+        if (data.defvalue.column == 6) {
+          return data.defvalue.value ? (
+            <div class="flex2 selected">
+              {data.defvalue.text}
+              <span>小小</span>
+            </div>
+          ) : (
+            <div class="flex2">
+              {data.defvalue.text}
+              <span>大大</span>
+            </div>
+          )
+        } else {
+          return data.defvalue.value ? (
+            <div class="flex2 selected">
+              {data.defvalue.text}
+              <span>烦烦烦</span>
+            </div>
+          ) : (
+            <div class="flex2"> 
+              {data.defvalue.text}
+              <span>灌灌</span>
+            </div>
+          )
+        }
+      }
+      return <div style="min-height:60px;">{loop(parmas)}</div>
+    },
+    //设置dayStart
+    setStart(date) {
+      this.startMoney = event.toElement.innerText.slice(-3)
+
+      this.startTime = date
+      this.dayStart = this.msToDate(date).withoutTime
+    },
+    pick(date, mouseEvent, bbb) {
+      debugger
+      if (this.clickNum < 2) {
+        // console.log('if-clickNum', this.clickNum)
+        this.clickNum++
+        if (this.clickNum == 1) {
+          this.setStart(date)
+        }
+
+        if (this.clickNum == 2) {
+          if (date > this.startTime) {
+            this.endMoney = event.toElement.innerText.slice(-3)
+            this.endTime = date
+            this.dayEnd = this.msToDate(date).withoutTime
+          } else {
+            this.reset(date)
+          }
+        }
+
+      //   if (this.dayStart && this.dayEnd) {
+      //     // console.log('money', this.startMoney, this.endMoney)
+      //     let lack = this.endTime - this.startTime
+      //     let difference = lack / 1000 / 3600 / 24 + 1
+      //     // console.log('num', difference)
+      //     // console.log('选择的日期:', this.dayStart, this.dayEnd)
+      //     let startNum = new Date(this.startTime).getDate()
+      //     let endNum = new Date(this.endTime).getDate()
+      //     let nowMonth = new Date(this.endTime).getMonth() + 1
+
+      //     // console.log('first=', startNum, endNum)
+      //     for (let i = startNum; i < endNum + 1; i++) {
+      //       let insert = {
+      //         date: `2019-0${nowMonth}-${i}`,
+      //         content: null,
+      //         cid: null
+      //       }
+      //       this.datedef.push(insert)
+      //     }
+
+      //     //计算租金总额
+      //     let saturdayNum = 0
+      //     if (this.endMoney == this.normalPrice && this.startMoney == this.normalPrice) {
+      //       saturdayNum = Math.floor(difference / 7 + 1)
+      //     } else {
+      //       saturdayNum = Math.floor(difference / 7)
+      //     }
+      //     this.totalMoney =
+      //       (saturdayNum * this.highPrice + (difference - saturdayNum) * this.normalPrice) / 100
+      //     // console.log('totalMoney=', this.totalMoney)
+      //   }
+      // } else {
+      //   this.reset(date)
+      //   // console.log('else-clickNum', this.clickNum)
+      // }
+      }
+    },
+//重置日期
+reset(date) {
+      // console.log('ok')
+      this.dayStart = ''
+      this.startTime = 0
+
+      this.dayEnd = ''
+      this.endTime = 0
+
+      this.datedef = []
+      this.clickNum = 1
+
+      this.setStart(date)
+    },
+    change() {
+      this.dayStart = ''
+      this.startTime = 0
+      this.dayEnd = ''
+      this.endTime = 0
+      this.datedef = []
+      this.clickNum = 0
+    },
+//中国标准时间转时间戳
+dateToMs(date) {
+      let result = new Date(date).getTime()
+      return result
+    },
+    //中国标准时间转年月日
+    msToDate(msec) {
+      let datetime = new Date(msec)
+      let year = datetime.getFullYear()
+      let month = datetime.getMonth()
+      let date = datetime.getDate()
+      let hour = datetime.getHours()
+      let minute = datetime.getMinutes()
+      let second = datetime.getSeconds()
+
+      let result1 =
+        year +
+        '-' +
+        (month + 1 >= 10 ? month + 1 : '0' + (month + 1)) +
+        '-' +
+        (date + 1 < 10 ? '0' + date : date) +
+        ' ' +
+        (hour + 1 < 10 ? '0' + hour : hour) +
+        ':' +
+        (minute + 1 < 10 ? '0' + minute : minute) +
+        ':' +
+        (second + 1 < 10 ? '0' + second : second)
+
+      let result2 =
+        year +
+        '-' +
+        (month + 1 >= 10 ? month + 1 : '0' + (month + 1)) +
+        '-' +
+        (date + 1 < 10 ? '0' + date : date)
+
+      let result = {
+        hasTime: result1,
+        withoutTime: result2
+      }
+
+      return result
     },
     jxh(){
         this.$router.push({path:'/Refinement'})
@@ -977,6 +1164,27 @@ export default {
         }
       })
     },  
+    // 个人今日评分  部门评分
+    indexCalendar(){
+      const _this = this;
+      const params = {
+        userId: '4616',
+        department: '831',
+        startTime: '2020-01-01',
+        endTime: '2020-01-31'
+
+      }
+      findWorknotePage(params).then(res => {
+        debugger
+        console.log(res)
+        if (res.success) {
+          // const Data = res.data
+          // _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
+          // _this.init();
+        }
+      })
+      
+    },
   }
 }
 </script>
@@ -1283,6 +1491,17 @@ export default {
     .is-selected{
         color: green;
         background-color: green;
+        font-size: 10px;
+        margin-top: 20px;
+        width: 13px;
+        height: 13px;
+        margin-left: 8px;
+        border-radius: 10px;
+
+    }
+    .no-selected{
+        color: red;
+        background-color: red;
         font-size: 10px;
         margin-top: 20px;
         width: 13px;

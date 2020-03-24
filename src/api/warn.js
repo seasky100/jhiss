@@ -271,3 +271,11 @@ export function queryPeriodStudy (params) {
     params
   })
 }
+// 首页个人评分 部门评分
+export function indexCalendar (params) {
+  return request({
+    url: DEFAULT_URL.warn.indexCalendar,
+    method: 'get',
+    params
+  })
+}
