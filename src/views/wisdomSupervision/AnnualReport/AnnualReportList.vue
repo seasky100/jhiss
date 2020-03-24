@@ -29,7 +29,7 @@ export default {
     return {
 			// userId: '5ba98b66cd3549b9b92ea8723e89207e',
 			userId: '2020',
-      addForm: '', // 新增路由地址
+      addForm: 'AnnualReportAdd', // 新增路由地址
 			searchData: {
 				policeCode: '',
 				policeName: ''
