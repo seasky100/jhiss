@@ -5,6 +5,9 @@
       <template v-if="headerTab == 1">
         <span class="imgAdd" @click="addTabData"></span>
         <span class="saveImg" @click="saveBtnClick"></span>
+        <span style="color:red;margin-left:10px;">
+          注：保存按钮可获取新增数组数据
+        </span>
       </template>
     </h2>
     <!-- 普通表格 -->

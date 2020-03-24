@@ -1,7 +1,10 @@
 <template>
   <div class="report-container">
 		<div class="report-title">
-      <span @click="headerParamClick">个人有关事项报告</span>
+      <span>个人有关事项报告</span>
+      <span style="color:red;" @click="headerParamClick">
+        注：点击此处可获取对象数据参数
+      </span>
     </div>
 		<div class="report-body">
       <div class="list report_list" style="width:400px;border-right:1px solid #a5a2a2;">
