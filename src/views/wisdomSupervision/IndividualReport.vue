@@ -239,7 +239,6 @@ export default {
         }
         getUserListByUserId(params).then(res => {
           if (res.success) {
-            debugger
             _this.userIds = res.data.map(item => item.id).join()
             this.query();
           }
