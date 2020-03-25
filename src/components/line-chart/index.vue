@@ -37,7 +37,8 @@
           color: this.color,
           title: {
             text: this.title,
-            left: 'center'
+            top: '15',
+            left: '20',
           },
           // 图例（即上方显示的数据类型）
           legend: {
@@ -48,10 +49,16 @@
             itemGap: 34
           },
           // 直角坐标系内绘图网格
+          // grid: {
+          //   top: this.gridTop,
+          //   bottom: this.gridBottom,
+          //   containLabel: true // 防止标签溢出
+          // },
           grid: {
-            top: this.gridTop,
-            bottom: this.gridBottom,
-            containLabel: true // 防止标签溢出
+              top: '70',
+              bottom: '15',
+              left: '25',
+              right: '25'
           },
           // 直角坐标系 grid 中的 x 轴
           xAxis: {
@@ -96,7 +103,28 @@
       chartSettings() {
         return {
           labelMap: this.labelMap, // 修改别名
-          stack: this.stack // 堆叠数据
+          stack: this.stack, // 堆叠数据
+          area: true,//是否显示为面积图
+          itemStyle:{ //面积图颜色设置
+            color:{
+                type:'linear',
+                x:0,
+                y:0,
+                x2:0,
+                y2:1,
+                colorStops:[
+                    {
+                        offset: 0,
+                        color: '#3182FF', // 0% 处的颜色
+                    }, 
+                    {
+                        offset: 1, 
+                        color: '#3182FF' // 100% 处的颜色
+                    },
+                ],
+                globalCoord: false // 缺省为 false
+            }
+          },
         };
       }
     }

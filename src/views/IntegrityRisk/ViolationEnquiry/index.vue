@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <div class="page-title">
+      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
       <span>违规查询预警管控</span>
     </div>
     <div class="content">
       <el-row class="bg-fff">
-        <el-col :span="12">
+        <el-col :span="12" style="margin-right:10px;">
           <!-- 被查询系统次数统计 -->
           <e-histogram
             :chartSettings="warnStatusSettings"
@@ -24,15 +25,15 @@
           </ve-line>
         </el-col>
       </el-row>
-      <div class="search-wrap">
-        <div class="section-title">查询条件</div>
+      <div class="search-wrap" style="min-width:1245px;">
+        <!-- <div class="section-title">查询条件</div> -->
         <e-search
           class="search-form"
           @handleSearch="handleSearch"
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
-      <div>
+      <div class="search-wrap" style="height:350px;">
         <e-table
           ref="recordSpTableRef"
           :tableList="tableList"
@@ -58,14 +59,41 @@ export default {
   },
   data() {
     this.chartExtend = {
+      grid: {
+          top: '70',
+          bottom: '15',
+          left: '25',
+          right: '25'
+      },
       series: {
-        smooth: false
+        smooth: true
       }
     };
     this.chartSettings = {
       labelMap: {
         warnnum: '次数'
-      }
+      },
+      area: true,//是否显示为面积图
+      itemStyle:{ //面积图颜色设置
+        color:{
+            type:'linear',
+            x:0,
+            y:0,
+            x2:0,
+            y2:1,
+            colorStops:[
+                {
+                    offset: 0,
+                    color: '#3182FF', // 0% 处的颜色
+                }, 
+                {
+                    offset: 1, 
+                    color: '#3182FF' // 100% 处的颜色
+                },
+            ],
+            globalCoord: false // 缺省为 false
+        }
+      },
     }
     // this.chartSettings1 = {
     //   labelMap: {
@@ -128,7 +156,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'500'
+        height:'320'
       },
       columns: [
         {
@@ -207,7 +235,8 @@ export default {
       },
       title: {
         text: '次数统计',
-        left: 'center'
+        top: '15',
+        left: '20',
       }
     }
   },

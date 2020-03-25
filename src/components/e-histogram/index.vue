@@ -31,9 +31,26 @@ export default {
         legend:{
           show:false
         },
-        title: { ...this.title, left: 'center' },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          top: '70',
+          bottom: '15',
+          left: '25',
+          right: '25'
+        },
+        title: { 
+          ...this.title, 
+          top: '15',
+          left: '20',
+        },
         xAxis: this.xAxis,
         yAxis: this.yAxis,
+        color: ['#3182FF'],
         series(v) {
           // 设置柱子的样式
           v.forEach(i => {

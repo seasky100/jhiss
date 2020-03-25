@@ -2,6 +2,7 @@
   <div class="e-table flex-column">
     <el-row class="flex-1">
       <el-col class="table-outer" :span="24">
+        <!-- :height="optionsComputed.height" -->
         <el-table
           ref="elTable"
           class="public-sp-el-table table-self"
@@ -10,7 +11,7 @@
           row-key="id"
           :expand-row-keys="expands"
           @row-click="rowClick"
-          :border="false"
+          :border="true"
           :show-header="optionsComputed.showHeader"
           :tree-props="treeProps"
           :max-height="optionsComputed.maxHeight"
@@ -227,6 +228,10 @@ export default {
         return [];
       }
     },
+    height: {
+      type: String,
+      default: '100%'
+    },
     operates: {
       type: Object,
       default: () => {
@@ -253,10 +258,12 @@ export default {
   computed: {
     optionsComputed: {
       get: function() {
+        debugger
         let temp = Object.assign({}, this.optionsDefault);
         for (let index in this.options) {
           temp[index] = this.options[index];
         }
+        console.log(temp)
         return temp;
       },
       set: function(obj) {
@@ -299,8 +306,9 @@ export default {
         stripe: true,
         highlightCurrentRow: true,
         hasPagination: true,
-        maxHeight: '700px',
+        maxHeight: '750px',
         height: '100%',
+        // height: this.height,
         marginTop: '0px',
         showHeader: true
       }
@@ -413,7 +421,7 @@ export default {
 
 <style lang="stylus" scoped>
 .e-table 
-  width: 100%;
+  padding 15px 15px 0
   .el-row 
     .pagination-col 
       margin-top: 20px;
@@ -431,7 +439,7 @@ export default {
   border-bottom: 1px solid rgba(241, 241, 241, 1);
 
   th
-    background-color: #f6fafd !important;
+    background-color: #DEE2E6 !important;
     height: 53px !important;
     font-size: 14px !important;
     font-family: Microsoft YaHei !important;
