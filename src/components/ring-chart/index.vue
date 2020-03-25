@@ -22,12 +22,19 @@ export default {
     data() {
         return {
             chartExtend: {
+                grid: {
+                    top: '70',
+                    bottom: '15',
+                    left: '25',
+                    right: '25'
+                },
                 tooltip: {
                     confine: true // 兼容 overflow: hidden 溢出问题
                 },
                 title: {
                     text: this.title,
-                    left: 'center'
+                    top: '15',
+                    left: '20',
                 },
                 legend: {
                     type: "plain",
