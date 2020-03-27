@@ -117,7 +117,7 @@ export default {
 }
 .entrance{
   border-radius: 20px;
-  background: url('../../../assets/images/bg/dep_bg.png') no-repeat;
+  background: url('../../../assets/images/bg/dep_bg_level.png') no-repeat;
   background-size: 100% 100%;
 }
 .entrance .panel_info{
