@@ -418,16 +418,16 @@ let columns210 = [
 ]
 
 let tableData = [
-    { columns: columns1, data: [...data1], headerTab: 2 }, // 111
-    { columns: columns2, data: [...data1] },
-    { columns: columns3, data: [...data1] },
-    { columns: columns4, data: [...data1] },
-    { columns: columns5, data: [...data1] },
-    { columns: columns6, data: [...data1] },
-    { columns: columns7, data: [...data1] },
+    { columns: columns1, data: [data1[0]], headerTab: 2 }, // 111
+    { columns: columns2, data: [] },
+    { columns: columns3, data: [data1[0]] },
+    { columns: columns4, data: [data1[0]] },
+    { columns: columns5, data: [data1[0]] },
+    { columns: columns6, data: [data1[0]] },
+    { columns: columns7, data: [data1[0]] },
     { columns: columns8, data: [data1[0],data1[1]] },
-    { columns: columns9, data: [...data1] },
-    { columns: columns9, data: [...data1], headerTab: 3 }, // 111
+    { columns: columns9, data: [data1[0]] },
+    { columns: columns9, data: [data1[0]], headerTab: 3 }, // 111
     { columns: columns11, data: [data1[0],data1[1]] },
 ]
 let appendTab4 = [
