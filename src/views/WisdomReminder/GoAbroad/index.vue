@@ -1,25 +1,26 @@
 <template>
     <div class="container">
         <div class="page-title">
+            <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
             <span>出国情况</span>
         </div>
         <div class="content">
             <el-row class="bg-fff">
-                <el-col :span="8">
+                <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
                     <RingChart
                             :chart-data="withoutPassport.data"
                             :label-map="withoutPassport.labelMap"
                             title="民警数量"
                     />
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
                     <RingChart
                             :chart-data="passport.data"
                             :label-map="passport.labelMap"
                             title="民警数量"
                     />
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="8" style="width:calc(33.3% - 5px);">
                     <HistogramChart
                             :chart-data="goingAbroad.data"
                             :label-map="goingAbroad.labelMap"
@@ -27,8 +28,8 @@
                     />
                 </el-col>
             </el-row>
-            <div class="search-wrap">
-                <div class="section-title">查询条件</div>
+            <div class="search-wrap" style="min-width:1220px;">
+                <!-- <div class="section-title">查询条件</div> -->
                 <e-search
                         class="search-form"
                         @handleSearch="handleSearch"
@@ -36,7 +37,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div>
+            <div class="search-wrap" style="height:350px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"
@@ -155,7 +156,7 @@ export default {
           currentPage: 1,
           loading: true,
           maxHeight: null,
-          height: '500'
+          height: '320'
       },
       columns: [
           {

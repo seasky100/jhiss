@@ -5,18 +5,21 @@
       <template v-if="headerTab == 1">
         <span class="imgAdd" @click="addTabData"></span>
         <span class="saveImg" @click="saveBtnClick"></span>
+        <span style="color:red;margin-left:10px;">
+          注：保存按钮可获取新增数组数据
+        </span>
       </template>
     </h2>
     <!-- 普通表格 -->
     <el-table class="generalTab" v-if="headerTab == 1"
-      :span-method="arraySpanMethod"
+      :span-method="arraySpanMethod" border
       :data="tableData2" 
       style="width:100%;">
       <nav-table :columns="columns2"></nav-table>
     </el-table>
     <!-- 表头表格 -->
     <el-table :class="['headerTab']" v-if="headerTab == 2"
-      :span-method="arraySpanMethod"
+      :span-method="arraySpanMethod" border
       :data="[]" 
       style="width:100%;">
       <nav-table :columns="columns2" :headerTab="headerTab" :headerParam="headerParam"></nav-table>

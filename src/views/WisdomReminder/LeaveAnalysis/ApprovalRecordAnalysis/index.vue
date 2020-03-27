@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <div class="page-title">
+            <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
             <span>审批记录分析</span>
         </div>
         <div class="content">
@@ -21,8 +22,8 @@
                     />
                 </el-col>
             </el-row>
-            <div class="search-wrap">
-                <div class="section-title">查询条件</div>
+            <div class="search-wrap" style="min-width:1245px;">
+                <!-- <div class="section-title">查询条件</div> -->
                 <e-search
                         class="search-form"
                         @handleSearch="handleSearch"
@@ -30,7 +31,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div>
+            <div class="search-wrap" style="height:750px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"
@@ -132,7 +133,7 @@ export default {
                 currentPage: 1,
                 loading: true,
                 maxHeight: null,
-                height: '500'
+                height: '720'
             },
             columns: [
                 {

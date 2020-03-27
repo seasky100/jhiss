@@ -41,7 +41,8 @@ export default {
         color: this.color,
         title: {
           text: this.title,
-          left: 'center'
+          top: '15',
+          left: '20',
         },
         // 图例（即上方显示的数据类型）
         legend: {
@@ -52,10 +53,16 @@ export default {
           itemGap: 34
         },
         // 直角坐标系内绘图网格
+        // grid: {
+        //   top: this.gridTop,
+        //   bottom: this.gridBottom,
+        //   containLabel: true // 防止标签溢出
+        // },
         grid: {
-          top: this.gridTop,
-          bottom: this.gridBottom,
-          containLabel: true // 防止标签溢出
+            top: '70',
+            bottom: '15',
+            left: '25',
+            right: '25'
         },
         // 直角坐标系 grid 中的 x 轴
         xAxis: {

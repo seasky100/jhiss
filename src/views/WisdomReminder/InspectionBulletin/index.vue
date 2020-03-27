@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <div class="page-title">
+      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
       <span>检查通报</span>
     </div>
     <div class="content">
       <el-row class="bg-fff">
-        <el-col :span="8">
+        <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
           <!-- 以部门进行分类统计 -->
           <e-histogram
             :chartSettings="departmentSettings"
@@ -13,7 +14,7 @@
             :chartData="departData"
           />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
           <!-- 问题性质分类统计 -->
           <!-- <ve-histogram :data="chartData"></ve-histogram> -->
           <e-histogram
@@ -22,7 +23,7 @@
             :chartData="exceptionData"
           />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" style="width:calc(33.3% - 5px);">
           <!-- 按月统计 -->
           <e-histogram
             :chartSettings="monthlySettings"
@@ -31,15 +32,15 @@
           />
         </el-col>
       </el-row>
-      <div class="search-wrap">
-        <div class="section-title">查询条件</div>
+      <div class="search-wrap" style="min-width:1090px;">
+        <!-- <div class="section-title">查询条件</div> -->
         <e-search
           class="search-form"
           @handleSearch="handleSearch"
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
-      <div>
+      <div class="search-wrap" style="height:350px;">
         <e-table
           ref="recordSpTableRef"
           :tableList="tableList"
@@ -180,7 +181,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'560'
+        height:'320'
       },
       columns: [
         {

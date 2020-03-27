@@ -4,11 +4,15 @@
       <span>个人即报</span>
     </div>
     <div class="Individual_type">
-      <span @click="ApplyReport(item)" style="display:inline-block;"
-        v-for="(item,index) of typeList" 
-        :key="index">
-        {{item.name}}
-      </span>
+     <div class='block_image'  @click="ApplyReport(item)" v-for="(item,index) of typeList"  :key="index">
+       <el-image 
+        :alt="item.name"
+        style="width: 54px; height: 54px"
+      :src="item.url"      
+      :fit="fill">
+      </el-image>
+       <span>{{item.name}}</span>
+      </div>
     </div>
     <div class="content">
       <div class="search-wrap">
@@ -47,19 +51,19 @@ export default {
   data() {
     return {
 			typeList:[
-				{name:'因私出境',path:'/Private_exit'},
-				{name:'房产变更',path:'/House_property'},
-				{name:'婚姻情况',path:'/Marital_status'},
-				{name:'婚丧宴请',path:'/Weddings'},
-				{name:'收受礼金',path:'/Accepting_gifts'},
-				{name:'亲属从业',path:'/Kinship_work'},
-				{name:'移居国外',path:'/Emigrate'},
-				{name:'境外投资',path:'/Offshore_Touzi'},
-				{name:'亲属经商',path:'/Relatives_business'},
-				{name:'境外存款',path:'/Offshore_deposits'},
-				{name:'担保借贷',path:'/Secured_lending'},
-				{name:'涉纪涉诉事项',path:'/Matters_involved'},
-				{name:'其他',path:'/Other_matters'}
+				{name:'因私出境',url:require('@/assets/images/individual/因私出境@2x.png'),path:'/Private_exit'},
+				{name:'房产变更',url:require('@/assets/images/individual/房产变更@2x.png'),path:'/House_property'},
+				{name:'婚姻状况',url:require('@/assets/images/individual/婚姻状况@2x.png'),path:'/Marital_status'},
+				{name:'婚丧宴请',url:require('@/assets/images/individual/婚丧宴请@2x.png'),path:'/Weddings'},
+				{name:'收受礼金',url:require('@/assets/images/individual/收受礼金@2x.png'),path:'/Accepting_gifts'},
+				{name:'亲属从业',url:require('@/assets/images/individual/亲属从业@2x.png'),path:'/Kinship_work'},
+				{name:'移居国外',url:require('@/assets/images/individual/移居国外@2x.png'),path:'/Emigrate'},
+				{name:'境外投资',url:require('@/assets/images/individual/境外投资@2x.png'),path:'/Offshore_Touzi'},
+				{name:'亲属经商',url:require('@/assets/images/individual/亲属经商@2x.png'),path:'/Relatives_business'},
+				{name:'境外存款',url:require('@/assets/images/individual/境外存款@2x.png'),path:'/Offshore_deposits'},
+				{name:'借贷担保',url:require('@/assets/images/individual/借贷担保@2x.png'),path:'/Secured_lending'},
+				{name:'涉纪涉诉事项',url:require('@/assets/images/individual/涉纪涉诉@2x.png'),path:'/Matters_involved'},
+				{name:'其他',url:require('@/assets/images/individual/其他@2x.png'),path:'/Other_matters'}
 			],
       userIds:'',
 			searchData: {
@@ -295,15 +299,22 @@ export default {
 
 .Individual_type{
   padding: 10px 10px 0;
+  cursor: pointer;
   span{
-    margin: 0 10px 5px 0;
-		padding: 3px 14px;
+		
+    padding: 3px 14px;
 		border-radius: 2px;
-		background: rgb(35, 95, 245);
-		color: #fff;
-		cursor: pointer;
+		color: #515A6E;
+    display: block;
+  }
+  .block_image{
+    padding: 5px 0;
+    text-align: center;
+    border-right: 1px solid #eff2f6;
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: top;
   }
 }
-	
-	
+
 </style>

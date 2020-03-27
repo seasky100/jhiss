@@ -40,6 +40,11 @@ const wisdomReminderRouter = [
         component: () => import('@/views/WisdomReminder/GoAbroad')
       },
       {
+        title: '测试',
+        hidden: true,
+        path:'',
+      },
+      {
         title: '请销假分析',
         icon: 'el-icon-menu',
         img: 'float_absence@2x.png',

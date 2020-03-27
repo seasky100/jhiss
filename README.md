@@ -1,10 +1,17 @@
 # gmgaly
 智慧监督（vue）
+本项目使用vue+elementui+echart框架进行开发
+
 ## Project setup
 ```
 npm install
 ```
 
+## 添加dll预加载内容（必须）
+
+```
+npm run dll
+```
 ### Compiles and hot-reloads for development
 ```
 npm run serve
