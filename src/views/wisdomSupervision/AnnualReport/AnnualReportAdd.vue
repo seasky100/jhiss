@@ -21,7 +21,7 @@
         <div class="menu_list">
           <div :class="['list_son',index==list_active?selectClass:'']" 
             @click="listClick(index)"
-            v-for="(item,index) of menu_active == 0?reportList:menu_active == 1?reportList2:reportList3" :key="index">
+            v-for="(item,index) of menu_active == 0?reportList:menu_active == 1?reportList2:menu_active == 2?reportList3:reportList4" :key="index">
             {{index + 1}}. {{item.label}}
           </div>
         </div>
@@ -42,12 +42,13 @@
             @editData="editDataSave"
             >
           </e-table-report> -->
+          <!-- :headerParam="item.headerParam ? item.headerParam : {}" -->
           <AnnualReportInfo :key="list_active"></AnnualReportInfo>
           <div v-for="(item,index) of tableDataList" :key="index+'_tableCon'" ref="table_box">
             <e-table-report
               :title="index < 11 ? reportList[index]: reportList2[index - 11]" 
               :headerTab="item.headerTab ? item.headerTab : 1"
-              :headerParam="item.headerParam ? item.headerParam : {}"
+              :headerParam="headerParam"
               :headerAppend="item.headerAppend ? recursionList(JSON.stringify([...item.headerAppend])): []"
               :columns="recursionList(JSON.stringify([...item.columns]))" 
               :tableData="[...item.data]"
@@ -55,6 +56,13 @@
               @editData="editDataSave"
               >
             </e-table-report>
+          </div>
+          <div ref="others">
+            <h2 style="font-weight:bold;font-size 18px;margin-bottom:5px;">个人认为需要报告的其他事项</h2>
+            <el-input type="textarea" style="width:99%;"
+              :autosize="{ minRows: 4}"
+              placeholder="请输入个人认为需要报告的其他事项" 
+              v-model="othersReport"></el-input>
           </div>
         </div>
         <!-- <el-button v-print="'#printCon'">打印</el-button> -->
@@ -82,6 +90,8 @@ export default {
       menuBtn: [
         {label: '报表一', type: 'primary'},
         {label: '报表二', type: 'primary'},
+        {label: '基本信息', type: 'primary'},
+        {label: '其他', type: 'primary'},
       ],
       list_active: 0,
       selectClass: 'selectClass',
@@ -116,23 +126,31 @@ export default {
           explain: `说明：①工作单位应填写全称或规范简称，同时担任多个职务的，请逐个分行填写。②身份证号码应填写18位公民身份号码。③户籍地址应填写居民户口簿“住址”栏的详细地址。④家庭主要成员包括配偶、子女及其配偶等；主要社会关系主要包括本人和配偶的兄弟姐妹等；本人和配偶的父母视情在“家庭主要成员”和“主要社会关系”中进行填报。首次填报的，应把内容填写完整；再次填报的，填写变化情况。`
         },
       ],
+      reportList4: [
+        {
+          label: '个人认为需要报告的其他事项', 
+          explain: ''
+        },
+      ],
       reportTitle: {},
       headerTab: tableData1[0].headerTab ? tableData1[0].headerTab : 1,
-      headerParam: tableData1[0].headerParam ? tableData1[0].headerParam : {},
+      // headerParam: tableData1[0].headerParam ? tableData1[0].headerParam : {},
+      headerParam: {},
       // 追加表头数据
       headerAppend: tableData1[0].headerAppend ? this.recursionList(JSON.stringify([...tableData1[0].headerAppend])): [],
       tableData: [...tableData1[0].data],
       columns: this.recursionList(JSON.stringify([...tableData1[0].columns])),
       appendTab: [],
       checked: true,
-      tableDataList: [...tableData1,...tableData2]
+      tableDataList: [...tableData1,...tableData2],
+      othersReport: '', // 个人认为需要报告的其他事项
       // 11111
     }
   },
   mounted() {
     // let row = this.$route.query.row
     // if(row != null){
-    this.menuBtn.push({label: '基本信息', type: 'primary'})
+    // this.menuBtn.push({label: '基本信息', type: 'primary'})
     // }
     this.reportTitle = this.reportList[0]
   },
@@ -149,8 +167,16 @@ export default {
       this.list_active = -1
     },
     listClick(index){
+      this.headerParam = {}
       this.list_active = index
-      if(this.menu_active == 2){
+      let height = this.$refs.printCon.offsetTop
+      if(this.menu_active == 3){
+        this.$nextTick(() => {
+          let scroll = this.$refs.others.offsetTop - height
+          $(this.$refs.printCon).animate({scrollTop: scroll },2000)
+        });
+        return
+      }else if(this.menu_active == 2){
         this.$nextTick(() => {
           $(this.$refs.printCon).animate({scrollTop: 0 },2000)
         });
@@ -158,9 +184,8 @@ export default {
       }else if(this.menu_active == 1){
         index = index + 11
       }
-      let height = this.$refs.printCon.offsetTop
-      let scroll = this.$refs.table_box[index].offsetTop - height
       this.$nextTick(() => {
+        let scroll = this.$refs.table_box[index].offsetTop - height
         $(this.$refs.printCon).animate({scrollTop: scroll },2000)
       });
     },
