@@ -4,9 +4,8 @@
       <span>个人即报</span>
     </div>
     <div class="Individual_type">
-     <div class='block_image'  v-for="(item,index) of typeList"  :key="index">
+     <div class='block_image'  @click="ApplyReport(item)" v-for="(item,index) of typeList"  :key="index">
        <el-image 
-        @click="ApplyReport(item)"
         :alt="item.name"
         style="width: 54px; height: 54px"
       :src="item.url"      
@@ -302,7 +301,8 @@ export default {
   padding: 10px 10px 0;
   cursor: pointer;
   span{
-		padding: 3px 14px;
+		
+    padding: 3px 14px;
 		border-radius: 2px;
 		color: #515A6E;
     display: block;
@@ -316,6 +316,5 @@ export default {
     vertical-align: top;
   }
 }
-	
-	
+
 </style>
