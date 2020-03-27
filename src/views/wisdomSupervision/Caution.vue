@@ -147,7 +147,9 @@
 				</div>
 			</div>
 			<div class='c_sentiment'>
-				<div class='c_scont'>
+				<div id="parent" class="parent">
+				<div id="child1" class="child">
+				<li class='c_scont'>
 					<div class='c_top'>
 						<div>
 						<img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
@@ -169,10 +171,10 @@
 						<div class='h32' style="margin-top: 10px; display: flex;">
 							<img style="margin-left: 30%;margin-top: 18%;width: 15px;height:12px;" src='../../utils/img/zan.png' />
 							<div style="margin-top: 3px;">11</div>
-						</div>
-					</div>
-				</div>	
-				<div class='c_scont'>
+						</div>					
+				</div>				
+				</li>
+				<li class='c_scont'>
 					<div class='c_top'>
 						<div>
 						<img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
@@ -194,12 +196,38 @@
 						<div class='h32' style="margin-top: 10px; display: flex;">
 							<img style="margin-left: 30%;margin-top: 18%;width: 15px;height:12px;" src='../../utils/img/zan.png' />
 							<div style="margin-top: 3px;">11</div>
+						</div>					
+				</div>				
+				</li>
+				<li class='c_scont'>
+					<div class='c_top'>
+						<div>
+						<img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
+					</div>
+						<div class='ctitle'>【2019 第21期】金华市公安机关内部曝光警示通报</div>
+						<div class='e_date'>4天前</div>
+					</div>
+					<div class='e_center'>
+						<div>
+							<div class='c_cetitle'>最新回答</div>
+							<div class='c_introduce'>简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给  口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给  口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给  口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是</div>
 						</div>
 					</div>
-				</div>
-		
+					<div class='e_foot'>
+						<!-- <div style="width: 83%;margin-left: 24px;">开始学习</div> -->
+						<div class='h32'style="width: 7%;margin-top: 10px;margin-left: 27px;">点赞</div>
+						<div class='h32' style="margin-top: 10px;width: 10%;">评论</div>
+						<div class='h32' style="margin-top: 10px; width: 69%;">浏览112</div>
+						<div class='h32' style="margin-top: 10px; display: flex;">
+							<img style="margin-left: 30%;margin-top: 18%;width: 15px;height:12px;" src='../../utils/img/zan.png' />
+							<div style="margin-top: 3px;">11</div>
+						</div>					
+				</div>				
+				</li>
+			</div>	
+			<div id="child2" class="child"></div>
 			</div>
-
+		</div>
 		</div>
 	</div>
  
@@ -216,12 +244,37 @@ export default {
   },
   watch: {},
   mounted() {
+	  const parent = document.getElementById('parent');
+	  const child1 = document.getElementById('child1');
+	  const child2 = document.getElementById('child2');
+	  child2.innerHTML = child1.innerHTML;
+	  setInterval(() => {
+		  if (parent.scrollTop >= child1.scrollHeight) {
+			  parent.scrollTop = 0;
+		  } else {
+			  parent.scrollTop++;
+		  }
+	  }, 20);
 	  this.findExposurePage();
     this.getRadar()
 	this.getRadar2()
 	this.getRadar3()
   },
   methods: {
+	//   init(){
+	// 	var parent = document.getElementById('parent');
+    //         var child1 = document.getElementById('child1');
+    //         var child2 = document.getElementById('child2');
+    //         child2.innerHTML = child1.innerHTML;
+    //         setInterval(function () {
+    //            if(parent.scrollTop >= child1.scrollHeight) {
+    //                parent.scrollTop = 0;
+    //            } else {
+    //                parent.scrollTop++;
+    //            }
+    //         }, 20);
+        
+	//   },
 	  // 查询曝光栏内容
 	  findExposurePage() {
 		  const _this = this;
@@ -459,6 +512,21 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+	    .child {
+        height: auto;
+    }
+    .child li {
+        height: 300px;
+        margin: 2px 0;
+        /* background: #009678; */
+    }
+	.parent {
+        width: 100%;
+        height: 600px;
+        margin: 0 auto;
+        /* background: #242424; */
+        overflow-y: scroll;
+    }
 .c_head{
 	height: 18%;
 	display: flex;
