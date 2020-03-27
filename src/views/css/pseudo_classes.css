@@ -254,6 +254,10 @@ line-height: 10px !important;
   color: #ffffff!important;
   background-color: #467cd4!important
 }
+body {
+  font-size: 14px !important;
+
+}
 @media (max-width: 1280px) {
 .p_evaluate{
   width: 60% !important;

@@ -57,7 +57,7 @@
                     层级评价
                   </div>
                   <div class='p_evaluate' style="float : left; height: 90%; margin-left: 4em;">
-                    <el-calendar v-model="value" id="calendar">
+                    <!-- <el-calendar v-model="value" id="calendar">
                       <template
                        slot="dateCell"
                        slot-scope="{date, data}">
@@ -76,7 +76,67 @@
                              </div>
                           </div>
                       </template>
-                </el-calendar>
+                </el-calendar> -->
+                <div class='flex flex-justify-between' style="padding: 0 0.5em">
+                  <div class='flex flex-align-center'>
+                    <button class='r-half' style="width: 1.2em; height: 1.2em; background: #8593A7 url(../../utils/img/home_calendar_arrow_left.svg) no-repeat center/70%"
+                      @click="prevMonth" title='上一月'></button>
+                    <span class='font14 txt-bold mx4' >{{monthMap[ydata.month+1]}}</span>
+                    <button class='r-half' style="width: 1.2em; height: 1.2em; background: #8593A7 url(/../../utils/img/home_calendar_arrow_right.svg) no-repeat center/70%"
+                    @click="nextMonth" title='下一月'></button>
+                  </div>
+                  <button class='flex flex-align-center' @click="backToday">
+                    <img src='../../utils/img/home_calendar_back_today@2x.png' style="height: 1.2em" />
+                    <span class='pl4' style="color: #235FF6" :title="'今天是'+ nyear+'年' + nmonth+'月'+ ndate+'日'" >回到今天</span>
+                  </button>
+                </div>
+                <div class='flex flex-align-center flex-justify-between' style="margin-top: 0.5em">
+                  <div v-for="(item,index) in weekMap" :key="index">                            
+                    <div :key="index" class='flex-inline flex-grow flex-align-center flex-justify-center'
+                      style="flex-basis: 14.28%">{{item.name}}</div>
+                  </div>
+                </div>
+                <div class='flex flex-align-center flex-column mt8'>
+                    <div style="width: 100%;" v-for="(weekItem,index) in rData" :key="index">
+                      <div :key="index" class='w-full flex flex-align-center flex-justify-between py4'>
+                        <div  v-for="(dayItem,index1) in weekItem" :key="index1">
+                          <div v-if='dayItem.month() == ydata.month && isMarked(scoreItemOf(dayItem)) '>
+                            <router-link  :key="index" to='/HierEvaluation'  class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="flex-basis: 14.28%; color: #121518" :title="titleOf(dayItem)" >
+                             
+                                 <div class='flex flex-align-center flex-justify-center w16 h16 r-half' style=" background: #235FF5; border: 2px solid #235FF520; color: #121518;  ">
+                                  {{dayItem.date()}}
+                                </div>
+                                <div class='r-half' style="width: 4px; height: 4px; background: colorOf(scoreOf(dayItem))"></div>
+                              </router-link>
+                          </div>
+                          <div v-else>
+                            <div :key="index1" class='flex-inline flex-column flex-grow flex-align-center'>
+                              <span style="color: #8593A7">{{dayItem.date()}}</span>
+                              <div class='r-half bg-transparent' style="width: '4px'; height: 4px" >
+                            </div>
+                          </div>
+                          </div>
+                        <!-- {
+                          weekItem.map((dayItem, index) =>
+                            dayItem.month() === this.state.month && this.isMarked(this.scoreItemOf(dayItem))
+                            ? <Link key={index} to={location => ({pathname: '/home/log', state: this.scoreItemOf(dayItem)})} 
+                                class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none'
+                                style={{flexBasis: '14.28%', color: '#121518'}} title={this.titleOf(dayItem)}
+                             
+                                 <div class='flex flex-align-center flex-justify-center w16 h16 r-half' 
+                                  style={dayItem.date() === this.today.date() ? {background: '#235FF5', border: '2px solid #235FF520', color: '#121518'} : {}}>
+                                  {dayItem.date()}
+                                </div>
+                                <div class='r-half' style={{width: '4px', height: '4px', background: this.colorOf(this.scoreOf(dayItem))}} />
+                              </Link>
+                            :  -->
+                    
+                          </div>
+                        </div>
+                          <!-- )
+                        } -->
+                </div>
+                </div>
                 <!-- <ele-calendar 
                   defaultValue="2019-05" 
                   @date-change="change"
@@ -251,35 +311,23 @@ export default {
         dateStart:'', //开始时间
         dateEnd:'',//结束时间
         tjData:'',//考勤数据
+        rData:[],
         xztxNum: 0,
         userId:'',
         userInfo:'',
         value: new Date(),
         timer:'',
+        year:'',
+        month:'',
+        date:'',
         careerData:[],
         marksData:[],
         selected: 0,
         timeIndex: 0,
         value1: '',
-      highPrice: '', //最高价格
-      normalPrice: '', //正常价格
-
-      dayStart: '', //入住日期字符串(yyyy-mm-dd)
-      startTime: 0, //入住日期时间戳
-      startMoney: 0, //入住日期租金
-
-      dayEnd: '', //离开日期字符串(yyyy-mm-dd)
-      endTime: 0, //离开日期时间戳
-      endMoney: 0, //离开日期租金
-
-      totalMoney: 0, //总金额
-      clickNum: 0 ,//点击计数器
-      datedef:[
-                    {"date":"2020-03-03","content":'休息',"cid":null},
-                    {"date":"2020-03-26","content":'休息',"cid":null},
-                ],
-                prop:'date' ,//对应日期字段名
-
+        nyear:'',
+        nmonth:'',
+        ndate:'',
         calendarData: [
                     { months: ['01', '02','03', '04','05','06','07','08','09','10','11','12'],days: ['12','13','14','15','16','17','18','26'],things: 8 },
                 ],
@@ -293,13 +341,55 @@ export default {
           { name:'事项申报',num:'1'},
           { name:'用车预警',num:'1'},
           { name:'智慧考勤',num:'1'}
-          ],         
+          ], 
+      weekMap : [
+        { name:'日',num:'1'},
+          { name:'一',num:'1'},
+          { name:'二',num:'1'},
+          { name:'三',num:'1'},
+          { name:'四',num:'1'},
+          { name:'五',num:'1'},
+          { name:'六',num:'1'}
+    ], 
+    monthMap : {
+    1: '一月',
+    2: '二月',
+    3: '三月',
+    4: '四月',
+    5: '五月',
+    6: '六月',
+    7: '七月',
+    8: '八月',
+    9: '九月',
+    10: '十月',
+    11: '十一月',
+    12: '十二月'
+  },
+    scores: [
+      6, 6, 7, 6, 8, 7, 8, 8, 8, 8,
+      8, 7, 6, 7, 7, 7, 7, 8, 9, 7,
+      7, 6, 7, 7, 6, 6, 6, 7, 7, 8
+    ],
+    ydata:{
+      year:'',
+      month:'',
+      date: '',
+  },      
     }
   },
   components: {
             eleCalendar
         },
   mounted() {
+    const today = this.$dayjs(new Date());
+    this.ydata.year = today.year(),
+    this.ydata.month = today.month(),
+    this.ydata.date = today.date();
+    this.nyear = today.year(),
+    this.nmonth = today.month()+1,
+    this.ndate = today.date();
+    this.init();
+    this.findWorknotePage();
     this.indexCalendar();
     this.getPoliceCareer();
     this.getRadar()
@@ -310,41 +400,108 @@ export default {
     // this.allWarnByType();
   },
   methods: {
+    init(){
+      debugger
+      this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
+                        index % 7
+                        ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+                        : [...prev, [item]]
+                      ), [])
+    },                 
+    getMonthDays(year, month) {
+    const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
+    const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), 'day');
+    const lastDayOfMonth = firstDayOfMonth.add(1, 'month').subtract(1, 'day');
+    const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), 'day');
+    return new Array(firstDayOfMonth.daysInMonth() + firstDayOfMonth.day() + 6 - lastDayOfMonth.day()).fill(0).map((item, index) =>
+      from.add(index, 'day')
+    );
+  },
+    prevMonth() {
+      const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
+      this.rData = []
+      this.ydata.year = d.year()
+      this.ydata.month = d.month()
+      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+        index % 7
+          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+          : [...prev, [item]]
+      ), [])
+      // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
+
+    },
+    nextMonth(){
+      const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).add(1, 'month');
+      this.rData = []
+      this.ydata.year = d.year()
+      this.ydata.month = d.month()
+      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+        index % 7
+          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+          : [...prev, [item]]
+      ), [])
+      // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
+    },
+    backToday(){
+    const d = this.$dayjs(new Date());
+    this.rData = []
+      this.ydata.year = d.year()
+      this.ydata.month = d.month()
+      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+        index % 7
+          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+          : [...prev, [item]]
+      ), [])
+      // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
+  },
+     // 是否已评分
+     isMarked (item){
+       debugger
+     item && '012345678910'.includes(item.noteScore)
+     },
+    
+    scoreItemOf (d){
+      debugger
+      this.scores.find(item =>
+      new Date(item.noteDate).getDate() === d.date()
+      )
+    },
+  
+    scoreOf (d){
+      (this.scoreItemOf(d) || {}).noteScore
+    },
+    
+    colorOf (score)  {
+      if(score >= 9){
+        '#73CD6C'
+      }
+      if(score >= 7){
+        '#235FF6'
+      }else {
+        if('0123456'.includes(score)){
+          '#DB0F2C'
+        }
+        
+      }
+    },
+
+  
+  titleOf (d)  {
+    const scoreItem = this.scores.find(item =>
+      new Date(item.noteDate).getDate() === d.date()
+    );
+    if(scoreItem && '012345678910'.includes(scoreItem.noteScore)){
+      return d.format('YYYY/MM/DD') + ' 已评分' + scoreItem.noteScore;
+    }else{
+      return d.format('YYYY/MM/DD') + ' 未评分';
+    }
+  },
+    // 是否已评分
+    // isMarked = item =>
+    // item && '012345678910'.includes(item.noteScore);
     aa(){
       alert(33)
 
-    },
-    renderContent(h, parmas) {
-      const loop = data => {
-        debugger
-        //判断星期六 价格变动
-        if (data.defvalue.column == 6) {
-          return data.defvalue.value ? (
-            <div class="flex2 selected">
-              {data.defvalue.text}
-              <span>小小</span>
-            </div>
-          ) : (
-            <div class="flex2">
-              {data.defvalue.text}
-              <span>大大</span>
-            </div>
-          )
-        } else {
-          return data.defvalue.value ? (
-            <div class="flex2 selected">
-              {data.defvalue.text}
-              <span>烦烦烦</span>
-            </div>
-          ) : (
-            <div class="flex2"> 
-              {data.defvalue.text}
-              <span>灌灌</span>
-            </div>
-          )
-        }
-      }
-      return <div style="min-height:60px;">{loop(parmas)}</div>
     },
     //设置dayStart
     setStart(date) {
@@ -371,42 +528,6 @@ export default {
             this.reset(date)
           }
         }
-
-      //   if (this.dayStart && this.dayEnd) {
-      //     // console.log('money', this.startMoney, this.endMoney)
-      //     let lack = this.endTime - this.startTime
-      //     let difference = lack / 1000 / 3600 / 24 + 1
-      //     // console.log('num', difference)
-      //     // console.log('选择的日期:', this.dayStart, this.dayEnd)
-      //     let startNum = new Date(this.startTime).getDate()
-      //     let endNum = new Date(this.endTime).getDate()
-      //     let nowMonth = new Date(this.endTime).getMonth() + 1
-
-      //     // console.log('first=', startNum, endNum)
-      //     for (let i = startNum; i < endNum + 1; i++) {
-      //       let insert = {
-      //         date: `2019-0${nowMonth}-${i}`,
-      //         content: null,
-      //         cid: null
-      //       }
-      //       this.datedef.push(insert)
-      //     }
-
-      //     //计算租金总额
-      //     let saturdayNum = 0
-      //     if (this.endMoney == this.normalPrice && this.startMoney == this.normalPrice) {
-      //       saturdayNum = Math.floor(difference / 7 + 1)
-      //     } else {
-      //       saturdayNum = Math.floor(difference / 7)
-      //     }
-      //     this.totalMoney =
-      //       (saturdayNum * this.highPrice + (difference - saturdayNum) * this.normalPrice) / 100
-      //     // console.log('totalMoney=', this.totalMoney)
-      //   }
-      // } else {
-      //   this.reset(date)
-      //   // console.log('else-clickNum', this.clickNum)
-      // }
       }
     },
 //重置日期
@@ -1174,7 +1295,7 @@ dateToMs(date) {
         endTime: '2020-01-31'
 
       }
-      findWorknotePage(params).then(res => {
+      indexCalendar(params).then(res => {
         debugger
         console.log(res)
         if (res.success) {
@@ -1190,6 +1311,9 @@ dateToMs(date) {
 </script>
 <style lang="stylus" scoped>
   @import '../css/pseudo_classes.css';
+  @import '../css/assembly.css';
+  @import '../css/hover-min.css';
+  @import '../css/media.css';
 .person_home{
   /* background: #f2f5f7; */
   height: 100%;
@@ -1513,6 +1637,7 @@ dateToMs(date) {
     #calendar .el-button-group>.el-button:not(:first-child):not(:last-child):after{
         content: '当月';
     }
+    
   /* .left-score-image {
         width: 100% !important;
         height: 100% !important;
