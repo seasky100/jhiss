@@ -152,7 +152,6 @@ export default {
       this.list_active = index
       if(this.menu_active == 2){
         this.$nextTick(() => {
-          // this.$refs.printCon.scrollTop = 0
           $(this.$refs.printCon).animate({scrollTop: 0 },2000)
         });
         return
@@ -162,7 +161,6 @@ export default {
       let height = this.$refs.printCon.offsetTop
       let scroll = this.$refs.table_box[index].offsetTop - height
       this.$nextTick(() => {
-        // this.$refs.printCon.scrollTop = scroll
         $(this.$refs.printCon).animate({scrollTop: scroll },2000)
       });
     },
