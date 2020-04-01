@@ -137,6 +137,12 @@ const DEFAULT_URL = {
     exposure: {
       findExposurePage: `${GAISMSERVER}exposure/findExposurePage`,
       queryPeriodStudy: `${GAISMSERVER}exposureBrowse/queryPeriodStudy`,
+      getExposureById: `${GAISMSERVER}exposure/getExposureById`, // 曝光栏详情
+      findLearningStatus: `${GAISMSERVER}exposureAssociation/findLearningStatus`, // 曝光栏学习记录
+      findPraiseCount: `${GAISMSERVER}exposureNote/findPraiseCount`, // 学习感悟数据 点赞排行
+      saveExposureNote: `${GAISMSERVER}exposureNote/saveExposureNote`, // 曝光栏内容评价新增
+      queryExposureNote: `${GAISMSERVER}exposureNote/queryExposureNote`, // 查看案例相关评论
+      updateLike: `${GAISMSERVER}exposureNote/updateLike`, // 添加点赞
     },
   // 【智慧考勤分析】
   clockingIn: {

@@ -86,8 +86,9 @@
         </div>
 
         <div style="margin-top: 10px;overflow: hidden;" class="flex-grow flex flex-direction-column bg-fff">
-          <el-image
-            :src="mapUrl"></el-image>
+          <!-- <el-image
+            :src="mapUrl"></el-image> -->
+            <div id="map"  style="width:100%;height:100%;"></div> 
         </div>
       </div>
     </div>
@@ -108,6 +109,7 @@ export default {
     return {
       mapUrl: require('../../../assets/images/map.png'),
       echartHeight: '',
+      map: '',
       vehicleCondition: [
         {
           imgUrl: require('../../../assets/images/vehicle_home_gps@2x.png'),
@@ -326,16 +328,16 @@ export default {
           y: 'center',
           // x: 'right',
           icon: 'circle', //设置图例小图标的样式，这里控制
-          right: '10%',
-          itemWidth: 15,
-          itemHeight: 15,
+          right: '1%',
+          itemWidth: 10,
+          itemHeight: 10,
           textStyle: {
             color: '#999',
-            fontSize: 18,
+            fontSize: 16,
             rich: {
               white: {
                 color: 'red',
-                fontSize: 10,
+                fontSize: 8,
               },
             },
           },
@@ -345,10 +347,10 @@ export default {
           {
             name: '',
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['40%', '60%'],
             avoidLabelOverlap: false,
             color: ['#235FF6', '#FFC700', '#F7622E'],
-            center: ['45%', '52%'],
+            center: ['35%', '52%'],
             label: {
               show: false,
               position: 'center'
@@ -356,7 +358,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '30',
+                fontSize: '20',
                 fontWeight: 'bold'
               }
             },
@@ -390,21 +392,21 @@ export default {
           //     top: '15'
           // },
           grid: {
-              top: 70,
+              top: 20,
               bottom: 50
           },
           xAxis: [
               {
                   type: 'category',
-                  axisTick: {
-                      alignWithLabel: true
-                  },
-                  axisLine: {
-                      onZero: false,
-                      lineStyle: {
-                          color: colors[1]
-                      }
-                  },
+                  // axisTick: {
+                  //     alignWithLabel: true
+                  // },
+                  // axisLine: {
+                  //     onZero: false,
+                  //     lineStyle: {
+                  //         color: colors[1]
+                  //     }
+                  // },
                   axisPointer: {
                       label: {
                           formatter: function (params) {
@@ -413,7 +415,7 @@ export default {
                           }
                       }
                   },
-                  data: ['2016-1', '2016-2', '2016-3', '2016-4', '2016-5', '2016-6', '2016-7', '2016-8', '2016-9', '2016-10', '2016-11', '2016-12']
+                  data: ['01', '02', '03', '04', '05', '06']
               }
     
           ],
@@ -447,7 +449,7 @@ export default {
                 }
                 ])
               },
-              data: [19, 15, 11.1, 21.7, 34.3, 46.2, 21.6, 40.6, 45.4, 31.4, 10.3, 20.7]
+              data: [5, 15, 11.1, 21.7, 34.3, 2]
             },
           ]
     }
@@ -471,16 +473,16 @@ export default {
       //     data: ['加班', '上班', '部门平均']
       // },
       grid: {
-          // top: '2%',
+          top: '15%',
           left: '3%',
           right: '5%',
-          bottom: '1%',
+          bottom: '5%',
           containLabel: true
       },
       xAxis: [
           {
               type: 'category',
-              data: ['2016-1', '2016-2', '2016-3', '2016-4', '2016-5', '2016-6', '2016-7', '2016-8', '2016-9', '2016-10', '2016-11', '2016-12']
+              data: ['01', '02', '03', '04', '05', '06']
           }
       ],
       yAxis: [
@@ -492,14 +494,27 @@ export default {
           {
               name: '上班',
               type: 'bar',
-              color: '#9363FF',
+              barWidth: 13,
+              color: '#8B69F6',
               stack: '广告',
-              data: [19, 15, 11.1, 21.7, 34.3, 46.2, 21.6, 40.6, 45.4, 31.4, 10.3, 20.7]
+              data: [19, 15, 11.1, 21.7, 34.3, 46.2]
           },
       ]
     }
       radarDom2.setOption(option)
   },
+  initMap() {
+    debugger
+    var map = new IMAP.Map('map', {
+      minZoom: 3,
+      maxZoom: 22,
+      zoom: 9,//设置地图初始化级别
+      center: new IMAP.LngLat(120.143671, 30.286106),//设置地图中心点坐标
+      animation: true//设置地图缩放动画效果
+    });
+    // return map;
+  }
+    	// initMap(); addRoadNetLayer() //添加路网图层    
   },
   mounted() {
     this.getRadar3();
@@ -512,12 +527,16 @@ export default {
     this.getCarStatusStatistics();
     this.calcHeight();
     window.addEventListener('resize', this.calcHeight);
+    this.map = this.initMap(map);
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../styles/common.styl"
+@import "../../../styles/common.styl";
+.flex-grow{
+  height: 90%;
+}
 .flex
   display: flex;
 
@@ -568,13 +587,13 @@ export default {
   position: relative
   &:before{
     position: absolute;
-    top: 10%;
+    top: 22%;
     left: 10px;
     content: ' ';
-    width: 5px;
-    height: 80%;
-    border-radius: 5px;
-    background: #005BFF; 
+    width: 4px;
+    height: 56%;
+    border-radius: 26px;
+    background: #005bff;
   }
 .car-static
   padding: 16px 16px;

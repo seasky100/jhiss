@@ -11,7 +11,7 @@
 export default {
     props: {
         chartData: Object,
-        height: {type: String, default: '400px'},
+        height: {type: String, default: '300px'},
         ringColor: Array,
         limitShowNum: {
             type: Number,

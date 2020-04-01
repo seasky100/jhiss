@@ -17,10 +17,10 @@
             </el-select>
           </el-form-item>
           <el-form-item label="申报开始时间" prop="applyTime">
-            <el-date-picker :disabled="disabled" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.applyTime" style="width: 100%;"></el-date-picker>
+            <el-date-picker :disabled="disabled" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyTime" style="width: 100%;"></el-date-picker>
           </el-form-item>
           <el-form-item label="申报结束时间" prop="applyEnd">
-            <el-date-picker :disabled="disabled" type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
+            <el-date-picker :disabled="disabled" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
           </el-form-item>
           <el-form-item label="事由" prop="applyDesc">
             <el-input :disabled="disabled" type="textarea" v-model="ruleForm.applyDesc" :rows="4"></el-input>
@@ -144,11 +144,25 @@ export default {
         }
       })
     },
+    // dateTimeString = ({year, month, date, hour = 0, minute = 0, second = 0}) =>
+    // new Date(year, month, date, hour, minute, second).toLocaleString('chinese', {hour12: false}).replace(new Date('').toString(), ''),
+
+
+    dateTimeString({year, month, date, hour = 0, minute = 0, second = 0}){
+      return new Date(year, month, date, hour, minute, second).toLocaleString('chinese', {hour12: false}).replace(new Date('').toString(), '')
+
+    },
+
+
+
+
+
+
     // 提交
     submit() {
       this.$refs.ruleForm.validate((valid) => {
+        debugger
         if (valid) {
-          let flowNode = this.flowNodeList.shift();
           const params = {
             flowProcess: {
               flowId: this.flowId,
@@ -176,7 +190,7 @@ export default {
                 type: 'success',
                 message: '提交成功'
               })
-              this.$router.push('/IndividualReport')
+              this.$router.push('/organizationRequest')
             }else {
               this.$message({
                 type: 'error',
@@ -194,6 +208,7 @@ export default {
       });
     },
     selectChange(val) {
+      debugger
       const result = this.approvalArr.filter(item => {
         return item.id === val;
       })
@@ -225,7 +240,7 @@ export default {
     }
   },
   mounted() {
-    this.getData('104');
+    this.getData('201');
     this.getDetailInfo();
   }
 }

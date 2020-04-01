@@ -254,7 +254,6 @@ export function illgalBySource (params) {
 //     data: params
 //   });
 // }
-
 // 曝光内容
 export function findExposurePage (params) {
   return request({
@@ -263,7 +262,54 @@ export function findExposurePage (params) {
     params
   })
 }
-
+// 曝光内容详情
+export function getExposureById (params) {
+  return request({
+    url: DEFAULT_URL.exposure.getExposureById,
+    method: 'get',
+    params
+  })
+}
+// 曝光内容学习记录
+export function findLearningStatus (params) {
+  return request({
+    url: DEFAULT_URL.exposure.findLearningStatus,
+    method: 'get',
+    params
+  })
+}
+// 学习感悟数据 点赞排行
+export function findPraiseCount (params) {
+  return request({
+    url: DEFAULT_URL.exposure.findPraiseCount,
+    method: 'get',
+    params
+  })
+}
+// 曝光栏内容评价新增
+export function saveExposureNote (params) {
+  return request({
+    url: DEFAULT_URL.exposure.saveExposureNote,
+    method: 'post',
+    data: params
+  })
+}
+// 查看相关案例评论
+export function queryExposureNote (params) {
+  return request({
+    url: DEFAULT_URL.exposure.queryExposureNote,
+    method: 'get',
+    params
+  })
+}
+// 添加点赞
+export function updateLike (params) {
+  return request({
+    url: DEFAULT_URL.exposure.updateLike,
+    method: 'put',
+    data: params
+  })
+}
 export function queryPeriodStudy (params) {
   return request({
     url: DEFAULT_URL.exposure.queryPeriodStudy,

@@ -16,13 +16,12 @@
         </el-col>
         <el-col :span="12">
           <!-- 考勤预警人员统计 -->
-          <ve-line
+          <LineChart
             :title="title"
-            :data="humanStatistics"
-            :extend="chartExtend"
-            :settings="chartSettings"
-            :legend-visible="false">
-          </ve-line>
+            :chartData="humanStatistics"
+            :chartSettings="chartSettings"
+            >
+          </LineChart>
         </el-col>
       </el-row>
       <div class="search-wrap" style="min-width:1220px;">
@@ -56,11 +55,14 @@ import {
   getWarnPage
 } from '@/api/warn.js';
 import { mapGetters } from 'vuex';
+
+import LineChart from "@/components/line-chart";
 import warningDetail from './modal/warningDetail';
 
 export default {
   components: {
-    warningDetail
+    warningDetail,
+    LineChart
   },
   computed: {
     ...mapGetters([
@@ -244,11 +246,7 @@ export default {
         columns: ['user_name', 'warnnum'],
         rows: []
       },
-      title: {
-        text: '考勤预警人员统计',
-        top: '15',
-        left: '20',
-      }
+      title:  '考勤预警人员统计',
     }
   },
   methods: {

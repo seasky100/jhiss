@@ -17,13 +17,19 @@
         </el-col>
         <el-col :span="12">
           <!-- 次数统计 -->
-          <ve-line
+          <!-- <ve-line
             :title="title"
             :data="humanStatistics"
             :extend="chartExtend"
             :settings="chartSettings"
             :legend-visible="false">
-          </ve-line>
+          </ve-line> -->
+          <LineChart
+          :title="title"
+          :chartData="humanStatistics"
+          :chartSettings="chartSettings"
+          >
+        </LineChart>
         </el-col>
       </el-row>
       <div class="search-wrap" style="min-width:1000px;">
@@ -34,7 +40,7 @@
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
-      <div class="search-wrap" style="height:360px;">
+      <div class="search-wrap" style="height:444px;">
         <e-table
           ref="recordSpTableRef"
           :tableList="tableList"
@@ -56,11 +62,13 @@ import {
   illgalByDayStatistics
 } from '@/api/warn.js';
 import SuspectedInfo from './modal/suspectedInfo';
+import LineChart from "@/components/line-chart";
 import { mapGetters } from 'vuex';
 
 export default {
   components: {
-    SuspectedInfo
+    SuspectedInfo,
+    LineChart
   },
   data() {
     this.chartExtend = {
@@ -222,11 +230,8 @@ export default {
         columns: ['warndate', 'warnnum'],
         rows: []
       },
-      title: {
-        text: '次数统计',
-        top: '15',
-        left: '20',
-      }
+      title: '次数统计',
+      
     }
   },
   computed: {

@@ -174,5 +174,5 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../styles/common.styl"
+@import "../../../styles/common.styl";
 </style>

@@ -1,31 +1,24 @@
 <template>
-  <div class="container IndividualReport">
-    <div class="page-title">
-      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
-      <span>年度报告</span>
+  <div class="IndividualReport">
+    <div class="individual_title">
+      年度报告
     </div>
-    <div class="content">
-      <div class="search-wrap" style="min-width:800px;">
-        <!-- <p>查询条件</p> -->
-        <e-search
-          class="search-form"
-          @handleSearch="handleSearch"
-          :searchData="searchData"
-          :searchForm="searchForm"
-          :addForm="addForm" />
-      </div>
-      <div class="search-wrap" style="height:760px;">
-        <e-table
-          ref="recordTalksTableRef"
-          :tableList="tableList"
-          :options="options"
-          :columns="columns"
-          :operates="operates"
-          @afterCurrentPageClick="afterCurrentPageClickHandle"
-        />
-      </div>
+		<div style="margin:0 15px;">
+      <p>查询条件</p>
+      <e-search
+        @handleSearch="handleSearch"
+        :searchData="searchData"
+        :searchForm="searchForm"
+        :addForm="addForm" />
+      <e-table
+        ref="recordTalksTableRef"
+        :tableList="tableList"
+        :options="options"
+        :columns="columns"
+        :operates="operates"
+        @afterCurrentPageClick="afterCurrentPageClickHandle"
+      />
     </div>
-		
   </div>
 </template>
 <script>
@@ -44,6 +37,43 @@ export default {
 			searchForm: [
 				{label:'警号：', type: 'input', prop: 'policeCode', width: '200px', placeholder: '发起人警号'},
 				{label:'姓名：', type: 'input', prop: 'policeName', width: '200px', placeholder: '发起人姓名'},
+        // {
+        //   type: 'select',
+        //   prop: 'deptId',
+        //   width: '150px',
+        //   options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+        //   change: row => console.log(row),
+        //   placeholder: '所属部门'
+        // },
+        // {
+        //   type: 'daterange',
+        //   options: [
+        //     {
+        //       prop: 'startTime',
+        //       format: 'yyyy-MM-dd',
+        //       valueformat: 'yyyy-MM-dd',
+        //       placeholder: '起始时间'
+        //     },
+        //     {
+        //       prop: 'endTime',
+        //       format: 'yyyy-MM-dd',
+        //       valueformat: 'yyyy-MM-dd',
+        //       placeholder: '结束时间'
+        //     }
+        //   ]
+				// },
+				// {
+        //   type: 'select',
+        //   prop: 'approvalStatus',
+        //   width: '150px',
+        //   options: [
+        //     {label:'审批中', value:'1'},
+        //     {label:'已通过', value:'2'},
+        //     {label:'已驳回', value:'3'}
+        //   ],
+        //   change: row => console.log(row),
+        //   placeholder: '--审批状态--'
+        // }
 			],
 			tableList:[],
 			options: {
@@ -54,7 +84,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'740'
+        height:'550'
 			},
 			columns: [
         {
@@ -91,9 +121,7 @@ export default {
             disabled: false,
             method: (key, row) => {
               console.log('row', row)
-              // AnnualReportAdd AnnualReportInfo
-              // this.$router.push({path: '/AnnualReportInfo', query: row})
-              this.$router.push({path: '/AnnualReportAdd', query: {row}})
+              this.$router.push({path: '/AnnualReportInfo', query: row})
             },
             showCallback: () => {
               return true;
@@ -171,7 +199,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import "../../../styles/common.styl"
 .individual_title
 	height:40px;
 	line-height:40px;

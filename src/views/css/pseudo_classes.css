@@ -15,6 +15,15 @@ textarea:focus{
   white-space:pre !important;
   /* text-align: left; */
 }
+.el-divider__text {
+
+  padding: 0 23px !important;
+
+}
+.el-calendar-table thead th {
+  padding: 1px 0 !important;
+
+}
 .el-calendar-table tr td:first-child {
   border-left: 0px solid #EBEEF5 !important;
 }
@@ -115,19 +124,52 @@ background: #f0f9eb;
 line-height: 10px !important;
 }
 .el-textarea {
-  /* position: relative; */
-  display: inline-block;
-  width: 84%;
-  vertical-align: bottom;
-  font-size: 14px;
-  margin: 0 auto;
-  margin-top: 0px !important;
-  height: 130px;
+  height: 104px !important;
+  width: 98% !important;
 }
 .el-textarea__inner {
   min-height: 94px !important;
   margin-left: 7px;
 }
+      /* 定义滚动条样式 */
+      ::-webkit-scrollbar {
+        max-width: 6px !important;
+        max-height: 6px;
+        background-color: rgb(238, 236, 236);
+      }
+       
+      /*定义滚动条轨道 内阴影+圆角*/
+      /* ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
+        border-radius: 5px;
+        background-color: rgba(240, 240, 240, .5);
+      } */
+       
+      /*定义滑块 内阴影+圆角*/
+      ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 0px rgba(19, 13, 13, 0.5);
+        /* background-color: rgba(19, 13, 13, 0.5); */
+        max-width: 2px !important;
+        max-height: 2px !important;
+      }
+      /* .scroll-list ul{
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+          overflow-x: auto;
+          overflow-y: hidden;
+          padding: 0 0.1rem;
+          margin-bottom: -.2rem;
+          overflow: -moz-scrollbars-none;
+          overflow: -moz-scrollbars-none;
+      } */
+      .scroll-list ul::-webkit-scrollbar{
+          display: none;
+      }
+      .scroll_bar{
+        width: 50px;
+        height: 30px;
+      }
 /* .el-calendar__body {
   padding: 10px 20px 35px !important;
 } */
@@ -254,21 +296,45 @@ line-height: 10px !important;
   color: #ffffff!important;
   background-color: #467cd4!important
 }
-body {
-  font-size: 14px !important;
-
+.el-divider--horizontal{
+  height: 2px !important;
 }
 @media (max-width: 1280px) {
 .p_evaluate{
-  width: 60% !important;
+  width: 40% !important;
 }
+.p_eright{
+  width: 51% !important;
+}
+}
+.el-textarea {
+  /* position: relative; */
+  display: inline-block;
+  width: 84%;
+  vertical-align: bottom;
+  font-size: 14px;
+  margin: 0 auto;
+  margin-top: 0px !important;
+  height: 104px;
 }
 @media (max-width: 1920px) {
   .p_evaluate{
     width: 40%;
+    margin-top: 2em;
+  }
+  .p_tscore{
+    height: 49% !important;
+    width: 88% !important;
+    margin-left: 12% !important;
+  }
+  .p_watch{
+    height: 36% !important;
+  }
+  .p_eright{
+    width: 51%;
   }
 }
-@media (max-width: 1280px) {
+/* @media (max-width: 1280px) {
   .p_eright{
     width: 39% !important;
   }
@@ -277,7 +343,7 @@ body {
     .p_eright{
       width: 51%;
     }
-  }
+  } */
 table>tbody.hov-tr-bg>tr:hover{
   background-color: #ebf8ff!important
 }
@@ -293,7 +359,9 @@ table>tbody.pos-tr-even-odd-bg>tr:nth-child(odd){
 table>tbody.pos-tr-even-odd-bg>tr:nth-child(even){
   background-color: #f9f9f9
 }
-
+.ql-align-center{
+  text-align: center !important;
+}
 .hov-career-item:hover, .hov-career-item:focus, .hov-career-item:active {
   -webkit-animation-name: hvr-bob-float, hvr-bob;
   animation-name: hvr-bob-float, hvr-bob;

@@ -227,6 +227,7 @@ export default {
         }
     },
   created() {
+      debugger
       this.userId = sessionStorage.userId
       const data = {
           userId : this.userId

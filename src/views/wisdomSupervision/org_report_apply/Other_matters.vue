@@ -121,6 +121,7 @@ export default {
     // 提交
     submit() {
       this.$refs.ruleForm.validate((valid) => {
+        debugger
         if (valid) {
           const params = {
             flowProcess: {
@@ -164,6 +165,7 @@ export default {
       });
     },
     selectChange(val) {
+      debugger
       const result = this.approvalArr.filter(item => {
         return item.id === val;
       })

@@ -16,13 +16,22 @@
         </el-col>
         <el-col :span="12">
           <!-- 次数统计 -->
-          <ve-line
+          <!-- <ve-line
             :title="title"
-            :data="humanStatistics"
+            :chartData="humanStatistics"
             :extend="chartExtend"
-            :settings="chartSettings"
+            :chartSettings="chartSettings"
             :legend-visible="false">
-          </ve-line>
+          </ve-line> -->
+
+          <LineChart
+          :title="title"
+          :chartData="humanStatistics"
+          :chartSettings="chartSettings"
+          >
+        </LineChart>
+
+
         </el-col>
       </el-row>
       <div class="search-wrap" style="min-width:1245px;">
@@ -33,7 +42,7 @@
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
-      <div class="search-wrap" style="height:350px;">
+      <div class="search-wrap" style="height:444px;">
         <e-table
           ref="recordSpTableRef"
           :tableList="tableList"
@@ -51,11 +60,13 @@
 <script>
 import { getHumanStatistics, getWarnStatusStatistics, getWarnPage } from '@/api/warn.js';
 import ViolationInfo from './modal/violationInfo';
+import LineChart from "@/components/line-chart";
 import { mapGetters } from 'vuex';
 
 export default {
   components: {
-    ViolationInfo
+    ViolationInfo,
+    LineChart
   },
   data() {
     this.chartExtend = {
@@ -156,7 +167,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'320'
+        height:'372'
       },
       columns: [
         {
@@ -233,11 +244,7 @@ export default {
         columns: ['user_name', 'warnnum'],
         rows: []
       },
-      title: {
-        text: '次数统计',
-        top: '15',
-        left: '20',
-      }
+      title:  '次数统计',   
     }
   },
   computed: {

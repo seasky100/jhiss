@@ -137,7 +137,7 @@ export default {
                 currentPage: 1,
                 loading: true,
                 maxHeight: null,
-                height: '720'
+                height: '368'
             },
             columns: [
                 {

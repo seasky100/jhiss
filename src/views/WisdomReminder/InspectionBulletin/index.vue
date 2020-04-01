@@ -40,7 +40,7 @@
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
-      <div class="search-wrap" style="height:350px;">
+      <div class="search-wrap" style="height:444px;">
         <e-table
           ref="recordSpTableRef"
           :tableList="tableList"
@@ -181,7 +181,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'320'
+        height:'372'
       },
       columns: [
         {

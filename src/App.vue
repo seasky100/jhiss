@@ -14,20 +14,14 @@ export default {
     this.$store.dispatch('user/getOrgData')
   },
   mounted() {
-<<<<<<< HEAD
+    
     const token = sessionStorage.getItem('token')
-    // if(token){
-    //   this.$router.push({ path: '/PersonalHome' });
-    // }else{
-=======
-    // const token = sessionStorage.getItem('token')
-    // if(token){
-    //   this.$router.push({ path: '/PersonalHome' });
-    // }else{
-    //   // this.$router.push({ path: '/PersonalHome' });
->>>>>>> 52d841de6ece0a8c51e48bd7eb0d2a61e9ac400c
-    //   this.$router.push({ path: '/login' });
-    // }
+    console.log(window.location.href)   
+    if(token){
+      window.location.href ;
+    }else{
+      this.$router.push({ path: '/login' });
+    }
     //this.$router.push({ path: '/PersonalHome' });
     // this.init()
   },

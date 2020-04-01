@@ -293,7 +293,7 @@
   import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil,indexCalendar } from '../../api/warn.js';
   import { getPoliceCareer } from '../../api/user-server.js';
   import { findWorknotePage } from '../../api/wisdom-reminder/evaluation-analysis.js';
-  import { isToday, subDays,format } from 'date-fns';
+  import { subDays,format } from 'date-fns';
   // import eleCalendar from 'ele-calendar'
   // import 'ele-calendar/dist/vue-calendar.css'
 export default {
@@ -381,13 +381,6 @@ export default {
   //           eleCalendar
   //       },
   mounted() {
-    // const date = new Date();
-    // this.ydata.year = parseInt(format(date, 'yyyy'));
-    // this.ydata.month = parseInt( format(date, 'MM'));
-    // this.ydata.date = parseInt(format(date, 'dd'));
-    // this.nyear =  parseInt(format(date, 'yyyy'));
-    // this.nmonth = parseInt( format(date, 'MM')),
-    // this.ndate = parseInt(format(date, 'dd'));
     const today = this.$dayjs(new Date());
     this.ydata.year = today.year(),
     this.ydata.month = today.month(),
@@ -425,7 +418,6 @@ export default {
     );
   },
     prevMonth() {
-      debugger
       const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
       this.rData = []
       this.ydata.year = d.year()
@@ -1319,9 +1311,9 @@ dateToMs(date) {
 </script>
 <style lang="stylus" scoped>
   @import '../css/pseudo_classes.css';
-  /* @import '../css/assembly.css';
+  @import '../css/assembly.css';
   @import '../css/hover-min.css';
-  @import '../css/media.css'; */
+  @import '../css/media.css';
 .person_home{
   /* background: #f2f5f7; */
   height: 100%;

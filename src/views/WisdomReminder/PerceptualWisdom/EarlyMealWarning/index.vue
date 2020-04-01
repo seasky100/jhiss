@@ -63,6 +63,7 @@ export default {
       // 就餐预警地点统计
       repastPlace: {
         data: {
+            userInfo:{},
           columns: ['record_place', 'warnnum'],
           rows: []
         },
@@ -132,7 +133,7 @@ export default {
             currentPage: 1,
             loading: true,
             maxHeight: null,
-            height: '720'
+            height: '368'
         },
       columns: [
             {
@@ -211,7 +212,7 @@ export default {
                 nCurrent: nCurrent,
                 nSize: 10,
                 orderByField: ''
-            }, $this.searchData, {userId: $this.userParams.userID, role: '2020'})).then((res) => {
+            }, $this.searchData, {userId: this.userParams.userID, role: '2020'})).then((res) => {
                 console.log(res);
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
@@ -223,7 +224,8 @@ export default {
         }
     },
   created() {
-    this.userParams.userID = sessionStorage.userId
+    this.userInfo = JSON.parse(sessionStorage.userInfo)
+    this.userParams.userID = this.userInfo.info
     // 就餐地点预警地点统计 (给参数userParams会无数据)
     getRepastSiteWarnStatistics().then((res) => {
         this.repastPlace.data.rows = res

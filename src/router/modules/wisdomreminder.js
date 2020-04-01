@@ -1,7 +1,7 @@
 const wisdomReminderRouter = [
   {
     title: '智慧提醒',
-    path: '/CreditCard',
+    path: '/wisdom-reminder',
     name: 'WisdomReminder',
     icon: 'el-icon-s-opportunity',
     img: 'left_inspection@2x.png',
@@ -71,7 +71,7 @@ const wisdomReminderRouter = [
         icon: 'el-icon-menu',
         img: 'left_sensing@2x.png',
         name: 'PerceptualWisdom',
-        path: "/CreditCard",
+        path: "/perceptual-wisdom",
         component: () => import('@/views/Supervision'),
         children: [
           {
@@ -139,14 +139,14 @@ const wisdomReminderRouter = [
         children: [
           {
             title: '公车使用分析',
-            img: 'float_vehicle@2x.png',
+            img: 'float_car@2x.png',
             name: 'AnalysisBusUse',
             path: '/organization-car',
             component: () => import('@/views/WisdomReminder/AnalysisBusUse')
           },
           {
             title: '违规用车管控',
-            img: 'float_violation@2x.png',
+            img: 'left_ledger@2x.png',
             name: 'ViolationsCarManage',
             path: '/violation',
             component: () => import('@/views/WisdomReminder/ViolationsCarManage')

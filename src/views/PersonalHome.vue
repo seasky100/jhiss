@@ -1,271 +1,298 @@
 <template>
-    <div class="person_home">
-      <div class="police_career p_head">
-        <div class="person_title p_clear">
-          从警生涯
-        </div>
-        <div class="w_full"  style="height: 190px; width: 100%;float: left;">
-            <div style=" width: 5%;height: calc(100% - 30px);margin-left: 15px;float: left;">
-            <img src='../utils/img/tree_20191225154138.png' class='mb-auto' style="height: 5.5em" />
+    <div class='person_home'>
+      <div class='person_body'>
+        <div class='person_head police_career'>
+          <div class="person_title p_clear">
+            <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+            从警生涯
           </div>
-            <div ref='career_list' style="overflow: auto;height: 100%;overflow-y: hidden;" @mouseenter="penter()" @mouseleave="pleave()"> 
-              <div style="width: 91%;height: calc(100% - 30px);display: -webkit-inline-box!important; margin-bottom: 14px;">
-                <div class='p_card' v-for="(item,index) in careerData" :key="index" @click="agency(item,index)" > <!--:class='index==selected?"selected":""'-->
-                    <img src='../utils/img/home_career_reward_unselected@2x.png' style="float: right;margin: 10px;"  />
-                    <div class='p_time'>{{item.endtime}}</div>
-                    <div class='p_name'>{{item.career_desc}}</div>
-                    <div class="timeLine" style="margin-top: 6px;">
-                        <div class="ul_box">
-                            <ul class="my_timeline" ref="mytimeline">
-                                <li class="my_timeline_item" >
-                                    <!--圈圈节点-->
-                                    <div class="my_timeline_node" style = "background-color: #e4e7ed; width: 28px; height: 28px" @click="changeActive(index)" :class="{active: index == timeIndex}"></div>
-                                    <!--线-->
-                                    <div class="my_timeline_item_line"></div>
-                                    <!--标注-->
-                                    <div class="my_timeline_item_content" >
-                                        {{item.marks[0].happen_time}}至{{item.marks[0].endtime}}{{item.dept_name}}
-                                        <!-- {{item.happen_time}}至{{item.endtime}}就任于{{item.dept_name}} -->
-                                    </div>
-                                </li>
-                            </ul>
+          <!-- <div >aa</div> -->
+          <div @mousedown="changeScroll('left')" @mouseup="stopScroll" class='p_nvleft'>
+            <img style="width:30px;margin-left: 10px;" src="@/assets/images/bg/dir_left.png" />
+          </div>
+          <div class='person_career' ref='career_list'>   
+          <div class='p_career' v-for="(item,index) in careerData" :key="index" >
+          <div v-for="(item1,index1) in item.marks" :key="index1"  @click="agency(item1,index1)" >     
+          <div class='p_card' >
+            <div v-if='item1.career_type == "1" && item1.career_desc == "优秀"'>
+              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num2.png' /> <img v-if='showSearch' src='../utils/img/num2-gray.png' /> </el-divider>
+              <div class='p_year'>{{item1.happen_time}}</div>
+              <div class='p_name'>{{item1.career_title}}<span style="color: rgb(15, 170, 22);font-weight: bolder;margin-left: 5px;">优秀</span></div>
+            </div>
+            <div v-else-if='item1.career_type == "2"'>
+              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num1.png' /> <img v-if='showSearch' src='../utils/img/num1-gray.png' /> </el-divider>
+              <div class='p_year'>{{item1.happen_time}}</div>
+              <div class='p_name'>{{item1.career_title}}</div>
+            </div> 
+            <div v-else-if='item1.career_type == "3"'>
+              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num3.png' />  <img v-if='showSearch' src='../utils/img/num3-gray.png' /> </el-divider>
+              <div class='p_year'>{{item1.happen_time}}</div>
+              <div class='p_name'>{{item1.career_title}}</div>
+            </div>
+            <div v-else-if='item1.career_type == "4"'>
+              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num4.png' /><img v-if='showSearch' src='../utils/img/num4-gray.png' /> </el-divider>
+              <div class='p_year'>{{item1.happen_time}}</div>
+              <div class='p_name'>{{item1.career_title}}</div>
+            </div>
+            <div v-else-if='item1.career_type == "履历"'>
+              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num4.png' /><img v-if='showSearch' src='../utils/img/num4-gray.png' /> </el-divider>
+              <div class='p_year'>{{item1.happen_time}}</div>
+              <div class='p_name'>{{item1.career_title}}</div>
+            </div>
+          </div>
+        </div>
+          <div class='p_node'>
+            <el-divider content-position="left"><div style=" margin-left: -9px; color: blue;">{{item.endtime}}</div><img src='../utils/img/stage.png' /> </el-divider>
+          </div>
+        </div>
+          </div>
+          <div @mousedown="changeScroll('right')" @mouseup="stopScroll" class='p_nvright'>
+            <img style="width:30px;margin-left: 10px;" src="@/assets/images/bg/dir_right.png" />
+          </div>
+        </div>
+        <el-row class='content' :gutter="10">
+          <el-col :xs="12" :sm="8" :md="8" :lg="7" :xl="7">
+            <div class='person_left'>
+                <div class="person_title">
+                    <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                    风险提醒
+                  </div>
+                  <div class="fengxian_body radar" id="radar"></div>
+                  <div class='p_warn'>
+                    <div class='ptop'>
+                      <div class='pli' v-for="(item,index) in warnList" :key="index">
+                        <div class='h32 warn'><span class='pnum'>{{item.num}}</span></div>
+                        <div class='h32 warn'><span class='pname'>{{item.name}}</span></div>
+                      </div>
+                    </div>
+                    <div class='pfoot'>
+                      <div class='pft'>当前<span class='ptotal' >8</span>项风险内容，请谨慎！！！</div>
+                    </div>
+                  </div>
+            </div>
+          </el-col>
+          <el-col :xs="12" :sm="8" :md="8" :lg="10" :xl="10">
+            <div class='person_center'>
+              <div class='p_top'>
+                  <div class="person_title">
+                      <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                      考勤情况
+                    </div>
+                  <div id='kao' class='p_attendance'></div>
+              </div>
+              <div class='p_foot'>
+                  <div class="person_title">
+                      <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                      层级评价
+                    </div>
+                    <div class='p_evaluate' style="float : left; height: 90%; margin-left: 2.5em;">
+                      <div class='flex flex-justify-between' style="padding: 0 0.5em">
+                        <div class='flex flex-align-center'>
+                          <button class='r-half' style="width: 1.2em; height: 1.2em; background: #8593A7 url(@/assets/images/bg/dir_left.png) no-repeat center/70%"
+                            @click="prevMonth" title='上一月'></button>
+                          <span class='font14 txt-bold mx4' >{{monthMap[ydata.month+1]}}</span>
+                          <button class='r-half' style="width: 1.2em; height: 1.2em; background: #8593A7 url(../utils/img/home_calendar_arrow_right.svg) no-repeat center/70%"
+                          @click="nextMonth" title='下一月'></button>
                         </div>
+                        <button class='flex flex-align-center' @click="backToday">
+                          <img src='../utils/img/home_calendar_back_today@2x.png' style="height: 1.2em" />
+                          <span class='pl4' style="color: #235FF6" :title="'今天是'+ nyear+'年' + nmonth+'月'+ ndate+'日'" >回到今天</span>
+                        </button>
+                      </div>
+                      <div class='flex flex-align-center flex-justify-between' style="margin-top: 0.5em">
+                        <div v-for="(item,index) in weekMap" :key="index">                            
+                          <div :key="index" class='flex-inline flex-grow flex-align-center flex-justify-center'
+                            style="flex-basis: 14.28%">{{item.name}}</div>
+                        </div>
+                      </div>
+                      <div class='flex flex-align-center flex-column mt8'>
+                        <div style="width: 100%;" v-for="(weekItem,index) in rData" :key="index">
+                          <div :key="index" class='w-full flex flex-align-center flex-justify-between py4'>
+                            <div v-for="(dayItem,index1) in weekItem" :key="index1">
+                              <div v-if='dayItem.month() == ydata.month && isMarked(scoreItemOf(dayItem)) '>
+                                <router-link :key="index" to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none'
+                                  style="flex-basis: 14.28%; color: #121518" :title="titleOf(dayItem)">
+                      
+                                  <div class='flex flex-align-center flex-justify-center w16 h16 r-half' style=" background: rgb(21, 197, 94); border: 2px solid #235FF520; color: #121518;  ">
+                                    {{dayItem.date()}}
+                                  </div>
+                                  <div class='r-half' style="width: 4px; height: 4px; background: colorOf(scoreOf(dayItem))"></div>
+                                </router-link>
+                              </div>
+                              <div v-else>
+                                <div :key="index1" class='flex-inline flex-column flex-grow flex-align-center'>
+                                  <span style="color: #8593A7">{{dayItem.date()}}</span>
+                                  <div class='r-half bg-transparent' style="width: '4px'; height: 4px">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                </div>
-              </div> 
-          </div>   
-        </div>
-      </div>
-      <!-- 风险提醒 -->
-      <div class="police_career" style="height:400px;background:none;">
-        <div class="fengxian" style="width:66%;">
-          <div class="person_title">
-            风险提醒
-          </div>
-          <div class="fengxian_body radar" id="radar"></div>
-          <div class="fengxian_body">
-              <div class='flex flex-align-center flex-justify-center' style="font-size: 1.2em">
-                  <!-- <img src='/images/home_smile_face@2x.png' /> -->
-                  <!-- <span class='ml6 color-grey'>当前0项风险内容，请继续保持！</span> -->
-                </div>
-                <div class='flex flex-justify-center'>
-                    <div style="width: 39%;">
-                      <div class='h12 w12 r-half inline-block' style="background: #1F77B4"/>
-                      <span class='ml8'>本月分析</span>
+                    <div class='p_eright'>
+                    <div class='p_watch'>
+                        <div id='gauge'  class='p_gauge' ></div>
                     </div>
-                    <div style="width: 36%;">
-                      <div class='h12 w12 r-half inline-block' style="background: #FF7F0E" />
-                      <span class='ml8'>上月分析</span>
+                    <div class='p_score'>
+                      <div class='p_tscore'>
+                        <div class='p_lscore'>
+                          <div class=''>
+                            <span class='tscore'>{{userscore}}</span>
+                          </div>
+                          <div class='h32'>
+                            <span class=''>今日评分</span>
+                          </div>
+                        </div>
+                        <div class='p_rscore'>
+                          <div id='pbar' class='pbar'></div>
+                        </div> 
+                      </div>
+                      <div class='p_tscore'>
+                        <div class='p_lscore'>
+                          <div class=''>
+                            <span class='bscore'>{{deptscore}}</span>
+                          </div>
+                          <div class='h32'>
+                            <span class=''>部门评分</span>
+                          </div>
+                        </div>
+                        <div class='p_rscore'>
+                          <div id='bbar' class='bbar'></div>
+                        </div> 
+                      </div>
                     </div>
                   </div>
-            <div class='flex flex-column flex-grow flex-justify-between' style="margin-top: 2em;text-align: center">
-              <div class='flex-justify-between h24' style="line-height: 2.5em">
-                <div class='flex-inline' style="width: 40%">
-                  <span>智慧考勤</span>
-                  <span style="margin: 0 0.5em">{{thismonth[0]||'-'}}</span>
-                  <span>项</span>
-                </div>
-                <div class='flex-inline' style="width: 40%">
-                  <span>请假分析</span>
-                  <span style="margin: 0 0.5em">{{thismonth[1]||'-'}}</span>
-                  <span>项</span>
-                </div>
-                
-              <div class='flex-justify-between h24' style="line-height: 2.5em">
-                <div class='flex-inline' style="width: 40%">
-                  <span>出国预警</span>
-                  <span style="margin: 0 0.5em">{{thismonth[2]||'-'}}</span>
-                  <span>项</span>
-                </div>
-                <div class='flex-inline' style="width: 40%">
-                  <span>事项申报</span>
-                  <span style="margin: 0 0.5em">{{thismonth[3]||'-'}}</span>
-                  <span>项</span>
-                </div>
               </div>
-              <div class='flex-justify-between h24'>
-                <div class='flex-inline' style="width: 40%">
-                  <span>用车预警</span>
-                  <span style="margin: 0 0.5em">{{thismonth[4]||'-'}}</span>
-                  <span>项</span>
-                </div>
-                <div class='flex-inline' style="width: 40%">
-                  <span>违规查询</span>
-                  <span style="margin: 0 0.5em">{{thismonth[5]||'-'}}</span>
-                  <span>项</span>
-                </div>
-              </div>
-              <div class='flex-justify-between h24'>
-                <div class='flex-inline' style="width: 40%">
-                  <span>差旅预警</span>
-                  <span style="margin: 0 0.5em">{{thismonth[6]||'-'}}</span>
-                  <span>项</span>
-                </div>
-                <div class='flex-inline' style="width: 40%">
-                  <span>日志预警</span>
-                  <span style="margin: 0 0.5em">{{thismonth[7]||'-'}}</span>
-                  <span>项</span>
-                </div>
-              </div>
-              <div class='flex-justify-between h24'>
-                <div class='flex-inline' style="width: 40%">
-                  <span>涉嫌违法</span>
-                  <span style="margin: 0 0.5em">{{thismonth[8]||'-'}}</span>
-                  <span>项</span>
-                </div>
-                <div class='flex-inline' style="width: 40%">
-                  <span>刷卡预警</span>
-                  <span style="margin: 0 0.5em">{{thismonth[9]||'-'}}</span>
-                  <span>项</span>
-                </div>
-              </div>
-              <div class='flex-justify-between h24'>
-                <div class='flex-inline' style="width: 40%">
-                  <span>就餐预警</span>
-                  <span style="margin: 0 0.5em">{{thismonth[10]||'-'}}</span>
-                  <span>项</span>
-                </div>
-                <div class='flex-inline' style="width: 40%">
-                  <span>审批预警</span>
-                  <span style="margin: 0 0.5em">{{thismonth[11]||'-'}}</span>
-                  <span>项</span>
-                </div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="8" :md="8" :lg="7" :xl="7">
+            <div class='person_right'>
+              <div class='p_top'>
+                <div class="person_title">
+                  <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                  <span class='pl8 txt-bold' style="">待办事项</span>         
+                <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 1em;">
+                  <div @click='xztxt' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                    <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">协作提效</span>
+                    <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #E8EFFF">
+                      <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #235FF6"> 
+                        <Link class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                          style="width: 4em; height: 4em; background: #235FF6" title='待办箱'>
+                          <span style="font-size: 1.5em">{{xztxNum}}</span>
+                        </Link>
+                      </div>
+                    </div> 
+                    <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                  </div>
+                  <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+                  <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                    <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">队伍精细化</span>
+                    <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
+                      <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #8674f6">
+                        <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                          style="width: '4em'; height: 4em; background: #8674f6" title='待办箱'>
+                          <span style="font-size: 1.5em">1</span>
+                        </Link>
+                      </div>
+                    </div>
+                    <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                  </div>
+                  <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+                  <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                    <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
+                    <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
+                      <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #F09B38">
+                        <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                          style="width: '4em'; height: 4em; background: #F09B38" title='待办箱'>
+                          <span style="font-size: 1.5em">1</span>
+                        </Link>
+                      </div>
+                    </div>
+                    <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                  </div>
+                  <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>               
               </div>
             </div>
           </div>
-          </div>
-        </div>
-        <div class="fengxian" style="width:33.3%;margin-left:0.7%;">
-          <div class="person_title">
-              <!-- <img src='/images/home_round_bar@2x.png' /> -->
-              <span class='pl8 txt-bold' style="font-size: 1.2em">待办事项</span>         
-            <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 3em">
-              <div @click='xztxt' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
-                <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">协作提效</span>
-                <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #E8EFFF">
-                  <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #235FF6"> 
-                    <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link>                  -->
-                    <Link class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
-                      style="width: 4.4em; height: 4.4em; background: #235FF6" title='待办箱'>
-                      <span style="font-size: 1.5em">{{xztxNum}}</span>
-                    </Link>
-                  </div>
+              <div class='p_foot'>
+                <div class="person_title">
+                  <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                  快速入口
                 </div>
-                <span style="color: #8092A8">待办</span>
+                <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em;margin-left: 2em;">
+                  <div class='flex flex-column flex-grow' style="padding: 0.5em">
+                    <div class='flex flex-grow w-full'>
+                      <router-link to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                         <img style=" width: 26px; height: 26px;" class='cursor-pointer'  src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                        <span class='cursor-pointer p_inter'>层级评价</span>
+                      </router-link>
+                      <router-link to='/talks' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                        <img class='cursor-pointer'  src='../utils/img/home_entrance_overtime_request@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                       <span class='cursor-pointer p_inter'>谈心谈话</span>
+                     </router-link>
+                      <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
+                        <img class='cursor-pointer'  src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
+                        <span class='cursor-pointer p_inter'>事项申报</span>
+                      </router-link>            
+                    </div>
+                    <div class='flex flex-grow w-full'>                    
+                      <router-link to='/IndividualReport' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                        <img class='cursor-pointer'  src='../utils/img/home_entrance_items_report@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
+                        <span class='cursor-pointer p_inter'>事项即报</span>
+                      </router-link>
+                      <router-link to='/DocumentLiu' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                        <img class='cursor-pointer'  src='../utils/img/home_entrance_document_flow@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
+                        <span class='cursor-pointer p_inter'>公文流转</span>
+                      </router-link>
+                      <router-link to='/ApprovalMatters' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                        <img class='cursor-pointer' src='../utils/img/home_entrance_approval_items@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
+                        <span class='cursor-pointer p_inter'>审批事项</span>
+                      </router-link>         
+                    </div>
+                    <div class='flex flex-grow w-full'>
+                      <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                        <img class='cursor-pointer'  src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
+                        <span class='cursor-pointer p_inter'>差旅申请</span>
+                      </router-link>
+                      <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                        <img class='cursor-pointer'  src='../utils/img/home_entrance_expense_request@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
+                        <span class='cursor-pointer p_inter'>用车申请</span>
+                      </router-link>
+                      <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                        <img class='cursor-pointer'  src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
+                        <span class='cursor-pointer p_inter'>差旅申请</span>
+                      </router-link>        
+                    </div>
+                </div>
+              </div>  
               </div>
-              <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
-              <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
-                <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">队伍精细化</span>
-                <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #F4F1FF">
-                  <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4.4em; height: 4.4em; background: #8674F6">
-                    <!-- <router-link to="/PersonalHome2" ><div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none' style="width: 4.4em; height: 4.4em; background: #8674F6" title='待办箱'><span style="font-size: 1.5em">2</span></div></router-link> -->
-                    <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
-                      style="width: '4.4em'; height: 4.4em; background: #8674F6" title='待办箱'>
-                      <span style="font-size: 1.5em">1</span>
-                    </Link>
-                  </div>
-                </div>
-                <span style="color: #8092A8">待办</span>
-              </div>
-              <div style="width: 0; border:0.5px solid #E4E9F3; height: '11.428em'; margin: auto 0" />
-              <div class='flex flex-column flex-align-center flex-grow'>
-                <span class='flex flex-align-center txt-bold cursor-pointer' style="height: 2.4em">层级关系</span>
-                <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.8em; height: 5.8em; margin: 0.5em 0; background: #FFF5EA">
-                  <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
-                    style="width: 4.4em; height: 4.4em; background: #F09B38" title='待办箱'>
-                    <span style="font-size: 1.5em">4</span>
-                  </Link>
-                </div>
-                <span style="color: #8092A8">待办</span>
-              </div>    
             </div>
-          </div>
-        </div>      
+          </el-col>
+        </el-row>
       </div>
-      <!-- 层级管理 -->
-      <div class="police_career" style="height:400px;background:none;">
-        <div class="fengxian" style="width:33%;">
-          <div class="person_title">
-            层级评价
-          </div>
-          <div class='' style="width: 61%;float: left;height: 90%">
-                <el-calendar v-model="value" show-date-only :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="'结束时间'" :lang="lang" :position="position" :changePane="dayClick" :pane="1" :range-bus="getBus" :range-status="1"></el-calendar>
-            </div>
-            <div class='' style="float: right;height: 90%;width: 39%;position: relative">
-              <div id='gauge' style="height: 63%;margin-top: 10%;" class='' ></div>
-              <span class='txt-bold' style="color: rgb(35, 95, 246);text-align: center;position: absolute; margin: 0 auto;width: 100%;margin-top: -35px">月平均分</span>
-              </div>
-         </div>
-        <div class="fengxian" style="width:32.3%;margin-left:0.7%;">
-          <div class="person_title">
-            考勤情况
-          </div>
-            <div id='kao' class='mt-auto' style="height: 90%"></div>
-            <div class='p_foot' style="height: 10%">
-                <div style=" width: 24%;float: left;margin-left: 48px;margin-top: 10px;">上班：<span style=" color: #9363FF">{{tjData[0]}}小时</span></div>
-                <div style="width: 20%;float: left;margin-top: 10px;">加班：<span style=" color: #F09B38">{{tjData[2]}}小时</span></div>
-                <div style=" width: 20%;float: left;margin-top: 10px;">请假：<span style=" color: #235FF6">{{tjData[1]}}小时</span></div>
-                <div style=" width: 20%;float: left;margin-top: 10px;">出差：<span style=" color: #235FF6">{{tjData[3]}}小时</span></div>
-            </div>   
-        </div>
-        <div class="fengxian" style="width:33.3%;margin-left:0.7%;">
-          <div class="person_title">
-            快速入口
-          </div>
-          <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em">
-            <div class='flex flex-column flex-grow' style="padding: 0.5em">
-              <div class='flex flex-grow w-full'>
-                <router-link to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
-                   <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">层级评价</span>
-                </router-link>
-                <router-link to='/talks' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_overtime_request@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
-                 <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">谈心谈话</span>
-               </router-link>
-                <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项申报</span>
-                </router-link>
-                <router-link to='/IndividualReport' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 0 1px 1px">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_items_report@2x.png'/><!--src='/images/home_entrance_items_report@2x.png' --> 
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">事项即报</span>
-                </router-link>
-              </div>
-              <div class='flex flex-grow w-full'>
-                <router-link to='/DocumentLiu' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_document_flow@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">公文流转</span>
-                </router-link>
-                <router-link to='/ApprovalMatters' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_approval_items@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">审批事项</span>
-                </router-link>
-                <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">差旅申请</span>
-                </router-link>
-                <router-link to='/CarApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 0 0 1px">
-                  <img class='cursor-pointer' style="width: 2.4em" src='../utils/img/home_entrance_expense_request@2x.png' /><!--src='/images/home_entrance_expense_request@2x.png' --> 
-                  <span class='cursor-pointer' style="margin-top: 1.428em; color: #121518">用车申请</span>
-                </router-link>
-              </div>
-          </div>
-        </div>      
-      </div>
-    </div>
     </div>
   </template>
   <script>
-  import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil } from '@/api/warn.js';
-  import { getPoliceCareer } from '@/api/user-server.js';
-  import { subDays,format } from 'date-fns';
+    import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil,indexCalendar } from '@/api/warn.js';
+    import { getPoliceCareer } from '@/api/user-server.js';
+    import { findWorknotePage } from '@/api/report.js';
+    // import { subDays,format } from 'date-fns';
+    import { mapGetters } from 'vuex';
   export default {
     name: "PersonalHome",
+    computed: {
+    ...mapGetters([
+      'userId',
+      // 'userInfo',
+      'orgId',
+      'token'
+    ])
+  },
     data() {
       return {
-        isCollapse: false,
-        menuList: [],
+        showSearch: false,
         premonth:[], //本月风险提醒数据
         thismonth:[], //上月风险提醒数据
         worklength:[], //上班时长
@@ -275,373 +302,867 @@
         dateStart:'', //开始时间
         dateEnd:'',//结束时间
         tjData:'',//考勤数据
+        userscore: '',
+        deptscore: '',
+        maxValue: 30,
+        warnData:'',
         xztxNum: 0,
-        userId:'',
-        userInfo:'',
+        infoData:[],        
+        // userId:'',
+        userInfo:[],
         value: new Date(),
         timer:'',
+        year:'',
+        month:'',
+        date:'',
+        nyear:'',
+        nmonth:'',
+        ndate:'',
         careerData:[],
         marksData:[],
         selected: 0,
         timeIndex: 0,
         warnList:[
-          { name:'出国分析',name2:'事项申报'},
-          { name:'用车预警',name2:'违规查询'},
-          { name:'差旅管理',name2:'日志预警'},
-          { name:'涉嫌违法',name2:'刷卡预警'},
-          { name:'就餐预警',name2:'审批预警'},
-          ]
-      }
-    },
-    mounted() {
-      this.userId = sessionStorage.userId
-      this.userInfo = JSON.parse(sessionStorage.userInfo)
-      this.$nextTick(() => {
-            // 点击前一个月
-            let prevBtn = document.querySelector('.el-calendar__button-group .el-button-group>button:nth-child(1)');
-            prevBtn.addEventListener('click',() => {
-            })
-          })
-      this.getPoliceCareer();
-      this.sevenday();
-      this.indexRecordCountDeatil();
-      this.sectorAverageStatistics();
-      this.indexRecordDeatil();
-      this.allWarnByType();
-      // this.getData();
-    },
+          { name:'刷卡预警',num:'1'},
+          { name:'出国分析',num:'1'},
+          { name:'涉嫌违法',num:'1'},
+          { name:'请假分析',num:'1'},
+          { name:'日志预警',num:'1'},
+          { name:'事项申报',num:'1'},
+          { name:'用车预警',num:'1'},
+          { name:'智慧考勤',num:'1'}
+          ], 
+        weekMap: [
+          { name: '日', num: '1' },
+          { name: '一', num: '1' },
+          { name: '二', num: '1' },
+          { name: '三', num: '1' },
+          { name: '四', num: '1' },
+          { name: '五', num: '1' },
+          { name: '六', num: '1' }
+        ],  
+        monthMap:{
+          1: '一月',
+          2: '二月',
+          3: '三月',
+          4: '四月',
+          5: '五月',
+          6: '六月',
+          7: '七月',
+          8: '八月',
+          9: '九月',
+          10: '十月',
+          11: '十一月',
+          12: '十二月',
+        },
+        scores: [],
+        ydata: {
+          year: '',
+          month: '',
+          date: '',
+        }, 
+    }
+  },
+  // created(){  
+  // },
+      mounted() {
+        debugger
+        this.userInfo = JSON.parse(sessionStorage.userInfo)
+        const today = this.$dayjs(new Date());
+        this.ydata.year = today.year(),
+        this.ydata.month = today.month(),
+        this.ydata.date = today.date();
+        this.nyear = today.year(),
+        this.nmonth = today.month() + 1,
+        this.ndate = today.date();
+        this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
+          index % 7
+            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+            : [...prev, [item]]
+        ), [])
+        this.commitQuery(this.ydata.year, this.ydata.month, this.userInfo.info);
+        this.getData();
+        this.allWarnByType();
+        this.sevenday();
+        this.getPoliceCareer();
+        this.indexRecordDeatil();
+        this.sectorAverageStatistics();
+        this.indexCalendar();
+      },
     methods: {
       init() {
         this.getRadar()
         this.getRadar2()
         this.getRadar3()
+        this.getRadar4()
+        this.getRadar5()
       },
-      dayClick () {
-        // console.log(date);
-        // console.log(dateStr);
-        // console.log(this.value);
+      getMonthDays(year, month) {
+        const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
+        const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), 'day');
+        const lastDayOfMonth = firstDayOfMonth.add(1, 'month').subtract(1, 'day');
+        const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), 'day');
+        return new Array(firstDayOfMonth.daysInMonth() + firstDayOfMonth.day() + 6 - lastDayOfMonth.day()).fill(0).map((item, index) =>
+          from.add(index, 'day')
+        );
+      },
+      backToday() {
+        const d = this.$dayjs(new Date());
+        this.rData = []
+        this.ydata.year = d.year()
+        this.ydata.month = d.month()
+        this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+          index % 7
+            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+            : [...prev, [item]]
+        ), [])
+        this.commitQuery(d.year(), d.month(), this.userInfo.info);
+      },
+     // 是否已评分
+      isMarked(item) {
+       return item && '012345678910'.includes(item.noteScore)
+      },
+      scoreItemOf(d) {
+         return  this.scores.find(item =>
+            new Date(item.noteDate).getDate() === d.date()
+          )
+        },
+      // 查询首页日历评分数据
+      commitQuery(year, month, userId) {
+        debugger
+        const _this = this;
+        const first = _this.$dayjs(new Date(year, month, 1))
+        const last = first.add(1, 'month').subtract(1, 'day')
+        const params = {
+          staffed: userId,
+          startTime: first.format('YYYY/MM/DD'),
+          endTime: last.format('YYYY/MM/DD'),
+          orderByField: 'noteDate',
+          nCurrent: 1,
+          nSize: 100,
+          orderFlag: false
+        }
+        findWorknotePage(params).then(res => {
+          if (res.success) {
+            debugger
+            _this.scores = res.data.records
+          }
+        })
+      },  
+      prevMonth() {
+        debugger
+        const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
+        this.rData = []
+        this.ydata.year = d.year()
+        this.ydata.month = d.month()
+        this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+          index % 7
+            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+            : [...prev, [item]]
+        ), [])
+        this.commitQuery(d.year(), d.month(), this.userInfo.info);
+      },
+      nextMonth(){
+        const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).add(1, 'month');
+        this.rData = []
+        this.ydata.year = d.year()
+        this.ydata.month = d.month()
+        this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+          index % 7
+            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+            : [...prev, [item]]
+        ), [])
+        this.commitQuery(d.year(), d.month(), this.userInfo.info);
+      },
+    scoreOf (d){
+      (this.scoreItemOf(d) || {}).noteScore
+    },
+    colorOf (score)  {
+      if(score >= 9){
+        '#73CD6C'
+      }
+      if(score >= 7){
+        '#235FF6'
+      }else {
+        if('0123456'.includes(score)){
+          '#DB0F2C'
+        }
+        
+      }
+    },
+    changeScroll(direction = 'right'){
+      // const _this = this
+      let scroll = this.$refs.career_list.scrollLeft
+      let width = this.$refs.career_list.scrollWidth
+      let n = 0
+      if(direction == 'left'){
+        // $(this.$refs.career_list).animate({scrollLeft: scroll - 300 },1000)
+        this.timer = setInterval(() =>{ 
+          if(n > scroll){
+            clearInterval(this.timer)
+          }
+          $(this.$refs.career_list).animate({scrollLeft: scroll - n },0)
+          n++
+        }, 0);
+      }else {
+        // $(this.$refs.career_list).animate({scrollLeft: width },width - scroll)
+        this.timer = setInterval(() =>{ 
+          if(n + scroll > width){
+            clearInterval(this.timer)
+          }
+          $(this.$refs.career_list).animate({scrollLeft: scroll + n },0)
+          n++
+        }, 0);
+      }
+    },
+    stopScroll(){
+      clearInterval(this.timer)
+      this.timer = null
+    },
+      titleOf(d) {
+        const scoreItem = this.scores.find(item =>
+          new Date(item.noteDate).getDate() === d.date()
+        );
+        if (scoreItem && '012345678910'.includes(scoreItem.noteScore)) {
+          return d.format('YYYY/MM/DD') + ' 已评分' + scoreItem.noteScore;
+        } else {
+          return d.format('YYYY/MM/DD') + ' 未评分';
+        }
+      },
+      sevenday(){
+        const today = this.$dayjs(new Date());
+        const t7 = today.subtract(7, 'day');
+        this.dateStart = t7.format('YYYY-MM-DD');
+        this.dateEnd = today.format('YYYY-MM-DD');
       },
       getRadar(){
-        let radarDom = this.$echarts.init(document.getElementById('radar'))
-        let option = {
-          title: {
-            text: '',
-            textStyle: {
-                color: 'rgba(221,221,221,1)', //标题颜色
-                fontSize: 14,
-                lineHeight: 20,
-            },
-            // 标题的位置，此时放在图的底边
-            left: 'center',
-            top: 'bottom',
+          let radarDom = this.$echarts.init(document.getElementById('radar'))
+          let option = {
+            title: {
+              text: '',
+              textStyle: {
+                  color: 'rgba(221,221,221,1)', //标题颜色
+                  fontSize: 14,
+                  lineHeight: 20,
+              },
+              // 标题的位置，此时放在图的底边
+              left: 'center',
+              top: 'bottom',
+          },
+          // 图表的位置
+          grid: { // 控制图的大小，调整下面这些值就可以，
+            x: 140,
+            x2: 200,
+            y2: 150// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
         },
-        // 图表的位置
-        grid: {
-            position: 'center',
-         },
-         tooltip : {
-         //雷达图的tooltip不会超出div，也可以设置position属性，position定位的tooltip 不会随着鼠标移动而位置变化，不友好
-            confine: true,
-            enterable: true, //鼠标是否可以移动到tooltip区域内
-         },
-        radar: {
-            shape: 'circle',
-            splitNumber: 6, // 雷达图圈数设置
-            name: {
-                textStyle: {
-                    color: '#838D9E',
-                },
-            },
-            // 设置雷达图中间射线的颜色
-            axisLine: {
-                lineStyle: {
-                    color: '#DFDFDF',
-                    },
-            },
-            indicator: [{
-                name: '智慧考勤',
-                max: 30,
-                //若将此属性放在radar下，则每条indicator都会显示圈上的数值，放在这儿，只在通信这条indicator上显示
-                axisLabel: {
-                    show: true,
-                    fontSize: 12,
-                    color: 'black',
-                    showMaxLabel: false, //不显示最大值，即外圈不显示数字30
-                    showMinLabel: true, //显示最小数字，即中心点显示0
-                },
-            },
-            { name: '请假分析', max: 50},
-            { name: '出国分析', max: 30},
-            { name: '事项申报', max: 30},
-            { name: '用车预警', max: 30},
-            { name: '违规查询', max: 30},
-            { name: '差旅管理', max: 30},
-            { name: '日志预警', max: 30},
-            { name: '涉嫌违法', max: 30},
-            { name: '刷卡预警', max: 30},
-            { name: '就餐预警', max: 30},
-            { name: '审批预警', max: 30},
-            ],
-            //雷达图背景的颜色，在这儿随便设置了一个颜色，完全不透明度为0，就实现了透明背景
-            splitArea : {
-                show : false,
-                areaStyle : {
-                    color: '#DFDFDF', // 图表背景的颜色
-                },
-            },
-            splitLine : {
-                show : true,
-                lineStyle : {
-                    width : 1,
-                    color : '#DFDFDF', // 设置网格的颜色
-                },
-            },
-        },
-        series: [{
-            name: '雷达图', // tooltip中的标题
-            type: 'radar', //表示是雷达图
-            symbol: 'circle', // 拐点的样式，还可以取值'rect','angle'等
-            symbolSize: 8, // 拐点的大小
-    
-            areaStyle: {
-                normal: {
-                    width: 1,
-                    opacity: 0.2,
-                },
-            },
-            data: [
-                {
-                    value: this.thismonth,
-                    name: '本月',
-                    // 设置区域边框和区域的颜色
-                    itemStyle: {
-                      normal: {
-                            color: '#1F77B4',
-                            lineStyle: {
-                                width: 1,
-                                color: '#1F77B4',
-                            },
-                        },
-                    },
-                },
-                 {
-                    value: this.premonth,
-                    name: '上月',
-                    itemStyle: {
+           tooltip : {
+           //雷达图的tooltip不会超出div，也可以设置position属性，position定位的tooltip 不会随着鼠标移动而位置变化，不友好
+              confine: true,
+              enterable: true, //鼠标是否可以移动到tooltip区域内
+           },
+          radar: {
+              shape: '',
+              splitNumber: 5, // 雷达图圈数设置
+              name: {
+                  textStyle: {
+                      color: '#838D9E',
+                  },
+              },
+              // 设置雷达图中间射线的颜色
+              axisLine: {
+                  lineStyle: {
+                      color: '#DFDFDF',
+                      },
+              },
+              indicator: [{
+                  name: '智慧考勤',
+                  max: this.maxValue,
+                  //若将此属性放在radar下，则每条indicator都会显示圈上的数值，放在这儿，只在通信这条indicator上显示
+                  axisLabel: {
+                      show: true,
+                      fontSize: 12,
+                      color: 'black',
+                      showMaxLabel: false, //不显示最大值，即外圈不显示数字30
+                      showMinLabel: true, //显示最小数字，即中心点显示0
+                  },
+              },
+              { name: '请假分析', max: this.maxValue},
+              { name: '出国分析', max: this.maxValue},
+              { name: '事项申报', max: this.maxValue},
+              { name: '用车预警', max: this.maxValue},
+              // { name: '违规查询', max: 30},
+              // { name: '差旅管理', max: 30},
+              { name: '日志预警', max: this.maxValue},
+              { name: '涉嫌违法', max: this.maxValue},
+              { name: '刷卡预警', max: this.maxValue},
+              // { name: '就餐预警', max: 30},
+              // { name: '审批预警', max: 30},
+              ],
+              //雷达图背景的颜色，在这儿随便设置了一个颜色，完全不透明度为0，就实现了透明背景
+              splitArea : {
+                  show : false,
+                  areaStyle : {
+                      color: '#DFDFDF', // 图表背景的颜色
+                  },
+              },
+              splitLine : {
+                  show : true,
+                  lineStyle : {
+                      width : 1,
+                      color : '#DFDFDF', // 设置网格的颜色
+                  },
+              },
+          },
+          series: [{
+              name: '雷达图', // tooltip中的标题
+              type: 'radar', //表示是雷达图
+              symbol: 'circle', // 拐点的样式，还可以取值'rect','angle'等
+              symbolSize: 8, // 拐点的大小
+      
+              areaStyle: {
+                  normal: {
+                      width: 1,
+                      opacity: 0.2,
+                  },
+              },
+              data: [
+                  {
+                      value: [30, 30, 30, 30, 13, 17, 30,30],
+                      name: '本月',
+                      // 设置区域边框和区域的颜色
+                      itemStyle: {
                         normal: {
-                          color: '#FF7F0E',
-                          lineStyle: {
-                              color: '#FF7F0E',
+                              color: '#409eff',
+                              lineStyle: {
+                                  width: 1,
+                                  color: '#409eff',
+                              },
                           },
                       },
+                  },
+                  //  {
+                  //     value: [30, 15, 30, 12, 30, 30, 30, 30, 30,30,30,30],
+                  //     name: '上月',
+                  //     itemStyle: {
+                  //         normal: {
+                  //           color: '#FF7F0E',
+                  //           lineStyle: {
+                  //               color: '#FF7F0E',
+                  //           },
+                  //       },
+                  //     },
+                  // },
+              ],
+          }],
+          }
+          radarDom.setOption(option)
+          $(window).resize(function() {//这是能够让图表自适应的代码
+            radarDom.resize();
+          }); 
+        },
+        getRadar2(){
+          let radarDom2 = this.$echarts.init(document.getElementById('kao'))
+          var colors = ['#8ec6ad', '#947DFF', '#386db3'];
+          let option = {
+            color: colors,
+            tooltip: {
+                trigger: 'none',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data:['加班', '上班','部门平均'],
+                icon:'rect',
+                top: '35',
+                right: '35'
+            },
+            grid: {
+                top: 70,
+                bottom: 50
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: {
+                        alignWithLabel: true
                     },
-                },
+                    axisLine: {
+                        onZero: false,
+                        lineStyle: {
+                            color: colors[1]
+                        }
+                    },
+                    axisPointer: {
+                        label: {
+                            formatter: function (params) {
+                                return '小时' + params.value
+                                    + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                            }
+                        }
+                    },
+                    data: this.clockDate
+                } 
             ],
-        }],
-        }
-        radarDom.setOption(option)
-      },
-      getRadar2(){
-        let radarDom2 = this.$echarts.init(document.getElementById('kao'))
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+              {
+                name: '加班',
+                type: 'line',
+                smooth: true,
+                symbol: 'none', // 去掉折点
+                itemStyle: {
+                  normal: {
+                    color: "#386db3",//折线点的颜色
+                    lineStyle: {
+                      color: "rgba(255,0,0,.0)"//折线的颜色  透明色
+                    }
+                  }
+                },
+                areaStyle: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: '#947DFF'
+                  }, {
+                    offset: 1,
+                    color: '#4D8AFF'
+                  }
+                  ])
+                },
+                data: this.overtime
+              },
+              {
+                name: '上班',
+                type: 'line',
+                smooth: true,
+                symbol: 'none',
+                itemStyle: {
+                  normal: {
+                    color: "#947DFF",//折线点的颜色
+                    lineStyle: {
+                      color: "rgba(255,0,0,.0)"//折线的颜色
+                    }
+                  }
+                },
+                areaStyle: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                    offset: 0,
+                    color: '#633FFF'
+                  }, {
+                    offset: 1,
+                    color: '#fee'
+                  }
+                  ])
+                },
+                data: this.worklength
+              },
+              {
+                name: '部门平均',
+                type: 'line',
+                smooth: true,
+                symbol: 'none',
+                itemStyle: {
+                  normal: {
+                    color: "red",//折线点的颜色
+                    lineStyle: {
+                      color: "red"//折线的颜色
+                    }
+                  }
+                },
+                data: this.averageData
+              }
+            ]
+      }
+        radarDom2.setOption(option)
+            //折线图宽高自适应
+            window.onresize = function () {
+              radarDom2.resize();
+          }
+    },
+    getRadar3(){
+          let radarDom3 = this.$echarts.init(document.getElementById('gauge'))
+          // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
+          let option = {
+            tooltip: {
+              formatter: '{a} <br/>{b} : {c}分'
+          },
+            series: [
+              {
+                startAngle: 180, //开始角度 左侧角度
+                endAngle: 0, //结束角度 右侧
+                type: 'gauge',
+                min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
+                max: 10,
+                splitNumber: 0.5,
+                radius: '100%',
+                center: ['50%', '75%'],//
+                axisLabel: {
+                  distance: -10
+                },
+                axisLine: {
+                  lineStyle: {
+                    width: 10,
+                    color: [
+                      [1, new this.$echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        offset: 0.1,
+                        color: "#59BCFf"
+                      },
+                      {
+                        offset: 0.5,
+                        color: "#409eff"
+                      },
+                      {
+                        offset: 1,
+                        color: "#E373FF"
+                      }
+                      ])]
+                    ],
+                    shadowColor: '#fff', //默认透明
+                    shadowBlur: 8
+                  }
+                },
+                // 分割线
+                splitLine: {
+                  show: false,
+                 
+                },
+                // 刻度线
+                axisTick: {
+                  show: false,
+                
+                },
+                pointer: {
+                  width: 5,
+                  color: 'red'
+                },
+                title: {
+                  offsetCenter: ['-30%', '70%']
+                },
+                detail: { show: false },
+                data: [{ value: this.deptscore, name: '' }]
+              },
+              {
+                startAngle: 180, //开始角度 左侧角度
+                endAngle: 0, //结束角度 右侧
+                type: 'gauge',
+                axisLabel: {
+                  distance: -68
+                },
+                min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
+                max: 10,
+                splitNumber: 5,
+                radius: '55%',
+                center: ['50.5%', '75%'],//
+                axisLine: {
+                  lineStyle: {
+                    width: 8,
+                    color: [
+                      [1, new this.$echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        offset: 0.1,
+                        color: "#59BCFF"
+                      },
+                      {
+                        offset: 0.5,
+                        color: "#409eff"
+                      },
+                      {
+                        offset: 1,
+                        color: "#E373FF"
+                      }
+                      ])]
+                    ],
+                    shadowColor: '#fff', //默认透明
+                    shadowBlur: 5
+                  }
+                },
+                // 分割线
+                splitLine: {
+                  show: false,
+          
+                },
+                // 刻度线
+                axisTick: {
+                  show: false,
+             
+                },
+                pointer: {
+                  width: 3
+                },
+                title: {
+                  offsetCenter: ['-50%', '70%']
+                },
+                detail: { show: false },
+                data: [{ value: this.userscore, name: '' }]
+              }
+            ]
+      }
+        radarDom3.setOption(option)
+          window.addEventListener("resize", () => { radarDom3.resize();});
+    },
+      getRadar4() {
+        debugger
+        let category = ['服务器数（台）'];
+        let barData = [this.userscore];
+        let lineData = [10]
+        let radarDom4 = this.$echarts.init(document.getElementById('pbar'))
         let option = {
-          tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-          }
-      },
-      legend: {
-          padding:[30,0,0,0],
-          data: ['加班', '上班', '部门平均']
-      },
-      grid: {
-          // top: '2%',
-          left: '3%',
-          right: '5%',
-          bottom: '1%',
-          containLabel: true
-      },
-      xAxis: [
-          {
-              type: 'category',
-              data: this.clockDate
-          }
-      ],
-      yAxis: [
-          {
-              type: 'value'
-          }
-      ],
-      series: [
-  
-          {
-              name: '加班',
-              type: 'bar',
-              barWidth : 20,
-              color: '#F09B38',
-              stack: '广告',
-              data: this.overtime
+          backgroundColor: 'white',
+          grid: [{ //控制显示位置的属性grid
+              left: '',
+              bottom: '',
+              top: '',
+              right: '48%' //在此图中可用于控制柱子的长度
+          }],
+          xAxis: {
+              show: false
           },
-          {
-              name: '上班',
-              type: 'bar',
-              color: '#9363FF',
-              stack: '广告',
-              data: this.worklength
-          },
-          {
-              name: '部门平均',
-              type: 'line',
-              color: '#235FF6',
-              stack: '广告',
-              data: this.averageData
-          },
-      ]
-    }
-      radarDom2.setOption(option)
-  },
-      getRadar3() {
-        let radarDom3 = this.$echarts.init(document.getElementById('gauge'))
-        let option = {
-          tooltip: {
-            formatter: "{a} <br/>{b} {c}分"
+          yAxis: {
+              data: category,
+              show: true,
+              axisLabel: {
+                  verticalAlign: 'left',
+                  color: 'white',
+                  fontSize: '30'
+              },
+              axisLine: {
+                  show: false
+              },
+              axisTick: {
+                  show: false
+              }
           },
           series: [
-            {
-              min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
-              max: 10,
-              name: '月度评分',
-              // radius:'20%',
-              type: 'gauge',
-              detail: { formatter: '{value}' }, //仪表盘显示数据
-              axisLine: { //仪表盘轴线样式
-                lineStyle: {
-                  width: 12
-                }
+      
+              { // 蓝柱下面方块
+                  name: '',
+                  type: 'pictorialBar',
+                  symbol: 'roundRect',
+                  barWidth: '30%',
+                  symbolOffset: ['200%', '-30%'],
+                  itemStyle: {
+                      normal: {
+      
+                          color: '#235FF6'
+                      }
+                  },
+                  z: -41,
+                  symbolRepeat: true,
+                  symbolSize: ['50%', '150%'],
+                  data: lineData,
+                  barGap: 10,
+                  barCategoryGap:20,
+                  animationEasing: 'elasticOut',
+      
               },
-              splitLine: { //分割线样式
-                length: 10
+      
+      
+              { // 蓝柱
+                  name: '', // blue bar
+                  type: 'pictorialBar',
+                  symbol: 'roundRect',
+                  barWidth: '30%',
+                  symbolOffset: ['200%', '-30%'],
+                  itemStyle: {
+                      normal: {
+                          barMaxWidth: '20%',
+                          barBorderRadius: 100,
+                          color: '#409eff',
+                      }
+                  },
+                  symbolRepeat: true,
+                  symbolSize: ['50%', '150%'],
+                  // symbolClip: true,
+                  data: barData,
               },
-              data: [{ value: 2, name: '' }],
-  
-              markPoint: {
-                symbol: 'circle',
-                symbolSize: 5,
-                data: [
-                  //跟你的仪表盘的中心位置对应上，颜色可以和画板底色一样
-                  { x: 'center', y: 'center', itemStyle: { color: '#FFF' } }
-                ]
-              },
-            }
-          ]
+      
+          ],
         }
-        radarDom3.setOption(option)
+        radarDom4.setOption(option)
+        window.addEventListener("resize", () => { radarDom4.resize(); });
+      },
+      getRadar5() {
+        let category = ['服务器数（台）'];
+        let barData = [this.deptscore];
+        let lineData = [10]
+        let radarDom5 = this.$echarts.init(document.getElementById('bbar'))
+        let option = {
+          backgroundColor: 'white',
+          grid: [{ //控制显示位置的属性grid
+              left: '',
+              bottom: '',
+              top: '',
+              right: '48%' //在此图中可用于控制柱子的长度
+          }],
+          xAxis: {
+              show: false
+          },
+          yAxis: {
+              data: category,
+              show: true,
+              axisLabel: {
+                  verticalAlign: 'left',
+                  color: 'white',
+                  fontSize: '20'
+              },
+              axisLine: {
+                  show: false
+              },
+              axisTick: {
+                  show: false
+              }
+          },
+          series: [
+              { // 蓝柱下面方块
+                  name: '',
+                  type: 'pictorialBar',
+                  symbol: 'roundRect',
+                  barWidth: '30%',
+                  symbolOffset: ['200%', '-30%'],
+                  itemStyle: {
+                      normal: {
+      
+                          color: '#838d9e'
+                      }
+                  },
+                  z: -41,
+                  symbolRepeat: true,
+                  symbolSize: ['50%', '150%'],
+                  data: lineData,
+                  barGap: 10,
+                  barCategoryGap:20,
+                  animationEasing: 'elasticOut',
+      
+              },
+              { // 蓝柱
+                  name: '', // blue bar
+                  type: 'pictorialBar',
+                  symbol: 'roundRect',
+                  barWidth: '30%',
+                  symbolOffset: ['200%', '-30%'],
+                  itemStyle: {
+                      normal: {
+                          barMaxWidth: '20%',
+                          barBorderRadius: 10,
+                          color: '#8162FF',
+                      }
+                  },
+                  symbolRepeat: true,
+                  symbolSize: ['50%', '150%'],
+                  // symbolClip: true,
+                  data: barData,
+              },
+          ],
+        }
+        radarDom5.setOption(option)
+        // $(window).resize(function() {//这是能够让图表自适应的代码
+        window.addEventListener("resize", () => { radarDom5.resize(); });
       },
       // 查询分类风险提醒数据
       allWarnByType() {
-        const _this=this;
+        const _this = this;
         const params = {
           userId: this.userInfo.info
         }
         allWarnByType(params).then(res => {
           console.log(res)
           if (res.success) {
-            const tdata = res.data.thismonth
+            const tdata = res.data.thismonththismonth
             const pdata = res.data.premonth
-            _this.thismonth = tdata.map((countnum) => {
+            const  data = tdata.map((countnum) => {
               return countnum.countnum;
             })
-            _this.premonth = pdata.map((countnum) => {
-              return countnum.countnum;
-            })
+            for (let i = 0; i < data.length; i++) {
+             const Data= _this.maxValue -data1[i]
+             _this.warnData.push(Data)
+            }
+            // _this.premonth = pdata.map((countnum) => {
+            //   return countnum.countnum;
+            // })
             _this.init();
           }
         })
       },
-      // 查询七天上班时间统计数据
-      indexRecordDeatil() {
-        const _this=this;
-        const params = {
-          userId: this.userInfo.info,
-          startTime:_this.dateStart,
-          endTime:_this.dateEnd
-  
-        }
-        indexRecordDeatil(params).then(res => {
-          console.log(res)
-          if (res.success) {
-            const Data =res.data
-            _this.worklength = Data.map(({worklength}) => worklength)
-            _this.overtime = Data.map(({overtime}) => overtime)
-            this.clockDate = Data.map(({clock_date}) => new Date(clock_date).toLocaleDateString().substring(5))
-            _this.init();
-          }
-        })
+      agency(dt,data){
+        debugger
+        this.showSearch = ! this.showSearch
       },
-      // 查询上班时间统计数据
-      indexRecordCountDeatil() {
+      // 从警生涯数据
+      getPoliceCareer() {
         const _this = this;
         const params = {
-          userId: this.userInfo.info,
-          startTime: _this.dateStart,
-          endTime: _this.dateEnd
-  
+          userId: _this.userId,
         }
-        indexRecordCountDeatil(params).then(res => {
-          console.log(res)
+        getPoliceCareer(params).then(res => {
+         debugger
           if (res.success) {
-            _this.tjData = res.data.map(({ worklength }) => worklength)
+            const Data = res.data
+            _this.careerData = Data.reduce((prev, item) =>
+              (item.career_type === '履历' ? [...prev, { ...item, marks: [item] }]: [...prev.slice(0, -1), { ...prev.slice(-1)[0], marks: prev.slice(-1)[0].marks.concat(item) }]), []
+            );
+            for (var i = 0; i < _this.careerData.length; i++) {  
+              // _this.marksData.push(_this.careerData[i].marks[i])
+              _this.careerData[i].happen_time = _this.conversion(
+                _this.careerData[i].happen_time
+              )
+              _this.careerData[i].endtime = _this.conversion(
+                _this.careerData[i].endtime
+              )
+              if (_this.careerData[i].marks != null) {
+                                  var data = _this.careerData[i].marks
+                                  for (var j = 0; j < data.length; j++) {
+                                      data[j].happen_time = _this.conversion(data[j].happen_time) // 把时间戳转化为时间格式
+                                      data[j].endtime = _this.conversion(data[j].endtime) // 把时间戳转化为时间格式
+                                  }
+                              }
+              _this.careerData[_this.careerData.length - 1].marks[0].endtime = "至今"
+              _this.careerData[_this.careerData.length - 1].endtime = "至今"
+
+              const dd = _this.careerData[i].marks
+              const cc =[]
+              for (let k = 0; k < _this.careerData[i].marks.length; k++) {
+                if(_this.careerData[i].marks[k].career_type== '1'&& _this.careerData[i].marks[k].career_desc=='优秀'){
+                  cc.push(_this.careerData[i].marks[k])
+                } 
+                if(_this.careerData[i].marks[k].career_type== '2'){
+                  cc.push(_this.careerData[i].marks[k])
+                }            
+                if(_this.careerData[i].marks[k].career_type== '3'){
+                  cc.push(_this.careerData[i].marks[k])
+                }  
+                if(_this.careerData[i].marks[k].career_type== '4'){
+                  cc.push(_this.careerData[i].marks[k])
+                } 
+                if(_this.careerData[i].marks[k].career_type== '履历'){
+                  cc.push(_this.careerData[i].marks[k])
+                }         
+              }
+              _this.careerData[i].marks = ''
+              _this.careerData[i].marks = cc
+            }
+            let width = _this.$refs.career_list.scrollWidth
+            $(_this.$refs.career_list).animate({ scrollLeft: width }, 8000)
           }
         })
       },
-       // 查询部门平均上班时间数据
-      sectorAverageStatistics() {
-        const _this=this;
-        const params = {
-          department: sessionStorage.orgId,
-          startTime:_this.dateStart,
-          endTime:_this.dateEnd
-  
-        }
-        sectorAverageStatistics(params).then(res => {
-          console.log(res)
-          if (res.success) {
-            const Data = res.data
-            _this.averageData =Object.keys(Data).sort().map(item => Data[item]);
-            _this.init();
-          }
-        })
+      conversion(timestamp) {
+              // 时间戳转化为时间格式
+              var date = new Date(timestamp) // 时间戳为10位需*1000，时间戳为13位的话不需乘1000
+              var Y = date.getFullYear() + '.'
+              var M =
+          (date.getMonth() + 1 < 10
+              ? '0' + (date.getMonth() + 1)
+              : date.getMonth() + 1) + '.'
+              var D = date.getDate() + ' '
+              // var h = date.getHours() + ':'
+              // var m = date.getMinutes() + ':'
+              // var s = date.getSeconds()
+              return Y + M + D 
       },
-    //   agency(item, key) {    //     
-    //     this.selected = key;
-    // },
-      // 从警生涯数据
-      getPoliceCareer(){
-        const _this=this;
-        const params = {
-          userId: '1D2G3F4H',
-        }
-        getPoliceCareer(params).then(res => {          
-          console.log(res)
-          if (res.success) {
-            const Data = res.data
-            _this.careerData = Data.reduce((prev, item) => 
-            (item.career_type === '履历'
-            ? [...prev, {...item, marks: [item]}]
-            : [...prev.slice(0, -1), {...prev.slice(-1)[0], marks: prev.slice(-1)[0].marks.concat(item)}]), []
-          );
-          let width = this.$refs.career_list.scrollWidth
-          $(this.$refs.career_list).animate({scrollLeft:width },8000)
-          for(var i=0; i<_this.careerData.length; i++){
-            _this.marksData.push(_this.careerData[i].marks[0])
-            _this.careerData[i].marks[0].happen_time = new Date(_this.careerData[i].marks[0].happen_time).toLocaleDateString()
-            _this.careerData[i].marks[0].endtime = new Date(_this.careerData[i].marks[0].endtime).toLocaleDateString()
-             _this.careerData[_this.careerData.length-1].marks[0].endtime = "至今"
-             _this.careerData[_this.careerData.length-1].endtime = "至今"
-          }
-        }
-      })
-    },
       jxh(){
         this.$router.push({path:'/Refinement'})
       },
@@ -650,13 +1171,14 @@
       },
       // 协作提效总数  http://192.168.1.102/sys/sysPendings/getAllDealCount
       getData() {
+        debugger
         var _this = this
         const data = {
           sysId: 'ZHJD',
-          token: sessionStorage.token
+          token: _this.token
         }
-        this.$request
-          .get(`http://192.168.1.102/sys/sysPendings/getAllDealCount`, data)
+        _this.$request
+          .get(`http://41.232.3.197/sys/sysPendings/getAllDealCount`, data) 
           .then(res => {
             _this.xztxNum = res.data.number
           })
@@ -664,1180 +1186,401 @@
             console.log(error)
           })
       },
-      changeActive(index) {
-              this.timeIndex = index;
-          },
-          moveLeft()  {
-              let marginLeft = parseInt(this.$refs.mytimeline.style.marginLeft);
-              let listNum = 0;
-              if(marginLeft <= 10 && (marginLeft >= -650)){
-                  this.$refs.mytimeline.style.marginLeft = marginLeft - 220 + 'px';
-              }
-          },
-          moveRight() {
-              let marginLeft = parseInt(this.$refs.mytimeline.style.marginLeft);
-              if(marginLeft < (-200)){
-                  this.$refs.mytimeline.style.marginLeft = marginLeft + 220 + 'px';
-              }
-          },
-      // change(data){
-      //   alert(data)
-      //   //:style="[{backgroundColor:isCollapse?'#409eff':'#f1f5fb'}]"
-      //   // this.isCollapse[data] = !this.isCollapse[];
+      // 查询七天上班时间统计数据
+      indexRecordDeatil() {
+        const _this = this;
+        const params = {
+          userId: this.userInfo.info,
+          startTime: _this.dateStart,
+          endTime: _this.dateEnd
   
-      // },
-      sevenday(){
-        const  day  =  new  Date();
-        const t7 = subDays(day, 7);
-        this.dateStart=format(t7,'yyyy-MM-dd');
-        this.dateEnd = format(day,'yyyy-MM-dd'); 
+        }
+        indexRecordDeatil(params).then(res => {
+          debugger
+          console.log(res)
+          if (res.success) {
+            const Data = res.data
+            _this.worklength = Data.map(({ worklength }) => worklength)
+            _this.overtime = Data.map(({ overtime }) => overtime)
+            _this.clockDate = Data.map(({ clock_date }) => new Date(clock_date).toLocaleDateString().substring(5))
+            _this.init();
+          }
+        })
+      },
+      // 查询部门平均上班时间数据
+      sectorAverageStatistics() {
+        debugger
+        const _this = this;
+        const params = {
+          department: _this.orgId,
+          startTime: _this.dateStart,
+          endTime: _this.dateEnd
+  
+        }
+        sectorAverageStatistics(params).then(res => {
+          console.log(res)
+          if (res.success) {
+            const Data = res.data
+            _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
+            _this.init();
+          }
+        })
+      }, 
+    // 个人今日评分  部门评分
+    indexCalendar(){
+      const _this = this;
+      const params = {
+        userId: '4616',
+        deptId: '831',
+        startTime: '2020-01-01',
+        endTime: '2020-01-31'
+
       }
+      indexCalendar(params).then(res => {
+        debugger
+        console.log(res)
+        if (res.success) {
+          const Data = res.data.yearscore
+          for (let i= 0; i < Data.length; i++) {
+            if(Data[i].userscore ==='userscore'){
+              _this.userscore = Data[i].score
+            }
+            if(Data[i].userscore ==='deptscore'){
+              _this.deptscore = Data[i].score
+            }
+          }
+          // _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
+          _this.init();
+        }
+      })
+      
+    }, 
     }
   }
   </script>
   <style lang="stylus" scoped>
-    /* @import './css/assembly.css'; */
-    @import './css/hover-min.css';
-    @import './css/media.css';
     @import './css/pseudo_classes.css';
-  .person_home{
-    margin: 1%;
-    /* overflow auto; */
-  }
-  .police_career{
-    height: 220px;
-    background:#fff;
-    margin-bottom:15px;
-  }
-    /* 定义滚动条样式 */
-    ::-webkit-scrollbar {
-    /* width: 16px; */
-    height: 6px;
-    background-color: rgb(187, 179, 179);
-  }
-   
-  /*定义滚动条轨道 内阴影+圆角*/
-  /* ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 0px rgba(240, 240, 240, .5);
-    border-radius: 5px;
-    background-color: rgba(240, 240, 240, .5);
-  } */
-   
-  /*定义滑块 内阴影+圆角*/
-  ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow: inset 0 0 0px rgba(19, 13, 13, 0.5);
-    background-color: rgba(240, 240, 240, .5);
-    width: 20px;
-    height: 20px;
-  }
-  /* .scroll-list ul{
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 0 0.1rem;
-      margin-bottom: -.2rem;
-      overflow: -moz-scrollbars-none;
-      overflow: -moz-scrollbars-none;
-  } */
-  .scroll-list ul::-webkit-scrollbar{
-      display: none;
-  }
-  .p_card{
-      width: 200px;
-      height: 85px;
-      background-color: #F1F5FB;
-      border-left: 4px solid #409EFF;
-      border-top-right-radius: 19px;
-      border-bottom-right-radius: 19px;
-      margin-left: 19px;
-  }
-  .fengxian{
-    float:left;
-    background :#fff;
-    height:100%;
-  }
-  .person_title{
-    float:left;
-    width:100%;
-    height:30px;
-    margin: 10px;
-    margin-bottom :0;
-    font-size:16px;
-    font-weight:bold;
-    line-height:30px;
-    border-left:5px solid red;
-    padding-left: 5px
-  }
-  .p_clear{
-    margin-bottom: 13px;
-  }
-  .p_time{
-    margin: 10px;
-      color: #409eff;
-  }
-  .p_name{
-    margin: 17px 0px 0px 10px;
-    color: #409eff;
-  }
-  .my_timeline_prev, .my_timeline_next {
-      float: left;
-      display: inline-block;
-      background-color: #fff;
-      cursor: pointer;
-  }
-  .p_head{
-    height: 266px;
-  }
-  .my_timeline_prev {
-      width: 200px;
-      float: left;
-  }
-  .my_timeline_next {
-      width: 34px;
-      margin-left: -22px;
-  }
-  .ul_box {
+  .p_nvleft{
+    float: left;
     display: inline-block;
-    /* float:left; */
-  }
-  .my_timeline_item {
-      display: table-cell;
-      /* width: 220px; */
-  }
-  .my_timeline_node {
-      box-sizing: border-box;
-      border-radius: 50%;
-      cursor: pointer;
-  }
-  .my_timeline_node.active {
-      background-color: #fff !important;
-      border: 6px solid #f68720;
-  }
-  .my_timeline_item_line {
-      width: 100%;
-      height: 10px;
-      margin: -14px 0 0 28px;
-      border-top: 2px solid #E4E7ED;
-      border-left: none;
-  }
-  .my_timeline_item_content {
-      /* margin: 10px 0 0 -10px; */
-  }
-  .flex-grow {
-      -webkit-flex-grow: 1!important;
-      /* flex-grow: 1!important; */
-  }
-  .flex-column {
-      -webkit-flex-direction: column!important;
-      /* flex-direction: column!important; */
-  }
-  .flex-justify-center {
-      -webkit-justify-content: center!important;
-      justify-content: center!important;
-  }
-  .h12 {
-      height: 0.857em!important;
-  }
-  .w12 {
-      width: 0.857em!important;
-  }
-  .inline-block {
-      display: inline-block!important;
-  }
-  .r-half {
-      border-radius: 50%!important;
-  }
-  .ml8 {
-      margin-left: 0.571em!important;
-  }
-  body{
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section {
-    display: block
-  }
-  
-  html {
-    box-sizing: border-box
-  }
-  
-  h1,h2,h3,h4,h5,h6 {
-    font-weight: 400
-  }
-  
-  ol,ul {
-    list-style: none
-  }
-  
-  blockquote,q {
-    quotes: none
-  }
-  
-  blockquote:after,blockquote:before,q:after,q:before {
-    content: none
-  }
-  
-  table {
-    border-collapse: collapse;
-    border-spacing: 0
-  }
-  
-  body,button,hr,img {
-    margin: 0;
-    border: 0
-  }
-  
-  button {
-    background: 0 0;
-    color: inherit;
-    font: inherit;
-    padding: 0;
-    width: auto;
-    text-align: left;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: pointer;
-    border-radius: 0
-  }
-  
-  button:focus {
-    font-weight: bold;
-    outline: none
-  }
-  
-  button:disabled {
-    cursor: default
-  }
-  
-  button::-moz-focus-inner {
-    padding: 0;
-    border: 0
-  }
-  
-  svg {
-    display: inline-block
-  }
-  
-  img {
-    max-width: 100%;
-    vertical-align: top
-  }
-  
-  video {
-    width: 100%;
-    height: auto
-  }
-  
-  q::after,q::before {
-    content: ''
-  }
-  
-  legend,pre {
-    display: block
-  }
-  
-  pre {
-    white-space: pre-wrap;
-    -moz-tab-size: 2;
-    tab-size: 2
-  }
-  
-  legend {
-    width: 100%
-  }
-  
-  body,input,textarea,select {
-    color: #1f3349;
-    font-size: 0.857em;
-    font-family: Microsoft YaHei;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    outline: none;
-    box-sizing: border-box;
-    background-color: transparent;
-  }
-  
-  select, input[type=checkbox], input[type=radio] {
+    position: relative;
+    width: 4%;
+    margin-top: 2%;
+    /* bottom: 65px; */
+    height: calc(84% - 30px);
     cursor: pointer
   }
-  
-  input[type=checkbox] {
-    height: 1.142em;
-    width: 1.142em
-  }
-  
-  .font-100 {
-    font-size: 100%
-  }
-  
-  .font12 {
-    font-size: 0.857em
-  }
-  
-  .font14 {
-    font-size: 1em
-  }
-  
-  .line-h100 {
-    line-height: 100%
-  }
-  
-  .txt-bold {
-    font-weight: 700!important
-  }
-  
-  .txt-light {
-    font-weight: lighter!important
-  }
-  
-  .txt-normal {
-    font-weight: 400!important
-  }
-  
-  .txt-em {
-    font-style: italic!important
-  }
-  
-  .txt-underline,.txt-underline-on-hover:hover {
-    text-decoration: underline!important
-  }
-  
-  .txt-nowrap {
-    white-space: nowrap!important
-  }
-  
-  .txt-break-word {
-    word-break: break-all!important
-  }
-  
-  .txt-truncate {
-    display: block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden
-  }
-  
-  .align-l {
-    text-align: left!important
-  }
-  
-  .align-r {
-    text-align: right!important
-  }
-  
-  .align-center {
-    text-align: center!important
-  }
-  
-  .align-t {
-    vertical-align: top!important
-  }
-  
-  .align-b {
-    vertical-align: bottom!important
-  }
-  
-  .align-middle {
-    vertical-align: middle!important
-  }
-  
-  .table-fixed {
-    table-layout: fixed
-  }
-  
-  input:disabled {
-    pointer-events: none
-  }
-  
-  .border-box {
-    box-sizing: border-box!important
-  }
-  
-  .r2 {
-    border-radius: 0.142em!important
-  }
-  
-  .r5 {
-    border-radius: 0.357em!important
-  }
-  
-  .r8 {
-    border-radius: 0.571em!important
-  }
-  
-  .r-half {
-    border-radius: 50%!important
-  }
-  
-  .cursor-default {
-    cursor: default!important
-  }
-  
-  .cursor-pointer {
-    cursor: pointer!important
-  }
-  
-  .cursor-crosshair {
-    cursor: crosshair!important
-  }
-  
-  .cursor-move {
-    cursor: move!important
-  }
-  
-  .cursor-notallowed {
-    cursor: not-allowed!important
-  }
-  
-  .inline {
-    display: inline!important
-  }
-  
-  .block,.clearfix::after {
-    display: block!important
-  }
-  
-  .inline-block {
-    display: inline-block!important
-  }
-  
-  .fixed {
-    position: fixed!important
-  }
-  
-  .absolute {
-    position: absolute!important
-  }
-  
-  .relative {
-    position: relative!important
-  }
-  
-  .static {
-    position: static!important
-  }
-  
-  .top {
-    top: 0!important
-  }
-  
-  .right {
-    right: 0!important
-  }
-  
-  .left {
-    left: 0!important
-  }
-  
-  .bottom {
-    bottom: 0!important
-  }
-  
-  .z0 {
-    z-index: 0!important
-  }
-  
-  .z1 {
-    z-index: 1!important
-  }
-  
-  .z2 {
-    z-index: 2!important
-  }
-  
-  .z3 {
-    z-index: 3!important
-  }
-  
-  .z4 {
-    z-index: 4!important
-  }
-  
-  .z5 {
-    z-index: 5!important
-  }
-  
-  .mx-auto {
-    margin-left: auto!important;
-    margin-right: auto!important
-  }
-  
-  .flex {
-    display: -webkit-flex!important;
-    display: flex!important
-  }
-  
-  .flex-inline {
-    display: -webkit-inline-flex!important;
-    display: inline-flex!important
-  }
-  
-  .flex-column {
-    -webkit-flex-direction: column!important;
-    flex-direction: column!important
-  }
-  
-  .flex-column-reverse {
-    -webkit-flex-direction: column-reverse!important;
-    flex-direction: column-reverse!important
-  }
-  
-  .flex-row {
-    -webkit-flex-direction: row!important;
-    flex-direction: row!important
-  }
-  
-  .flex-row-reverse {
-    -webkit-flex-direction: row-reverse!important;
-    flex-direction: row-reverse!important
-  }
-  
-  .flex-align-center {
-    -webkit-align-items: center!important;
-    align-items: center!important
-  }
-  
-  .flex-align-start {
-    -webkit-align-items: flex-start!important;
-    align-items: flex-start!important
-  }
-  
-  .flex-align-end {
-    -webkit-align-items: flex-end!important;
-    align-items: flex-end!important
-  }
-  
-  .flex-justify-start {
-    -webkit-justify-content: flex-start!important;
-    justify-content: flex-start!important
-  }
-  
-  .flex-justify-end {
-    -webkit-justify-content: flex-end!important;
-    justify-content: flex-end!important
-  }
-  
-  .flex-justify-center {
-    -webkit-justify-content: center!important;
-    justify-content: center!important
-  }
-  
-  .flex-wrap {
-    -webkit-flex-wrap: wrap!important;
-    flex-wrap: wrap!important
-  }
-  
-  .flex-align-stretch {
-    -webkit-align-items: stretch!important;
-    align-items: stretch!important
-  }
-  
-  .flex-justify-between {
-    -webkit-justify-content: space-between!important;
-    justify-content: space-between!important
-  }
-  
-  .flex-justify-around {
-    -webkit-justify-content: space-around!important;
-    justify-content: space-around!important
-  }
-  
-  .flex-child {
-    display: block;
-    max-width: 100%
-  }
-  
-  .flex-grow {
-    -webkit-flex-grow: 1!important;
-    flex-grow: 1!important
-  }
-  
-  .flex-no-shrink {
-    -webkit-flex-shrink: 0!important;
-    flex-shrink: 0!important
-  }
-  
-  .float-none {
-    float: none!important
-  }
-  
-  .clearfix::after {
-    content: ''!important;
-    clear: both!important
-  }
-  
-  .my0 {
-    margin-top: 0!important;
-    margin-bottom: 0!important
-  }
-  
-  .my2 {
-    margin-top: 0.142em!important;
-    margin-bottom: 0.142em!important
-  }
-  
-  .my4 {
-    margin-top: 0.285em!important;
-    margin-bottom: 0.285em!important
-  }
-  
-  .my6 {
-    margin-top: 0.428em!important;
-    margin-bottom: 0.428em!important
-  }
-  
-  .my8 {
-    margin-top: 0.571em!important;
-    margin-bottom: 0.571em!important
-  }
-  
-  .mx0 {
-    margin-left: 0!important;
-    margin-right: 0!important
-  }
-  
-  .mx2 {
-    margin-left: 0.142em!important;
-    margin-right: 0.142em!important
-  }
-  
-  .mx4 {
-    margin-left: 0.285em!important;
-    margin-right: 0.285em!important
-  }
-  
-  .mx6 {
-    margin-left: 0.428em!important;
-    margin-right: 0.428em!important
-  }
-  
-  .mx8 {
-    margin-left: 0.571em!important;
-    margin-right: 0.571em!important
-  }
-  
-  .mt-auto {
-    margin-top: auto!important
+  .p_nvright{
+    display: inline-block;
+    position: relative;
+    width: 4%;
+    margin-top: 2%;
+    /* bottom: 65px; */
+    height: calc(84% - 30px);
+    cursor: pointer;
+    float: right;
+  }
+  .person_home{
+    /* background: #f2f5f7; */
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  .p_career{
+    display: flex;
+  
+  }
+  .p_person {
+      float: left;
+      width: 249px;
+      margin-top: 28px;
+  }
+  .p_name{
+    text-align: center;
+      margin-left: 4px;
+      width: 142px;
+      height: 13px;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: #8593a7;
+      line-height: 20px;
+  }
+  .p_year{
+    text-align: center;
+    margin-top: 27px;
+    color: #00f;
+    margin-left: 19px;
+    line-height: 29px;
+  }
+  .p_title{
+    float: left;
+     width: 10%;
+    margin-top: 28px;
+  }
+  .person_career{
+    float: left;
+    width: 92%;
+    height: calc(84% - 30px);
+    overflow: auto; 
+    display: flex;
+    overflow-y: hidden;
+  }
+  .person_body{
+    height: 100%;
+    width: 98%;
+    margin: 1%;
+  }
+  .person_head{
+      height: 25% !important;
+      background-color: #fff;
+      margin-bottom: 15px;
+      width: 100%;
+      /* overflow: auto hidden; */
+  }
+  .p_card{
+    /* float: left; */
+    width: 115px;
+    margin-top: 28px;
+  }
+
+  .p_node{
+    /* float: left; */
+    width: 93px;
+    margin-top: 4px;
+  }
+  .person_left{
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    margin-right: 15px;
+  }
+  .person_right {
+    width: 100%;
+    height: 100%;
+  }
+  .person_center {
+    margin-right: 15px;
+    width: 100%;
+    height: 100%;
+  }
+  .content{
+    display: flex;
+    height: calc(75% - 45px);
+    
   }
-  
-  .mt0 {
-    margin-top: 0!important
-  }
-  
-  .mt2 {
-    margin-top: 0.142em!important
-  }
-  
-  .mt4 {
-    margin-top: 0.285em!important
-  }
-  
-  .mt6 {
-    margin-top: 0.428em!important
-  }
-  
-  .mt8 {
-    margin-top: 0.571em!important
-  }
-  
-  .mr-auto {
-    margin-right: auto!important
-  }
-  
-  .mr0 {
-    margin-right: 0!important
-  }
-  
-  .mr2 {
-    margin-right: 0.142em!important
-  }
-  
-  .mr4 {
-    margin-right: 0.285em!important
-  }
-  
-  .mr6 {
-    margin-right: 0.428em!important
-  }
-  
-  .mr8 {
-    margin-right: 0.571em!important
-  }
-  
-  .mb-auto {
-    margin-bottom: auto!important
-  }
-  
-  .mb0 {
-    margin-bottom: 0!important
-  }
-  
-  .mb2 {
-    margin-bottom: 0.142em!important
-  }
-  
-  .mb4 {
-    margin-bottom: 0.285em!important
-  }
-  
-  .mb6 {
-    margin-bottom: 0.428em!important
-  }
-  
-  .mb8 {
-    margin-bottom: 0.571em!important
-  }
-  
-  .ml-auto {
-    margin-left: auto!important
-  }
-  
-  .ml0 {
-    margin-left: 0!important
-  }
-  
-  .ml2 {
-    margin-left: 0.142em!important
-  }
-  
-  .ml4 {
-    margin-left: 0.285em!important
-  }
-  
-  .ml6 {
-    margin-left: 0.428em!important
-  }
-  
-  .ml8 {
-    margin-left: 0.571em!important
-  }
-  
-  .mxy5 {
-    margin: 0.357em!important
-  }
-  
-  .mxy10 {
-    margin: 0.714em!important
-  }
-  
-  .py0 {
-    padding-top: 0!important;
-    padding-bottom: 0!important
-  }
-  
-  .py2 {
-    padding-top: 0.142em!important;
-    padding-bottom: 0.142em!important
-  }
-  
-  .py4 {
-    padding-top: 0.285em!important;
-    padding-bottom: 0.285em!important
-  }
-  
-  .py6 {
-    padding-top: 0.428em!important;
-    padding-bottom: 0.428em!important
-  }
-  
-  .py8 {
-    padding-top: 0.571em!important;
-    padding-bottom: 0.571em!important
-  }
-  
-  .px0 {
-    padding-left: 0!important;
-    padding-right: 0!important
-  }
-  
-  .px2 {
-    padding-left: 0.142em!important;
-    padding-right: 0.142em!important
-  }
-  
-  .px4 {
-    padding-left: 0.285em!important;
-    padding-right: 0.285em!important
-  }
-  
-  .px6 {
-    padding-left: 0.428em!important;
-    padding-right: 0.428em!important
-  }
-  
-  .px8 {
-    padding-left: 0.571em!important;
-    padding-right: 0.571em!important
-  }
-  
-  .pt0 {
-    padding-top: 0!important
-  }
-  
-  .pt2 {
-    padding-top: 0.142em!important
-  }
-  
-  .pt4 {
-    padding-top: 0.285em!important
-  }
-  
-  .pt6 {
-    padding-top: 0.428em!important
-  }
-  
-  .pt8 {
-    padding-top: 0.571em!important
-  }
-  
-  .pr0 {
-    padding-right: 0!important
-  }
-  
-  .pr2 {
-    padding-right: 0.142em!important
-  }
-  
-  .pr4 {
-    padding-right: 0.285em!important
-  }
-  
-  .pr6 {
-    padding-right: 0.428em!important
-  }
-  
-  .pr8 {
-    padding-right: 0.571em!important
-  }
-  
-  .pb0 {
-    padding-bottom: 0!important
-  }
-  
-  .pb2 {
-    padding-bottom: 0.142em!important
-  }
-  
-  .pb4 {
-    padding-bottom: 0.285em!important
-  }
-  
-  .pb6 {
-    padding-bottom: 0.428em!important
-  }
-  
-  .pb8 {
-    padding-bottom: 0.571em!important
-  }
-  
-  .pl0 {
-    padding-left: 0!important
-  }
-  
-  .pl2 {
-    padding-left: 0.142em!important
-  }
-  
-  .pl4 {
-    padding-left: 0.285em!important
-  }
-  
-  .pl6 {
-    padding-left: 0.428em!important
-  }
-  
-  .pl8 {
-    padding-left: 0.571em!important
-  }
-  
-  .pxy5 {
-    padding: 0.357em!important
-  }
-  
-  .pxy10 {
-    padding: 0.714em!important
-  }
-  
-  .w0 {
-    width: 0!important
-  }
-  
-  .w6 {
-    width: 0.428em!important
-  }
-  
-  .w12 {
-    width: 0.857em!important
-  }
-  
-  .w16 {
-    width: 1.142em!important
-  }
-  
-  .w24 {
-    width: 1.714em!important
-  }
-  
-  .w28 {
-    width: 2em!important
-  }
-  
-  .w32 {
-    width: 2.285em!important
-  }
-  
-  .w48 {
-    width: 3.428em!important
-  }
-  
-  .w64 {
-    width: 4.571em!important
-  }
-  
-  .w-full {
-    width: 100%!important
-  }
-  
-  .w-half {
-    width: 50%!important
-  }
-  
-  .w-fit {
-    width: fit-content!important
-  }
-  
-  .w-auto {
-    width: auto!important
-  }
-  
-  .wmax-full {
-    max-width: 100%!important
-  }
-  
-  .h0 {
-    height: 0!important
-  }
-  
-  .h6 {
-    height: 0.428em!important
-  }
-  
-  .h12 {
-    height: 0.857em!important
-  }
-  
-  .h16 {
-    height: 1.142em!important
-  }
-  
-  .h24 {
-    height: 2em!important
-  }
-  
-  .h28 {
-    height: 2em!important
-  }
-  
-  .h32 {
-    height: 2.285em!important
-  }
-  
-  .h48 {
-    height: 3.428em!important
-  }
-  
-  .h64 {
-    height: 4.571em!important
-  }
-  
   .h-full {
-    height: 100%!important
+      height: 88%!important;
   }
-  
-  .h-half {
-    height: 50%!important
+  .w-full {
+      width: 98%!important;
   }
-  
-  .h-fit {
-    height: fit-content!important
+  .w-full {
+      width: 98%!important;
   }
-  
-  .h-auto {
-    height: auto!important
+  .p_top{
+    background-color: white;
+    height: 50%;
+    width: 100%;
+    margin-bottom: 15px;
   }
-  
-  .events-none {
-    -webkit-touch-callout: none;
-    pointer-events: none
+  .p_foot{
+    width: 100%;
+    background-color: white;
+    height: calc(50% - 15px);
+    margin-bottom: 15px;
   }
-  
-  .events-all {
-    -webkit-touch-callout: default;
-    pointer-events: all
+  /* .person_main{
+    height: 40% !important;
   }
-  
-  .select-none {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none
+  .person_footer{
+    background: white;
+    height: 40% !important;
+  } */
+  /*  */
+  .el-col {
+      border-radius: 4px;
+    }
+    .bg-purple-dark {
+      background: #99a9bf;
+    }
+    .bg-purple {
+      background: #d3dce6;
+    }
+    .bg-purple-light {
+      background: #e5e9f2;
+    }
+    .grid-content {
+      border-radius: 4px;
+      min-height: 36px;
+    }
+    .person_title{
+      float:left;
+      width:100%;
+      height:30px;
+      margin: 10px;
+      margin-bottom :0;
+      font-size:14px;
+      font-weight:bold;
+      line-height:30px;
+      /* border-left:5px solid #409eff; */
+      padding-left: 5px
+    }
+    .fengxian_body{
+      float: left;
+      width: 100%;
+      height: calc(50% - 30px);
+    }
+    .p_warn{
+      height: 50%;
+      float: left;
+      /* display: grid; */
+      width: 100%;
+    }
+    .ptop{
+      height: 70%;
+      float: left;
+      width: 100%;
+    }
+    .pcenter{
+      height: 35%;
+    }
+    .pfoot{
+      height: 30%;
+      float: left;
+      width: 100%;
+      margin-top: 5%;
+    }
+    .pli{
+      width: 25%;
+      /* height: 100%; */
+      display: inline-block;
+      margin-top: 7%;
+    }
+    .h32{
+      text-align: center;
+    }
+    .warn{
+      margin-bottom: 10px;
+    }
+    .pnum{
+      font-weight: 400;
+      font-size: 20px;
+      color: red;
+      margin-bottom: 17px;
+    }
+    .pname{
+      font-size: 12px;
+      font-weight: 700;
+      color: #838D9E;
+    }
+  .pft{
+      text-align: center;
+      /* margin-top: 3%; */
+      color: #838D9E;
   }
-  
-  .selectable {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text
+  .p_inter{
+      margin-top: 1em;
+      color: #838d9e;
+      font-size: 14px;
+      /* font-weight: 700; */
   }
-  
-  .transition {
-    transition: all .125s
+  .ptotal{
+    margin: 10px;
+    color: red;
+    font-weight: 700;
   }
-  
-  .transition-none {
-    transition: auto
+  .p_attendance{
+    height: 100%;
+    width: 100%;
+  } 
+  .p_watch{
+    float: left;
+      /* width: 58%; */
+      height: 50%;
+      width: 100%
   }
-  
-  .scroll-always {
-    overflow: scroll!important
+  .p_gauge{
+    height: 100%;
+    width: 100%;
   }
-  
-  .scroll-auto {
-    overflow: auto!important;
-    -webkit-overflow-scrolling: touch
+  .p_tscore{
+    width: 72%;
+    height: 50%;
+    margin-left: 27%;
   }
-  
-  .scroll-hidden {
-    overflow: hidden!important
+  .p_score{
+    float: left;
+    height: 34%;
+      width: 100%;
+    text-align: center;
   }
-  
-  .bg-transparent {
-    background-color: transparent!important
+  .p_lscore{
+    width: 30%;
+      height: 100%;
+      float: left;
   }
-  
-  .bg-fff {
-    background-color: #fff!important
+  .p_rscore{
+    width: 68%;
+    height: 100%;
+    float: left;
   }
-  
-  .bg-f2f5f7 {
-    background-color: #f2f5f7!important
+  .pbar{
+    height: 100%;
+    width: 100%;
   }
-  
-  .bg-blue {
-    background-color: #467cd4!important
+  .bbar{
+    height: 100%;
+    width: 100%;
   }
-  
-  .bg-4446 {
-    background-color: rgba(64, 64, 64, 0.6)
+  .p_eright{
+      height: 100%;
+      float: left;
   }
-  
-  .bg-ccc {
-    background-color: #cccccc
+  .tscore{
+    color:  rgb(51, 11, 230)
   }
-  
-  .opa6 {
-    opacity: 0.6
+  .bscore{
+    color: #CC00FF
   }
-  
-  .border-cdd {
-    border: 1px solid #c1d1dc
+  .crea_left{
+    width: 12%;
+      float: left;
   }
-  
-  .border-wt0 {
-    border-top: 0!important
-  }
-  
-  .border-wr0 {
-    border-right: 0!important
-  }
-  
-  .border-wb0 {
-    border-bottom: 0!important
-  }
-  
-  .border-wl0 {
-    border-left: 0!important
-  }
-  
-  .border-wx0 {
-    border-left: 0!important;
-    border-right: 0!important
-  }
-  
-  .border-wy0 {
-    border-top: 0!important;
-    border-bottom: 0!important
-  }
-  
-  .color-blue {
-    color: #4264fb
-  }
-  
-  .color-fff {
-    color: #ffffff
-  }
-  
-  .color-grey {
-    color: #8593A7
-  }
-  
-  .shadow-darken25 {
-    box-shadow: 0 0 0.714em 0.142em rgba(31,51,73,.25)!important
-  }
-  
-  .txt-deco-none {
-    text-decoration: none!important
-  }
-  
-  .hide-scroll-bar::-webkit-scrollbar {
-    width: 0!important
-  }
-  .hide-scroll-bar {
-    height: 0;
-    scrollbar-width:none;
-  }
-  .thin-scroll-bar::-webkit-scrollbar {
-    width: 0.428em;
-    height: 0.428em;
-    border-radius: 3px;
-    background-color: #F8F8F8;
-  }
-  .thin-scroll-bar::-webkit-scrollbar-thumb {
-    width: 0.428em;
-    height: 0.428em;
-    border-radius: 3px;
-    background-color: #C3C3C350;
-  }
-  
-  .firefox-compatible-for-scroll {
-    height: 0
-  }
-  
-  .highcharts-tooltip-box {
-    stroke-width: 0!important
-  }
-  .el-calendar-table .el-calendar-day {
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-      padding: 8px;
-      height: 0px !important;
-  }
-  .fengxian_body{
-    float:left;
-    width:44%;
-    margin: 3% 3%;
-    margin-top:0;
-    height:calc(94% - 60px)
-  }
+  .calendar-day{
+        text-align: center;
+        color: #202535;
+        line-height: 30px;
+        font-size: 12px;
+    }
+    .is-selected{
+        color: green;
+        background-color: green;
+        font-size: 10px;
+        margin-top: 20px;
+        width: 13px;
+        height: 13px;
+        margin-left: 8px;
+        border-radius: 10px;
+
+    }
+    .no-selected{
+        color: red;
+        background-color: red;
+        font-size: 10px;
+        margin-top: 20px;
+        width: 13px;
+        height: 13px;
+        margin-left: 8px;
+        border-radius: 10px;
+
+    }
+    #calendar .el-button-group>.el-button:not(:first-child):not(:last-child):after{
+        content: '当月';
+    }
+    /* .left-score-image {
+          width: 100% !important;
+          height: 100% !important;
+      } */
   </style>
   

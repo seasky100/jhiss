@@ -55,9 +55,52 @@ export default [
                         component: () => import('@/views/wisdomSupervision/talks')
                     }, 
                 ]
-            },
-            //   
+              },
+              {
+                title: '事项申报',
+                icon: 'el-icon-menu',
+                img: 'left_menu_sub_year.png',
+                name: '',
+                path: "",
+                component: () => import('@/views/OrganizeManage'),
+                children: [
+                    // 个人即报
+                    {
+                        title:'个人即报',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_instant.png',
+                        path: "/IndividualReport",
+                        name: "IndividualReport",
+                        component: () => import('@/views/wisdomSupervision/IndividualReport')
+                    },
+                    // 事项申报
+                    {
+                        title: '事项申报',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_declare.png',
+                        path: "/organizationRequest",
+                        component: () => import('@/views/wisdomSupervision/organizationRequest')
+                    },
+                    {
+                        title:'年度报告',
+                        icon: 'el-icon-menu',
+                        img: 'left_menu_sub_year.png',
+                        path: "/AnnualReportList",
+                        name: "AnnualReportList",
+                        component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportList')
+                    },
+                ]
+              },              
             {
+                title:'年度报告新增',
+                hidden:true,
+                icon: 'el-icon-menu',
+                img: 'left_menu_sub_year.png',
+                path: "/AnnualReportAdd",
+                name: "AnnualReportAdd",
+                component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportAdd')
+              },
+              {
                 title:'事项申报新增',
                 hidden:true,
                 icon: 'el-icon-menu',
@@ -205,56 +248,21 @@ export default [
                 component: () => import('@/views/wisdomSupervision/Caution')
             },
             {
+                title:'警示教育曝光栏详情',
+                icon: 'el-icon-menu',
+                hidden:true,
+                img: 'left_menu_sub_caution.png',
+                path: "/CautionArticle",
+                name: "CautionArticle",
+                component: () => import('@/views/wisdomSupervision/CautionArticle')
+            },
+            {
                 title:'廉政文化课堂',
                 icon: 'el-icon-menu',
                 img: 'left_menu_sub_education.png',
                 path: "/government_Clture",
                 name: "government_Clture",
                 component: () => import('@/views/wisdomSupervision/government_Clture')
-            },
-            {
-                title: '事项申报',
-                icon: 'el-icon-menu',
-                img: 'left_menu_sub_year.png',
-                name: 'IndividualReport',
-                path: "/IndividualReport",
-                component: () => import('@/views/OrganizeManage'),
-                children: [
-                    // 个人即报
-                    {
-                        title:'个人即报',
-                        icon: 'el-icon-menu',
-                        img: 'left_menu_sub_instant.png',
-                        path: "/IndividualReport",
-                        name: "IndividualReport",
-                        component: () => import('@/views/wisdomSupervision/IndividualReport')
-                    },
-                    // 事项申报
-                    {
-                        title: '事项申报',
-                        icon: 'el-icon-menu',
-                        img: 'left_menu_sub_declare.png',
-                        path: "/organizationRequest",
-                        component: () => import('@/views/wisdomSupervision/organizationRequest')
-                    },
-                    {
-                        title:'年度报告',
-                        icon: 'el-icon-menu',
-                        img: 'left_menu_sub_year.png',
-                        path: "/AnnualReportList",
-                        name: "AnnualReportList",
-                        component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportList')
-                    },
-                ]
-            },
-            {
-                title:'年度报告新增',
-                hidden: true,
-                icon: 'el-icon-menu',
-                img: 'left_menu_sub_year.png',
-                path: "/AnnualReportAdd",
-                name: "AnnualReportAdd",
-                component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportAdd')
             },
             {
                 title: '检查通报',

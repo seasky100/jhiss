@@ -16,13 +16,19 @@
         </el-col>
         <el-col :span="12">
           <!-- 违规用车按月统计 -->
-          <ve-line
+          <!-- <ve-line
             :title="monthlyTitle"
             :data="monthlyData"
             :extend="monthlyExtend"
             :settings="monthlySettings"
             :legend-visible="false">
-          </ve-line>
+          </ve-line> -->
+          <LineChart
+          :title="monthlyTitle"
+          :chartData="humanStatistics"
+          :chartSettings="chartSettings"
+          >
+        </LineChart>
         </el-col>
       </el-row>
       <div class="search-wrap" style="min-width:1000px;">
@@ -55,11 +61,13 @@ import {
   illUsecarHumanStatistics
 } from '@/api/warn.js';
 import CoordinateInfo from './modal/coordinateInfo';
+import LineChart from "@/components/line-chart";
 import { mapGetters } from 'vuex';
 
 export default {
   components: {
-    CoordinateInfo
+    CoordinateInfo,
+    LineChart
   },
   computed: {
     ...mapGetters([
@@ -80,11 +88,7 @@ export default {
           warnnum: '违规次数'
         }
       },
-      monthlyTitle: {
-        text: '违规用车按月统计',
-        top: '15',
-        left: '20',
-      },
+      monthlyTitle:'违规用车按月统计',
       monthlyData: {
         columns: ['everymonth', 'warnnum'],
         rows: []

@@ -198,7 +198,7 @@ export default {
       this.$refs.ruleForm.validate((valid) => {
         debugger
         if (valid) {
-          let flowNode = this.flowNodeList.shift();
+          // let flowNode = this.flowNodeList.shift();
           const params = {
             flowProcess: {
               flowId: this.flowId,
@@ -256,7 +256,7 @@ export default {
     }
   },
   mounted() {
-    this.getData('104')
+    this.getData('201')
   }
 }
 </script>

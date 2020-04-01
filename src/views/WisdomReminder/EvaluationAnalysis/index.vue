@@ -30,7 +30,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div class="search-wrap" style="height:760px;">
+            <div class="search-wrap" style="height:444px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"

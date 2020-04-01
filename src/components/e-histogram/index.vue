@@ -13,7 +13,7 @@ export default {
   props: {
     height: {
       type: String,
-      default: '400px'
+      default: '300px'
     },
     chartData: Object,
     chartSettings: Object,
