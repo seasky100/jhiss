@@ -387,6 +387,7 @@ img{
 }
   .bodyContent{
     /* float:left; */
+    height 100%
     background:#f2f5f7;
     height: 100%;
     overflow: auto;

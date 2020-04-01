@@ -418,16 +418,16 @@ let columns210 = [
 ]
 
 let tableData = [
-    { columns: columns1, data: [...data1], headerTab: 2 }, // 111
-    { columns: columns2, data: [...data1] },
-    { columns: columns3, data: [...data1] },
-    { columns: columns4, data: [...data1] },
-    { columns: columns5, data: [...data1] },
-    { columns: columns6, data: [...data1] },
-    { columns: columns7, data: [...data1] },
+    { columns: columns1, data: [data1[0]], headerTab: 2, headerParam:{} }, // 111
+    { columns: columns2, data: [] },
+    { columns: columns3, data: [data1[0]] },
+    { columns: columns4, data: [data1[0]] },
+    { columns: columns5, data: [data1[0]] },
+    { columns: columns6, data: [data1[0]] },
+    { columns: columns7, data: [data1[0]] },
     { columns: columns8, data: [data1[0],data1[1]] },
-    { columns: columns9, data: [...data1] },
-    { columns: columns9, data: [...data1], headerTab: 3 }, // 111
+    { columns: columns9, data: [data1[0]] },
+    { columns: columns9, data: [data1[0]], headerTab: 3 }, // 111
     { columns: columns11, data: [data1[0],data1[1]] },
 ]
 let appendTab4 = [
@@ -442,7 +442,7 @@ let tableData2 = [
     { columns: columns24, data: [...data1], appendTab: [...appendTab4] },
     { columns: columns25, data: [...data1] },
     { columns: columns26, data: [...data1] },
-    { columns: columns27, data: [...data1], headerTab: 2, headerAppend: headerAppend27 }, // 111
+    { columns: columns27, data: [...data1], headerTab: 2, headerAppend: headerAppend27, headerParam:{} }, // 111
     { columns: columns28, data: [...data1] },
     { columns: columns29, data: [...data1] },
     { columns: columns210, data: [...data1] }, 

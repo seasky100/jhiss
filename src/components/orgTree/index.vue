@@ -162,7 +162,7 @@ export default {
       }else{
         // {require('../../images/logo.png')}
         if(data.level == 1){
-          return (<div style="height:100px;width:150px;" class="user_panel level_one">
+          return (<div style="height:100px;width:150px;" class="user_panel level_one leaderCon">
               <img class="photo_img" src={require('../../assets/images/bg/person.png')}></img>
               <div class="panel_info">
                 <span style="line-height:20px;">{data.userPname}</span><br/>
@@ -183,10 +183,11 @@ export default {
           return (<div class="user_panel depCon">
                 {
                   // {id, name, userPname}
-                  data.dep.map((item) => 
+                  data.dep.map((item,index) => 
                     <div onclick={() => this.nodePanelClick(data, item, 'dep')}
                       class="user_panel level_three" 
                       style="margin-bottom:5px;">
+                      <img class="dep_img" src={index==0?require('../../assets/images/bg/dep_bg2.png'):index==1?require('../../assets/images/bg/dep_bg3.png'):require('../../assets/images/bg/dep_bg.png')} />
                       <div class="depCon_info">{item.name}</div>
                     </div>
                   )
@@ -386,9 +387,18 @@ export default {
   background: url('../../assets/images/bg/preson_bg.png') no-repeat;
   background-size: 100% 100%;
 }
-.com.com.org_tree .level_three{
-  background: url('../../assets/images/bg/dep_bg.png') no-repeat;
+.com.com.org_tree .leaderCon{
+  background: url('../../assets/images/bg/preson_bg - 副本.png') no-repeat;
   background-size: 100% 100%;
+}
+.com.com.org_tree .level_three{
+  background: #ffffff;
+  /* background: url('../../assets/images/bg/dep_bg.png') no-repeat;
+  background-size: 100% 100%; */
+}
+.com.com.org_tree .level_three .dep_img{
+  width: 40px;
+  height:40px;
 }
 .com.com.org_tree .level_three:hover{
   border:2px solid #bf1730;
@@ -401,8 +411,7 @@ export default {
   line-height: 18px;
 }
 .com.com.org_tree .user_panel .depCon_info{
-  position: relative;
-  bottom: -47px;
+  margin-top: 7px;
   width: 100%;
   font-size: 14px;
   color:#333;

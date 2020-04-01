@@ -1,6 +1,11 @@
 <template>
   <div class="Org_relationship">
     <div class="individual_title"></div>
+    <div class="explain">
+      <li class="explain_li" style="color:#A0C5A2;"><span>正常</span></li>
+      <li class="explain_li" style="color:#FFAC42;"><span>注意</span></li>
+      <li class="explain_li" style="color:#E85C43;"><span>危险</span></li>
+    </div>
 		<div class="relationship">
 			<org-tree :data="tree_data" :path_url="path_url" :dep_list="dep_list"></org-tree>
 		</div>
@@ -98,6 +103,22 @@ export default {
   background: url('../../../assets/images/bg/top_bg.png');
   background-size: 100% 100%;
 }
+.explain
+  position absolute
+  margin-left 30px
+  margin-top 13px
+  .explain_li
+      width 100%
+      float left
+      color #AB2C31
+      font-size 23px
+      line-height 20px
+      span 
+        font-size 13px
+        color #7A7A7A
+        position relative
+        left -10px
+        top -3px
 .Org_relationship
 	height 100%
 	width 100%

@@ -10,21 +10,27 @@
           <div class="img_name">{{personInfo.userPname}}</div>
         </div>
         <div class="con labelCon">
-          <span class="top_title">标签</span>
+          <!-- <span class="top_title">标签</span> -->
           <span :style="[{background:color_arr[index].bg,color:color_arr[index].color}]"
             class="label_body" 
             v-for="(item,index) of labelList" :key="index">
             {{item}}
           </span>
         </div>
-        <div class="con projectCon" style="height:90px;">
-          <span class="top_title">项目</span>
-          <li class="project_li" @click="handleClick(item)"
+        <div class="con projectCon" style="height:110px;">
+          <!-- <span class="top_title">项目</span> -->
+          <!-- <li class="project_li" @click="handleClick(item)"
             v-for="(item,index) of projectList" :key="index">
             <span>{{item.name}}</span>
-          </li>
+          </li> -->
+          <span class="project_li" @click="handleClick(item)"
+            v-for="(item,index) of projectList" :key="index">
+            <img class="menuImg" src="@/assets/images/bg/person.png" />
+            <span>{{item.name}}</span>
+          </span>
         </div>
         <div class="con orgTreeCon">
+          <span class="top_title">级别关系</span>
           <org-tree :data="tree_data" 
             :collapsable="false" 
             :model="model"
@@ -36,7 +42,7 @@
       <div class="fengxian" style="width:calc(99% - 460px);margin-left:0.7%;">
         <div class="person_title">
           <div class="submenu" @click="subMenuClick(index)"
-            :style="[{'border-bottom':active==index?'4px solid #AB2C31':'none','color':active==index?'#AB2C31':'#7F7E84'}]"
+            :style="[{'border-bottom':active==index?'4px solid #235FF6':'none','color':active==index?'#235FF6':'#7F7E84'}]"
             v-for="(item,index) of submenuList" :key="index">
             {{item.name}}
           </div>
@@ -275,7 +281,7 @@ export default {
 }
 .photoImg{
   margin-top:180px !important;
-  margin-bottom: 40px !important;
+  margin-bottom: 5px !important;
   text-align: center;
 }
 .photoImg .photo_img_con{
@@ -294,7 +300,8 @@ export default {
   font-size:13px;
   font-family:Source Han Sans CN;
   font-weight:400;
-  color:#AB2C31;
+  color: #AB2C31;
+  color: #333333;
   font-weight: bold;
 }
 .individual_title{
@@ -304,12 +311,17 @@ export default {
 }
 .con
   margin 0px 25px
-  margin-bottom 35px
+  margin-bottom 30px
   line-height 30px
   font-size 14px
+  text-align center
   .top_title 
     display block
     margin-bottom 10px
+    text-align left 
+    margin-left 30px
+    font-weight bold
+    font-size 14px
   .label_body
     padding: 5px 10px
     background #ccc
@@ -317,16 +329,26 @@ export default {
     maegin: 5px
     margin-right 10px
   .project_li
-    width 50%
+    width 25%
+    margin 30px 0 5px 0
     float left
     color #AB2C31
     font-size 16px
     cursor pointer
+    text-align center
+    .menuImg
+      width 45px
+      height 45px
+      border-radius 40px
     span 
-      font-size 14px
+      font-size 13px
+      margin-top 5px
+      display block
       color #333
       &:hover
         color #ab2c31
+.projectCon
+  border-top 1px solid #cccccc
 .submenu
   float left 
   height 40px
