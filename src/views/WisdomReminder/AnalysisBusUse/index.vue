@@ -24,18 +24,21 @@
               <div class="echart-item bg-fff flex flex-direction-column" style="margin-right: 10px;">
                 <div class="title">异常统计</div>
                 <div class="flex-grow" ref="echartItem" style="overflow: hidden;">
-                  <ve-ring :data="abnormalStatistics" :height="echartHeight"></ve-ring>
+                  <div id='abnormal' style="height: 90%"></div>
+
+                  <!-- <ve-ring :data="abnormalStatistics" :height="echartHeight"></ve-ring> -->
                 </div>
               </div>
               <div class="echart-item bg-fff">
                 <div class="title">用车频次</div>
-                <div class="flex-grow" style="overflow: hidden;">
-                  <ve-line
+                <div class="flex-grow" style="overflow: hidden;height: 90%;">
+                  <!-- <ve-line
                     :settings="frequencyChartSettings"
                     :data="vehicleFrequency"
                     :legend-visible="false"
                     :extend="usageChartExtend"
-                    :height="echartHeight"></ve-line>
+                    :height="echartHeight"></ve-line> -->
+                  <div id='frequency' style="height: 100%"></div>
                 </div>
               </div>
             </div>
@@ -43,13 +46,14 @@
           <div class="flex" style="height: 50%;">
             <div class="echart-item bg-fff" style="margin-right: 10px;">
               <div class="title">部门用车统计</div>
-              <div class="flex-grow" style="overflow: hidden;">
-                <e-histogram
+              <div class="flex-grow" style="overflow: hidden;height: 90%">
+                <!-- <e-histogram
                   :height="echartHeight"
                   :chartSettings="departmentSettings"
                   :chartData="departmentVehicleStatistics"
                   :xAxis="departxAxisOptions"
-                />
+                /> -->
+                <div id='department' style="height: 100%"></div>
               </div>
             </div>
             <div class="echart-item bg-fff">
@@ -308,9 +312,199 @@ export default {
     calcHeight() {
       const height = this.$refs.echartItem.getBoundingClientRect().height;
       this.echartHeight = height + 'px';
+    },
+    getRadar(){
+        let radarDom2 = this.$echarts.init(document.getElementById('abnormal'))
+      let option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          align: 'left', //图例小图标在图例文字的哪个方向，这里设置为左侧
+          y: 'center',
+          // x: 'right',
+          icon: 'circle', //设置图例小图标的样式，这里控制
+          right: '10%',
+          itemWidth: 15,
+          itemHeight: 15,
+          textStyle: {
+            color: '#999',
+            fontSize: 18,
+            rich: {
+              white: {
+                color: 'red',
+                fontSize: 10,
+              },
+            },
+          },
+          data: ['用车超时', '未审批用车', '用车超维']
+        },
+        series: [
+          {
+            name: '',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            color: ['#235FF6', '#FFC700', '#F7622E'],
+            center: ['45%', '52%'],
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              { value: 335, name: '用车超时' },
+              { value: 310, name: '未审批用车' },
+              { value: 234, name: '用车超维' }
+            ]
+          }
+        ]
+      }
+      radarDom2.setOption(option)
+  },
+  getRadar2(){
+        let radarDom2 = this.$echarts.init(document.getElementById('frequency'))
+        var colors = [ '#947DFF'];
+        let option = {
+          color: colors,
+          tooltip: {
+              trigger: 'none',
+              axisPointer: {
+                  type: 'cross'
+              }
+          },
+          // legend: {
+          //     data:['加班', '上班','部门平均'],
+          //     icon:'rect',
+          //     top: '15'
+          // },
+          grid: {
+              top: 70,
+              bottom: 50
+          },
+          xAxis: [
+              {
+                  type: 'category',
+                  axisTick: {
+                      alignWithLabel: true
+                  },
+                  axisLine: {
+                      onZero: false,
+                      lineStyle: {
+                          color: colors[1]
+                      }
+                  },
+                  axisPointer: {
+                      label: {
+                          formatter: function (params) {
+                              return '小时' + params.value
+                                  + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+                          }
+                      }
+                  },
+                  data: ['2016-1', '2016-2', '2016-3', '2016-4', '2016-5', '2016-6', '2016-7', '2016-8', '2016-9', '2016-10', '2016-11', '2016-12']
+              }
+    
+          ],
+          yAxis: [
+              {
+                  type: 'value'
+              }
+          ],
+          series: [
+            {
+              name: '上班',
+              type: 'line',
+              smooth: true,
+              symbol: 'none',
+              itemStyle: {
+                normal: {
+                  color: "#947DFF",//折线点的颜色
+                  lineStyle: {
+                    color: "rgba(255,0,0,.0)"//折线的颜色
+                  }
+                }
+              },
+              areaStyle: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                  offset: 0,
+                  color: '#195FFF'
+                }, {
+                  offset: 1,
+                  color: '#6191FF'
+                }
+                ])
+              },
+              data: [19, 15, 11.1, 21.7, 34.3, 46.2, 21.6, 40.6, 45.4, 31.4, 10.3, 20.7]
+            },
+          ]
     }
+      radarDom2.setOption(option)
+          //折线图宽高自适应
+          window.onresize = function () {
+            radarDom2.resize();
+        }
+  },
+  getRadar3(){
+        let radarDom2 = this.$echarts.init(document.getElementById('department'))
+        let option = {
+          tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+      },
+      // legend: {
+      //     padding:[30,0,0,0],
+      //     data: ['加班', '上班', '部门平均']
+      // },
+      grid: {
+          // top: '2%',
+          left: '3%',
+          right: '5%',
+          bottom: '1%',
+          containLabel: true
+      },
+      xAxis: [
+          {
+              type: 'category',
+              data: ['2016-1', '2016-2', '2016-3', '2016-4', '2016-5', '2016-6', '2016-7', '2016-8', '2016-9', '2016-10', '2016-11', '2016-12']
+          }
+      ],
+      yAxis: [
+          {
+              type: 'value'
+          }
+      ],
+      series: [
+          {
+              name: '上班',
+              type: 'bar',
+              color: '#9363FF',
+              stack: '广告',
+              data: [19, 15, 11.1, 21.7, 34.3, 46.2, 21.6, 40.6, 45.4, 31.4, 10.3, 20.7]
+          },
+      ]
+    }
+      radarDom2.setOption(option)
+  },
   },
   mounted() {
+    this.getRadar3();
+    this.getRadar2();
+    this.getRadar();
     this.getCarTimes();
     this.getDepartmentTimes();
     this.getCarRecord();

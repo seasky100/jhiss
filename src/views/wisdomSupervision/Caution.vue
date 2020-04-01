@@ -512,6 +512,7 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+	@import '../css/pseudo_classes.css';
 	    .child {
         height: auto;
     }
