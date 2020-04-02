@@ -35,10 +35,10 @@ export default {
   data() {
     return {
       projectList: [
-        {name: '工作日志', path: '/HierEvaluation'},
-        {name: '岗位预警'},
-        {name: '谈话谈心', path: '/talks'},
-        {name: '责任清单'}
+        {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
+        {name: '岗位预警', imgPath: require('@/assets/images/bg/menu2.png')},
+        {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
+        {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
       ],
       labelList: [
         {label: '党员'},

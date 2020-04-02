@@ -2,7 +2,8 @@
   <div class="person_home">
     <div class="individual_title"></div>
     <div class="police_career" style="height:calc(100% - 101px);background:none;">
-      <div class="fengxian fengxian_left" style="width:460px;">
+      <div class="fengxian" style="width:460px;">
+        <img style="margin: 15px 3%;width:94%;" src="../../../assets/images/bg/ship_bg.png" />
         <div class="con photoImg">
           <div class="photo_img_con" style="border:3px solid #afafaf;">
             <img class="photo_img" src="@/assets/images/bg/person.png" />
@@ -25,7 +26,7 @@
           </li> -->
           <span class="project_li" @click="handleClick(item)"
             v-for="(item,index) of projectList" :key="index">
-            <img class="menuImg" src="@/assets/images/bg/person.png" />
+            <img class="menuImg" :src="item.imgPath" />
             <span>{{item.name}}</span>
           </span>
         </div>
@@ -89,10 +90,10 @@ export default {
         {label: '岗位状态'}
       ],
       projectList: [
-        {name: '工作日志', path: '/HierEvaluation'},
-        {name: '岗位预警'},
-        {name: '谈话谈心', path: '/talks'},
-        {name: '责任清单'}
+        {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
+        {name: '岗位预警', imgPath: require('@/assets/images/bg/menu2.png')},
+        {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
+        {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
       ],
       submenuList: [
         {name:'我的直属领导'},
@@ -280,7 +281,7 @@ export default {
   text-align: center;
 }
 .photoImg{
-  margin-top:180px !important;
+  margin-top:60px !important;
   margin-bottom: 5px !important;
   text-align: center;
 }
