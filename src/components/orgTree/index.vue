@@ -371,6 +371,7 @@ export default {
   background:#fff;
 }
 .com.com.org_tree .user_panel_others{
+  background:#EFF2FE;
   padding: 10px 20px;
   border-radius: 20px;
   word-wrap:break-word;
