@@ -17,7 +17,6 @@
             </div>
           </div>
         </div>
-
         <div style="margin-top: 10px;overflow: hidden;" class="flex-grow flex flex-direction-column">
           <div class="flex" style="margin-bottom: 10px;height: 50%;">
             <div class="flex" style="width: 100%;">
@@ -25,7 +24,6 @@
                 <div class="title">异常统计</div>
                 <div class="flex-grow" ref="echartItem" style="overflow: hidden;">
                   <div id='abnormal' style="height: 90%"></div>
-
                   <!-- <ve-ring :data="abnormalStatistics" :height="echartHeight"></ve-ring> -->
                 </div>
               </div>
@@ -59,13 +57,59 @@
             <div class="echart-item bg-fff">
               <div class="title">范围提醒</div>
               <div class="flex-grow" style="overflow: hidden;">
-                <e-table
+                <!-- <e-table
                   :style="{height: echartHeight}"
                   ref="recordSpTableRef"
                   :tableList="tableList"
                   :options="options"
                   :columns="columns"
-                />
+                /> -->
+                <el-table
+                :data="tableData"
+                style="width: 100%"
+                :row-class-name="tableRowClassName">
+                <el-table-column
+                  prop="num"
+                  label=""
+                  width="100">
+                </el-table-column>
+                <el-table-column
+                prop="line"
+                label=""
+                width="100"
+                >
+                <template slot-scope="scope">
+                  <span  class="line">上线</span>
+                  <!-- <span v-if="scope.row.consultStatus === 0" class="cr">未处理</span>
+                  <span v-if="scope.row.consultStatus === 1" class="cg">已办结</span> -->
+                </template>
+              </el-table-column>                
+                <el-table-column
+                  prop="name"
+                  label=""
+                  width="100">
+                </el-table-column>   
+                <el-table-column
+                prop="approval"
+                label=""
+                width="100"
+                >
+                <template slot-scope="scope">
+                  <span @click='approval(scope.row)' class="approval">审批单</span>
+                </template>
+              </el-table-column>                
+                <el-table-column
+                prop="type"
+                label=""
+                width="100"
+                >
+                <template slot-scope="scope">
+                  <span @click='remind(scope.row)' class="remind">提醒</span>
+                  <!-- <span v-if="scope.row.consultStatus === 0" class="cr">未处理</span>
+                  <span v-if="scope.row.consultStatus === 1" class="cg">已办结</span> -->
+                </template>
+              </el-table-column>              
+              </el-table>
               </div>
             </div>
           </div>
@@ -86,9 +130,7 @@
         </div>
 
         <div style="margin-top: 10px;overflow: hidden;" class="flex-grow flex flex-direction-column bg-fff">
-          <!-- <el-image
-            :src="mapUrl"></el-image> -->
-            <div id="map"  style="width:100%;height:100%;"></div> 
+          <div id="map"  style="width:100%;height:100%;"></div> 
         </div>
       </div>
     </div>
@@ -110,6 +152,31 @@ export default {
       mapUrl: require('../../../assets/images/map.png'),
       echartHeight: '',
       map: '',
+      tableData: [{
+          num: '浙154687',
+          line: '上线',
+          name: '王小虎',
+          approval: '审批单',
+          type: '提醒'
+        }, {
+          num: '浙154687',
+          line: '上线',
+          name: '王小虎',
+          approval: '审批单',
+          type: '提醒'
+        }, {
+          num: '浙154687',
+          line: '上线',
+          name: '王小虎',
+          approval: '审批单',
+          type: '提醒'
+        }, {
+          num: '浙154687',
+          line: '上线',
+          name: '王小虎',
+          approval: '审批单',
+          type: '提醒'
+        }],
       vehicleCondition: [
         {
           imgUrl: require('../../../assets/images/vehicle_home_gps@2x.png'),
@@ -243,6 +310,21 @@ export default {
     }
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+      debugger
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
+      },
+      approval(data){
+        debugger
+      },
+      remind(data){
+
+      },
     // 车辆使用统计
     getCarTimes() {
       getCarTimesStatistics().then(res => {
@@ -534,6 +616,17 @@ export default {
 
 <style lang="stylus" scoped>
 @import "../../../styles/common.styl";
+.approval{
+  color: #8A68F6;
+  cursor: pointer;
+}
+.remind{
+  color:#2D62F6;
+  cursor: pointer;
+}
+.line{
+  color:#8ACA77;
+}
 .flex-grow{
   height: 90%;
 }
