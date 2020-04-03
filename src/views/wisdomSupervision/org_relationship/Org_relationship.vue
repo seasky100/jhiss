@@ -68,6 +68,7 @@ export default {
       let child = []
       for(let i=0;i<arr1.length;i++) {
         let obj = arr1[i]
+        obj.index = i
         obj.level = 2
         let children = []
         for(let j=0;j<arr2.length;j++){

@@ -171,7 +171,10 @@ export default {
               </div>
             </div>)
         }else if(data.level == 2){
-          return (<div style="height:100px;" class="user_panel level_two">
+          let img = require('../../assets/images/bg/person_bg'+data.level%11+'.png')
+          return (<div
+              style={'height:100px;background-size:100% 100%;background:url('+img+') no-repeat'}
+              class="user_panel level_two">
               <img class="photo_img" src={require('../../assets/images/bg/person.png')}></img>
               <div class="panel_info">
                 <span style="line-height:20px;">{data.realName}</span><br/>
@@ -195,8 +198,9 @@ export default {
             </div>)
         }else {
           if(this.model == 'dep'){
+            // border:3px solid #1ACE80;
             return (<div class="user_panel_dep" onclick={() => this.nodePanelClick(data,'','person_info')}>
-              <img class="photo_img" style="border:3px solid #1ACE80;"
+              <img class="photo_img" style="display:block;"
                 src={require('../../assets/images/bg/person.png')}></img>
               <span class={ this.$store.state.user.userId == data.id ? 'current_user' : '' }>
                 {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
@@ -367,6 +371,7 @@ export default {
   background:#fff;
 }
 .com.com.org_tree .user_panel_others{
+  background:#EFF2FE;
   padding: 10px 20px;
   border-radius: 20px;
   word-wrap:break-word;
@@ -388,7 +393,7 @@ export default {
   background-size: 100% 100%;
 }
 .com.com.org_tree .leaderCon{
-  background: url('../../assets/images/bg/preson_bg - 副本.png') no-repeat;
+  background: url('../../assets/images/bg/person_leader.png') no-repeat;
   background-size: 100% 100%;
 }
 .com.com.org_tree .level_three{
@@ -427,12 +432,20 @@ export default {
   border-radius: 35px;
 }
 .com.com.org_tree .user_panel_dep{
-  padding: 10px;
+  padding: 8px 15px;
+  width:40px;
+  height: 60px;
+  background: #fff;
+  border-radius: 10px;
+}
+.com.com.org_tree .user_panel_dep .photo_img{
+  margin-left:5px;
+  height: 30px;
+  width:30px;
 }
 .com.com.org_tree .user_panel_dep span{
   position: relative;
-  top: 15px;
-  left: 4px;
+  top: 5px;
 }
 .com.com.org_tree .current_user{
   color:#bf1730;

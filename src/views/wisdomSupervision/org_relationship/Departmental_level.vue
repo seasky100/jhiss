@@ -6,9 +6,13 @@
         <img style="width:30px;" src="@/assets/images/bg/dir_left.png" />
       </div>
       <div ref="dep_list" class="dep_Con">
+        <!--   background: url('../../../assets/images/bg/dep_bg_level.png') no-repeat;
+          background-size: 100% 100%; -->
         <div class="entrance" @click="handleClickDep(item)"
           :style="[{border:active==item.id?'3px solid #bf1730':'none'}]" 
           v-for="(item,index) of entranceList" :key="index">
+          <img style="height:40px;margin:8px 0;" 
+            :src="index%2==0?require('../../../assets/images/bg/dep_bg.png'):require('../../../assets/images/bg/dep_bg2.png')" />
           <div class="panel_info">
             <span style="display:block;">{{item.name}}</span>
             <span style="font-weight:normal;color:#ccc;">{{item.userPname}}</span>
@@ -117,12 +121,9 @@ export default {
 }
 .entrance{
   border-radius: 20px;
-  background: url('../../../assets/images/bg/dep_bg_level.png') no-repeat;
-  background-size: 100% 100%;
+  background: #ffffff;
 }
 .entrance .panel_info{
-  position: relative;
-  top: 55px;
   font-weight: bold;
   color: #bf1730;
 }
