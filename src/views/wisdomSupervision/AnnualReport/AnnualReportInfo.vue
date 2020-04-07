@@ -1,8 +1,11 @@
 <template>
-  <div class="AnnualReportInfo" ref="printTableCon" id="printTableCon">
-		<div class="individual_title">
-      报告人基本情况
-    </div>
+  <div class="AnnualReportInfo">
+		<h2 class="individual_title">
+      {{title.label}}
+    </h2>
+    <span class="explain">
+      {{title.explain?title.explain:''}}
+    </span>
     <!-- 夫妻关系 -->
     <table>
       <tr>
@@ -128,9 +131,9 @@
         </tr>
       </template>
     </table>
-    <div class="printDiv">
+    <!-- <div class="printDiv">
       <el-button class="printBtn" @click="PrintRow">打印</el-button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -139,6 +142,10 @@ export default {
   name: 'AnnualReportInfo',
   data() {
     return {
+      title: {
+        label: '本人基本信息情况', 
+        explain: `说明：①工作单位应填写全称或规范简称，同时担任多个职务的，请逐个分行填写。②身份证号码应填写18位公民身份号码。③户籍地址应填写居民户口簿“住址”栏的详细地址。④家庭主要成员包括配偶、子女及其配偶等；主要社会关系主要包括本人和配偶的兄弟姐妹等；本人和配偶的父母视情在“家庭主要成员”和“主要社会关系”中进行填报。首次填报的，应把内容填写完整；再次填报的，填写变化情况。`
+      },
       formObj: {
         name: '',
         value3: '1',
@@ -178,9 +185,9 @@ export default {
   },
   methods: {
     //打印
-    PrintRow(index, row){
-      this.$print(this.$refs.printTableCon) 
-    }, 
+    // PrintRow(index, row){
+    //   this.$print(this.$refs.printTableCon) 
+    // }, 
   },
 };
 </script>
@@ -197,15 +204,17 @@ export default {
     background #545c64
     color #ffffff
 .AnnualReportInfo
-	.individual_title
-		height 40px
-		line-height 40px
-		background #fff
-		padding 0 10px
-		font-size 16px
-		font-weight bold
+  .explain
+    display inline-block
+    font-size 14px
+    line-height 20px
+    color #409eff
+    margin-bottom 10px
+  .individual_title
+    font-weight bold
+    font-size 18px
+    margin-bottom 5px
 	table
-		margin 20px 10%
 		background #ffffff
 		tr td
 			text-align center

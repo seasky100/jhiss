@@ -1,7 +1,7 @@
 <template>
   <div class="reportTableCom">
     <h2 class="title" ref="title">
-      {{title}}
+      {{title.label}}      
       <template v-if="headerTab == 1">
         <span class="imgAdd" @click="addTabData"></span>
         <span class="saveImg" @click="saveBtnClick"></span>
@@ -10,8 +10,18 @@
         </span>
       </template>
     </h2>
+    <span class="explain">
+      {{title.explain?title.explain:''}}
+    </span>
+    <div class="changeBtn">
+      <el-radio-group v-model="changeFlag">
+        <el-radio :label="1">有变化</el-radio>
+        <el-radio :label="0">无变化</el-radio>
+      </el-radio-group>
+    </div>
     <!-- 普通表格 -->
     <el-table class="generalTab" v-if="headerTab == 1"
+      @cell-dblclick="cellHandleDbClick"
       :span-method="arraySpanMethod" border
       :data="tableData2" 
       style="width:100%;">
@@ -102,8 +112,10 @@ export default {
       }
     },
     title: {
-      type: String,
-      default: ''
+      type: Object,
+      default: () => {
+        return {};
+      }
     },
     tableIndex: {}
     // selectable: {
@@ -112,6 +124,7 @@ export default {
   },
   data() {
     return {
+      changeFlag: 0,
       columns2: [],
       tableData2: [],
       // columns3: [],
@@ -132,12 +145,18 @@ export default {
     // this.columns3 = this.recursionList(this.columns)
   },
   methods: {
+    // 单元格双击事件
+    cellHandleDbClick(row, column, cell, event){
+      console.log(cell,event)
+    },
+    // 添加数据
     addTabData(){
       let addData = { edit: true }
       let columnsArr = this.columns2
       let columnsArr2 = this.flatten(columnsArr)
       columnsArr2.map((item,index) => {
-        addData[item.prop] = `aa${index+1}`
+        // addData[item.prop] = `aa${index+1}`
+        addData[item.prop] = ''
         addData.type = item.type ? item.type : 'text'
         return item
       })
@@ -145,9 +164,11 @@ export default {
       this.tableData.push(addData)
       this.tableData2 = [...this.tableData,...this.appendTab]
     },
+    // 转化获取列属性对象
     flatten(arr) { 
       return [].concat( ...arr.map(x => Array.isArray(x.children) ? this.flatten(x.children) : {prop:x.prop,type:x.type}) ) 
     },
+    // 修改后获取新增数据保存
     saveBtnClick(){
       let paramArr = []
       let arr = [...this.tableData]
@@ -165,6 +186,7 @@ export default {
       // return 'background-color: lightblue;color: #fff;font-weight: 500;'
       return 'background-color: #F5F7FA;color:red;font-weight: 500;'
     },
+    // 合并单元格
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
       if(row.rowSpan){
         if(row.columnIndex == columnIndex){
@@ -187,6 +209,7 @@ export default {
       data2.splice(0,1)
       return data2
     },
+    // 求和
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
@@ -213,7 +236,7 @@ export default {
 
       return sums;
     },
-    // 
+    // #409eff
   }
 }
 </script>
@@ -221,8 +244,16 @@ export default {
 <style lang="stylus" scoped>
 .reportTableCom
   width 100%
+  .explain
+    display inline-block
+    font-size 14px
+    line-height 20px
+    color red
+    margin-bottom 10px
   .title
     font-weight bold
+    font-size 18px
+    margin-bottom 5px
     .imgAdd,.saveImg
       display inline-block
       position relative
@@ -257,4 +288,8 @@ export default {
     border-right 1px solid #EBEEF5
   tbody,.el-table__empty-block
     display none
+.changeBtn
+  text-align right
+  height 25px
+  padding-right 20px
 </style>
