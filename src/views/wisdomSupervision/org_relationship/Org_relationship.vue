@@ -70,6 +70,7 @@ export default {
         let obj = arr1[i]
         obj.index = i
         obj.level = 2
+        obj.expand = true
         let children = []
         for(let j=0;j<arr2.length;j++){
           let obj2 = arr2[j]
@@ -77,7 +78,7 @@ export default {
             children.push(obj2)
           }
         }
-        let dep = {dep: children,level: 3,expand:true}
+        let dep = {dep: children,level: 3}
         // obj.children = children
         if(children.length > 0){
           obj.children = [dep]
