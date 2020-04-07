@@ -366,7 +366,6 @@
   // created(){  
   // },
       mounted() {
-        debugger
         this.userInfo = JSON.parse(sessionStorage.userInfo)
         const today = this.$dayjs(new Date());
         this.ydata.year = today.year(),
@@ -429,7 +428,6 @@
         },
       // 查询首页日历评分数据
       commitQuery(year, month, userId) {
-        debugger
         const _this = this;
         const first = _this.$dayjs(new Date(year, month, 1))
         const last = first.add(1, 'month').subtract(1, 'day')
@@ -444,13 +442,11 @@
         }
         findWorknotePage(params).then(res => {
           if (res.success) {
-            debugger
             _this.scores = res.data.records
           }
         })
       },  
       prevMonth() {
-        debugger
         const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
         this.rData = []
         this.ydata.year = d.year()
