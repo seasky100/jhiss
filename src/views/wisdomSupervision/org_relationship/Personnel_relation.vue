@@ -199,7 +199,7 @@ export default {
       if(index == 0){
         this.person_data = [this.tree_data]
       }else{
-        this.person_data = this.tree_data.children.children
+        this.person_data = this.tree_data.children
       }
     },
     handleClick(value){
