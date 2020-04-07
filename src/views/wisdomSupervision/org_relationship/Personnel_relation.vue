@@ -17,7 +17,7 @@
             v-for="(item,index) of labelList" :key="index">
             {{item}}
           </span>
-        </div>
+        </div>  
         <div class="con projectCon" style="height:110px;">
           <!-- <span class="top_title">项目</span> -->
           <!-- <li class="project_li" @click="handleClick(item)"
