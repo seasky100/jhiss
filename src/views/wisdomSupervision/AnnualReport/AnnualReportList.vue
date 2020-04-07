@@ -29,7 +29,7 @@
   </div>
 </template>
 <script>
-import { getUserList } from '@/api/report.js';
+import { getUserList, findAnnualReportPage } from '@/api/report.js';
 export default {
   name: "AnnualReportList",
   data() {
@@ -134,9 +134,33 @@ export default {
 			this.query(val);
 			// console.log(val)
       next();
-		},
-		// 查询列表
+    },
+    // 查询列表
     query(nCurrent = 1) {
+			// console.log(nCurrent)
+      const _this = this;
+      findAnnualReportPage(
+        Object.assign(
+          {
+            nCurrent: nCurrent,
+            nSize: 10,
+            userId: _this.userId,
+            approvalId: ''
+          },
+          _this.searchData
+        )
+      ).then(res => {
+        // console.log(res)
+        this.$refs.recordTalksTableRef.setPageInfo(
+          nCurrent,
+          res.data.size,
+          res.data.total,
+          res.data.records
+        );
+      })
+    },
+		// 查询列表
+    query2(nCurrent = 1) {
 			// console.log(nCurrent)
 			const _this = this;
 			this.$refs.recordTalksTableRef.setPageInfo(

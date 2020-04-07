@@ -196,6 +196,10 @@ const DEFAULT_URL = {
   standingBook: {
     getUserList: '/user/getUserList', // 人员台账分页
     getUserById: '/user/getUserById' // 人员台账详情
+  },
+  // 年度报告
+  annualReport: {
+    findAnnualReportPage: `${GAISMSERVER}annualReportInformation/findAnnualReportPage`, // 人员台账分页
   }
 }
 

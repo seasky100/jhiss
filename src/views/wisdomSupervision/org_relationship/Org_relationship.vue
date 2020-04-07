@@ -77,7 +77,7 @@ export default {
             children.push(obj2)
           }
         }
-        let dep = {dep: children,level: 3}
+        let dep = {dep: children,level: 3,expand:true}
         // obj.children = children
         if(children.length > 0){
           obj.children = [dep]

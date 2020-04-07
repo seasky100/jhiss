@@ -233,3 +233,11 @@ export function updateApproval (params) {
   })
 }
 
+// 年度报告列表 分页
+export function findAnnualReportPage (params) {
+  return request({
+    url: DEFAULT_URL.annualReport.findAnnualReportPage,
+    method: 'get',
+    params
+  })
+}
