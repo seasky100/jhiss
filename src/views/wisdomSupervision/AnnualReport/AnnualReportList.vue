@@ -58,22 +58,23 @@ export default {
 			},
 			columns: [
         {
-          prop: 'policeCode',
-          label: '警号',
+          prop: 'comment',
+          label: '标题',
           align: 'left'
         },
         {
-          prop: 'policeName',
-          label: '姓名',
+          prop: 'rapporteur',
+          label: '填报人',
           align: 'left'
         },
         {
-          prop: 'depment',
-          label: '所属部门',
+          prop: 'company',
+          label: '所属单位',
           align: 'left'
         },
         {
-          prop: 'time',
+          prop: 'reportTime',
+          // formatter: 'gmtCreate_format',
           label: '填报时间',
           align: 'left'
 				}
@@ -93,7 +94,7 @@ export default {
               console.log('row', row)
               // AnnualReportAdd AnnualReportInfo
               // this.$router.push({path: '/AnnualReportInfo', query: row})
-              this.$router.push({path: '/AnnualReportAdd', query: {row}})
+              this.$router.push({path: '/AnnualReportSet', query: {row}})
             },
             showCallback: () => {
               return true;
@@ -117,6 +118,9 @@ export default {
   methods: {
 		init() {
       this.query();
+    },
+    gmtCreate_format(row, column, prop){
+      return new Date(prop).toLocaleString('chinese', {hour12: false})
     },
     interviewType_formatter(row, column, prop){
       // console.log(row)
@@ -144,8 +148,9 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: _this.userId,
-            approvalId: ''
+            // userId: _this.userId,
+            userId: '1008611',
+            approvalId: '123456001'
           },
           _this.searchData
         )

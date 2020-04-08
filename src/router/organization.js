@@ -92,13 +92,22 @@ export default [
                 ]
               },              
             {
-                title:'年度报告新增',
+                title:'年度报告详情',
                 hidden:true,
                 icon: 'el-icon-menu',
                 img: 'left_menu_sub_year.png',
                 path: "/AnnualReportAdd",
                 name: "AnnualReportAdd",
                 component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportAdd')
+              },
+              {
+                title:'年度报告修改',
+                hidden:true,
+                icon: 'el-icon-menu',
+                img: 'left_menu_sub_year.png',
+                path: "/AnnualReportSet",
+                name: "AnnualReportSet",
+                component: () => import('@/views/wisdomSupervision/AnnualReport/AnnualReportSet')
               },
               {
                 title:'事项申报新增',

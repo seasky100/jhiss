@@ -241,3 +241,13 @@ export function findAnnualReportPage (params) {
     params
   })
 }
+
+// 年度报告新增
+export function saveAnnualReport (params) {
+  return request({
+    url: DEFAULT_URL.annualReport.saveAnnualReport,
+    method: 'post',
+    data: params
+  })
+}
+

@@ -200,6 +200,7 @@ const DEFAULT_URL = {
   // 年度报告
   annualReport: {
     findAnnualReportPage: `${GAISMSERVER}annualReportInformation/findAnnualReportPage`, // 人员台账分页
+    saveAnnualReport: `${GAISMSERVER}annualReportInformation/save`,
   }
 }
 
