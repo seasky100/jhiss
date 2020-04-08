@@ -65,7 +65,7 @@ export default {
   methods: {
     init() {
       let query = this.$route.query
-      console.log(query)
+      // console.log(query)
       this.tree_data = query.value
       this.active = query.value.id
       this.entranceList = query.list
@@ -101,7 +101,7 @@ export default {
       this.timer = null
     },
     handleClickDep(value){
-      // console.log(value)
+      console.log(value)
       this.active = value.id
       this.tree_data = value
     }

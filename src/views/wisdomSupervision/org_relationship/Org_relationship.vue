@@ -34,6 +34,7 @@ export default {
         this.getData()
       }else{
         this.tree_data = JSON.parse(window.localStorage.tree_data)
+        console.log(this.tree_data)
         this.dep_list = JSON.parse(window.localStorage.dep_list)
       }
     },
@@ -61,6 +62,10 @@ export default {
         _this.data_collation(tree_data)
       })
     },
+    // 转化获取列属性对象
+    flatten(arr) { 
+      return [].concat( ...arr.map(x => Array.isArray(x.children) ? this.flatten(x.children) : x.userList) ) 
+    },
     data_collation(data){
       const _this = this
       let arr1 = [...data.children]
@@ -68,6 +73,8 @@ export default {
       let child = []
       for(let i=0;i<arr1.length;i++) {
         let obj = arr1[i]
+        let arr3 = _this.flatten(JSON.parse(JSON.stringify(arr2)))
+        // console.log(arr3)
         obj.index = i
         obj.level = 2
         obj.expand = true
@@ -75,6 +82,12 @@ export default {
         for(let j=0;j<arr2.length;j++){
           let obj2 = arr2[j]
           if(obj2.userPname.includes(obj.realName)){
+            for(let n=0;n<arr3.length;n++){
+              let obj3 = arr3[n]
+              if(obj2.userPid.includes(obj3.id)){
+                obj2.userInfo = obj3.userInfo
+              }
+            }
             children.push(obj2)
           }
         }
