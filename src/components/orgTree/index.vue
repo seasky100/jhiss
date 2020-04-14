@@ -275,7 +275,7 @@ export default {
         query.list = _this.dep_list
         query.model = model
       }
-      if(this.path_url == null){
+      if(this.path_url == null || this.path_url == ''){
         return 
       }
       this.$router.push({path: this.path_url, query})

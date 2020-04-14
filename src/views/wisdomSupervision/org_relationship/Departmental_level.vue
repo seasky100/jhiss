@@ -93,6 +93,7 @@ export default {
         this.$store.state.depInfo = query
       }
       this.tree_data = query.value
+      console.log('用户信息：',this.$store.state.user)
       this.active = query.value.id
       this.entranceList = query.list
       this.model = query.model
