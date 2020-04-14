@@ -1,6 +1,12 @@
 <template>
   <div class="Org_relationship">
+    <div class="page-title">
+      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
+      <span>层级管理</span>
+      <el-button class="titleBtn" size="mini" @click="returnClick">返回上一级</el-button>
+    </div>
     <div class="individual_title"></div>
+    <div class=""></div>
     <div class="dep_list" style="width:100%;text-align:center;">
       <div @mousedown="changeScroll('left')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
         <img style="width:30px;" src="@/assets/images/bg/dir_left.png" />
@@ -10,7 +16,7 @@
           background-size: 100% 100%; -->
         <div class="entrance" @click="handleClickDep(item)"
           :style="[{border:active==item.id?'3px solid #bf1730':'none'}]" 
-          v-for="(item,index) of entranceList" :key="index">
+          v-for="(item,index) of entranceList" :key="index" ref="dep_box">
           <img style="height:40px;margin:8px 0;" 
             :src="index%2==0?require('../../../assets/images/bg/dep_bg.png'):require('../../../assets/images/bg/dep_bg2.png')" />
           <div class="panel_info">
@@ -58,18 +64,53 @@ export default {
 			// 
     }
   },
-  watch: {},
+  watch: {
+    tree_data(newVal,oldVal){
+      this.$store.state.depInfo.value = newVal
+    },
+    active(newVal,oldVal){
+      this.$store.state.depInfo.value.id = newVal
+    },
+    entranceList(newVal,oldVal){
+      this.$store.state.depInfo.list = newVal
+    },
+    model(newVal,oldVal){
+      this.$store.state.depInfo.model = newVal
+    },
+  },
   mounted() {
     this.init()
   },
   methods: {
+    returnClick(){
+      this.$router.push({path: '/Org_relationship'})
+    },
     init() {
       let query = this.$route.query
-      // console.log(query)
+      if(Object.keys(this.$route.query).length == 0){
+        query = this.$store.state.depInfo
+      }else{
+        this.$store.state.depInfo = query
+      }
       this.tree_data = query.value
       this.active = query.value.id
       this.entranceList = query.list
       this.model = query.model
+      const _this = this
+      let n = 0
+      for(let i=0;i<this.entranceList.length;i++){
+        let obj = this.entranceList[i]
+        if(obj.id == this.active){
+          n = i
+          break;
+        }
+      }
+      // let width = this.$refs.dep_list.offsetWidth
+      this.$nextTick(() => {
+        // let scroll = width - _this.$refs.dep_box[n].offsetWidth
+        let scroll = _this.$refs.dep_box[n].offsetLeft - 400
+        $(_this.$refs.dep_list).animate({scrollLeft : scroll },2000)
+      });
     },
     changeScroll(direction = 'right'){
       // const _this = this
@@ -138,6 +179,16 @@ export default {
 	width: 100%;
   font-size: 12px;
 }
+.page-title
+  background #fff
+  padding 10px 16px
+  span 
+    font-size 16px
+    color #121518
+    font-weight 700
+  .titleBtn
+    position absolute
+    right 20px
 .post_status
   position: fixed
   width: 200px
@@ -164,7 +215,7 @@ export default {
 	margin 10px 0.8%
 .relationship
 	margin 0 0.8%
-	height calc(100% - 205px)
+	height calc(100% - 265px)
 	text-align center
 	overflow auto
 </style>

@@ -17,7 +17,7 @@
       <div class="nameSpan" style="margin-top:10px;">
         {{(item.userPname == 'undefined' || item.userPname == undefined || item.userPname == null)? '未知' : item.userPname}}
       </div>
-      <div class="nameSpan">{{item.orgPname}}</div>
+      <div class="nameSpan position">{{item.orgPname}}</div>
       <span :style="[{background:color_arr[index2].bg,color:color_arr[index2].color}]"
         class="label_body"
         v-for="(item2,index2) of item.label" :key="index2">
@@ -103,6 +103,9 @@ export default {
     margin-bottom 10px
     font-size 14px
     text-align center
+    .position
+      color #b7b7b7
+      font-size 12px
     &:hover
       background #fbfbfb
     .person_ul

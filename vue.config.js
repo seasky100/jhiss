@@ -207,14 +207,16 @@ module.exports = {
         }
       },
       '/gmsso_server': {
-        target: 'http://39.100.4.175:19286/gm-sso-server/',
+        // target: 'http://39.100.4.175:19286/gm-sso-server/',
+        target: 'http://39.106.157.136:8081/gmsso_server/',
         changeOrigin: true,
         pathRewrite: {
           '^/gmsso_server': ''
         }
       },
       '/uums_server': {
-        target: 'http://39.100.4.175:19286/uums-server/',
+        // target: 'http://39.100.4.175:19286/uums-server/',
+        target: 'http://39.106.157.136:8081/uums-server/',
         changeOrigin: true,
         pathRewrite: {
           '^/uums_server': ''

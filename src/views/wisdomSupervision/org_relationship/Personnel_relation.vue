@@ -1,7 +1,12 @@
 <template>
   <div class="person_home">
+    <div class="page-title">
+      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
+      <span>层级管理</span>
+      <el-button class="titleBtn" size="mini" @click="returnClick">返回上一级</el-button>
+    </div>
     <div class="individual_title"></div>
-    <div class="police_career" style="height:calc(100% - 101px);background:none;">
+    <div class="police_career" style="height:calc(100% - 145px);background:none;">
       <div class="fengxian" style="width:460px;">
         <img style="margin: 15px 3%;width:94%;" src="../../../assets/images/bg/ship_bg.png" />
         <div class="con photoImg">
@@ -141,6 +146,9 @@ export default {
     this.init()
   },
   methods: {
+    returnClick(){
+      this.$router.push({path: '/Departmental_level'})
+    },
     init() {
       let query = this.$route.query
       this.personInfo = query.value
@@ -263,6 +271,16 @@ export default {
   background: url('../../../assets/images/bg/ship_bg.png');
   background-size: 100% 100%;
 }
+.page-title
+  background #fff
+  padding 10px 16px
+  span 
+    font-size 16px
+    color #121518
+    font-weight 700
+  .titleBtn
+    position absolute
+    right 20px
 .person_title{
   height:45px;
   margin: 10px;
@@ -326,7 +344,7 @@ export default {
   .label_body
     padding: 5px 10px
     background #ccc
-    border-radius 15px
+    border-radius 5px
     maegin: 5px
     margin-right 10px
   .project_li
