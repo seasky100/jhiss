@@ -183,12 +183,19 @@ export default {
               </div>
             </div>)
         }else if(data.level == 3){
+          // let userInfo = sessionStorage.userInfo
+          // let userId = ''
+          // if(userInfo != null && userInfo.id != null && userInfo.id != ''){
+          //   userId = JSON.parse(userInfo).id
+          // }else{
+          //   userId = 'fc7e5d3b2f91477f8ab329b18b4ccb30'
+          // }
           return (<div class="user_panel depCon">
                 {
-                  // {id, name, userPname}
+                  // class={item.userPid == userId ? 'user_panel level_three three_hover' : 'user_panel level_three'} 
                   data.dep.map((item,index) => 
                     <div onclick={() => this.nodePanelClick(data, item, 'dep')}
-                      class="user_panel level_three" 
+                      class="user_panel level_three three_hover" 
                       style="margin-bottom:5px;">
                       <img class="dep_img" src={index==0?require('../../assets/images/bg/dep_bg2.png'):index==1?require('../../assets/images/bg/dep_bg3.png'):require('../../assets/images/bg/dep_bg.png')} />
                       <div class="depCon_info">{item.name}</div>
@@ -198,11 +205,27 @@ export default {
             </div>)
         }else {
           if(this.model == 'dep'){
-            // border:3px solid #1ACE80;
-            return (<div class="user_panel_dep" onclick={() => this.nodePanelClick(data,'','person_info')}>
-              <img class="photo_img" style="display:block;"
-                src={require('../../assets/images/bg/person.png')}></img>
-              <span class={ this.$store.state.user.userId == data.id ? 'current_user' : '' }>
+            // <i class="el-icon-picture-outline"></i>
+            // https://timgsa.baidu.com/timg?11111111
+            let imgPath = 'https://timgsa.baidu.com/timg2?11111111'
+            let img = <el-image class="photo_img" style="display:block;border-radius:0;"
+                src={imgPath} fit="fill" lazy>
+                <div slot="error" class="image-slot">
+                  <el-image fit="fill" style="width:30px;height:30px;" src={require('F:/person.png')}></el-image>
+                </div>
+              </el-image>
+            let routeUrl = ''
+            // console.log(data)
+            let userInfo = sessionStorage.userInfo
+            // if(userInfo != null && userInfo != '' && JSON.parse(userInfo).id == data.id){
+            if(data.userPid == 'fc7e5d3b2f91477f8ab329b18b4ccb30'){
+              routeUrl = 'person_info'
+            }
+            let handleEvent = () => this.nodePanelClick(data,'',routeUrl)
+            return (<div class="user_panel_dep" onclick={handleEvent}>
+              {img}
+              <span style={data.userPid == 'fc7e5d3b2f91477f8ab329b18b4ccb30'?'cursor:pointer':''}
+                class={ data.userPid == 'fc7e5d3b2f91477f8ab329b18b4ccb30' ? 'current_user' : '' }>
                 {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
               </span>
             </div>)
@@ -220,6 +243,13 @@ export default {
         }
       }
       
+    },
+    IsExstsFile(filespec) {
+      var fso = new ActiveXObject("Scripting.FileSystemObject");
+      if (fso.FileExists(filespec))
+        return true;
+      else
+        return false;
     },
     popoverClick(key, node){
       console.log(key, node)
@@ -277,6 +307,9 @@ export default {
       }
       if(this.path_url == null || this.path_url == ''){
         return 
+      }
+      if(model == ''){
+        return
       }
       this.$router.push({path: this.path_url, query})
     },
@@ -405,7 +438,7 @@ export default {
   width: 40px;
   height:40px;
 }
-.com.com.org_tree .level_three:hover{
+.com.com.org_tree .three_hover:hover{
   border:2px solid #bf1730;
 }
 .com.com.org_tree .user_panel .panel_info{

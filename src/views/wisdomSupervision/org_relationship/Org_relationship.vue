@@ -26,8 +26,8 @@ export default {
   },
   watch: {},
   mounted() {
-    // this.init()
-    this.getData()
+    this.init()
+    // this.getData()
   },
   methods: {
     init() {
@@ -35,7 +35,7 @@ export default {
         this.getData()
       }else{
         this.tree_data = JSON.parse(window.localStorage.tree_data)
-        console.log(this.tree_data)
+        // console.log(this.tree_data)
         this.dep_list = JSON.parse(window.localStorage.dep_list)
       }
     },
@@ -67,27 +67,6 @@ export default {
     flatten(arr) { 
       return [].concat( ...arr.map(x => Array.isArray(x.children) ? this.flatten(x.children) : x.userList) ) 
     },
-    // 添加人员详情数据
-    flattenPerson(data,personList){
-      const _this = this
-      let arr = []
-      arr.concat(data.map(x => {
-        if(Array.isArray(x.children)){
-          _this.flattenPerson(x.children,personList)
-        }else{
-          for(let n=0;n<personList.length;n++){
-            let obj3 = personList[n]
-            if(x.userPid.includes(obj3.id)){
-              x.userInfo = obj3.userInfo
-            }
-          }
-          // console.log(x)
-          x
-        }
-      }) 
-      )
-      return arr
-    },
     data_collation(data){
       const _this = this
       let arr1 = [...data.children]
@@ -104,10 +83,7 @@ export default {
         for(let j=0;j<arr2.length;j++){
           let obj2 = arr2[j]
           if(obj2.userPname.includes(obj.realName)){
-            let arr4 = _this.flattenPerson([obj2],arr3)
-            console.log(arr4)
             children.push(obj2)
-            // children.push(arr4[0])
           }
         }
         let dep = {dep: children,level: 3}
@@ -132,10 +108,20 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+/*滚动条样式*/
+::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
+::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
+::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
 .individual_title{
   height:70px;
   background: url('../../../assets/images/bg/top_bg.png');
   background-size: 100% 100%;
+}
+.relationship{
+  width: 100%;
+	height: calc(100% - 70px);
+  text-align: center;
+  overflow: auto;
 }
 .explain
   position absolute
@@ -167,9 +153,4 @@ export default {
 	text-align center
 	background #fff
 	margin 10px 0.8%
-.relationship
-	margin 0
-	height calc(100% - 70px)
-	text-align center
-	overflow auto
 </style>

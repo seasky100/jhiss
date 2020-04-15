@@ -49,6 +49,7 @@
 </template>
 <script>
 // import treeData from './treeData.js';
+import { getUserInfo } from '@/api/user-server.js'
 export default {
 	name: "Departmental_level",
   data() {
@@ -92,8 +93,9 @@ export default {
       }else{
         this.$store.state.depInfo = query
       }
-      this.tree_data = query.value
-      // console.log('用户信息：',this.$store.state.user)
+      let arr = []
+      this.flattenPerson([query.value],arr)
+      this.tree_data = arr[0]
       // this.userInfo = JSON.parse(sessionStorage.userInfo)
       this.active = query.value.id
       this.entranceList = query.list
@@ -113,6 +115,45 @@ export default {
         let scroll = _this.$refs.dep_box[n].offsetLeft - 400
         $(_this.$refs.dep_list).animate({scrollLeft : scroll },2000)
       });
+    },
+    async getPersonInfo(userId){
+      const _this = this
+      const params = {
+        userId: userId
+      }
+      let result = null
+      await getUserInfo(params).then(res => {
+          if (res.success == true) {
+            let userInfo = res.data.userInfo
+            // console.log(userInfo)
+            result = userInfo
+          } else {
+            console.log(res.message)
+          }
+      })
+      .catch(error => {
+          console.log(error)
+      })
+      return result
+    },
+    flattenPerson(tdata,resData){
+      if(Array.isArray(tdata) && tdata.length>0){
+        tdata.forEach((v,i) => {
+          resData[i] = v
+          var arr=[]
+          let userInfo = {id: '1111111111' }
+          let aa = this.getPersonInfo(v.userPid).then((value) => {
+            // console.log(value)
+            userInfo = value
+            resData[i].userInfo = userInfo
+            return value
+          })
+          // console.log('aa: ' + aa)
+          // console.log('userInfo: ' + userInfo)
+          // resData[i].userInfo = userInfo
+          this.flattenPerson(v.children,arr)
+        });
+      }
     },
     changeScroll(direction = 'right'){
       // const _this = this
@@ -144,9 +185,13 @@ export default {
       this.timer = null
     },
     handleClickDep(value){
-      console.log('部门信息',value)
+      let arr = []
+      this.flattenPerson([value],arr)
+      console.log('部门信息2',arr)
+      // 
       this.active = value.id
-      this.tree_data = value
+      // this.tree_data = value
+      this.tree_data = arr[0]
     }
 		// 
   }
