@@ -171,7 +171,7 @@ export default {
               </div>
             </div>)
         }else if(data.level == 2){
-          let img = require('../../assets/images/bg/person_bg'+data.level%11+'.png')
+          let img = require('../../assets/images/bg/person_bg'+data.index%11+'.png')
           return (<div
               style={'height:100px;background-size:100% 100%;background:url('+img+') no-repeat'}
               class="user_panel level_two">

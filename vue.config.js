@@ -208,7 +208,7 @@ module.exports = {
       },
       '/gmsso_server': {
         // target: 'http://39.100.4.175:19286/gm-sso-server/',
-        target: 'http://39.106.157.136:8081/gmsso_server/',
+        target: 'http://39.106.157.136:8081/gm-sso-server/',
         changeOrigin: true,
         pathRewrite: {
           '^/gmsso_server': ''

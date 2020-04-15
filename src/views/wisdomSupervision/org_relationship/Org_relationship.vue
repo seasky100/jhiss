@@ -26,7 +26,8 @@ export default {
   },
   watch: {},
   mounted() {
-    this.init()
+    // this.init()
+    this.getData()
   },
   methods: {
     init() {
@@ -43,7 +44,7 @@ export default {
       treeAndUser(
         Object.assign(
           {
-            // currentId: '' // 当前区域id
+            currentId: '' // 当前区域id
           }
         )
       ).then(res => {
@@ -57,7 +58,7 @@ export default {
         tree_data = tree_data.children[0]
         tree_data.children_dep = tree_data.children
         tree_data.children = tree_data.userList
-        console.log(tree_data)
+        // console.log(tree_data)
         // _this.tree_data = tree_data
         _this.data_collation(tree_data)
       })
@@ -65,6 +66,27 @@ export default {
     // 转化获取列属性对象
     flatten(arr) { 
       return [].concat( ...arr.map(x => Array.isArray(x.children) ? this.flatten(x.children) : x.userList) ) 
+    },
+    // 添加人员详情数据
+    flattenPerson(data,personList){
+      const _this = this
+      let arr = []
+      arr.concat(data.map(x => {
+        if(Array.isArray(x.children)){
+          _this.flattenPerson(x.children,personList)
+        }else{
+          for(let n=0;n<personList.length;n++){
+            let obj3 = personList[n]
+            if(x.userPid.includes(obj3.id)){
+              x.userInfo = obj3.userInfo
+            }
+          }
+          // console.log(x)
+          x
+        }
+      }) 
+      )
+      return arr
     },
     data_collation(data){
       const _this = this
@@ -82,13 +104,10 @@ export default {
         for(let j=0;j<arr2.length;j++){
           let obj2 = arr2[j]
           if(obj2.userPname.includes(obj.realName)){
-            for(let n=0;n<arr3.length;n++){
-              let obj3 = arr3[n]
-              if(obj2.userPid.includes(obj3.id)){
-                obj2.userInfo = obj3.userInfo
-              }
-            }
+            let arr4 = _this.flattenPerson([obj2],arr3)
+            console.log(arr4)
             children.push(obj2)
+            // children.push(arr4[0])
           }
         }
         let dep = {dep: children,level: 3}
@@ -99,7 +118,7 @@ export default {
         child.push(obj)
       }
       data.children = child
-      console.log(data)
+      // console.log(data)
       data.level = 1
       data.expand = true
       data.children_dep = null
