@@ -8,7 +8,8 @@
     <div class="individual_title"></div>
     <div class="police_career" style="height:calc(100% - 145px);background:none;">
       <div class="fengxian" style="width:460px;">
-        <img style="margin: 15px 3%;width:94%;" src="../../../assets/images/bg/ship_bg.png" />
+        <div class="relationTitle">我的层级关系</div>
+        <!-- <img style="margin: 15px 3%;width:94%;" src="../../../assets/images/bg/ship_bg.png" /> -->
         <div class="con photoImg">
           <div class="photo_img_con" style="border:3px solid #afafaf;">
             <img class="photo_img" src="@/assets/images/bg/person.png" />
@@ -24,11 +25,6 @@
           </span>
         </div>  
         <div class="con projectCon" style="height:110px;">
-          <!-- <span class="top_title">项目</span> -->
-          <!-- <li class="project_li" @click="handleClick(item)"
-            v-for="(item,index) of projectList" :key="index">
-            <span>{{item.name}}</span>
-          </li> -->
           <span class="project_li" @click="handleClick(item)"
             v-for="(item,index) of projectList" :key="index">
             <img class="menuImg" :src="item.imgPath" />
@@ -76,6 +72,10 @@
         <el-table-column property="riskMesure" label="防控措施"></el-table-column>
       </el-table>
     </el-dialog>
+    <!-- 责任清单 -->
+    <el-dialog class="dialog_info" title="责任清单" :visible.sync="dialogVisible2">
+      <div>责任清单</div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -113,7 +113,8 @@ export default {
       ],
       model: '',
       level: 2, // 1: 只有上级；2：上下级都有；3：只有下级
-      dialogVisible: false,
+      dialogVisible: false, // 岗位预警
+      dialogVisible2: false, // 责任清单
       warningInfo: null,
       gridData: [{
         date: '2016-05-02',
@@ -169,34 +170,37 @@ export default {
         item.label = [item.orgName,item.orgPname]
         return item
       })
-      console.log(this.person_data)
+      // console.log(this.person_data)
       this.getData()
     },
     getData(){
       const _this = this
       const params = {
-          userId: _this.$store.state.user.userId
-        }
-        getUserInfo(params).then(res => {
-          if (res.success == true) {
-            let post = res.data.posts
-            // console.log(post)
-            if(post.length > 0){
-              let tree_obj = res.data.posts[0]
-              tree_obj.children = _this.tree_data
-              _this.tree_data = tree_obj
-            }else{
-              // _this.submenuList = _this.submenuList.splice(1,1)
-              this.submenuList = [{name:'我的下属同事'}]
-              _this.level = 3
-              this.active = 0
-            }
-          } else {
-            console.log(res.message)
+        // userId: _this.$store.state.user.userId
+        // 39411b303f3346c69c7a7c507a6d0afd fc7e5d3b2f91477f8ab329b18b4ccb30 36e773bf0298409980c289a9dd922d6a
+        userId: '36e773bf0298409980c289a9dd922d6a'
+      }
+      getUserInfo(params).then(res => {
+        if (res.success == true) {
+          let post = res.data.posts
+          // console.log(post)
+          if(post.length > 0 && post[0].userPname != null){
+            let tree_obj = post[0]
+            // console.log(tree_obj)
+            tree_obj.children = [_this.tree_data]
+            _this.tree_data = tree_obj
+          }else{
+            // _this.submenuList = _this.submenuList.splice(1,1)
+            this.submenuList = [{name:'我的下属同事'}]
+            _this.level = 3
+            this.active = 0
           }
+        } else {
+          console.log(res.message)
+        }
       })
       .catch(error => {
-          console.log(error)
+        console.log(error)
       })
     },
     subMenuClick(index){
@@ -207,16 +211,18 @@ export default {
       if(index == 0){
         this.person_data = [this.tree_data]
       }else{
-        this.person_data = this.tree_data.children
+        this.person_data = this.tree_data.children[0].children
       }
     },
     handleClick(value){
       if(value.path == null){
         if(value.name=='岗位预警') {
-          let userId = this.personInfo.id
+          // let userId = this.personInfo.id
+          let userId = this.personInfo.userInfo.id
           this.getRiskByUserData(userId)
         }else{
-          console.log('责任清单')
+          // console.log('责任清单')
+          this.dialogVisible2 = true
         }
       }else {
         this.MenuPage.activeMenu = value.path
@@ -226,11 +232,12 @@ export default {
     // 个人岗位预警
     getRiskByUserData(userId){
       const _this = this
-      console.log(userId)
+      console.log('人员ID：',userId)
       getRiskByUserId(
         Object.assign(
           {
-						userId: '27b50377217444538a041e15d9b83bcc'
+            userId: '27b50377217444538a041e15d9b83bcc'
+            // userId: userId
           },
         )
       ).then(res => {
@@ -270,6 +277,12 @@ export default {
 .fengxian_left{
   background: url('../../../assets/images/bg/ship_bg.png');
   background-size: 100% 100%;
+}
+.relationTitle{
+  padding: 20px 20px 0px;
+  font-size:16px;
+  font-weight:bold;
+  color: #0015ff;
 }
 .page-title
   background #fff

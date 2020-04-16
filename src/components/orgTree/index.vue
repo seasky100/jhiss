@@ -205,7 +205,6 @@ export default {
             </div>)
         }else {
           if(this.model == 'dep'){
-            // <i class="el-icon-picture-outline"></i>
             // https://timgsa.baidu.com/timg?11111111
             let imgPath = 'https://timgsa.baidu.com/timg2?11111111'
             let img = <el-image class="photo_img" style="display:block;border-radius:0;"
@@ -215,23 +214,24 @@ export default {
                 </div>
               </el-image>
             let routeUrl = ''
-            // console.log(data)
             let userInfo = sessionStorage.userInfo
             // if(userInfo != null && userInfo != '' && JSON.parse(userInfo).id == data.id){
-            if(data.userPid == 'fc7e5d3b2f91477f8ab329b18b4ccb30'){
+            // fc7e5d3b2f91477f8ab329b18b4ccb30 36e773bf0298409980c289a9dd922d6a
+            if(data.userPid == '36e773bf0298409980c289a9dd922d6a'){
               routeUrl = 'person_info'
             }
             let handleEvent = () => this.nodePanelClick(data,'',routeUrl)
             return (<div class="user_panel_dep" onclick={handleEvent}>
               {img}
-              <span style={data.userPid == 'fc7e5d3b2f91477f8ab329b18b4ccb30'?'cursor:pointer':''}
-                class={ data.userPid == 'fc7e5d3b2f91477f8ab329b18b4ccb30' ? 'current_user' : '' }>
+              <span style={data.userPid == '36e773bf0298409980c289a9dd922d6a'?'cursor:pointer':''}
+                class={ data.userPid == '36e773bf0298409980c289a9dd922d6a' ? 'current_user' : '' }>
                 {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
               </span>
             </div>)
           }else if(this.model == 'person_info'){
-            return (<div class="user_panel_others">
-              <span class={ this.$store.state.user.userId == data.id ? 'current_user' : '' }>
+            // this.$store.state.user.userId == data.id
+            return (<div class={data.userPid == '36e773bf0298409980c289a9dd922d6a' ? 'user_panel_others current_user_bg' : 'user_panel_others'}>
+              <span>
                 {(data.userPname == 'undefined' || data.userPname == undefined || data.userPname == null)? '未知' : data.userPname}
               </span>
             </div>)
@@ -294,6 +294,8 @@ export default {
       const _this = this
       let query = {}
       if(valueObj == '') {
+        // console.log(data)
+        // 跳转层级人员
         query.value = data
         query.model = model
         // 当前用户才可点击
@@ -301,6 +303,7 @@ export default {
         //   return 
         // }
       }else{
+        // 跳转层级部门
         query.value = valueObj
         query.list = _this.dep_list
         query.model = model
@@ -308,6 +311,7 @@ export default {
       if(this.path_url == null || this.path_url == ''){
         return 
       }
+      // 无权限
       if(model == ''){
         return
       }
@@ -482,5 +486,10 @@ export default {
 }
 .com.com.org_tree .current_user{
   color:#bf1730;
+}
+.com.com.org_tree .current_user_bg{
+  background:#235ff6;
+  color: #ffffff;
+  font-weight: bold;
 }
 </style>

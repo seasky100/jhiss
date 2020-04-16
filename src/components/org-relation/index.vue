@@ -78,10 +78,11 @@ export default {
     handleClick(value, personInfo){
       if(value.path == null){
         if(value.name=='岗位预警') {
-          let userId = personInfo.id
+          let userId = personInfo.userPid
           this.$parent.getRiskByUserData(userId)
         }else{
-          console.log('责任清单')
+          // console.log('责任清单')
+          this.$parent.dialogVisible2 = true
         }
       }else {
         this.MenuPage.activeMenu = value.path
