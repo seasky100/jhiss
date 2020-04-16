@@ -143,16 +143,12 @@ export default {
           var arr=[]
           let userInfo = {id: '1111111111' }
           let aa = this.getPersonInfo(v.userPid).then((value) => {
-            // console.log(value)
             userInfo = value
             resData[i].userInfo = userInfo
             return value
           })
-          // console.log('aa: ' + aa)
-          // console.log('userInfo: ' + userInfo)
-          // resData[i].userInfo = userInfo
           this.flattenPerson(v.children,arr)
-        });
+        })
       }
     },
     changeScroll(direction = 'right'){

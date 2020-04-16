@@ -13,6 +13,7 @@
 </template>
 <script>
 import { treeAndUser } from '@/api/report.js';
+import { getUserInfo } from '@/api/user-server.js'
 export default {
 	name: "Org_relationship",
   data() {
@@ -98,11 +99,30 @@ export default {
       data.level = 1
       data.expand = true
       data.children_dep = null
-      _this.tree_data = data
-      window.localStorage.tree_data = JSON.stringify(data)
+      _this.getPostUserInfo(data)
       _this.dep_list = arr2
       window.localStorage.dep_list = JSON.stringify(arr2)
-    }
+      
+    },
+    getPostUserInfo(data){
+      const _this = this
+      const params = {
+        userId: data.userPid
+      }
+      getUserInfo(params).then(res => {
+          if (res.success == true) {
+            let userInfo = res.data.userInfo
+            data.userInfo = userInfo
+            _this.tree_data = data
+            window.localStorage.tree_data = JSON.stringify(data)
+          } else {
+            console.log(res.message)
+          }
+      })
+      .catch(error => {
+          console.log(error)
+      })
+    },
 		// 
   }
 }
