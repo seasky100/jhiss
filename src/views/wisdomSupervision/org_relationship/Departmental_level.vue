@@ -183,8 +183,7 @@ export default {
     handleClickDep(value){
       let arr = []
       this.flattenPerson([value],arr)
-      console.log('部门信息2',arr)
-      // 
+      // console.log('部门信息2',arr)
       this.active = value.id
       // this.tree_data = value
       this.tree_data = arr[0]

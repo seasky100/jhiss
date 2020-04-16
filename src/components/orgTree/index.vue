@@ -81,6 +81,7 @@
   </div>
 </template>
 <script>
+import { myPhotoSrc } from '@/utils/common.js';
 export default {
   props: {
     data: {
@@ -162,8 +163,15 @@ export default {
       }else{
         // {require('../../images/logo.png')}
         if(data.level == 1){
+          let imgPath = myPhotoSrc(data.userInfo)
+          let img = <el-image class="photo_img"
+              src={imgPath} fit="fill" lazy>
+              <div slot="error" class="image-slot">
+                <el-image fit="fill" class="photo_img" src={require('../../assets/images/bg/person.png')}></el-image>
+              </div>
+            </el-image>
           return (<div style="height:100px;width:150px;" class="user_panel level_one leaderCon">
-              <img class="photo_img" src={require('../../assets/images/bg/person.png')}></img>
+              { img }
               <div class="panel_info">
                 <span style="line-height:20px;">{data.userPname}</span><br/>
                 <span class="post">{data.name}</span>
@@ -171,11 +179,18 @@ export default {
               </div>
             </div>)
         }else if(data.level == 2){
-          let img = require('../../assets/images/bg/person_bg'+data.index%11+'.png')
+          let imgPath = myPhotoSrc(data.userInfo)
+          let img = <el-image class="photo_img"
+              src={imgPath} fit="fill" lazy>
+              <div slot="error" class="image-slot">
+                <el-image fit="fill" class="photo_img" src={require('../../assets/images/bg/person.png')}></el-image>
+              </div>
+            </el-image>
+          let img_bg = require('../../assets/images/bg/person_bg'+data.index%11+'.png')
           return (<div
-              style={'height:100px;background-size:100% 100%;background:url('+img+') no-repeat'}
+              style={'height:100px;background-size:100% 100%;background:url('+img_bg+') no-repeat'}
               class="user_panel level_two">
-              <img class="photo_img" src={require('../../assets/images/bg/person.png')}></img>
+              { img }
               <div class="panel_info">
                 <span style="line-height:20px;">{data.realName}</span><br/>
                 <span class="post">{data.userInfo.politicalStatus}</span>
@@ -205,12 +220,11 @@ export default {
             </div>)
         }else {
           if(this.model == 'dep'){
-            // https://timgsa.baidu.com/timg?11111111
-            let imgPath = 'https://timgsa.baidu.com/timg2?11111111'
+            let imgPath = myPhotoSrc(data.userInfo)
             let img = <el-image class="photo_img" style="display:block;border-radius:0;"
                 src={imgPath} fit="fill" lazy>
                 <div slot="error" class="image-slot">
-                  <el-image fit="fill" style="width:30px;height:30px;" src={require('F:/person.png')}></el-image>
+                  <el-image fit="fill" style="width:30px;height:30px;" src={require('../../assets/images/bg/person.png')}></el-image>
                 </div>
               </el-image>
             let routeUrl = ''

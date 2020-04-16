@@ -12,7 +12,13 @@
         <!-- <img style="margin: 15px 3%;width:94%;" src="../../../assets/images/bg/ship_bg.png" /> -->
         <div class="con photoImg">
           <div class="photo_img_con" style="border:3px solid #afafaf;">
-            <img class="photo_img" src="@/assets/images/bg/person.png" />
+            <!-- <img class="photo_img" src="@/assets/images/bg/person.png" /> -->
+            <el-image class="photo_img"
+              :src="getPhotoPath(personInfo.userInfo)" fit="fill" lazy>
+              <div slot="error" class="image-slot">
+                <el-image fit="fill" class="photo_img" :src="require('@/assets/images/bg/person.png')"></el-image>
+              </div>
+            </el-image>
           </div>
           <div class="img_name">{{personInfo.userPname}}</div>
         </div>
@@ -82,6 +88,7 @@
 // import treeData from './treeData.js';
 import { getUserInfo } from '@/api/user-server.js';
 import { getRiskByUserId } from '@/api/report.js';
+import { myPhotoSrc } from '@/utils/common.js';
 export default {
   name: "Personnel_relation",
   inject: ['MenuPage'],
@@ -149,6 +156,10 @@ export default {
   methods: {
     returnClick(){
       this.$router.push({path: '/Departmental_level'})
+    },
+    getPhotoPath(userInfo){
+      let path = myPhotoSrc(userInfo)
+      return path
     },
     init() {
       let query = this.$route.query
@@ -222,6 +233,7 @@ export default {
           this.getRiskByUserData(userId)
         }else{
           // console.log('责任清单')
+          console.log('人员ID：',this.personInfo.userInfo.id)
           this.dialogVisible2 = true
         }
       }else {
@@ -232,7 +244,6 @@ export default {
     // 个人岗位预警
     getRiskByUserData(userId){
       const _this = this
-      console.log('人员ID：',userId)
       getRiskByUserId(
         Object.assign(
           {

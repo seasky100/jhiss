@@ -3,16 +3,13 @@
     <div class="personCon"
       v-for="(item,index) of data" :key="index">
       <div class="photo_img_con">
-        <img class="photo_img" src="../../assets/images/bg/person.png" />
-        <!-- <div style="display:inline-block;margin-top:15px;">
-          <span style="margin-left:20px;">{{(item.userPname == 'undefined' || item.userPname == undefined || item.userPname == null)? '未知' : item.userPname}}</span>
-          <span :style="[{background:color_arr[index2].bg,color:color_arr[index2].color}]"
-            class="label_body"
-            v-for="(item2,index2) of item.label" :key="index2">
-            {{item2}}
-          </span><br/>
-          <span style="margin-left: 20px;line-height:25px;">{{item.orgPname}}</span>
-        </div> -->
+        <!-- <img class="photo_img" src="../../assets/images/bg/person.png" /> -->
+        <el-image class="photo_img"
+          :src="$parent.getPhotoPath(item.userInfo)" fit="fill" lazy>
+          <div slot="error" class="image-slot">
+            <el-image fit="fill" :src="require('@/assets/images/bg/person.png')"></el-image>
+          </div>
+        </el-image>
       </div>
       <div class="nameSpan" style="margin-top:10px;">
         {{(item.userPname == 'undefined' || item.userPname == undefined || item.userPname == null)? '未知' : item.userPname}}
@@ -23,12 +20,6 @@
         v-for="(item2,index2) of item.label" :key="index2">
         {{item2}}
       </span>
-      <!-- <div class="person_ul">
-        <li class="person_li" @click="handleClick(item3, item)"
-          v-for="(item3,index3) of projectList" :key="index3">
-          <span>{{item3.name}}</span>
-        </li>
-      </div> -->
       <div class="person_ul">
         <span class="person_li" @click="handleClick(item3, item)"
           v-for="(item3,index3) of projectList" :key="index3">
@@ -72,7 +63,7 @@ export default {
   watch:{
   },
   mounted() {
-    console.log(this.data)
+    // console.log(this.data)
   },
   methods: {
     handleClick(value, personInfo){
@@ -82,6 +73,7 @@ export default {
           this.$parent.getRiskByUserData(userId)
         }else{
           // console.log('责任清单')
+          console.log('人员ID：',personInfo.userPid)
           this.$parent.dialogVisible2 = true
         }
       }else {
