@@ -54,11 +54,16 @@
             {{item.label}}
           </span>
           <span v-else-if="item.type == 'text'">
-            <el-input v-model="headerParam[item.prop]"></el-input>
+            <template v-if="headerParam.edit">
+              <el-input v-model="headerParam[item.prop]"></el-input>
+            </template>
+            <template v-else>
+              {{headerParam[item.prop]}}
+            </template>
           </span>
           <!-- headerParam[item.prop] -->
           <span v-else-if="item.type == 'checkbox'">
-            <el-radio-group v-model="headerParam[item.prop]">
+            <el-radio-group :disabled="!headerParam.edit" v-model="headerParam[item.prop]">
               <template v-for="(item,index) of item.option">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>

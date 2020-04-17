@@ -201,6 +201,12 @@ const DEFAULT_URL = {
   annualReport: {
     findAnnualReportPage: `${GAISMSERVER}annualReportInformation/findAnnualReportPage`, // 人员台账分页
     saveAnnualReport: `${GAISMSERVER}annualReportInformation/save`,
+  },
+  // 年度报告新增信息
+  saveAnnualReport: {
+    saveMarrageAnnual: `${GAISMSERVER}marrage/saveDeclareExitAnnual`,
+    saveDeclareExitAnnual: `${GAISMSERVER}declareExit/saveDeclareExitAnnual`,
+    saveRelativesAbroadAnnual: `${GAISMSERVER}relativesAbroad/saveRelativesAbroadAnnual`,
   }
 }
 

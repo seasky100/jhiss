@@ -18,7 +18,11 @@ const cdn = {
     'https://cdn.bootcss.com/crypto-js/3.1.9/crypto-js.min.js'
   ]
 }
-
+const express = require('express')
+const app = express()
+var singer = require('./src/assets/data/index.json') //本地json文件数据
+var apiRoutes = express.Router();
+app.use('/getJson',apiRoutes)
 module.exports = {
   pluginOptions: {
     dll: {
@@ -162,6 +166,14 @@ module.exports = {
   // },
   /* webpack-dev-server 相关配置 */
   devServer: {
+    before(app) {
+      app.get('/getJson/singer', (req, res) => {
+           res.json({              
+               errno: 0,   // 这里是你的json内容
+               data: singer
+           })
+       })
+    },
     /* 自动打开浏览器 */
     open: false,
     /* 设置为0.0.0.0则所有的地址均能访问 */
@@ -221,7 +233,15 @@ module.exports = {
         pathRewrite: {
           '^/uums_server': ''
         }
-      }
+      },
+      '/test': {
+        // target: 'http://39.100.4.175:19286/uums-server/',
+        target: 'http://39.100.34.183:8088/big-data-server/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/test': ''
+        }
+      },
     },
   },
   transpileDependencies: [

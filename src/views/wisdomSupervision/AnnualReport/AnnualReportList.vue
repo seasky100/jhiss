@@ -91,7 +91,7 @@ export default {
             icon: '<i class="el-icon-view"></i>',
             disabled: false,
             method: (key, row) => {
-              console.log('row', row)
+              // console.log('row', row)
               // AnnualReportAdd AnnualReportInfo
               // this.$router.push({path: '/AnnualReportInfo', query: row})
               this.$router.push({path: '/AnnualReportSet', query: {row}})
@@ -114,8 +114,16 @@ export default {
   watch: {},
   mounted() {
     this.init()
+    // this.test()
   },
   methods: {
+    // test(){
+    //   this.$request.get('/getJson/singer', {}).then(res => {
+    //       console.log(res)
+    //     }).catch(error => {
+    //       console.log(error)
+    //     })
+    // },
 		init() {
       this.query();
     },
@@ -150,7 +158,7 @@ export default {
             nSize: 10,
             // userId: _this.userId,
             userId: '1008611',
-            approvalId: '123456001'
+            // approvalId: '123456001'
           },
           _this.searchData
         )

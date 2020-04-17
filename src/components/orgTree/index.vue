@@ -205,6 +205,7 @@ export default {
           // }else{
           //   userId = 'fc7e5d3b2f91477f8ab329b18b4ccb30'
           // }
+          console.log(data)
           return (<div class="user_panel depCon">
                 {
                   // class={item.userPid == userId ? 'user_panel level_three three_hover' : 'user_panel level_three'} 

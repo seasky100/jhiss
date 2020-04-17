@@ -91,23 +91,23 @@ let columns1 = [
                 ],
                 children: [
                     { index: 0, prop: '', width: '40px', label: '有变化', align: 'left' },
-                    { index: 1, prop: 'value3', label: '婚姻情况', align: 'left',
+                    { index: 1, prop: 'marrageState', label: '婚姻情况', align: 'left',
                         type:'checkbox', 
                         option: [
-                            {name: '结婚', value:'1'},
-                            {name: '离婚', value:'2'},
-                            {name: '丧偶', value:'3'},
-                            {name: '再婚', value:'4'},
+                            {name: '新婚', value:'1'},
+                            {name: '离异', value:'2'},
+                            {name: '再婚', value:'3'},
+                            {name: '丧偶', value:'4'},
                         ],
                     },
                     { index: 2, prop: '', width: '30px', label: '变化时间', align: 'left',
                         children: [
-                            { index: 0, prop: 'value4', type: 'text', label: '文本', align: 'left' }
+                            { index: 0, prop: 'changeTime', type: 'text', label: '文本', align: 'left' }
                         ]
                     },
                     { index: 3, prop: '', label: '变化原因', align: 'left',
                         children: [
-                            { index: 0, prop: 'value5', type: 'text', label: '文本', align: 'left' },
+                            { index: 0, prop: 'changeDesc', type: 'text', label: '文本', align: 'left' },
                             // { index: 0, prop: 'value5', label: '', align: 'left' }
                         ]
                     },
@@ -126,9 +126,9 @@ let columns2 = [
 ]
 // 本人因私出国的情况
 let columns3 = [
-    { prop: 'date', label: '起止日期', align: 'left' },
-    { prop: 'city', label: '所到国家', align: 'left' },
-    { prop: 'address', label: '事由', align: 'left' },
+    { prop: 'startTime', label: '起止日期', align: 'left' },
+    { prop: 'exitCountry', label: '所到国家', align: 'left' },
+    { prop: 'cause', label: '事由', align: 'left' },
     { prop: 'city', label: '保管机构', align: 'left' },
     { prop: 'zip', label: '所用护照号', align: 'left' },
 ]
@@ -177,10 +177,10 @@ let columns7 = [
 // 配偶、子女移居国（境）外的情况
 let columns8 = [
     { prop: 'name', label: '姓名', align: 'left' },
-    { prop: 'province', label: '移居国家（地区）', align: 'left' },
+    { prop: 'country', label: '移居国家（地区）', align: 'left' },
     { prop: 'city', label: '现居住城市', align: 'left' },
-    { prop: 'zip', label: '移居证件号码', align: 'left' },
-    { prop: 'city', label: '移居类别', width: '140px', align: 'left', 
+    { prop: 'documentNumber', label: '移居证件号码', align: 'left' },
+    { prop: 'emigrateState', label: '移居类别', width: '140px', align: 'left', 
         formatter: 'formatter_lb',
         type:'checkbox', 
         option: [
@@ -189,8 +189,8 @@ let columns8 = [
             {name: '长期居留许可', value:'3'},
         ] 
     },
-    { prop: 'date', label: '移居时间', align: 'left' },
-    { prop: 'address', label: '备注', align: 'left' },
+    { prop: 'strartTime', label: '移居时间', align: 'left' },
+    { prop: 'comment', label: '备注', align: 'left' },
 ]
 // 配偶、子女虽未移居国（境）外，但连续在国（境）外工作、生活一年以上的情况
 let columns9 = [
@@ -418,14 +418,14 @@ let columns210 = [
 ]
 
 let tableData = [
-    { columns: columns1, data: [data1[0]], headerTab: 2, headerParam:{} }, // 111
+    { columns: columns1, data: [], headerTab: 2, headerParam:{edit:false, value1: '1',changeDesc:'222'} }, // 111
     { columns: columns2, data: [] },
     { columns: columns3, data: [data1[0]] },
     { columns: columns4, data: [data1[0]] },
     { columns: columns5, data: [data1[0]] },
     { columns: columns6, data: [data1[0]] },
     { columns: columns7, data: [data1[0]] },
-    { columns: columns8, data: [data1[0],data1[1]] },
+    { columns: columns8, data: [data1[0]] },
     { columns: columns9, data: [data1[0]] },
     { columns: columns9, data: [data1[0]], headerTab: 3 }, // 111
     { columns: columns11, data: [data1[0],data1[1]] },
@@ -442,7 +442,7 @@ let tableData2 = [
     { columns: columns24, data: [...data1], appendTab: [...appendTab4] },
     { columns: columns25, data: [...data1] },
     { columns: columns26, data: [...data1] },
-    { columns: columns27, data: [...data1], headerTab: 2, headerAppend: headerAppend27, headerParam:{} }, // 111
+    { columns: columns27, data: [...data1], headerTab: 2, headerAppend: headerAppend27, headerParam:{edit:false} }, // 111
     { columns: columns28, data: [...data1] },
     { columns: columns29, data: [...data1] },
     { columns: columns210, data: [...data1] }, 
