@@ -28,13 +28,15 @@
 </template>
 <script>
 import { findReportPage } from '@/api/report.js';
+import { getUserListByUserId } from '@/api/user-server.js';
 import { mapGetters } from 'vuex';
 
 export default {
   name: "IndividualReport",
   computed: {
     ...mapGetters([
-      'userId'
+      'userId',
+      'orgData'
     ])
   },
   data() {
@@ -47,21 +49,34 @@ export default {
         problemType: '',
         startTime: '',
         endTime: ''
-			},
+      },
+      userIds:'',
 			searchForm: [
         {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
         {type: 'input', prop: 'approvalName', width: '120px', placeholder: '发起人姓名'},
-        {
-          type: 'select',
-          prop: 'approvalId',
-          width: '150px',
-          options: [
-            {label:'治安部门', value:'0'},
-            {label:'交通管理部门', value:'1'}
-          ],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
+        // {
+        //   type: 'select',
+        //   prop: 'approvalId',
+        //   width: '150px',
+        //   options: [
+        //     {label:'治安部门', value:'0'},
+        //     {label:'交通管理部门', value:'1'}
+        //   ],
+        //   change: row => console.log(row),
+        //   placeholder: '所属部门'
+        // },
+        // {
+				// 	// label: '所属部门',
+				// 	type: 'select_tree',
+				// 	prop: 'approvalId',
+				// 	options: this.orgData,
+				// 	config: {
+				// 		value: 'id',
+				// 		label: 'name',
+				// 		children: 'childrens',
+				// 		disabled: true
+				// 	},
+				// },
         {
           type: 'daterange',
           options: [
@@ -122,7 +137,7 @@ export default {
           align: 'left'
         },
         {
-          prop: 'approvalName',
+          prop: 'sponsorName',
           label: '发起人姓名',
           align: 'left'
         },
@@ -192,7 +207,9 @@ export default {
   },
   watch: {},
   mounted() {
-    this.init();
+    // this.init();
+    this.searchForm[2].options = this.orgData
+    this.getUserListByUserId()
   },
   methods: {
 		init() {
@@ -219,7 +236,20 @@ export default {
 			this.query(val);
 			// console.log(val)
       next();
-		},
+    },
+    // 根据用户ID查询所有下属用户
+		getUserListByUserId() {
+        const _this= this;
+        const params = {
+          userId: _this.userId 
+        }
+        getUserListByUserId(params).then(res => {
+          if (res.success) {
+            _this.userIds = res.data.map(item => item.id).join()
+            this.query();
+          }
+        })
+      },
 		// 查询列表
     query(nCurrent = 1) {
 			// console.log(nCurrent)
@@ -229,7 +259,7 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: _this.userId,
+            userId:  _this.userId + ','+ _this.userIds,
             reportType: '2'
           },
           _this.searchData
