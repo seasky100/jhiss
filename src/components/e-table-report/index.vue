@@ -1,8 +1,9 @@
 <template>
   <div class="reportTableCom">
     <h2 class="title" ref="title">
-      {{title.label}}      
-      <template v-if="headerTab == 1">
+      {{title.label}}  
+      <!-- v-if="headerTab == 1" -->
+      <template>
         <span class="imgAdd" @click="addTabData"></span>
         <span class="saveImg" @click="saveBtnClick"></span>
         <span style="color:red;margin-left:10px;">
@@ -99,6 +100,18 @@ export default {
         return [];
       }
     },
+    index: {
+      type: Number,
+      default: () => {
+        return 0;
+      }
+    },
+    saveEvent: {
+      type: Object,
+      default: () => {
+        return null;
+      }
+    },
     appendTab: {
       type: Array,
       default: () => {
@@ -151,18 +164,22 @@ export default {
     },
     // 添加数据
     addTabData(){
-      let addData = { edit: true }
-      let columnsArr = this.columns2
-      let columnsArr2 = this.flatten(columnsArr)
-      columnsArr2.map((item,index) => {
-        // addData[item.prop] = `aa${index+1}`
-        addData[item.prop] = ''
-        addData.type = item.type ? item.type : 'text'
-        return item
-      })
-      // console.log(addData)
-      this.tableData.push(addData)
-      this.tableData2 = [...this.tableData,...this.appendTab]
+      if(Object.keys(this.headerParam).length > 0){
+        this.headerParam.edit = true
+      }else{
+        let addData = { edit: true }
+        let columnsArr = this.columns2
+        let columnsArr2 = this.flatten(columnsArr)
+        columnsArr2.map((item,index) => {
+          // addData[item.prop] = `aa${index+1}`
+          addData[item.prop] = ''
+          addData.type = item.type ? item.type : 'text'
+          return item
+        })
+        // console.log(addData)
+        this.tableData.push(addData)
+        this.tableData2 = [...this.tableData,...this.appendTab]
+      }
     },
     // 转化获取列属性对象
     flatten(arr) { 
@@ -170,16 +187,22 @@ export default {
     },
     // 修改后获取新增数据保存
     saveBtnClick(){
-      let paramArr = []
-      let arr = [...this.tableData]
-      for(let i=0;i<arr.length;i++){
-        let obj = arr[i]
-        if(obj.edit){
-          paramArr.push(obj)
+      let paramData = null
+      if(this.headerTab == 1){
+        let paramArr = []
+        let arr = [...this.tableData]
+        for(let i=0;i<arr.length;i++){
+          let obj = arr[i]
+          if(obj.edit){
+            paramArr.push(obj)
+          }
         }
+        paramData = paramArr
+      } else if(this.headerTab == 2){
+        paramData = this.headerParam
       }
       // console.log('编辑信息：', paramArr)
-      this.$emit('editData', paramArr)
+      this.$emit('editData', this.index, paramData, this.saveEvent)
     },
     // 修改table header的背景色
     tableHeaderColor({ row, rowIndex }) {

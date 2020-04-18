@@ -251,3 +251,30 @@ export function saveAnnualReport (params) {
   })
 }
 
+// 1. 6. 7. 本人婚姻情况
+export function saveMarrageAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveMarrageAnnual,
+    method: 'post',
+    data: params
+  })
+}
+// 3. 4. 5. 本人因私出国情况 POST /declareExit/saveDeclareExitAnnual
+export function saveDeclareExitAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveDeclareExitAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 8. 年度报告详情信息新增信息
+export function saveRelativesAbroadAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveRelativesAbroadAnnual,
+    method: 'post',
+    data: params
+  })
+}
+// 
+

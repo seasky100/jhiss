@@ -88,12 +88,12 @@ export default {
         comment: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
-        // department: [
-        //   { required: true, message: '请选择', trigger: 'change' }
-        // ],
-        // approvalId: [
-        //   { required: true, message: '请选择', trigger: 'change' }
-        // ]
+        department: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        approvalId: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ]
       },
       // 部门配置
       config: {
@@ -142,8 +142,8 @@ export default {
             rapporteurId: '1008611',
             comment: this.ruleForm.comment,
             department: this.ruleForm.department,
-            // approvalId: this.ruleForm.approvalId,
-            approvalId: '123456001',
+            approvalId: this.ruleForm.approvalId,
+            // approvalId: '123456001',
           }
           saveAnnualReport(annualReportInformation).then(res => {
             // console.log(res);

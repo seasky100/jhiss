@@ -1,31 +1,56 @@
 <template>
   <div class="Org_relationship">
     <div class="page-title">
-      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
+      <img style="margin-right:8px;" src="@/utils/img/home_round_bar@2x.png" />
       <span>层级管理</span>
-      <el-button class="titleBtn" size="mini" @click="returnClick">返回上一级</el-button>
+      <el-button class="titleBtn" size="mini" @click="returnClick"
+        >返回上一级</el-button
+      >
     </div>
     <div class="individual_title"></div>
     <div class=""></div>
     <div class="dep_list" style="width:100%;text-align:center;">
-      <div @mousedown="changeScroll('left')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+      <div
+        @mousedown="changeScroll('left')"
+        @mouseup="stopScroll"
+        style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;"
+      >
         <img style="width:30px;" src="@/assets/images/bg/dir_left.png" />
       </div>
       <div ref="dep_list" class="dep_Con">
         <!--   background: url('../../../assets/images/bg/dep_bg_level.png') no-repeat;
           background-size: 100% 100%; -->
-        <div class="entrance" @click="handleClickDep(item)"
-          :style="[{border:active==item.id?'3px solid #bf1730':'none'}]" 
-          v-for="(item,index) of entranceList" :key="index" ref="dep_box">
-          <img style="height:40px;margin:8px 0;" 
-            :src="index%2==0?require('../../../assets/images/bg/dep_bg.png'):require('../../../assets/images/bg/dep_bg2.png')" />
+        <div
+          class="entrance"
+          @click="handleClickDep(item)"
+          :style="[
+            { border: active == item.id ? '3px solid #bf1730' : 'none' },
+          ]"
+          v-for="(item, index) of entranceList"
+          :key="index"
+          ref="dep_box"
+        >
+          <img
+            style="height:40px;margin:8px 0;"
+            :src="
+              index % 2 == 0
+                ? require('../../../assets/images/bg/dep_bg.png')
+                : require('../../../assets/images/bg/dep_bg2.png')
+            "
+          />
           <div class="panel_info">
-            <span style="display:block;">{{item.name}}</span>
-            <span style="font-weight:normal;color:#ccc;">{{item.userPname}}</span>
+            <span style="display:block;">{{ item.name }}</span>
+            <span style="font-weight:normal;color:#ccc;">{{
+              item.userPname
+            }}</span>
           </div>
         </div>
       </div>
-      <div @mousedown="changeScroll('right')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+      <div
+        @mousedown="changeScroll('right')"
+        @mouseup="stopScroll"
+        style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;"
+      >
         <img style="width:30px;" src="@/assets/images/bg/dir_right.png" />
       </div>
     </div>
@@ -35,229 +60,299 @@
       <li style="color:#1ACE80;">良好</li>
       <li style="color:#AB2C31;">注意</li>
     </div>
-		<div class="relationship">
-			<org-tree :data="tree_data" 
-        :horizontal="horizontal" 
-        :path_url="path_url" 
+    <div class="relationship">
+      <org-tree
+        :data="tree_data"
+        :horizontal="horizontal"
+        :path_url="path_url"
         :collapsable="false"
         :expandAll="true"
         :model="model"
-        :settingFlag="false">
+      >
       </org-tree>
-		</div>
+    </div>
   </div>
 </template>
 <script>
 // import treeData from './treeData.js';
-import { getUserInfo } from '@/api/user-server.js'
+import { getUserInfo } from '@/api/user-server.js';
 export default {
-	name: "Departmental_level",
+  name: 'Departmental_level',
   data() {
     return {
       active: 0,
       entranceList: [],
-      tree_data: null,
+      tree_data: {},
       horizontal: true,
       // 人员关系跳转地址
       path_url: 'Personnel_relation',
       model: '',
       timer: null,
-			// 
-    }
+      //
+    };
   },
   watch: {
-    tree_data(newVal,oldVal){
-      this.$store.state.depInfo.value = newVal
+    tree_data(newVal, oldVal) {
+      this.$store.state.depInfo.value = newVal;
     },
-    active(newVal,oldVal){
-      this.$store.state.depInfo.value.id = newVal
+    active(newVal, oldVal) {
+      this.$store.state.depInfo.value.id = newVal;
     },
-    entranceList(newVal,oldVal){
-      this.$store.state.depInfo.list = newVal
+    entranceList(newVal, oldVal) {
+      this.$store.state.depInfo.list = newVal;
     },
-    model(newVal,oldVal){
-      this.$store.state.depInfo.model = newVal
+    model(newVal, oldVal) {
+      this.$store.state.depInfo.model = newVal;
     },
   },
   mounted() {
-    this.init()
+    this.init();
   },
   methods: {
-    returnClick(){
-      this.$router.push({path: '/Org_relationship'})
+    returnClick() {
+      this.$router.go(-1);
     },
     init() {
-      let query = this.$route.query
-      if(Object.keys(this.$route.query).length == 0){
-        query = this.$store.state.depInfo
-      }else{
-        this.$store.state.depInfo = query
+      let query = this.$route.query;
+      if (Object.keys(this.$route.query).length == 0) {
+        query = this.$store.state.depInfo;
+      } else {
+        this.$store.state.depInfo = query;
       }
-      let arr = []
-      this.flattenPerson([query.value],arr)
-      this.tree_data = arr[0]
+      let arr = [];
+      // this.flattenPerson([query.value],arr)
+      // this.tree_data = arr[0]
+      let personData = query.value;
+
+      let tree_data = {
+        children: [],
+        name: personData.userPname,
+      };
+      this.getChildren(personData, tree_data.children);
+      this.tree_data = tree_data;
+      //
       // this.userInfo = JSON.parse(sessionStorage.userInfo)
-      this.active = query.value.id
-      this.entranceList = query.list
-      this.model = query.model
-      const _this = this
-      let n = 0
-      for(let i=0;i<this.entranceList.length;i++){
-        let obj = this.entranceList[i]
-        if(obj.id == this.active){
-          n = i
+      this.active = query.value.id;
+      this.entranceList = query.list;
+
+      this.model = query.model;
+      const _this = this;
+      let n = 0;
+      for (let i = 0; i < this.entranceList.length; i++) {
+        let obj = this.entranceList[i];
+        if (obj.id == this.active) {
+          n = i;
           break;
         }
       }
       // let width = this.$refs.dep_list.offsetWidth
       this.$nextTick(() => {
         // let scroll = width - _this.$refs.dep_box[n].offsetWidth
-        let scroll = _this.$refs.dep_box[n].offsetLeft - 400
-        $(_this.$refs.dep_list).animate({scrollLeft : scroll },2000)
+        let scroll = _this.$refs.dep_box[n].offsetLeft - 400;
+        $(_this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
       });
     },
-    async getPersonInfo(userId){
-      const _this = this
+    getChildren(node, newchildren) {
+      let childrens = node.childrens || []; //当前岗位下的子节点
+      let userList = node.userList; //当前岗位的用户节点
+      //把当前岗位的节点当作子节点
+      for (var i = 0; i < userList.length; i++) {
+        (userList[i].userPid = node.userPid), (userList[i].children = []);
+        let newChild = {
+          id: userList[i].id,
+          name: userList[i].realName,
+          userPid: node.userPid,
+          children: [],
+        };
+        newchildren.push(userList[i]);
+      }
+
+      for (var m = 0; m < childrens.length; m++) {
+        for (var n = 0; n < newchildren.length; n++) {
+          if (childrens[m].userPid == newchildren[n].id) {
+            this.getChildren(childrens[m], newchildren[n].children);
+          }
+        }
+      }
+    },
+    async getPersonInfo(userId) {
+      const _this = this;
       const params = {
-        userId: userId
-      }
-      let result = null
-      await getUserInfo(params).then(res => {
+        userId: userId,
+      };
+      let result = null;
+      await getUserInfo(params)
+        .then((res) => {
           if (res.success == true) {
-            let userInfo = res.data.userInfo
+            let userInfo = res.data.userInfo;
             // console.log(userInfo)
-            result = userInfo
+            result = userInfo;
           } else {
-            console.log(res.message)
+            console.log(res.message);
           }
-      })
-      .catch(error => {
-          console.log(error)
-      })
-      return result
-    },
-    flattenPerson(tdata,resData){
-      if(Array.isArray(tdata) && tdata.length>0){
-        tdata.forEach((v,i) => {
-          resData[i] = v
-          var arr=[]
-          let userInfo = {id: '1111111111' }
-          let aa = this.getPersonInfo(v.userPid).then((value) => {
-            userInfo = value
-            resData[i].userInfo = userInfo
-            return value
-          })
-          this.flattenPerson(v.children,arr)
         })
+        .catch((error) => {
+          console.log(error);
+        });
+      return result;
+    },
+    flattenPerson(tdata, resData) {
+      if (Array.isArray(tdata) && tdata.length > 0) {
+        tdata.forEach((v, i) => {
+          resData[i] = v;
+          var arr = [];
+          let userInfo = { id: '1111111111' };
+          let aa = this.getPersonInfo(v.userPid).then((value) => {
+            userInfo = value;
+            resData[i].userInfo = userInfo;
+            return value;
+          });
+          this.flattenPerson(v.children, arr);
+        });
       }
     },
-    changeScroll(direction = 'right'){
+    changeScroll(direction = 'right') {
       // const _this = this
-      let scroll = this.$refs.dep_list.scrollLeft
-      let width = this.$refs.dep_list.scrollWidth
-      let n = 0
-      if(direction == 'left'){
+      let scroll = this.$refs.dep_list.scrollLeft;
+      let width = this.$refs.dep_list.scrollWidth;
+      let n = 0;
+      if (direction == 'left') {
         // $(this.$refs.dep_list).animate({scrollLeft: scroll - 300 },1000)
-        this.timer = setInterval(() =>{ 
-          if(n > scroll){
-            clearInterval(this.timer)
+        this.timer = setInterval(() => {
+          if (n > scroll) {
+            clearInterval(this.timer);
           }
-          $(this.$refs.dep_list).animate({scrollLeft: scroll - n },0)
-          n++
+          $(this.$refs.dep_list).animate({ scrollLeft: scroll - n }, 0);
+          n++;
         }, 0);
-      }else {
+      } else {
         // $(this.$refs.dep_list).animate({scrollLeft: width },width - scroll)
-        this.timer = setInterval(() =>{ 
-          if(n + scroll > width){
-            clearInterval(this.timer)
+        this.timer = setInterval(() => {
+          if (n + scroll > width) {
+            clearInterval(this.timer);
           }
-          $(this.$refs.dep_list).animate({scrollLeft: scroll + n },0)
-          n++
+          $(this.$refs.dep_list).animate({ scrollLeft: scroll + n }, 0);
+          n++;
         }, 0);
       }
     },
-    stopScroll(){
-      clearInterval(this.timer)
-      this.timer = null
+    stopScroll() {
+      clearInterval(this.timer);
+      this.timer = null;
     },
-    handleClickDep(value){
-      let arr = []
-      this.flattenPerson([value],arr)
+    handleClickDep(value) {
+      let arr = [];
+      this.flattenPerson([value], arr);
       // console.log('部门信息2',arr)
-      this.active = value.id
+      this.active = value.id;
       // this.tree_data = value
-      this.tree_data = arr[0]
-    }
-		// 
-  }
-}
+      this.tree_data = arr[0];
+    },
+    //
+  },
+};
 </script>
 <style lang="stylus" scoped>
-/*滚动条样式*/
-::-webkit-scrollbar { width: 6px; height: 6px; background-color: #666;}
-::-webkit-scrollbar-track { border-radius: 10px; background-color: #666;}
-::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #222;}
-.individual_title{
-  height:70px;
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #666;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #666;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #222;
+}
+
+.individual_title {
+  height: 70px;
   background: url('../../../assets/images/bg/top_bg.png');
   background-size: 100% 100%;
 }
-.entrance{
+
+.entrance {
   border-radius: 20px;
   background: #ffffff;
 }
-.entrance .panel_info{
+
+.entrance .panel_info {
   font-weight: bold;
   color: #bf1730;
 }
-.dep_Con{
-  display:inline-block;
-  width:calc(100% - 80px);
-  overflow:hidden;
+
+.dep_Con {
+  display: inline-block;
+  width: calc(100% - 80px);
+  overflow: hidden;
   white-space: nowrap;
 }
-.Org_relationship{
+
+.Org_relationship {
   height: 100%;
-	width: 100%;
+  width: 100%;
   font-size: 12px;
 }
-.page-title
-  background #fff
-  padding 10px 16px
-  span 
-    font-size 16px
-    color #121518
-    font-weight 700
-  .titleBtn
-    position absolute
-    right 20px
-.post_status
-  position: fixed
-  width: 200px
-  margin: 20px 40px
-  span 
-    display block
-  li
-    width 50px
-    float left
-    margin-top 5px
-.dep_list_span
-  cursor:pointer;
-  position:relative;
+
+.page-title {
+  background: #fff;
+  padding: 10px 16px;
+
+  span {
+    font-size: 16px;
+    color: #121518;
+    font-weight: 700;
+  }
+
+  .titleBtn {
+    position: absolute;
+    right: 20px;
+  }
+}
+
+.post_status {
+  position: fixed;
+  width: 200px;
+  margin: 20px 40px;
+
+  span {
+    display: block;
+  }
+
+  li {
+    width: 50px;
+    float: left;
+    margin-top: 5px;
+  }
+}
+
+.dep_list_span {
+  cursor: pointer;
+  position: relative;
   bottom: 60px;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
-.entrance
-	width 120px
-	height 100px
-	display inline-block
-	text-align center
-	margin 10px 0.8%
-.relationship
-	margin 0 0.8%
-	height calc(100% - 265px)
-	text-align center
-	overflow auto
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.entrance {
+  width: 120px;
+  height: 100px;
+  display: inline-block;
+  text-align: center;
+  margin: 10px 0.8%;
+}
+
+.relationship {
+  margin: 0 0.8%;
+  height: calc(100% - 265px);
+  text-align: center;
+  overflow: auto;
+}
 </style>
