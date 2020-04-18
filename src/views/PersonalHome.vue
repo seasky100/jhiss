@@ -101,7 +101,7 @@
                   </div>
                   <div class='p_eright'>
                     <div style="height:15%;" @click='pchange'>切换</div>
-                    <!-- <div v-show='change' > -->
+                    <div v-show='change' >
                     <div style="height:16%;display:flex">
                       <div style="width: 25%">正面评价清单</div>
                       <el-progress style="width: 70%" :color="customColor1"  :stroke-width="15" :percentage="70">正面评价清单</el-progress>
@@ -118,11 +118,10 @@
                       <div style="width: 25%">层级评价清单</div>
                       <el-progress style="width: 70%" :color="customColor4" :stroke-width="15" :percentage="70" ></el-progress>
                     </div> 
-                  <!-- </div>   -->
-                  <!-- <div v-show='!change' style="height: 80%; width: 100%; ">
-                    气泡图
-                    <svg width="100px" height="100px" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
-                  </div>      -->
+                  </div>  
+                  <div v-show='!change' style="height: 80%; width: 100%; ">
+                    <svg ref="element" width="150" height="150" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
+                  </div>     
                 </div>
             </div>
           </div>
@@ -341,7 +340,7 @@ export default {
 // },
     mounted() {
       debugger
-      // this.initCircle()
+      this.initCircle()
       this.getRadar3()
       this.userInfo = JSON.parse(sessionStorage.userInfo)
       const today = this.$dayjs(new Date());
@@ -474,21 +473,19 @@ export default {
     initCircle() {
       // const data = this.qpdata
       const data = [
-        { name: "name1", count: 14 }, 
-        { name: "name2", count: 34 },
-        { name: "mike", count: 64 },
-        { name: "joke", count: 224 },
-        { name: "jobs", count: 112 }
+        { name: "争优", count: 324 }, 
+        { name: "业绩", count: 174 },
+        { name: "考勤", count: 278 },
+        { name: "重点", count: 294 },
+        { name: "共性", count: 250 }
       ]
       debugger
       d3.select("svg").selectAll("g").remove();//清空作图区域
-      const svg = d3.select("svg"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height");
+      const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
       const format = d3.format(",d");
 
       //       var color = d3.scaleOrdinal(d3.schemeCategory20c);
-      const color = ["#CCFF00", "#FF0033", "#336699", "#33FF66", "#669966", "#66CCFF", "#99CCFF", "#CCCCCC"];//自定义颜色
+      const color = ["#FF9700", "#416DF6","#63C073", "#8B6FFE", "#F34252"];//自定义颜色
       const pack = d3.pack()
         .size([width, height])
         .padding(1.5);
@@ -502,7 +499,7 @@ export default {
             d.id = id;
             d.class = id;
             pid = num / (d.value);
-            d.colorPick = pid > 100 ? 5 : (pid > 50 ? 4 : (pid > 10 ? 3 : (pid > 2 ? 2 : 1)));
+            d.colorPick = pid > 50 ? 5 : (pid > 50 ? 4 : (pid > 20 ? 3 : (pid > 2 ? 2 : 1)));
             console.log(d.colorPick);
           }
         });
