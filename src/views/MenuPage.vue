@@ -83,18 +83,9 @@
         </div>
     </div>
     <div class="page_body">
-      <div class="m_left"  :style="[{maxWidth:isCollapse?'50px':'190px'}]">
-        <el-button type="primary" @click="switchClick" style="width:100%;">
-          切换
-        </el-button>
+      <div class="m_left">
         <!-- router="true" -->
-        <el-menu :default-active="activeMenu" :active="activeMenu"  class="el-menu-vertical-demo" :router="true"
-          background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
-          @open="handleOpen" @close="handleClose" @select="handleSelect" :collapse="isCollapse">
-          <!-- 一级 -->
-          <nav-menu :navMenus="routes"></nav-menu>
-        </el-menu>
- 
+          <nav-menu :navMenus="routes"></nav-menu> 
       </div>
       <div class="bodyContent" > <!-- :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 150px)'}]" -->
         <router-view/>
@@ -115,7 +106,6 @@ export default {
   },
   data() {
     return {
-      isCollapse: false,
       flag:false,
       dialogVisible: false,
       textarea: '',
@@ -182,19 +172,7 @@ export default {
         this.activeMenu = this.routes[0].path
       }
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleSelect(key, keyPath) {
-      this.activeMenu = key
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    switchClick(){
-      this.isCollapse = !this.isCollapse
-    },
+    
     enter(){
       this.flag = true
     },
@@ -246,17 +224,11 @@ export default {
 .m_left{
   float:left;
   height:100%;
-  background:#545c64
+  // background:#545c64
+  background:#0A0B1C
+
   }
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  min-height: 400px;
-  height:calc(100vh-100px);
-  height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-.el-menu--collapse {
-    width: 50px !important;
-}
+
 .h48{
   height: 2.428em!important;
 }
