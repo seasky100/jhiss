@@ -18,18 +18,19 @@
     <!-- <span slot="title">{{item.title}}</span> -->
     <!-- </el-menu-item> -->
     <!-- </template> -->
-      <el-button type="primary" @click="switchClick" style="width:100%;">
-          切换
-        </el-button>
-        <!-- #545c64 -->
+    <el-button type="primary" @click="switchClick" style="width:100%;">
+      切换
+    </el-button>
+    <!-- #545c64 -->
     <el-menu :default-active="activeMenu" :active="activeMenu" class="el-menu-vertical-demo" :router="true" background-color="#0A0B1C" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose" @select="handleSelect" :collapse="isCollapse">
+      <!-- 第一层 -->
       <template v-for="(item,index) in navMenus">
         <el-submenu v-if="item.children && item.children.length>0" :key="index" :index="index+''">
           <template slot="title">
             <img v-if="item.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${item.img}`)" />
             <span slot="title">{{item.title}}</span>
           </template>
-             <!-- 第一次子循环 -->
+          <!-- 第一次子循环 -->
           <template v-for="(firstitem,firstindex) in item.children">
             <el-submenu v-if="firstitem.children && firstitem.children.length>0" :key="firstindex+'f'" :index="firstindex+''">
               <template slot="title">
@@ -38,18 +39,32 @@
               </template>
               <!-- 第二次子循环 -->
               <template v-for="(seconditem,secondindex) in firstitem.children">
-                <el-submenu v-if="seconditem.children && seconditem.children.length>0" :key="secondindex+'s'" :index="secondindex+''">
+                <el-submenu v-if="seconditem.children && seconditem.children.length>0" :key="secondindex+'s'" :index="seconditem.path+''">
                   <template slot="title">
                     <img v-if="seconditem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${seconditem.img}`)" />
                     <span slot="title">{{seconditem.title}}</span>
                   </template>
+                  <!-- 第三次子循环 -->
+                  <template v-for="(thirdItem,thirdIndex) in seconditem.children">
+                    <el-submenu v-if="thirdItem.children && thirdItem.children.length>0" :key="thirdIndex+'t'" :index="thirdIndex">
+                      <template slot="title">
+                        <img v-if="thirdItem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${seconditem.img}`)" />
+                        <span slot="title">{{thirdItem.title}}</span>
+                      </template>
+                    </el-submenu>
+                    <el-menu-item v-if="thirdItem.children == null && (!thirdItem.hidden)" :key="thirdIndex+'t'" :index="thirdItem.path">
+                      <img v-if="thirdItem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${seconditem.img}`)" />
+                      <span slot="title">{{thirdItem.title}}</span>
+                    </el-menu-item>
+                  </template>
                 </el-submenu>
-                <el-menu-item v-if="seconditem.children == null && (!seconditem.hidden)" :key="secondindex+'s'" :index="secondindex+''">
+                <el-menu-item v-if="seconditem.children == null && (!seconditem.hidden)" :key="secondindex+'s'" :index="seconditem.path">
                   <img v-if="seconditem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${seconditem.img}`)" />
                   <span slot="title">{{seconditem.title}}</span>
                 </el-menu-item>
               </template>
             </el-submenu>
+           
             <el-menu-item v-if="firstitem.children == null && (!firstitem.hidden)" :key="firstindex+'f'" :index="firstitem.path">
               <img v-if="firstitem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${firstitem.img}`)" />
               <span slot="title">{{firstitem.title}}</span>
@@ -57,7 +72,7 @@
           </template>
 
         </el-submenu>
-        <!-- <el-menu-item v-show="!item.hidden" v-else :key="index" :index="item.path"> -->
+         <!-- 第一层没有子节点 -->
         <el-menu-item v-if="item.children == null && (!item.hidden)" :key="index" :index="item.path">
           <img v-if="item.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${item.img}`)" />
           <span slot="title">{{item.title}}</span>
@@ -77,7 +92,7 @@ export default {
       imgPath: 'left_menu_sub_hierarchy.png',
       activeMenu: '',
       isCollapse: false,
-      routes:[]
+      routes: []
     };
   },
   mounted() {
@@ -93,15 +108,14 @@ export default {
       console.log(key, keyPath);
     },
     handleSelect(key, keyPath) {
-      this.activeMenu = key;
       console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    switchClick(){
-      this.isCollapse = !this.isCollapse
-    },
+    switchClick() {
+      this.isCollapse = !this.isCollapse;
+    }
   }
 };
 </script>
@@ -114,6 +128,6 @@ export default {
 
 .el-menu--collapse {
   width: 70px !important;
-  min-height: calc(100vh - 70px);;
+  min-height: calc(100vh - 70px);
 }
 </style>
