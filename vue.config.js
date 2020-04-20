@@ -211,24 +211,24 @@ module.exports = {
         }
       },
       '/gaism_server': {
-        // target: 'http://39.100.4.175:10008/gaism-server/',
         target: 'http://39.106.157.136:8080/gaism-server/',
+        // target: 'http://192.168.1.111:8080/gaism-server/',
         changeOrigin: true,
         pathRewrite: {
           '^/gaism_server': ''
         }
       },
       '/gmsso_server': {
-        // target: 'http://39.100.4.175:19286/gm-sso-server/',
         target: 'http://39.106.157.136:8081/gm-sso-server/',
+        // target: 'http://192.168.1.111:8082/gm_sso_server_war/',
         changeOrigin: true,
         pathRewrite: {
           '^/gmsso_server': ''
         }
       },
       '/uums_server': {
-        // target: 'http://39.100.4.175:19286/uums-server/',
         target: 'http://39.106.157.136:8081/uums-server/',
+        // target: 'http://192.168.1.111:8098/uums_server_war/',
         changeOrigin: true,
         pathRewrite: {
           '^/uums_server': ''
