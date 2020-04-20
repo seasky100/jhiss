@@ -130,47 +130,47 @@ let columns3 = [
     { prop: 'exitCountry', label: '所到国家', align: 'left' },
     { prop: 'cause', label: '事由', align: 'left' },
     { prop: 'city', label: '保管机构', align: 'left' },
-    { prop: 'zip', label: '所用护照号', align: 'left' },
+    { prop: 'certificateNumber', label: '所用护照号', align: 'left' },
 ]
 // 本人持有往来港澳通行证、因私持有大陆居民往来台湾通行证的情况
 let columns4 = [
-    { prop: 'name', label: '证件名称', align: 'left' },
-    { prop: 'zip', label: '证件号码', align: 'left' },
-    { prop: 'date', label: '有效期限', align: 'left' },
-    { prop: 'city', label: '保管机构', align: 'left' },
-    { prop: 'address', label: '备注', align: 'left' },
+    { prop: 'certificateType', label: '证件名称', align: 'left' },
+    { prop: 'certificateNumber', label: '证件号码', align: 'left' },
+    { prop: 'endTime', label: '有效期限', align: 'left' },
+    { prop: 'exitProvince', label: '保管机构', align: 'left' },
+    { prop: 'comment', label: '备注', align: 'left' },
 ]
 // 本人因私往来港澳、台湾的情况
 let columns5 = [
-    { prop: 'date', label: '起止日期', align: 'left' },
-    { prop: 'city', label: '所到地区', align: 'left' },
-    { prop: 'address', label: '事由', align: 'left' },
-    { prop: 'city', label: '审批机构', align: 'left' },
-    { prop: 'zip', label: '所用证件号码', align: 'left' },
+    { prop: 'startTime', label: '起止日期', align: 'left' },
+    { prop: 'exitProvince', label: '所到地区', align: 'left' },
+    { prop: 'cause', label: '事由', align: 'left' },
+    { prop: 'exitCountry', label: '审批机构', align: 'left' },
+    { prop: 'certificateNumber', label: '所用证件号码', align: 'left' },
 ]
 // 子女与外国人、无国籍人通婚的情况
 let columns6 = [
-    { prop: 'name', label: '子女姓名', align: 'left' },
+    { prop: 'childName', label: '子女姓名', align: 'left' },
     { prop: '', label: '子女的配偶基本情况', align: 'left', 
         children: [
             { prop: 'name', label: '姓名', align: 'left'},
-            { prop: 'city', label: '国家', align: 'left' },
-            { prop: 'address', width: '250px', label: '工作（学习）单位', align: 'left' },
-            { prop: 'province', label: '职务', align: 'left' },
-            { prop: 'date', width: '130px', label: '登记时间', align: 'left' },
+            { prop: 'country', label: '国家', align: 'left' },
+            { prop: 'workCompany', width: '250px', label: '工作（学习）单位', align: 'left' },
+            { prop: 'post', label: '职务', align: 'left' },
+            { prop: 'changeTime', width: '130px', label: '登记时间', align: 'left' },
         ]
     },
 ]
 // 子女与港澳以及台湾居民通婚的情况
 let columns7 = [
-    { prop: 'name', label: '子女姓名', align: 'left' },
+    { prop: 'childName', label: '子女姓名', align: 'left' },
     { prop: '', label: '子女的配偶基本情况', align: 'left', 
         children: [
             { prop: 'name', label: '姓名', align: 'left'},
-            { prop: 'city', label: '地区', align: 'left' },
-            { prop: 'address', width: '250px', label: '工作（学习）单位', align: 'left' },
-            { prop: 'province', label: '职务', align: 'left' },
-            { prop: 'date', width: '130px', label: '登记时间', align: 'left' },
+            { prop: 'country', label: '地区', align: 'left' },
+            { prop: 'workCompany', width: '250px', label: '工作（学习）单位', align: 'left' },
+            { prop: 'post', label: '职务', align: 'left' },
+            { prop: 'changeTime', width: '130px', label: '登记时间', align: 'left' },
         ]
     },
 ]
