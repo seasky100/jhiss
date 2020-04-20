@@ -15,13 +15,13 @@ export default {
   },
   mounted() {
     
-    // const token = sessionStorage.getItem('token')
-    // console.log(window.location.href)   
-    // if(token){
-    //   window.location.href ;
-    // }else{
-    //   this.$router.push({ path: '/login' });
-    // }
+    const token = sessionStorage.getItem('token')
+    console.log(window.location.href)   
+    if(token){
+      window.location.href ;
+    }else{
+      this.$router.push({ path: '/login' });
+    }
     //this.$router.push({ path: '/PersonalHome' });
     // this.init()
   },
