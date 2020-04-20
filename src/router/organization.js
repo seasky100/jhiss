@@ -3,7 +3,6 @@ export default [
         title: '层级管理',
         icon: 'el-icon-user-solid',
         img: 'left_organization@2x.png',
-        hidden: true,
         path: "/PersonalHome2",
         component: () => import('@/views/OrganizeManage'),
         children: [

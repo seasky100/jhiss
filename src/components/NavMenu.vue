@@ -24,7 +24,7 @@
         <!-- #545c64 -->
     <el-menu :default-active="activeMenu" :active="activeMenu" class="el-menu-vertical-demo" :router="true" background-color="#0A0B1C" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose" @select="handleSelect" :collapse="isCollapse">
       <template v-for="(item,index) in navMenus">
-        <el-submenu v-if="item.children && item.children.length>0" :key="index" :index="index+''">
+        <el-submenu v-if="item.children && item.children.length>0 && (!item.hidden)" :key="index" :index="index+''">
           <template slot="title">
             <img v-if="item.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${item.img}`)" />
             <span slot="title">{{item.title}}</span>
