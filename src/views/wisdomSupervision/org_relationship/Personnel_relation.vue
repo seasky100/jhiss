@@ -6,9 +6,9 @@
       <el-button class="titleBtn" size="mini" @click="returnClick">返回上一级</el-button>
     </div>
     <div class="individual_title"></div>
-    <div class="police_career" style="height:calc(100% - 145px);background:none;">
+    <div class="police_career" style="background:none;">
       <div class="fengxian" style="width:460px;">
-        <div class="relationTitle">我的层级关系</div>
+        <div class="relationTitle">我的工作台</div>
         <!-- <img style="margin: 15px 3%;width:94%;" src="../../../assets/images/bg/ship_bg.png" /> -->
         <div class="con photoImg">
           <div class="photo_img_con" style="border:3px solid #afafaf;">
@@ -20,14 +20,14 @@
               </div>
             </el-image>
           </div>
-          <div class="img_name">{{personInfo.userPname}}</div>
+          <div class="img_name">{{personInfo.realName}}</div>
         </div>
         <div class="con labelCon">
           <!-- <span class="top_title">标签</span> -->
           <span :style="[{background:color_arr[index].bg,color:color_arr[index].color}]"
             class="label_body" 
             v-for="(item,index) of labelList" :key="index">
-            {{item}}
+            {{item.label}}
           </span>
         </div>  
         <div class="con projectCon" style="height:110px;">
@@ -98,8 +98,7 @@ export default {
       active: 1,
       labelList: [
         {label: '党员'},
-        {label: '岗位状态'},
-        {label: '岗位状态'}
+        {label: '在岗'},
       ],
       projectList: [
         {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
@@ -111,7 +110,7 @@ export default {
         {name:'我的直属领导'},
         {name:'我的下属同事'}
       ],
-      tree_data: null,
+      tree_data: {},
       person_data: [],
       color_arr: [
         {bg: '#EAE9EF',color: '#A52126'},
@@ -123,23 +122,7 @@ export default {
       dialogVisible: false, // 岗位预警
       dialogVisible2: false, // 责任清单
       warningInfo: null,
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      gridData: [],
     }
   },
   watch:{
@@ -163,12 +146,32 @@ export default {
     },
     init() {
       let query = this.$route.query
-      this.personInfo = query.value
-      // console.log(this.personInfo)
-      this.labelList = [this.personInfo.orgName,this.personInfo.orgPname]
-      // console.log(this.tree_data)
-      this.tree_data = query.value
       this.model = query.model
+      this.personInfo = query.value
+      // this.labelList = [this.personInfo.orgName,this.personInfo.orgPname]
+    
+      this.getData(query)
+    },
+    getChildren(node, newchildren) {
+      let childrens = node.childrens || []; //当前岗位下的子节点
+      let userList = node.userList; //当前岗位的用户节点
+      //把当前岗位的节点当作子节点
+      for (var i = 0; i < userList.length; i++) {
+        userList[i].userPid = node.userPid;
+        userList[i].children = [];
+        newchildren.push(userList[i]);
+      }
+      for (var m = 0; m < childrens.length; m++) {
+        for (var n = 0; n < newchildren.length; n++) {
+          if (childrens[m].userPid == newchildren[n].id) {
+            this.getChildren(childrens[m], newchildren[n].children);
+          }
+        }
+      }
+    },
+    getData(query){
+      this.tree_data = query.value
+      
       if(this.tree_data.children == null){
         // this.submenuList = this.submenuList.splice(0,1)
         this.submenuList = [{name:'我的直属领导'}]
@@ -181,24 +184,24 @@ export default {
         item.label = [item.orgName,item.orgPname]
         return item
       })
-      // console.log(this.person_data)
-      this.getData()
-    },
-    getData(){
       const _this = this
       const params = {
         // userId: _this.$store.state.user.userId
         // 39411b303f3346c69c7a7c507a6d0afd fc7e5d3b2f91477f8ab329b18b4ccb30 36e773bf0298409980c289a9dd922d6a
-        userId: '36e773bf0298409980c289a9dd922d6a'
+        userId:query.value.userPid
       }
       getUserInfo(params).then(res => {
         if (res.success == true) {
           let post = res.data.posts
+          let data=res.data
           // console.log(post)
           if(post.length > 0 && post[0].userPname != null){
-            let tree_obj = post[0]
-            // console.log(tree_obj)
-            tree_obj.children = [_this.tree_data]
+            let  
+            tree_obj={
+              realName:data.realName,
+              children:[_this.tree_data]
+            }
+            console.log(_this.tree_data)
             _this.tree_data = tree_obj
           }else{
             // _this.submenuList = _this.submenuList.splice(1,1)
@@ -276,7 +279,7 @@ export default {
   background-size: 100% 100%;
 }
 .police_career{
-  height: 120px;
+  height:calc(100% - 145px);
   background:#fff;
   margin 15px;
 }
@@ -335,11 +338,11 @@ export default {
 }
 .photoImg .photo_img{
   height: 98%;
-  width: 98%;
+  width: 79%;
   border-radius: 45px;
 }
 .img_name{
-  margin-top: 10px;
+  margin: 10px 0;
   font-size:13px;
   font-family:Source Han Sans CN;
   font-weight:400;
@@ -355,7 +358,7 @@ export default {
 .con
   margin 0px 25px
   margin-bottom 30px
-  line-height 30px
+  line-height 20px
   font-size 14px
   text-align center
   .top_title 

@@ -79,7 +79,7 @@ export default {
       // 弹出框
       // {require('../../images/logo.png')}
       if (data.level == 1) {
-        let imgPath = myPhotoSrc(data.userInfo);
+        let imgPath = myPhotoSrc(data.userInfo.userInfo);
         let img = (
           <el-image class="photo_img" src={imgPath} fit="fill" lazy>
             <div slot="error" class="image-slot">
@@ -147,7 +147,6 @@ export default {
         // }else{
         //   userId = 'fc7e5d3b2f91477f8ab329b18b4ccb30'
         // }
-        console.log(data);
         return (
           <div class="user_panel depCon">
             {// class={item.userPid == userId ? 'user_panel level_three three_hover' : 'user_panel level_three'}
@@ -155,17 +154,9 @@ export default {
               <div
                 onclick={() => this.nodePanelClick(data, item, 'dep')}
                 class="user_panel level_three three_hover"
-                style="margin-bottom:5px;"
-              >
-                <img
-                  class="dep_img"
-                  src={
-                    index == 0
-                      ? require('../../assets/images/bg/dep_bg2.png')
-                      : index == 1
-                      ? require('../../assets/images/bg/dep_bg3.png')
-                      : require('../../assets/images/bg/dep_bg.png')
-                  }
+                style="margin-bottom:5px;">
+                <img class="dep_img"
+                src={ require('../../assets/images/bg/dep_bg.png')}
                 />
                 <div class="depCon_info">{item.name}</div>
               </div>
@@ -178,15 +169,15 @@ export default {
           let img = (
             <el-image
               class="photo_img"
-              style="display:block;border-radius:0;"
+              style="width:40px;height:40px;display:block;border-radius:0;"
               src={imgPath}
-              fit="fill"
+              fit="scale-down"
               lazy
             >
               <div slot="error" class="image-slot">
                 <el-image
                   fit="fill"
-                  style="width:30px;height:30px;"
+                  style="width:40px;height:40px;"
                   src={require('../../assets/images/bg/person.png')}
                 ></el-image>
               </div>
@@ -202,6 +193,8 @@ export default {
           let handleEvent = () => this.nodePanelClick(data, '', routeUrl);
           return (
             <div class="user_panel_dep" onclick={handleEvent}>
+              <div class='part_icon'>      
+                  <img style="height: 16px;margin-left: 10px;" class="dep_img"src={ require('../../assets/images/dangyuan.png')}/></div>
               {img}
               <span
                 style={
@@ -220,7 +213,6 @@ export default {
             </div>
           );
         } else if (this.model == 'person_info') {
-          // this.$store.state.user.userId == data.id
           return (
             <div
               class={
@@ -230,11 +222,7 @@ export default {
               }
             >
               <span>
-                {data.userPname == 'undefined' ||
-                data.userPname == undefined ||
-                data.userPname == null
-                  ? '未知'
-                  : data.userPname}
+                {data.realName}
               </span>
             </div>
           );
@@ -287,8 +275,7 @@ export default {
         // }
       } else {
         // 跳转层级部门
-        query.value = valueObj;
-        query.list = _this.dep_list;
+        query.id = valueObj.id;
         query.model = model;
       }
       if (this.path_url == null || this.path_url == '') {
@@ -453,12 +440,21 @@ export default {
   width: 45px;
   border-radius: 35px;
 }
+.com.com.org_tree .user_panel_dep .part_icon {
+  width: 45px;
+  border-radius: 35px;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  bottom: 19px;
+}
 .com.com.org_tree .user_panel_dep {
   padding: 8px 15px;
   width: 40px;
   height: 60px;
   background: #fff;
   border-radius: 10px;
+  position: relative;
 }
 .com.com.org_tree .user_panel_dep .photo_img {
   margin-left: 5px;
@@ -470,7 +466,7 @@ export default {
   top: 5px;
 }
 .com.com.org_tree .current_user {
-  color: #bf1730;
+  color: #320dac;
 }
 .com.com.org_tree .current_user_bg {
   background: #235ff6;

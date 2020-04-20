@@ -8,7 +8,6 @@
       >
     </div>
     <div class="individual_title"></div>
-    <div class=""></div>
     <div class="dep_list" style="width:100%;text-align:center;">
       <div
         @mousedown="changeScroll('left')"
@@ -110,7 +109,7 @@ export default {
   },
   methods: {
     returnClick() {
-      this.$router.go(-1);
+      this.$router.push({path: '/Org_relationship'})
     },
     init() {
       let query = this.$route.query;
@@ -119,21 +118,10 @@ export default {
       } else {
         this.$store.state.depInfo = query;
       }
-      let arr = [];
-      // this.flattenPerson([query.value],arr)
-      // this.tree_data = arr[0]
-      let personData = query.value;
-
-      let tree_data = {
-        children: [],
-        name: personData.userPname,
-      };
-      this.getChildren(personData, tree_data.children);
-      this.tree_data = tree_data;
-      //
+     
       // this.userInfo = JSON.parse(sessionStorage.userInfo)
-      this.active = query.value.id;
-      this.entranceList = query.list;
+      this.active = query.id;
+      this.entranceList =JSON.parse(window.localStorage.dep_list);
 
       this.model = query.model;
       const _this = this;
@@ -142,6 +130,13 @@ export default {
         let obj = this.entranceList[i];
         if (obj.id == this.active) {
           n = i;
+          let tree_data = {
+            children: [],
+            realName: obj.userPname
+          };
+          this.getChildren(obj, tree_data.children);
+          this.tree_data = tree_data;
+          console.log(obj,this.tree_data)
           break;
         }
       }
@@ -157,7 +152,8 @@ export default {
       let userList = node.userList; //当前岗位的用户节点
       //把当前岗位的节点当作子节点
       for (var i = 0; i < userList.length; i++) {
-        (userList[i].userPid = node.userPid), (userList[i].children = []);
+        userList[i].userPid = node.userPid;
+        userList[i].children = [];
         let newChild = {
           id: userList[i].id,
           name: userList[i].realName,
@@ -166,49 +162,12 @@ export default {
         };
         newchildren.push(userList[i]);
       }
-
       for (var m = 0; m < childrens.length; m++) {
         for (var n = 0; n < newchildren.length; n++) {
           if (childrens[m].userPid == newchildren[n].id) {
             this.getChildren(childrens[m], newchildren[n].children);
           }
         }
-      }
-    },
-    async getPersonInfo(userId) {
-      const _this = this;
-      const params = {
-        userId: userId,
-      };
-      let result = null;
-      await getUserInfo(params)
-        .then((res) => {
-          if (res.success == true) {
-            let userInfo = res.data.userInfo;
-            // console.log(userInfo)
-            result = userInfo;
-          } else {
-            console.log(res.message);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      return result;
-    },
-    flattenPerson(tdata, resData) {
-      if (Array.isArray(tdata) && tdata.length > 0) {
-        tdata.forEach((v, i) => {
-          resData[i] = v;
-          var arr = [];
-          let userInfo = { id: '1111111111' };
-          let aa = this.getPersonInfo(v.userPid).then((value) => {
-            userInfo = value;
-            resData[i].userInfo = userInfo;
-            return value;
-          });
-          this.flattenPerson(v.children, arr);
-        });
       }
     },
     changeScroll(direction = 'right') {
@@ -223,7 +182,7 @@ export default {
             clearInterval(this.timer);
           }
           $(this.$refs.dep_list).animate({ scrollLeft: scroll - n }, 0);
-          n++;
+          n+=5;
         }, 0);
       } else {
         // $(this.$refs.dep_list).animate({scrollLeft: width },width - scroll)
@@ -232,7 +191,7 @@ export default {
             clearInterval(this.timer);
           }
           $(this.$refs.dep_list).animate({ scrollLeft: scroll + n }, 0);
-          n++;
+          n+=5;
         }, 0);
       }
     },
@@ -242,11 +201,18 @@ export default {
     },
     handleClickDep(value) {
       let arr = [];
-      this.flattenPerson([value], arr);
+      // this.flattenPerson([value], arr);
       // console.log('部门信息2',arr)
       this.active = value.id;
       // this.tree_data = value
-      this.tree_data = arr[0];
+      // this.tree_data = arr[0];
+      let tree_data = {
+        children: [],
+          realName: value.userPname
+      };
+      this.getChildren(value, tree_data.children);
+      console.log(1111,value)
+      this.tree_data = tree_data;
     },
     //
   },
@@ -255,8 +221,8 @@ export default {
 <style lang="stylus" scoped>
 /* 滚动条样式 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 16px;
+  height: 16px;
   background-color: #666;
 }
 

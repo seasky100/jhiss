@@ -12,13 +12,13 @@
         </el-image>
       </div>
       <div class="nameSpan" style="margin-top:10px;">
-        {{(item.userPname == 'undefined' || item.userPname == undefined || item.userPname == null)? '未知' : item.userPname}}
+        {{item.realName}}
       </div>
       <div class="nameSpan position">{{item.orgPname}}</div>
       <span :style="[{background:color_arr[index2].bg,color:color_arr[index2].color}]"
         class="label_body"
-        v-for="(item2,index2) of item.label" :key="index2">
-        {{item2}}
+        v-for="(item2,index2) of labelList" :key="index2">
+        {{item2.label}}
       </span>
       <div class="person_ul">
         <span class="person_li" @click="handleClick(item3, item)"
@@ -50,8 +50,7 @@ export default {
       ],
       labelList: [
         {label: '党员'},
-        {label: '岗位状态'},
-        {label: '岗位状态'}
+        {label: '在岗'}
       ],
       color_arr: [
         {bg: '#EAE9EF',color: '#A52126'},
