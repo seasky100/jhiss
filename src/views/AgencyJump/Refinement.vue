@@ -308,7 +308,7 @@
             <div class='r_list'>考勤补签</div>
           </div>
           <div style="width:25%;cursor: pointer;">
-            <img class="photo_img" src="@/assets/images/changyong.png" />
+            <img class="photo_img"  src="@/assets/images/changyong.png" />
             <div class='r_list'>常用功能</div>
           </div>
         </div>
