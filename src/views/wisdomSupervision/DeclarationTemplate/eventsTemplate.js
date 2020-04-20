@@ -195,17 +195,17 @@ let columns8 = [
 // 配偶、子女虽未移居国（境）外，但连续在国（境）外工作、生活一年以上的情况
 let columns9 = [
     { prop: 'name', label: '姓名', align: 'left' },
-    { prop: 'province', label: '所在国家（地区）', align: 'left' },
+    { prop: 'country', label: '所在国家（地区）', align: 'left' },
     { prop: 'city', label: '工作、生活城市', align: 'left' },
-    { prop: 'date', label: '起止时间', align: 'left' },
-    { prop: 'address', label: '备注', align: 'left' },
+    { prop: 'strartTime', label: '起止时间', align: 'left' },
+    { prop: 'comment', label: '备注', align: 'left' },
 ]
-// 配偶、子女虽未移居国（境）外，但连续在国（境）外工作、生活一年以上的情况
+// 配偶、子女及其配偶被司法机关追究刑事责任的情况
 let columns11 = [
     { prop: 'name', label: '姓名', align: 'left' },
-    { prop: 'date', label: '被追究时间', align: 'left' },
-    { prop: 'address', label: '被追究原因', align: 'left' },
-    { prop: 'province', label: '处理阶段', align: 'left',
+    { prop: 'happenTime', label: '被追究时间', align: 'left' },
+    { prop: 'cause', label: '被追究原因', align: 'left' },
+    { prop: 'stage', label: '处理阶段', align: 'left',
         formatter: 'ProcessingStage',
         type:'checkbox', 
         option: [
@@ -217,7 +217,7 @@ let columns11 = [
             {name: '其他', value:'6'},
         ] 
     },
-    { prop: 'province', label: '处理结果', align: 'left' },
+    { prop: 'result', label: '处理结果', align: 'left' },
 ]
 
 // 本人的工资及各类奖金、津贴、补贴等 （万元/全年）
@@ -242,15 +242,24 @@ let columns22 = [
 // 本人、配偶、共同生活的子女为所有权人或者共有人的房产情况
 let columns23 = [
     { prop: 'name', label: '产权人姓名', align: 'left' },
-    { prop: 'province', label: '房产来源', align: 'left',
+    { prop: 'houseSource', label: '房产来源', align: 'left',
         width: '120px',
         formatter: 'propertySource',
-        type:'checkboxArr', 
+        // type:'checkboxArr', 
+        type: 'checkbox',
         option: [
             {name: '购买', value:'1'},
             {name: '继承', value:'2'},
-            {name: '接受赠与', value:'3'},
-            {name: '其他来源', value:'4'},
+            {name: '分割', value:'3'},
+            {name: '合并', value:'4'},
+            {name: '赠与', value:'5'},
+            {name: '变更', value:'6'},
+            {name: '交换', value:'7'},
+            {name: '析产', value:'8'},
+            // {name: '购买', value:'1'},
+            // {name: '继承', value:'2'},
+            // {name: '接受赠与', value:'3'},
+            // {name: '其他来源', value:'4'},
         ],
         option2: [
             {name: '出售', value:'1'},
@@ -259,49 +268,60 @@ let columns23 = [
         ],
     },
     { prop: 'address', label: '具体地址', align: 'left' },
-    { prop: 'province', label: '建筑面积（㎡）', align: 'left' },
-    { prop: 'province', label: '房产性质', align: 'left',
+    { prop: 'area', label: '建筑面积（㎡）', align: 'left' },
+    { prop: 'houseType', label: '房产性质', align: 'left',
         width: '120px',
         formatter: 'propertyNature',
         type:'checkbox', 
         option: [
-            {name: '商品房', value:'1'},
-            {name: '福利房', value:'2'},
-            {name: '经济适用房', value:'3'},
-            {name: '限价房', value:'4'},
+            {name: '住宅', value:'1'},
+            {name: '商住房', value:'2'},
+            {name: '厂房', value:'3'},
+            {name: '仓库', value:'4'},
             {name: '自建房', value:'5'},
-            {name: '车库、车位', value:'6'},
-            {name: '储藏间', value:'7'},
-            {name: '其他', value:'8'},
+            // {name: '商品房', value:'1'},
+            // {name: '福利房', value:'2'},
+            // {name: '经济适用房', value:'3'},
+            // {name: '限价房', value:'4'},
+            // {name: '自建房', value:'5'},
+            // {name: '车库、车位', value:'6'},
+            // {name: '储藏间', value:'7'},
+            // {name: '其他', value:'8'},
         ] 
     },
-    { prop: 'province', label: '交易书剑（年月）', align: 'left' },
-    { prop: 'zip', label: '交易价格（万元）', align: 'left' },
+    { prop: 'tradeTime', label: '交易时间（年月）', align: 'left' },
+    { prop: 'total', label: '交易价格（万元）', align: 'left' },
+]
+
+let appendTab4 = [
+    { columnIndex: 0, rowSpan: 3, summaryfunc:'summaryfunc1', labelName: '填报前一交易日所有股票的总市值', total: 200333 },
+    { columnIndex: 0, rowSpan: 3, summaryfunc:'summaryfunc2', labelName: '账户总资产', total: 200333 },
+    { columnIndex: 1, rowSpan: 3, summaryfunc:'summaryfunc3', labelName: '备注',total: 200333 },
 ]
 
 // 本人、配偶、共同生活的子女投资或者以其他方式持有股票的情况
 let columns24 = [
-    { prop: 'name', label: '持有人姓名', align: 'left' },
-    { prop: 'province', label: '股票名称或代码', align: 'left' },
-    { prop: 'date', label: '持股数量', align: 'left' },
-    { prop: 'zip', label: '填报前 - 交易日市值（万元）', align: 'left' },
+    { prop: 'holderName', label: '持有人姓名', align: 'left' },
+    { prop: 'productName', label: '股票名称或代码', align: 'left' },
+    { prop: 'share', label: '持股数量', align: 'left' },
+    { prop: 'total', label: '填报前 - 交易日市值（万元）', align: 'left' },
 ]
 
 // 本人、配偶、共同生活的子女投资或者以其他方式持有基金的情况
 let columns25 = [
-    { prop: 'name', label: '持有人姓名', align: 'left' },
-    { prop: 'province', label: '基金名称或代码', align: 'left' },
-    { prop: 'zip', label: '基金份额', align: 'left' },
-    { prop: 'zip', label: '填报前 - 交易日净值（万元）', align: 'left' },
+    { prop: 'holderName', label: '持有人姓名', align: 'left' },
+    { prop: 'productName', label: '基金名称或代码', align: 'left' },
+    { prop: 'share', label: '基金份额', align: 'left' },
+    { prop: 'total', label: '填报前 - 交易日净值（万元）', align: 'left' },
 ]
 
 // 本人、配偶、共同生活的子女投资或者以其他方式持有投资型保险的情况
 let columns26 = [
-    { prop: 'name', label: '投保人姓名', align: 'left' },
-    { prop: 'province', label: '保险产品全称', align: 'left' },
-    { prop: 'zip', label: '保单号', align: 'left' },
-    { prop: 'city', label: '保险公司名称', align: 'left' },
-    { prop: 'zip', label: '累积缴纳保费、投资金（万元）', align: 'left' },
+    { prop: 'holderName', label: '投保人姓名', align: 'left' },
+    { prop: 'productName', label: '保险产品全称', align: 'left' },
+    { prop: 'share', label: '保单号', align: 'left' },
+    { prop: 'name', label: '保险公司名称', align: 'left' },
+    { prop: 'total', label: '累积缴纳保费、投资金（万元）', align: 'left' },
 ]
 
 // 配偶、子女及其配偶经商办企业的情况
@@ -315,16 +335,16 @@ let columns27 = [
             },
         ]
     },
-    { index: 1, prop: 'value1', type: 'text', label: '文本', align: 'left',
+    { index: 1, prop: 'name', type: 'text', label: '文本', align: 'left',
         children: [
-            { index: 0, prop: 'value2', type: 'text', label: '文本', align: 'left',
+            { index: 0, prop: 'companyName', type: 'text', label: '文本', align: 'left',
                 children: [
-                    { index: 0, prop: 'value3', type: 'text', label: '文本', align: 'left' },
+                    { index: 0, prop: 'businessScope', type: 'text', label: '文本', align: 'left' },
                 ]
             },
         ]
     },
-    { index: 2, prop: '', label: '同意社会信用代码/注册号', align: 'left',
+    { index: 2, prop: '', label: '同统一社会信用代码/注册号', align: 'left',
         children: [
             { index: 0, prop: '', label: '成立日期', align: 'left',
                 children: [
@@ -337,13 +357,13 @@ let columns27 = [
             },
         ]
     },
-    { index: 3, prop: 'value4', type: 'text', label: '文本', align: 'left',
+    { index: 3, prop: 'creditCode', type: 'text', label: '文本', align: 'left',
         children: [
-            { index: 0, prop: 'value5', type: 'text', label: '文本', align: 'left',
+            { index: 0, prop: 'buildTime', type: 'text', label: '文本', align: 'left',
                 children: [
-                    { index: 0, prop: 'value6', type: 'text', label: '文本', align: 'left',
+                    { index: 0, prop: 'registered', type: 'text', label: '文本', align: 'left',
                         children: [
-                            { index: 0, prop: 'value7', type: 'text', label: '文本', align: 'left' },
+                            { index: 0, prop: 'businessPlace', type: 'text', label: '文本', align: 'left' },
                         ]
                     },
                 ]
@@ -362,7 +382,7 @@ let headerAppend27 = [
             },
         ]
     },
-    { index: 1, prop: 'value8', label: '类型', align: 'left',
+    { index: 1, prop: 'companyType', label: '类型', align: 'left',
         type:'checkbox', 
         option: [
             {name: '股份有限公司', value:'1'},
@@ -374,11 +394,11 @@ let headerAppend27 = [
             {name: '其他', value:'7'},
         ],
         children: [
-            { index: 0, prop: 'value9', type: 'text', label: '文本', align: 'left',
+            { index: 0, prop: 'registeredCapital', type: 'text', label: '文本', align: 'left',
                 children: [
-                    { index: 0, prop: 'value10', type: 'text', label: '文本', align: 'left' },
+                    { index: 0, prop: 'personalContribution', type: 'text', label: '文本', align: 'left' },
                     { index: 1, prop: '', label: '个人认缴出资比例或个人出资比例', align: 'left' },
-                    { index: 2, prop: 'value11', type: 'text', label: '文本', align: 'left' },
+                    { index: 2, prop: 'personalRatio', type: 'text', label: '文本', align: 'left' },
                 ]
             },
         ]
@@ -388,64 +408,60 @@ let headerAppend27 = [
 // 本人、配偶、共同生活的子女在国（境）外的存款情况
 let columns28 = [
     { prop: 'name', label: '存款人姓名', align: 'left' },
-    { prop: 'province', label: '存款的国家（地区）及城市', align: 'left' },
-    { prop: 'city', label: '开户银行或金融机构全称', align: 'left' },
-    { prop: 'city', label: '币种', align: 'left' },
-    { prop: 'zip', label: '金额（万元）', align: 'left' },
-    { prop: 'address', label: '备注', align: 'left' },
+    { prop: 'country', label: '存款的国家（地区）及城市', align: 'left' },
+    { prop: 'bankAccount', label: '开户银行或金融机构全称', align: 'left' },
+    { prop: 'currency', label: '币种', align: 'left' },
+    { prop: 'amountPaid', label: '金额（万元）', align: 'left' },
+    { prop: 'comment', label: '备注', align: 'left' },
 ]
 
 // 本人、配偶、共同生活的子女在国（境）外的投资情况
 let columns29 = [
     { prop: 'name', label: '投资人姓名', align: 'left' },
-    { prop: 'province', label: '投资的国家（地区）及城市', align: 'left' },
-    { prop: 'city', label: '投资情况', align: 'left' },
-    { prop: 'city', label: '币种', align: 'left' },
-    { prop: 'zip', label: '投资金额（万元）', align: 'left' },
-    { prop: 'address', label: '备注', align: 'left' },
+    { prop: 'country', label: '投资的国家（地区）及城市', align: 'left' },
+    { prop: 'investmentSituation', label: '投资情况', align: 'left' },
+    { prop: 'currency', label: '币种', align: 'left' },
+    { prop: 'amountPaid', label: '投资金额（万元）', align: 'left' },
+    { prop: 'comment', label: '备注', align: 'left' },
 ]
 
-// 本人、配偶、共同生活的子女在国（境）外的投资情况
+// 本人、配偶、共同生活的子女参与民间借贷的情况
 let columns210 = [
-    { prop: 'name', label: '借款对象', align: 'left' },
-    { prop: 'province', label: '借款对象工作单位', align: 'left' },
-    { prop: 'city', label: '借入/借出', align: 'left' },
-    { prop: 'city', label: '借款事由', align: 'left' },
-    { prop: 'zip', label: '金额（万元）', align: 'left' },
-    { prop: 'zip', label: '约定利息', align: 'left' },
-    { prop: 'date', label: '期限', align: 'left' },
-    { prop: 'address', label: '备注', align: 'left' },
+    { prop: 'borrower', label: '借款对象', align: 'left' },
+    { prop: 'workCompany', label: '借款对象工作单位', align: 'left' },
+    { prop: 'isBorrow', label: '借入/借出', align: 'left' },
+    { prop: 'borrowReason', label: '借款事由', align: 'left' },
+    { prop: 'amount', label: '金额（万元）', align: 'left' },
+    { prop: 'interest', label: '约定利息', align: 'left' },
+    { prop: 'term', label: '期限', align: 'left' },
+    { prop: 'comment', label: '备注', align: 'left' },
 ]
 
 let tableData = [
     { columns: columns1, data: [], headerTab: 2, headerParam:{edit:false, value1: '1',changeDesc:'222'} }, // 111
-    { columns: columns2, data: [] },
-    { columns: columns3, data: [data1[0]] },
-    { columns: columns4, data: [data1[0]] },
-    { columns: columns5, data: [data1[0]] },
-    { columns: columns6, data: [data1[0]] },
-    { columns: columns7, data: [data1[0]] },
-    { columns: columns8, data: [data1[0]] },
-    { columns: columns9, data: [data1[0]] },
-    { columns: columns9, data: [data1[0]], headerTab: 3 }, // 111
-    { columns: columns11, data: [data1[0],data1[1]] },
+    { columns: columns2, data: [data1[0]] },
+    { columns: columns3, data: [] },
+    { columns: columns4, data: [] },
+    { columns: columns5, data: [] },
+    { columns: columns6, data: [] },
+    { columns: columns7, data: [] },
+    { columns: columns8, data: [] },
+    { columns: columns9, data: [] },
+    { columns: columns9, data: [data1[0]], headerTab: 3,headerParam:{edit:false} }, // 111
+    { columns: columns11, data: [] },
 ]
-let appendTab4 = [
-    { columnIndex: 0, rowSpan: 3, summaryfunc:'summaryfunc1', name: '填报前一交易日所有股票的总市值', text: 200333 },
-    { columnIndex: 0, rowSpan: 3, summaryfunc:'summaryfunc2', name: '账户总资产', text: 200333 },
-    { columnIndex: 1, rowSpan: 3, summaryfunc:'summaryfunc3', name: '备注', text: 200333 },
-]
+
 let tableData2 = [
-    { columns: columns21, data: [...data1] }, 
-    { columns: columns22, data: [...data1] },    
-    { columns: columns23, data: [data1[0]] }, // 第二列行合并
-    { columns: columns24, data: [...data1], appendTab: [...appendTab4] },
-    { columns: columns25, data: [...data1] },
-    { columns: columns26, data: [...data1] },
-    { columns: columns27, data: [...data1], headerTab: 2, headerAppend: headerAppend27, headerParam:{edit:false} }, // 111
-    { columns: columns28, data: [...data1] },
-    { columns: columns29, data: [...data1] },
-    { columns: columns210, data: [...data1] }, 
+    { columns: columns21, data: [data1[0]] }, 
+    { columns: columns22, data: [data1[0]] },    
+    { columns: columns23, data: [] }, // 第二列行合并
+    { columns: columns24, data: [], appendTab: [...appendTab4] },
+    { columns: columns25, data: [] },
+    { columns: columns26, data: [] },
+    { columns: columns27, data: [], headerTab: 2, headerAppend: headerAppend27, headerParam:{edit:false} }, // 111
+    { columns: columns28, data: [] },
+    { columns: columns29, data: [] },
+    { columns: columns210, data: [] }, 
 ]
 let data = {
     tableData1: tableData,

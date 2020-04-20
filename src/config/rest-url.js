@@ -204,9 +204,18 @@ const DEFAULT_URL = {
   },
   // 年度报告新增信息
   saveAnnualReport: {
+    // 报表一
     saveMarrageAnnual: `${GAISMSERVER}marrage/saveDeclareExitAnnual`,
     saveDeclareExitAnnual: `${GAISMSERVER}declareExit/saveDeclareExitAnnual`,
     saveRelativesAbroadAnnual: `${GAISMSERVER}relativesAbroad/saveRelativesAbroadAnnual`,
+    saveRelativesIllegalAnnual: `${GAISMSERVER}relativesIllegal/saveRelativesIllegalAnnual`,
+    // 报表二
+    saveSecuredLoanAnnual: `${GAISMSERVER}securedLoan/saveSecuredLoanAnnual`,
+    saveRelativesBusinessAnnual: `${GAISMSERVER}relativesBusiness/saveRelativesBusinessAnnual`,
+    saveOverseasDepositAnnual: `${GAISMSERVER}overseasDeposit/saveOverseasDepositAnnual`,
+    saveOverseasInvestmentAnnual: `${GAISMSERVER}overseasInvestment/saveOverseasInvestmentAnnual`,
+    saveDomesticInvestmentAnnual: `${GAISMSERVER}/domesticInvestment/saveDeclareExitAnnual`,
+    saveDeclareHouseAnnual: `${GAISMSERVER}/declareHouse/saveDeclareHouseAnnual`,
   }
 }
 
