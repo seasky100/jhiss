@@ -42,8 +42,19 @@
                 </el-radio-group>
               </div>
             </template>
+            <template v-else-if="item.type == 'date'">
+              <el-input v-model="scope.row[item.prop]"></el-input>
+            </template>
           </span>
-          <span v-else-if="(!item.formatter) && (!scope.row.summaryfunc)">{{scope.row[item.prop]}}</span>
+          <span v-else-if="(!item.formatter) && (!scope.row.summaryfunc)">
+            <!-- {{scope.row[item.prop]}} -->
+            <template v-if="item.type == 'date'">
+              {{scope.row[item.prop] != null ? formatterDate(scope.row[item.prop]) : ''}}
+            </template>
+            <template v-else>
+              {{scope.row[item.prop]}}
+            </template>
+          </span>
           <span v-else v-html="format(scope.row, item)"></span>
         </template>
         <!-- 表头数据 -->
@@ -59,6 +70,14 @@
             </template>
             <template v-else>
               {{headerParam[item.prop]}}
+            </template>
+          </span>
+          <span v-else-if="item.type == 'date'">
+            <template v-if="headerParam.edit">
+              <el-input v-model="headerParam[item.prop]"></el-input>
+            </template>
+            <template v-else>
+              {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
             </template>
           </span>
           <!-- headerParam[item.prop] -->
@@ -80,6 +99,7 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
 export default {
   name: 'NavTable',
   inject: ['orgAdd'],
@@ -124,6 +144,9 @@ export default {
     // this.list = this.recursionList(this.columns)
   },
   methods: {
+    formatterDate(dataString){
+      return format(new Date(dataString), 'yyyy-MM-dd')
+    },
 		renderContent(h, { column, $index }){
       // console.log(column)
       return column.label

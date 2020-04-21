@@ -340,5 +340,23 @@ export function saveDeclareHouseAnnual (params) {
   })
 }
 
+// 其他事项报告 
+export function saveOtherReportAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveOtherReportAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 获取年度报告详情信息 
+export function getReportById (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.getReportById,
+    method: 'get',
+    params
+  })
+}
+
 // 
 

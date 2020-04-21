@@ -29,7 +29,7 @@
   </div>
 </template>
 <script>
-import { getUserList, findAnnualReportPage } from '@/api/report.js';
+import { getUserList, findAnnualReportPage, getReportById } from '@/api/report.js';
 export default {
   name: "AnnualReportList",
   data() {
@@ -92,9 +92,8 @@ export default {
             disabled: false,
             method: (key, row) => {
               // console.log('row', row)
-              // AnnualReportAdd AnnualReportInfo
-              // this.$router.push({path: '/AnnualReportInfo', query: row})
-              this.$router.push({path: '/AnnualReportSet', query: {row}})
+              this.findReportById(row)
+              // this.$router.push({path: '/AnnualReportSet', query: {row}})
             },
             showCallback: () => {
               return true;
@@ -124,6 +123,20 @@ export default {
     //       console.log(error)
     //     })
     // },
+    findReportById(row){
+      const _this = this
+      getReportById(
+        Object.assign(
+          {
+            id: row.id,
+          }
+        )
+      ).then(res => {
+        // console.log(res.data)
+        let reportInfo = res.data
+        _this.$router.push({path: '/AnnualReportSet', query: {row,reportInfo}})
+      })
+    },
 		init() {
       this.query();
     },

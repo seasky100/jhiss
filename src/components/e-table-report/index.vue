@@ -1,14 +1,14 @@
 <template>
-  <div class="reportTableCom">
+  <div class="reportTableCom" :key="menuKey+'_'+saveEvent.code">
     <h2 class="title" ref="title">
       {{title.label}}  
       <!-- v-if="headerTab == 1" -->
       <template>
         <span class="imgAdd" @click="addTabData"></span>
         <span class="saveImg" @click="saveBtnClick"></span>
-        <span style="color:red;margin-left:10px;">
+        <!-- <span style="color:red;margin-left:10px;">
           注：保存按钮可获取新增数组数据
-        </span>
+        </span> -->
       </template>
     </h2>
     <span class="explain">
@@ -155,7 +155,10 @@ export default {
         return
       }
       this.columns2 = this.columns
-    }
+    },
+    // headerParam(newV, oldV){
+    //   console.log(newV)
+    // }
   },
   mounted() {
     this.columns2 = this.columns
@@ -173,8 +176,13 @@ export default {
         // console.log('报表一10',3)
         let addData = { edit: true }
         this.tableData.push(addData)
-      }else if(Object.keys(this.headerParam).length > 0){
+      // }else if(Object.keys(this.headerParam).length > 0){
+      }else if(this.headerTab == 2){
+        // console.log(this.headerParam)
         this.headerParam.edit = true
+        // this.$parent.menuKey++
+        this.menuKey++
+        // console.log(this.headerParam)
       }else{
         let addData = { edit: true }
         let columnsArr = this.columns2
@@ -280,7 +288,7 @@ export default {
     display inline-block
     font-size 14px
     line-height 20px
-    color red
+    color #409eff
     margin-bottom 10px
   .title
     font-weight bold

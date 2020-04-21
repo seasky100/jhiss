@@ -102,7 +102,7 @@ let columns1 = [
                     },
                     { index: 2, prop: '', width: '30px', label: '变化时间', align: 'left',
                         children: [
-                            { index: 0, prop: 'changeTime', type: 'text', label: '文本', align: 'left' }
+                            { index: 0, prop: 'changeTime', type: 'date', label: '文本', align: 'left' }
                         ]
                     },
                     { index: 3, prop: '', label: '变化原因', align: 'left',
@@ -119,14 +119,14 @@ let columns1 = [
 // 本人持有普通护照的情况
 let columns2 = [
     { prop: 'zip', label: '护照号', align: 'left' },
-    { prop: 'date', label: '签发日期', align: 'left' },
-    { prop: 'date', label: '有效期截至', align: 'left' },
+    { prop: 'date', label: '签发日期', type: 'date', align: 'left' },
+    { prop: 'date', label: '有效期截至', type: 'date', align: 'left' },
     { prop: 'city', label: '保管机构', align: 'left' },
     { prop: 'address', label: '备注', align: 'left' },
 ]
 // 本人因私出国的情况
 let columns3 = [
-    { prop: 'startTime', label: '起止日期', align: 'left' },
+    { prop: 'startTime', label: '起止日期', type: 'date', align: 'left' },
     { prop: 'exitCountry', label: '所到国家', align: 'left' },
     { prop: 'cause', label: '事由', align: 'left' },
     { prop: 'city', label: '保管机构', align: 'left' },
@@ -136,13 +136,13 @@ let columns3 = [
 let columns4 = [
     { prop: 'certificateType', label: '证件名称', align: 'left' },
     { prop: 'certificateNumber', label: '证件号码', align: 'left' },
-    { prop: 'endTime', label: '有效期限', align: 'left' },
+    { prop: 'endTime', label: '有效期限', type: 'date', align: 'left' },
     { prop: 'exitProvince', label: '保管机构', align: 'left' },
     { prop: 'comment', label: '备注', align: 'left' },
 ]
 // 本人因私往来港澳、台湾的情况
 let columns5 = [
-    { prop: 'startTime', label: '起止日期', align: 'left' },
+    { prop: 'startTime', label: '起止日期', type: 'date', align: 'left' },
     { prop: 'exitProvince', label: '所到地区', align: 'left' },
     { prop: 'cause', label: '事由', align: 'left' },
     { prop: 'exitCountry', label: '审批机构', align: 'left' },
@@ -157,7 +157,7 @@ let columns6 = [
             { prop: 'country', label: '国家', align: 'left' },
             { prop: 'workCompany', width: '250px', label: '工作（学习）单位', align: 'left' },
             { prop: 'post', label: '职务', align: 'left' },
-            { prop: 'changeTime', width: '130px', label: '登记时间', align: 'left' },
+            { prop: 'changeTime', width: '130px', label: '登记时间', type: 'date', align: 'left' },
         ]
     },
 ]
@@ -170,7 +170,7 @@ let columns7 = [
             { prop: 'country', label: '地区', align: 'left' },
             { prop: 'workCompany', width: '250px', label: '工作（学习）单位', align: 'left' },
             { prop: 'post', label: '职务', align: 'left' },
-            { prop: 'changeTime', width: '130px', label: '登记时间', align: 'left' },
+            { prop: 'changeTime', width: '130px', label: '登记时间', type: 'date', align: 'left' },
         ]
     },
 ]
@@ -189,7 +189,7 @@ let columns8 = [
             {name: '长期居留许可', value:'3'},
         ] 
     },
-    { prop: 'strartTime', label: '移居时间', align: 'left' },
+    { prop: 'strartTime', label: '移居时间', type: 'date', align: 'left' },
     { prop: 'comment', label: '备注', align: 'left' },
 ]
 // 配偶、子女虽未移居国（境）外，但连续在国（境）外工作、生活一年以上的情况
@@ -197,13 +197,13 @@ let columns9 = [
     { prop: 'name', label: '姓名', align: 'left' },
     { prop: 'country', label: '所在国家（地区）', align: 'left' },
     { prop: 'city', label: '工作、生活城市', align: 'left' },
-    { prop: 'strartTime', label: '起止时间', align: 'left' },
+    { prop: 'strartTime', label: '起止时间', type: 'date', align: 'left' },
     { prop: 'comment', label: '备注', align: 'left' },
 ]
 // 配偶、子女及其配偶被司法机关追究刑事责任的情况
 let columns11 = [
     { prop: 'name', label: '姓名', align: 'left' },
-    { prop: 'happenTime', label: '被追究时间', align: 'left' },
+    { prop: 'happenTime', label: '被追究时间', type: 'date', align: 'left' },
     { prop: 'cause', label: '被追究原因', align: 'left' },
     { prop: 'stage', label: '处理阶段', align: 'left',
         formatter: 'ProcessingStage',
@@ -289,7 +289,7 @@ let columns23 = [
             // {name: '其他', value:'8'},
         ] 
     },
-    { prop: 'tradeTime', label: '交易时间（年月）', align: 'left' },
+    { prop: 'tradeTime', label: '交易时间（年月）', type: 'date', align: 'left' },
     { prop: 'total', label: '交易价格（万元）', align: 'left' },
 ]
 
@@ -359,7 +359,7 @@ let columns27 = [
     },
     { index: 3, prop: 'creditCode', type: 'text', label: '文本', align: 'left',
         children: [
-            { index: 0, prop: 'buildTime', type: 'text', label: '文本', align: 'left',
+            { index: 0, prop: 'buildTime', type: 'date', label: '文本', align: 'left',
                 children: [
                     { index: 0, prop: 'registered', type: 'text', label: '文本', align: 'left',
                         children: [

@@ -204,6 +204,8 @@ const DEFAULT_URL = {
   },
   // 年度报告新增信息
   saveAnnualReport: {
+    // 获取年度报告详情信息
+    getReportById: `${GAISMSERVER}annualReportInformation/getReportById`,
     // 报表一
     saveMarrageAnnual: `${GAISMSERVER}marrage/saveDeclareExitAnnual`,
     saveDeclareExitAnnual: `${GAISMSERVER}declareExit/saveDeclareExitAnnual`,
@@ -216,6 +218,7 @@ const DEFAULT_URL = {
     saveOverseasInvestmentAnnual: `${GAISMSERVER}overseasInvestment/saveOverseasInvestmentAnnual`,
     saveDomesticInvestmentAnnual: `${GAISMSERVER}/domesticInvestment/saveDeclareExitAnnual`,
     saveDeclareHouseAnnual: `${GAISMSERVER}/declareHouse/saveDeclareHouseAnnual`,
+    saveOtherReportAnnual: `${GAISMSERVER}/otherReport/saveOtherReportAnnual`,
   }
 }
 
