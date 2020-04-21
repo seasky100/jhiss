@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- <template v-for="(item,index) in navMenus">
-      <!-- 含有子菜单 -->
+    <!-- <template v-for="(item,index) in navMenus"> -->
+    <!-- 含有子菜单 -->
     <!-- <el-submenu v-if="item.children && item.children.length>0" :key="index" :index="index+''"> -->
     <!-- <template slot="title"> -->
     <!-- <i :class="item.icon"></i> -->
@@ -18,9 +18,10 @@
     <!-- <span slot="title">{{item.title}}</span> -->
     <!-- </el-menu-item> -->
     <!-- </template> -->
-    <el-button type="primary" @click="switchClick" style="width:100%;">
-      切换
-    </el-button>
+    <div class='menu_switch_div'>
+      <img :src='isCollapse?collapseImg:openImg' @click="switchClick">
+      <span v-show="!isCollapse"> 导航切换</span>
+    </div>
     <!-- #545c64 -->
     <el-menu :default-active="activeMenu" :active="activeMenu" class="el-menu-vertical-demo" :router="true" background-color="#0A0B1C" text-color="#fff" active-text-color="#ffd04b" @open="handleOpen" @close="handleClose" @select="handleSelect" :collapse="isCollapse">
       <!-- 第一层 -->
@@ -64,7 +65,7 @@
                 </el-menu-item>
               </template>
             </el-submenu>
-           
+
             <el-menu-item v-if="firstitem.children == null && (!firstitem.hidden)" :key="firstindex+'f'" :index="firstitem.path">
               <img v-if="firstitem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${firstitem.img}`)" />
               <span slot="title">{{firstitem.title}}</span>
@@ -72,7 +73,7 @@
           </template>
 
         </el-submenu>
-         <!-- 第一层没有子节点 -->
+        <!-- 第一层没有子节点 -->
         <el-menu-item v-if="item.children == null && (!item.hidden)" :key="index" :index="item.path">
           <img v-if="item.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${item.img}`)" />
           <span slot="title">{{item.title}}</span>
@@ -92,7 +93,9 @@ export default {
       imgPath: 'left_menu_sub_hierarchy.png',
       activeMenu: '',
       isCollapse: false,
-      routes: []
+      routes: [],
+      collapseImg: require('../assets/images/menu/menu_off.png'),
+      openImg: require('../assets/images/menu/menu_on.png')
     };
   },
   mounted() {
@@ -129,5 +132,12 @@ export default {
 .el-menu--collapse {
   width: 70px !important;
   min-height: calc(100vh - 70px);
+}
+
+.menu_switch_div {
+  background: #0d122f;
+  color: #fff;
+  padding: 15px 20px;
+  line-height: 20px;
 }
 </style>
