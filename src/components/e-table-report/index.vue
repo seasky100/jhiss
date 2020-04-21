@@ -52,7 +52,12 @@
                 prop="address"
                 label="备注信息">
                 <template slot="header" slot-scope="scope">
-                  <el-input v-model="headerParam.message"></el-input>
+                  <template v-if="headerParam.edit">
+                    <el-input v-model="headerParam.comment"></el-input>
+                  </template>
+                  <template v-else>
+                    {{headerParam.comment}}
+                  </template>
                 </template>
               </el-table-column>
             </el-table>
@@ -62,7 +67,7 @@
     </el-table>
     <!-- 自定义表格 -->
     <template v-if="headerTab == 3">
-      <customTable></customTable>
+      <customTable :customData="tableData" :headerParam="headerParam"></customTable>
     </template>
   </div>
 </template>
@@ -164,7 +169,11 @@ export default {
     },
     // 添加数据
     addTabData(){
-      if(Object.keys(this.headerParam).length > 0){
+      if(this.headerTab == 3){
+        // console.log('报表一10',3)
+        let addData = { edit: true }
+        this.tableData.push(addData)
+      }else if(Object.keys(this.headerParam).length > 0){
         this.headerParam.edit = true
       }else{
         let addData = { edit: true }
@@ -201,7 +210,7 @@ export default {
       } else if(this.headerTab == 2){
         paramData = this.headerParam
       }
-      // console.log('编辑信息：', paramArr)
+      // console.log('编辑信息：', paramData)
       this.$emit('editData', this.index, paramData, this.saveEvent)
     },
     // 修改table header的背景色

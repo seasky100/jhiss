@@ -268,7 +268,7 @@ export function saveDeclareExitAnnual (params) {
   })
 }
 
-// 8. 年度报告详情信息新增信息
+// 8. 9. 年度报告详情信息新增信息
 export function saveRelativesAbroadAnnual (params) {
   return request({
     url: DEFAULT_URL.saveAnnualReport.saveRelativesAbroadAnnual,
@@ -276,5 +276,69 @@ export function saveRelativesAbroadAnnual (params) {
     data: params
   })
 }
+
+// 11. 亲属违法违纪
+export function saveRelativesIllegalAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveRelativesIllegalAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 210. 亲属民间借贷
+export function saveSecuredLoanAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveSecuredLoanAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 27. 亲属经商
+export function saveRelativesBusinessAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveRelativesBusinessAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 28. 境外存款
+export function saveOverseasDepositAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveOverseasDepositAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 29. 境外投资
+export function saveOverseasInvestmentAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveOverseasInvestmentAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 24. 25. 26. 境外投资
+export function saveDomesticInvestmentAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveDomesticInvestmentAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 23. 房产情况 
+export function saveDeclareHouseAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveDeclareHouseAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
 // 
 

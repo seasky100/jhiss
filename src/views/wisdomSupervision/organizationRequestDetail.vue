@@ -709,7 +709,8 @@ export default {
       const params = {
         id: _this.id,
         flowCode: _this.flowCode,
-        approvalNode : _this.flowHistory,
+        // approvalNode : _this.flowHistory,
+        approvalNode : 1,
         approvalStatus: node,
         comment: _this.textarea2
       }

@@ -100,7 +100,8 @@
                     <div id='gauge'  class='p_gauge' ></div>
                   </div>
                   <div class='p_eright'>
-                    <div style="height:15%;"></div>
+                    <div style="height:15%;" @click='pchange'>切换</div>
+                    <div v-show='change' >
                     <div style="height:16%;display:flex">
                       <div style="width: 25%">正面评价清单</div>
                       <el-progress style="width: 70%" :color="customColor1"  :stroke-width="15" :percentage="70">正面评价清单</el-progress>
@@ -116,8 +117,11 @@
                     <div style="height:16%;display:flex">
                       <div style="width: 25%">层级评价清单</div>
                       <el-progress style="width: 70%" :color="customColor4" :stroke-width="15" :percentage="70" ></el-progress>
-                    </div>
-                    
+                    </div> 
+                  </div>  
+                  <div v-show='!change' style="height: 80%; width: 100%; ">
+                    <svg ref="element" width="150" height="150" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
+                  </div>     
                 </div>
             </div>
           </div>
@@ -249,6 +253,7 @@ export default {
     return {
       id: this.$store.state.user.userId,
       showSearch: false,
+      change:false,
       customColor1: '#FF9711',
       customColor2: '#155BFF',
       customColor3: '#1989fa',
@@ -283,6 +288,12 @@ export default {
       careerData:[],
       marksData:[],
       selected: 0,
+//       qpdata : [
+// {name:"name1",count:14},{name:"name2",count:34},
+// {name:"mike",count:64},
+// {name:"joke",count:224},
+// {name:"jobs",count:112}
+// ],
       timeIndex: 0,
       warnList:[
         { name:'刷卡预警',num:0},
@@ -329,6 +340,7 @@ export default {
 // },
     mounted() {
       debugger
+      this.initCircle()
       this.getRadar3()
       this.userInfo = JSON.parse(sessionStorage.userInfo)
       const today = this.$dayjs(new Date());
@@ -355,6 +367,7 @@ export default {
     },
   methods: {
     init() {
+      
       this.getRadar()
       this.getRadar2()
       // this.getRadar3()
@@ -454,6 +467,78 @@ export default {
       
     }
   },
+  pchange(){
+    this.change = !this.change
+  },
+    initCircle() {
+      // const data = this.qpdata
+      const data = [
+        { name: "争优", count: 324 }, 
+        { name: "业绩", count: 174 },
+        { name: "考勤", count: 278 },
+        { name: "重点", count: 294 },
+        { name: "共性", count: 250 }
+      ]
+      debugger
+      d3.select("svg").selectAll("g").remove();//清空作图区域
+      const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
+      const format = d3.format(",d");
+
+      //       var color = d3.scaleOrdinal(d3.schemeCategory20c);
+      const color = ["#FF9700", "#416DF6","#63C073", "#8B6FFE", "#F34252"];//自定义颜色
+      const pack = d3.pack()
+        .size([width, height])
+        .padding(1.5);
+      var num, pid;
+      const root = d3.hierarchy({ children: data })
+        .sum((d) => { return d.count; })
+        .each((d) => {
+          if (d.parent == null) { num = d.value };
+          if (id = d.data.name) {
+            var id
+            d.id = id;
+            d.class = id;
+            pid = num / (d.value);
+            d.colorPick = pid > 50 ? 5 : (pid > 50 ? 4 : (pid > 20 ? 3 : (pid > 2 ? 2 : 1)));
+            console.log(d.colorPick);
+          }
+        });
+      const node = svg.selectAll(".node")
+        .data(pack(root).leaves())
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")"; });
+
+      node.append("circle")
+        .attr("id", (d) => { return d.id; })
+        .attr("r", (d) => { return d.r; })
+        .style("fill", (d) => { return color[d.colorPick]; });
+
+      node.append("clipPath")
+        .attr("id", (d) => { return "clip-" + d.id; })
+        .append("use")
+        .attr("xlink:href", (d) => { return "#" + d.id; });
+
+      node.append("text")
+        .attr("clip-path", (d) => { return "url(#clip-" + d.id + ")"; })
+        .selectAll("tspan")
+        .data((d) => {
+          var arr = new Array();
+          arr.push(d.class);
+          arr.push(d.data.count);
+          return arr;//圆内显示内容
+        })
+        .enter().append("tspan")
+        .attr("x", 0)
+        .attr("y", (d, i, nodes) => { return 25 + (i - nodes.length / 2 - 0.5) * 20; })
+        .text((d) => { return d; });
+
+      node.append("title")
+        .text((d) => { return d.id + "\n" + format(d.value); });
+      node.on("click", (d) => {
+        clickBubble(d.id);//自定义点击事件
+      })
+    },
   changeScroll(direction = 'right'){
     // const _this = this
     let scroll = this.$refs.career_list.scrollLeft
@@ -1739,6 +1824,17 @@ export default {
   #calendar .el-button-group>.el-button:not(:first-child):not(:last-child):after{
       content: '当月';
   }
+  .bubble circle{
+            stroke: black;
+            stroke-width: 2px;
+        }
+ 
+        .bubble text{
+            fill: black;
+            font-size: 14px;
+            font-family: arial;
+            text-anchor: middle;
+        }
   /* .left-score-image {
         width: 100% !important;
         height: 100% !important;

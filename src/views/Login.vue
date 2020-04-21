@@ -164,17 +164,14 @@ export default {
             password: encryptByDES(this.form.password),
             base64Code: "",
             service: getUrl() + "/police/",
-            appKey: "JHGA"
+            appKey: "JHGA",
+            privateKey: 'LTAI4Fd5AxPaiK2SxUYA94zN'
           };
           signIn(params)
             .then(res => {
               const _this = this;
               // console.log(res)
               if (res.data && res.success === true) {
-                _this.$message({
-                  type: "success",
-                  message: "登录成功"
-                });
                 const parameter = {
                   token: res.data.gmsso_cli_ec_key,
                   appKey: "JHGA"
@@ -187,9 +184,17 @@ export default {
                       _this.$store
                         .dispatch("user/getInfo")
                         .then(() => {
+                          _this.$message({
+                            type: "success",
+                            message: "登录成功"
+                          });
                           _this.$router.push("/PersonalHome");
                         })
                         .catch(err => {
+                          _this.$message({
+                            type: "error",
+                            message: "登录失败"
+                          });
                           console.log(err);
                         });
                     }

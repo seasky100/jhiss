@@ -56,6 +56,7 @@ export default {
           tree_data.level = 1;
           tree_data.expand = true;
           window.localStorage.tree_data = JSON.stringify(tree_data);
+          this.collectData();
         });
       }
     },
@@ -93,6 +94,7 @@ export default {
       }
       this.tree_data = data;
       this.dep_list = arr2;
+      window.localStorage.dep_list = JSON.stringify(arr2);
     },
     // 转化获取列属性对象
     flatten(arr) {
@@ -164,19 +166,21 @@ export default {
 <style lang="stylus" scoped>
 /* 滚动条样式 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  background-color: #666;
+  background-color: #ccc;
 }
 
 ::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color: #666;
+  background-color: #ccc;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #222;
+  background-color: #555;
+}
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 10px;
+  background-color: #000;
 }
 
 .individual_title {
@@ -186,8 +190,8 @@ export default {
 }
 
 .relationship {
-  width: 100%;
-  height: calc(100% - 70px);
+  width: 99.8%;
+  height: calc(100% - 75px);
   text-align: center;
   overflow: auto;
 }

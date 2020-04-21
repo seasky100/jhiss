@@ -92,6 +92,33 @@
 					  学习感悟
 				  </div>
 			  </div>
+			  <div class='e_head'>
+				<el-card class='c_hexposure'>
+					<li class='c_scont'>
+						<div class='c_htop'>
+							<div>
+								<img style="margin-top: -9px;width: 30px;" :src='oneData.headUrl' />
+							</div>
+							<div class='ctitle'>【{{oneData.exposureTitle}}】</div>
+							<div class='e_date'>{{oneData.gmtCreate}}</div>
+						</div>
+						<!-- <div class='e_center'>
+							<div>
+								<div class='c_cetitle'>最新回答</div>
+								<div class='c_introduce'>{{oneData.noteContent}}</div>
+							</div>
+						</div> -->
+						<div class='e_foot'>
+							<div class='h32' style="width: 7%;margin-top: 10px;margin-left: 27px;">点赞{{oneData.praiseCount}}</div>
+							<div class='h32' style="margin-top: 10px;width: 79%;">评论</div>
+							<div class='h32' style="margin-top: 10px; display: flex;"  title='我要点赞' @click='updateLike(item)'>
+								<img style="margin-left: 30%;margin-top: 18%;width: 15px;height:12px;" src='../../utils/img/zan.png' />
+								<div style="margin-top: 3px;">{{oneData.praiseCount}}</div>
+							</div>
+						</div>
+					</li>
+				</el-card>
+			</div>
 			  <div class='c_sentiment'>
 				  <div id="parent" class="parent">
 				  <div id="child1" class="child">
@@ -110,11 +137,11 @@
 								</div>
 							</div>
 							<div class='e_foot'>
-								<div class='h32' style="width: 7%;margin-top: 10px;margin-left: 27px;">点赞</div>
+								<div class='h32' style="width: 7%;margin-top: 10px;margin-left: 27px;">点赞{{item.praiseCount}}</div>
 								<div class='h32' style="margin-top: 10px;width: 79%;">评论</div>
-								<div class='h32' style="margin-top: 10px; display: flex;">
+								<div class='h32' style="margin-top: 10px; display: flex;"  title='我要点赞' @click='updateLike(item)'>
 									<img style="margin-left: 30%;margin-top: 18%;width: 15px;height:12px;" src='../../utils/img/zan.png' />
-									<div style="margin-top: 3px;">11</div>
+									<div style="margin-top: 3px;">{{item.praiseCount}}</div>
 								</div>
 							</div>
 						</li>
@@ -154,7 +181,7 @@
 	</div>
   </template>
   <script>
-  import { findExposurePage, findLearningStatus,findPraiseCount } from '@/api/warn.js';
+  import { findExposurePage, findLearningStatus,findPraiseCount,updateLike } from '@/api/warn.js';
   import { mapGetters } from 'vuex';
   export default {
 	name: "Caution",
@@ -167,7 +194,8 @@
 	  return {
 		listData:[],
 		totalData:[],
-		nodeData:[]
+		nodeData:[],
+		oneData:[],
 	  }
 	},
 	watch: {},
@@ -195,9 +223,32 @@
 			}, 20);
 
 		},
+		// 添加点赞
+		updateLike(data) {
+			const _this = this;
+			const params = {
+				version: data.version,
+				praiseCount: data.praiseCount,
+				id: data.id,
+			}
+			updateLike(params).then(res => {
+				// console.log(res);
+				if (res.success) {
+					this.$message({
+						type: 'success',
+						message: '评价成功'
+					})
+					_this.queryExposureNote()
+				} else {
+					this.$message({
+						type: 'error',
+						message: '提交失败'
+					})
+				}
+			})
+		},
 		// 查询曝光栏内容
 		findExposurePage() {
-			debugger
 			const _this = this;
 			const params = {
 				nCurrent: 1,
@@ -207,14 +258,12 @@
 			findExposurePage(params).then(res => {
 				console.log(res)
 				if (res.success) {
-					debugger
 					_this.listData = res.data.records
 				}
 			})
 		},
 		// 查询曝光栏学习记录
 		findLearningStatus() { 
-			debugger
 			const _this = this;
 			const params = {
 				userId: _this.userId
@@ -228,7 +277,6 @@
 		},
 		// 学习感悟数据 点赞排行
 		findPraiseCount() {
-			debugger
 			const _this = this;
 			const params = {
 				userId: _this.userId
@@ -237,7 +285,7 @@
 				if (res.success) {
 					// _this.nodeData = res.data
 					const data = res.data
-					for (let i = 0; i < 15; i++) {
+					for (let i = 0; i < 4; i++) {
 						_this.nodeData.push(data[i])	
 						if(data[i].headUrl){
                         data[i].headUrl = 'http://10.121.252.53:1001/View_file/UserImage/'+ data[i].headUrl.split('\\').slice(-1)[0]
@@ -245,7 +293,7 @@
                         console.log(data[i].headUrl)   
                         }
 					}
-					console.log(_this.nodeData)
+					this.oneData = _this.nodeData[0]
 				}
 			})
 		},
@@ -471,6 +519,7 @@
   }
   </script>
   <style lang="stylus" scoped>
+	  /* @import '../css/common.css'; */
 		  .child {
 		  height: auto;
 	  }
@@ -481,7 +530,7 @@
 	  }
 	  .parent {
 		  width: 100%;
-		  height: 600px;
+		  height: 460px;
 		  margin: 0 auto;
 		  /* background: #242424; */
 		  overflow-y: scroll;
@@ -534,6 +583,19 @@
 	  padding-left: 10px;
 	  background-color: white;
 	  padding-top: 6px;
+	}
+	.c_hexposure{
+		float: left;
+		width: 97%;
+		margin: 10px;
+		margin-bottom: 0;
+		font-size: 15px;
+		font-weight: bold;
+		/* line-height: 30px; */
+		/* border-left: 5px solid #409eff; */
+		/* padding-left: 10px; */
+		/* background-color: floralwhite; */
+		/* padding-top: 6px; */
 	}
   .c_content{
 	  height: 77%;
@@ -615,6 +677,9 @@
   .e_title{
 	  height: 5%;
   }
+  /* .e_head{
+	  height: 18%;
+  } */
   .e_cont{
 	  border-bottom: 1px solid lightgray;
 	  height: 16%;
@@ -630,6 +695,12 @@
   .c_top{
 	  height: 10%;
 	  padding-top: 22px;
+	  padding-left: 15px;
+	  display: flex;
+  }
+  .c_htop{
+	  /* height: 10%; */
+	  /* padding-top: 22px; */
 	  padding-left: 15px;
 	  display: flex;
   }
@@ -711,8 +782,8 @@
   }
   /* @import'../css/assembly.css';
   @import "../css/hover-min.css";
-  @import "../css/media.css";
-  @import "../css/pseudo_classes.css"; */
+  @import "../css/media.css";*/
+   
   
   </style>
   

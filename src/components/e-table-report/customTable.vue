@@ -4,30 +4,48 @@
     <table>
       <tr>
         <td>配偶</td>
-        <td>姓名</td>
+        <td width="60">姓名</td>
         <td>工作（学习）单位</td>
         <td>现任职务</td>
         <td colspan="2">单位性质</td>
       </tr>
       <tr>
         <td rowspan="4">
-          <el-radio-group v-model="customData[0].value">
+          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value">
             <template v-for="(item,index) of relationship1">
               <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
             </template>
           </el-radio-group>
         </td>
         <td rowspan="2">
-          <el-input v-model="customData[0].name"></el-input>
+          <!-- <el-input v-model="customData[0].name"></el-input> -->
+          <template v-if="customData[0].edit">
+            <el-input v-model="customData[0].name"></el-input>
+          </template>
+          <template v-else>
+            {{customData[0].name}}
+          </template>
         </td>
         <td>
-          <el-input v-model="customData[0].value1"></el-input>
+          <!-- <el-input v-model="customData[0].value1"></el-input> -->
+          <template v-if="customData[0].edit">
+            <el-input v-model="customData[0].value1"></el-input>
+          </template>
+          <template v-else>
+            {{customData[0].value1}}
+          </template>
         </td>
         <td>
-          <el-input v-model="customData[0].value2"></el-input>
+          <!-- <el-input v-model="customData[0].value2"></el-input> -->
+          <template v-if="customData[0].edit">
+            <el-input v-model="customData[0].value2"></el-input>
+          </template>
+          <template v-else>
+            {{customData[0].value2}}
+          </template>
         </td>
         <td colspan="2">
-          <el-radio-group v-model="customData[0].value3">
+          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value3">
             <template v-for="(item,index) of unitNature">
               <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
             </template>
@@ -37,14 +55,14 @@
       <tr>
         <td colspan="2">
           <span style="margin-right:10px;">是否在国（境）外</span>
-          <el-radio-group v-model="customData[0].value4">
+          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value4">
             <template v-for="(item,index) of whetherList">
               <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
             </template>
           </el-radio-group>
         </td>
         <td>
-          <el-radio-group v-model="customData[0].value5">
+          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value5">
             <template v-for="(item,index) of unitInfoNature">
               <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
             </template>
@@ -52,7 +70,7 @@
         </td>
         <td>
           <span style="margin-right:10px;">是否担任高级职务</span>
-          <el-radio-group v-model="customData[0].value6">
+          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value6">
             <template v-for="(item,index) of whetherList">
               <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
             </template>
@@ -62,22 +80,34 @@
       <tr>
         <td>证件名称</td>
         <td colspan="4">
-          <el-input v-model="customData[0].value7"></el-input>
+          <!-- <el-input v-model="customData[0].value7"></el-input> -->
+          <template v-if="customData[0].edit">
+            <el-input v-model="customData[0].value7"></el-input>
+          </template>
+          <template v-else>
+            {{customData[0].value7}}
+          </template>
         </td>
       </tr>
       <tr>
         <td>证件号码</td>
         <td colspan="4">
-          <el-input v-model="customData[0].value8"></el-input>
+          <!-- <el-input v-model="customData[0].value8"></el-input> -->
+          <template v-if="customData[0].edit">
+            <el-input v-model="customData[0].value8"></el-input>
+          </template>
+          <template v-else>
+            {{customData[0].value8}}
+          </template>
         </td>
       </tr>
     </table>
     <!-- 子女关系 -->
-    <template v-for="(item,index) of 2">
-      <table :key="index">
+    <template v-for="(item,index) of customData">
+      <table :key="index" v-if="index > 0">
         <tr>
-          <td>子女{{index==0? '一' : '二'}}</td>
-          <td>姓名</td>
+          <td>子女{{cnNums[index]}}</td>
+          <td width="60">姓名</td>
           <td>是否为共同生活子女</td>
           <td>工作（学习）单位</td>
           <td>现任职务</td>
@@ -85,30 +115,48 @@
         </tr>
         <tr>
           <td rowspan="4">
-            <el-radio-group v-model="customData[index+1].value">
+            <el-radio-group :disabled="!item.edit" v-model="item.value">
               <template v-for="(item,index) of relationship2">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td rowspan="2">
-            <el-input v-model="customData[index+1].name"></el-input>
+            <!-- <el-input v-model="item.name"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.name"></el-input>
+            </template>
+            <template v-else>
+              {{item.name}}
+            </template>
           </td>
           <td rowspan="2">
-            <el-radio-group v-model="customData[index+1].value4">
+            <el-radio-group :disabled="!item.edit" v-model="item.value4">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td>
-            <el-input v-model="customData[0].value1"></el-input>
+            <!-- <el-input v-model="customData[0].value1"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value1"></el-input>
+            </template>
+            <template v-else>
+              {{item.value1}}
+            </template>
           </td>
           <td>
-            <el-input v-model="customData[0].value2"></el-input>
+            <!-- <el-input v-model="customData[0].value2"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value2"></el-input>
+            </template>
+            <template v-else>
+              {{item.value2}}
+            </template>
           </td>
           <td colspan="2">
-            <el-radio-group v-model="customData[0].value3">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
               <template v-for="(item,index) of unitNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -118,14 +166,14 @@
         <tr>
           <td colspan="2">
             <span style="margin-right:10px;">是否在国（境）外</span>
-            <el-radio-group v-model="customData[0].value4">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value4">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td>
-            <el-radio-group v-model="customData[0].value5">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
               <template v-for="(item,index) of unitInfoNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -133,7 +181,7 @@
           </td>
           <td>
             <span style="margin-right:10px;">是否担任高级职务</span>
-            <el-radio-group v-model="customData[0].value6">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value6">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -143,13 +191,25 @@
         <tr>
           <td>证件名称</td>
           <td colspan="5">
-            <el-input v-model="customData[0].value7"></el-input>
+            <!-- <el-input v-model="customData[0].value7"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value7"></el-input>
+            </template>
+            <template v-else>
+              {{item.value7}}
+            </template>
           </td>
         </tr>
         <tr>
           <td>证件号码</td>
           <td colspan="5">
-            <el-input v-model="customData[0].value8"></el-input>
+            <!-- <el-input v-model="customData[0].value8"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value8"></el-input>
+            </template>
+            <template v-else>
+              {{item.value8}}
+            </template>
           </td>
         </tr>
         <!-- 配偶信息 -->
@@ -162,16 +222,34 @@
         </tr>
         <tr>
           <td rowspan="2">
-            <el-input v-model="customData[0].name2"></el-input>
+            <!-- <el-input v-model="customData[0].name2"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.name2"></el-input>
+            </template>
+            <template v-else>
+              {{item.name2}}
+            </template>
           </td>
           <td>
-            <el-input v-model="customData[0].value"></el-input>
+            <!-- <el-input v-model="customData[0].value"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value"></el-input>
+            </template>
+            <template v-else>
+              {{item.value}}
+            </template>
           </td>
           <td colspan="2">
-            <el-input v-model="customData[0].value"></el-input>
+            <!-- <el-input v-model="customData[0].value"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value"></el-input>
+            </template>
+            <template v-else>
+              {{item.value}}
+            </template>
           </td>
           <td colspan="2">
-            <el-radio-group v-model="customData[0].value3">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
               <template v-for="(item,index) of unitNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -181,14 +259,14 @@
         <tr>
           <td colspan="3">
             <span style="margin-right:10px;">是否在国（境）外</span>
-            <el-radio-group v-model="customData[0].value4">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value4">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td>
-            <el-radio-group v-model="customData[0].value5">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
               <template v-for="(item,index) of unitInfoNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -196,7 +274,7 @@
           </td>
           <td>
             <span style="margin-right:10px;">是否担任高级职务</span>
-            <el-radio-group v-model="customData[0].value6">
+            <el-radio-group :disabled="!item.edit" v-model="customData[0].value6">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -206,13 +284,25 @@
         <tr>
           <td>证件名称</td>
           <td colspan="5">
-            <el-input v-model="customData[0].value7"></el-input>
+            <!-- <el-input v-model="customData[0].value7"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value7"></el-input>
+            </template>
+            <template v-else>
+              {{item.value7}}
+            </template>
           </td>
         </tr>
         <tr>
           <td>证件号码</td>
           <td colspan="5">
-            <el-input v-model="customData[0].value8"></el-input>
+            <!-- <el-input v-model="customData[0].value8"></el-input> -->
+            <template v-if="item.edit">
+              <el-input v-model="item.value8"></el-input>
+            </template>
+            <template v-else>
+              {{item.value8}}
+            </template>
           </td>
         </tr>
       </table>
@@ -224,13 +314,29 @@
 export default {
   name: 'customTable',
   inject: ['orgAdd'],
+  props: {
+    customData: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
+    headerParam: {
+      type: Object,
+      default: () => {
+        return {};
+      }
+    },
+  },
   data() {
     return {
-      customData: [
-        {name: '',},
-        {name: '',},
-        {name: '',}
-      ],
+      // customData: [
+      //   {name: '',},
+      //   {name: '',},
+      //   {name: '',}
+      // ],
+      // '零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'
+      cnNums: ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'],
       relationship1: [
         {name: '妻子', value:'1'},
         {name: '丈夫', value:'2'},
