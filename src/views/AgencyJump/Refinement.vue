@@ -54,7 +54,7 @@
   </div>
   <div class='r_right'>
     <div class='r_top'>
-      <img class="photo_img"  style="width: 99%;" src="@/assets/images/jxbg.png" />
+      <img class="photo_img"  style="width: 99%;" src="@/assets/images/jxbj.png" />
     </div>
     <div class='rc_content'>
       <div class='rc_left'>
