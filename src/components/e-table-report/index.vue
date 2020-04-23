@@ -29,42 +29,55 @@
       <nav-table :columns="columns2"></nav-table>
     </el-table>
     <!-- 表头表格 -->
-    <el-table :class="['headerTab']" v-if="headerTab == 2"
-      :span-method="arraySpanMethod" border
-      :data="[]" 
-      style="width:100%;">
-      <nav-table :columns="columns2" :headerTab="headerTab" :headerParam="headerParam"></nav-table>
-      <!-- 追加表头 -->
-      <template v-if="headerAppend.length > 0" slot="append" class="appendTab">
-        <el-table
-          :data="[]"
-          style="width: 100%">
-          <nav-table :columns="headerAppend" :headerTab="headerTab" :headerParam="headerParam"></nav-table>
-          <!-- 追加备注 -->
-          <template slot="append" class="appendTab">
-            <el-table :data="[]" style="width: 100%">
-              <el-table-column
-                prop="name"
-                label="备注"
-                width="180">
-              </el-table-column>
-              <el-table-column
-                prop="address"
-                label="备注信息">
-                <template slot="header" slot-scope="scope">
-                  <template v-if="headerParam.edit">
-                    <el-input v-model="headerParam.comment"></el-input>
-                  </template>
-                  <template v-else>
-                    {{headerParam.comment}}
-                  </template>
-                </template>
-              </el-table-column>
-            </el-table>
-          </template>
-        </el-table>
-      </template>
+    <el-table v-if="headerTab == 2"
+        :class="['headerTab']"
+        :span-method="arraySpanMethod" border
+        :data="[]" 
+        :style="[index > 0 ? {width:'100%','margin-top':'10px'}:{width:'100%'}]">
+        <nav-table :tableData="tableData2" :columns="columns2" :headerTab="headerTab" :headerParam="headerParam"></nav-table>
     </el-table>
+    <template v-if="headerTab == 4" >
+      <template v-if="tableData2.length == 0">
+        <div class="customSty">暂无数据</div>
+      </template>
+      <el-table v-for="(item,index) of tableData2" :key="index"
+        :class="['headerTab']" 
+        :span-method="arraySpanMethod" border
+        :data="[]" 
+        :style="[index > 0 ? {width:'100%','margin-top':'10px'}:{width:'100%'}]">
+        <nav-table :columns="columns2" :headerTab="headerTab" :headerParam="item"></nav-table>
+        <!-- 追加表头 -->
+        <template v-if="headerAppend.length > 0" slot="append" class="appendTab">
+          <el-table
+            :data="[]"
+            style="width: 100%">
+            <nav-table :columns="headerAppend" :headerTab="headerTab" :headerParam="item"></nav-table>
+            <!-- 追加备注 -->
+            <template slot="append" class="appendTab">
+              <el-table :data="[]" style="width: 100%">
+                <el-table-column
+                  prop="name"
+                  label="备注"
+                  width="180">
+                </el-table-column>
+                <el-table-column
+                  prop="address"
+                  label="备注信息">
+                  <template slot="header" slot-scope="scope">
+                    <template v-if="item.edit">
+                      <el-input v-model="item.comment"></el-input>
+                    </template>
+                    <template v-else>
+                      {{item.comment}}
+                    </template>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </template>
+          </el-table>
+        </template>
+      </el-table>
+    </template>
     <!-- 自定义表格 -->
     <template v-if="headerTab == 3">
       <customTable :customData="tableData" :headerParam="headerParam"></customTable>
@@ -184,6 +197,7 @@ export default {
         let addData = { edit: true }
         this.tableData.push(addData)
       // }else if(Object.keys(this.headerParam).length > 0){
+      // }else if(this.headerTab == 2){
       }else if(this.headerTab == 2){
         // console.log(this.headerParam)
         this.headerParam.edit = true
@@ -194,6 +208,8 @@ export default {
           this.headerParam.buildTime = format(new Date(this.headerParam.buildTime), 'yyyy-MM-dd')
         }
         this.menuKey++
+      // }else if(this.headerTab == 2 && this.headerAppend.length > 0){
+
       }else{
         let addData = { edit: true }
         let columnsArr = this.columns2
@@ -223,7 +239,7 @@ export default {
         return
       }
       let paramData = null
-      if(this.headerTab == 1 || this.headerTab == 3){
+      if(this.headerTab == 1 || this.headerTab == 3 || this.headerAppend.length > 0){
         let paramArr = []
         let arr = [...this.tableData]
         for(let i=0;i<arr.length;i++){
@@ -233,7 +249,7 @@ export default {
           }
         }
         paramData = paramArr
-      } else if(this.headerTab == 2){
+      } else{
         paramData = this.headerParam
       }
       // console.log('编辑信息：', paramData)
@@ -350,4 +366,8 @@ export default {
   text-align right
   height 25px
   padding-right 20px
+.customSty
+  background #ffffff
+  padding 20px
+  text-align center
 </style>

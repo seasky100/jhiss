@@ -162,6 +162,16 @@ export default {
   methods: {
     collectionData(reportInfo){
       const _this = this
+      tableData1 = tableData1.map(item => {
+        item.headerParam = {edit:false}
+        item.data = []
+        return item
+      })
+      tableData2 = tableData2.map(item => {
+        item.headerParam = {edit:false}
+        item.data = []
+        return item
+      })
       for(let key in reportInfo){
         if(key == 322){
           let n = reportInfo[key].length - 1
@@ -171,12 +181,20 @@ export default {
         this.reportList2.forEach((item,index) => {
           if(item.code == key){
             if(tableData1[index].headerTab == 2){
-              // let n = reportInfo[key].length - 1
-              // tableData1[index].headerParam = JSON.parse(reportInfo[key][n].formData)
-              let formData = reportInfo[key].map(item => {
+              // let formData = reportInfo[key].map(item => {
+              //   return JSON.parse(item.formData)
+              // })
+              // let obj = Object.assign(...formData)
+              let n = reportInfo[key].length - 1
+              let obj = JSON.parse(reportInfo[key][n].formData)
+              // console.log(obj)
+              if(obj.marrageState == '1' || obj.marrageState == '3'){
+                obj.marrageState = '1'
+              }
+              tableData1[index].headerParam = {edit:false,marrageState2:obj.marrageState}
+              tableData1[index].data = reportInfo[key].map(item => {
                 return JSON.parse(item.formData)
               })
-              tableData1[index].headerParam = Object.assign(...formData)
             }else{
               tableData1[index].data = reportInfo[key].map(item => {
                 return JSON.parse(item.formData)
@@ -186,18 +204,19 @@ export default {
         })
         this.reportList3.forEach((item,index) => {
           if(item.code == key){
-            if(tableData2[index].headerTab == 2){
-              // let n = reportInfo[key].length - 1
-              // tableData2[index].headerParam = JSON.parse(reportInfo[key][n].formData)
-              let formData = reportInfo[key].map(item => {
-                return JSON.parse(item.formData)
-              })
-              tableData2[index].headerParam = Object.assign(...formData)
-            }else{
-              tableData2[index].data = reportInfo[key].map(item => {
-                return JSON.parse(item.formData)
-              })
-            }
+            // if(tableData2[index].headerTab == 2){
+            //   let formData = reportInfo[key].map(item => {
+            //     return JSON.parse(item.formData)
+            //   })
+            //   tableData2[index].headerParam = Object.assign(...formData)
+            // }else{
+            //   tableData2[index].data = reportInfo[key].map(item => {
+            //     return JSON.parse(item.formData)
+            //   })
+            // }
+            tableData2[index].data = reportInfo[key].map(item => {
+              return JSON.parse(item.formData)
+            })
           }
         })
       }
@@ -427,6 +446,7 @@ export default {
         // param.forEach((obj,index) => {
         //   this[eventObj.saveEvent](index, obj)
         // })
+        console.log(data)
         const param = data[0]
         param.gmtCreate = format(new Date(), 'yyyy-MM-dd'),
         param.gmtModified = format(new Date(), 'yyyy-MM-dd'),
@@ -574,22 +594,26 @@ export default {
           }
         }else{
           index = index - 11
-          if(tableData2[index].headerParam != null){
-            let param = tableData2[index].headerParam
-            param.edit = false
-            tableData2[index].headerParam = param
-            this.menuKey++
-            let height = this.$refs.printCon.offsetTop
-            this.$nextTick(() => {
-              let scroll = this.$refs.table_box[index+11].offsetTop - height
-              $(this.$refs.printCon).animate({scrollTop: scroll },0)
-            });
-          }else{
-            tableData2[index].data = tableData2[index].data.map(item => {
-              item.edit = false
-              return item
-            })
-          }
+          tableData2[index].data = tableData2[index].data.map(item => {
+            item.edit = false
+            return item
+          })
+          // if(tableData2[index].headerParam != null){
+          //   let param = tableData2[index].headerParam
+          //   param.edit = false
+          //   tableData2[index].headerParam = param
+          //   this.menuKey++
+          //   let height = this.$refs.printCon.offsetTop
+          //   this.$nextTick(() => {
+          //     let scroll = this.$refs.table_box[index+11].offsetTop - height
+          //     $(this.$refs.printCon).animate({scrollTop: scroll },0)
+          //   });
+          // }else{
+          //   tableData2[index].data = tableData2[index].data.map(item => {
+          //     item.edit = false
+          //     return item
+          //   })
+          // }
         }
         
       }else {

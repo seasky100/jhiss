@@ -72,7 +72,7 @@
           <td>
             <span style="margin-right:10px;">是否担任高级职务</span>
             <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].isDuty">
-              <template v-for="(item,index) of whetherList">
+              <template v-for="(item,index) of isDutyList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
@@ -183,7 +183,7 @@
             <td>
               <span style="margin-right:10px;">是否担任高级职务</span>
               <el-radio-group :disabled="!item.edit" v-model="customData[0].isDuty">
-                <template v-for="(item,index) of whetherList">
+                <template v-for="(item,index) of isDutyList">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
               </el-radio-group>
@@ -276,7 +276,7 @@
             <td>
               <span style="margin-right:10px;">是否担任高级职务</span>
               <el-radio-group :disabled="!item.edit" v-model="customData[0].value6">
-                <template v-for="(item,index) of whetherList">
+                <template v-for="(item,index) of isDutyList">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
               </el-radio-group>
@@ -373,6 +373,11 @@ export default {
       whetherList: [
         {name: '是', value:'1'},
         {name: '否', value:'2'},
+      ],
+      // 是否担任高级职务
+      isDutyList: [
+        {name: '是', value:'0'},
+        {name: '否', value:'1'},
       ],
     }
   },
