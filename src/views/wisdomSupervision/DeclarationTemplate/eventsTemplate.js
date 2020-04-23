@@ -75,12 +75,13 @@ let columns1 = [
             {index: 0, prop: '', label: '婚姻变化情况', align: 'left' }
         ]
     },
-    { index: 1, prop: 'value1', label: '婚姻现状', align: 'left',
+    { index: 1, prop: 'marrageState2', prop2:'marrageState', label: '婚姻现状', align: 'left',
         type:'checkbox', 
+        status: 'fixedState',
         option: [
-            {name: '未婚', value:'1'},
-            {name: '已婚', value:'2'},
-            {name: '离异', value:'3'},
+            {name: '未婚', value:'0'},
+            {name: '已婚', value:'1'},
+            {name: '离异', value:'2'},
             {name: '丧偶', value:'4'},
         ],
         children: [
@@ -94,7 +95,7 @@ let columns1 = [
                     { index: 1, prop: 'marrageState', label: '婚姻情况', align: 'left',
                         type:'checkbox', 
                         option: [
-                            {name: '新婚', value:'1'},
+                            {name: '结婚', value:'1'},
                             {name: '离异', value:'2'},
                             {name: '再婚', value:'3'},
                             {name: '丧偶', value:'4'},
@@ -130,7 +131,7 @@ let columns3 = [
     { prop: 'endTime', label: '归国时间', type: 'date', align: 'left' },
     { prop: 'exitCountry', label: '所到国家', align: 'left' },
     { prop: 'cause', label: '事由', align: 'left' },
-    { prop: 'city', label: '保管机构', align: 'left' },
+    { prop: 'city', label: '审批机构', align: 'left' },
     { prop: 'certificateNumber', label: '所用护照号', align: 'left' },
 ]
 // 本人持有往来港澳通行证、因私持有大陆居民往来台湾通行证的情况
@@ -138,7 +139,7 @@ let columns4 = [
     { prop: 'certificateType', label: '证件名称', align: 'left' },
     { prop: 'certificateNumber', label: '证件号码', align: 'left' },
     { prop: 'startTime', label: '开始有效期', type: 'date', align: 'left' },
-    { prop: 'endTime', label: '结束有效期', type: 'date', align: 'left' },
+    { prop: 'endTime', label: '有效期截至', type: 'date', align: 'left' },
     { prop: 'exitProvince', label: '保管机构', align: 'left' },
     { prop: 'comment', label: '备注', align: 'left' },
 ]
@@ -254,12 +255,15 @@ let columns23 = [
         option: [
             {name: '购买', value:'1'},
             {name: '继承', value:'2'},
-            {name: '分割', value:'3'},
-            {name: '合并', value:'4'},
-            {name: '赠与', value:'5'},
+            {name: '接受赠与', value:'3'},
+            {name: '分割', value:'4'},
+            {name: '合并', value:'5'},
             {name: '变更', value:'6'},
             {name: '交换', value:'7'},
             {name: '析产', value:'8'},
+            {name: '出售', value:'10'},
+            {name: '赠与他人', value:'11'},
+            {name: '其他去向', value:'12'},
             // {name: '购买', value:'1'},
             // {name: '继承', value:'2'},
             // {name: '接受赠与', value:'3'},
@@ -283,6 +287,7 @@ let columns23 = [
             {name: '厂房', value:'3'},
             {name: '仓库', value:'4'},
             {name: '自建房', value:'5'},
+            {name: '其他', value:'6'},
             // {name: '商品房', value:'1'},
             // {name: '福利房', value:'2'},
             // {name: '经济适用房', value:'3'},
@@ -379,9 +384,9 @@ let columns27 = [
 let headerAppend27 = [
     { index: 0, prop: '', label: '企业或其他市场主体类型', align: 'left',
         children:[
-            { index: 0, prop: '', label: '注册资本（金）或咨询数额（出资额）', align: 'left',
+            { index: 0, prop: '', label: '注册资本（金）或咨询数额（出资额）（万元）', align: 'left',
                 children:[
-                    { index: 0, prop: '', label: '个人认缴出资额或个人出资额', align: 'left' },
+                    { index: 0, prop: '', label: '个人认缴出资额或个人出资额（万元）', align: 'left' },
                 ]
             },
         ]
@@ -391,7 +396,7 @@ let headerAppend27 = [
         option: [
             {name: '股份有限公司', value:'1'},
             {name: '有限责任公司', value:'2'},
-            {name: '隔离工商户', value:'3'},
+            {name: '个体工商户', value:'3'},
             {name: '个人独资企业', value:'4'},
             {name: '合伙企业', value:'5'},
             {name: '在国（境）外注册公司或投资入股', value:'6'},
@@ -401,7 +406,7 @@ let headerAppend27 = [
             { index: 0, prop: 'registeredCapital', type: 'text', label: '文本', align: 'left',
                 children: [
                     { index: 0, prop: 'personalContribution', type: 'text', label: '文本', align: 'left' },
-                    { index: 1, prop: '', label: '个人认缴出资比例或个人出资比例', align: 'left' },
+                    { index: 1, prop: '', label: '个人认缴出资比例或个人出资比例（%）', align: 'left' },
                     { index: 2, prop: 'personalRatio', type: 'text', label: '文本', align: 'left' },
                 ]
             },
@@ -462,7 +467,7 @@ let tableData2 = [
     { columns: columns24, data: [], appendTab: [...appendTab4] },
     { columns: columns25, data: [] },
     { columns: columns26, data: [] },
-    { columns: columns27, data: [], headerTab: 2, headerAppend: headerAppend27, headerParam:{edit:false} }, // 111
+    { columns: columns27, data: [], headerTab: 4, headerAppend: headerAppend27, headerParam:{edit:false} }, // 111
     { columns: columns28, data: [] },
     { columns: columns29, data: [] },
     { columns: columns210, data: [] }, 
