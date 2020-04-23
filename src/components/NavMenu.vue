@@ -33,21 +33,21 @@
           </template>
           <!-- 第一次子循环 -->
           <template v-for="(firstitem,firstindex) in item.children">
-            <el-submenu v-if="firstitem.children && firstitem.children.length>0" :key="firstindex+'f'" :index="firstindex+''">
+            <el-submenu v-if="firstitem.children && firstitem.children.length>0" :key="firstindex+'f'" :index="firstindex+'f'">
               <template slot="title">
                 <img v-if="firstitem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${firstitem.img}`)" />
                 <span slot="title">{{firstitem.title}}</span>
               </template>
               <!-- 第二次子循环 -->
               <template v-for="(seconditem,secondindex) in firstitem.children">
-                <el-submenu v-if="seconditem.children && seconditem.children.length>0" :key="secondindex+'s'" :index="seconditem.path+''">
+                <el-submenu v-if="seconditem.children && seconditem.children.length>0" :key="secondindex+'s'" :index="seconditem.path+'s'">
                   <template slot="title">
                     <img v-if="seconditem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${seconditem.img}`)" />
                     <span slot="title">{{seconditem.title}}</span>
                   </template>
                   <!-- 第三次子循环 -->
                   <template v-for="(thirdItem,thirdIndex) in seconditem.children">
-                    <el-submenu v-if="thirdItem.children && thirdItem.children.length>0" :key="thirdIndex+'t'" :index="thirdIndex">
+                    <el-submenu v-if="thirdItem.children && thirdItem.children.length>0" :key="thirdIndex+'t'" :index="thirdIndex+'t'">
                       <template slot="title">
                         <img v-if="thirdItem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${seconditem.img}`)" />
                         <span slot="title">{{thirdItem.title}}</span>
@@ -125,13 +125,13 @@ export default {
 <style lang="stylus" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   min-height: 400px;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 120px);
   overflow-y: auto;
 }
 
 .el-menu--collapse {
   width: 70px !important;
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 120px);
 }
 
 .menu_switch_div {
@@ -139,5 +139,6 @@ export default {
   color: #fff;
   padding: 15px 20px;
   line-height: 20px;
+  border-right: solid 1px #e6e6e6;
 }
 </style>
