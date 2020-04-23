@@ -126,7 +126,8 @@ let columns2 = [
 ]
 // 本人因私出国的情况
 let columns3 = [
-    { prop: 'startTime', label: '起止日期', type: 'date', align: 'left' },
+    { prop: 'startTime', label: '出发时间', type: 'date', align: 'left' },
+    { prop: 'endTime', label: '归国时间', type: 'date', align: 'left' },
     { prop: 'exitCountry', label: '所到国家', align: 'left' },
     { prop: 'cause', label: '事由', align: 'left' },
     { prop: 'city', label: '保管机构', align: 'left' },
@@ -136,13 +137,15 @@ let columns3 = [
 let columns4 = [
     { prop: 'certificateType', label: '证件名称', align: 'left' },
     { prop: 'certificateNumber', label: '证件号码', align: 'left' },
-    { prop: 'endTime', label: '有效期限', type: 'date', align: 'left' },
+    { prop: 'startTime', label: '开始有效期', type: 'date', align: 'left' },
+    { prop: 'endTime', label: '结束有效期', type: 'date', align: 'left' },
     { prop: 'exitProvince', label: '保管机构', align: 'left' },
     { prop: 'comment', label: '备注', align: 'left' },
 ]
 // 本人因私往来港澳、台湾的情况
 let columns5 = [
-    { prop: 'startTime', label: '起止日期', type: 'date', align: 'left' },
+    { prop: 'startTime', label: '开始日期', type: 'date', align: 'left' },
+    { prop: 'endTime', label: '结束日期', type: 'date', align: 'left' },
     { prop: 'exitProvince', label: '所到地区', align: 'left' },
     { prop: 'cause', label: '事由', align: 'left' },
     { prop: 'exitCountry', label: '审批机构', align: 'left' },
@@ -197,7 +200,8 @@ let columns9 = [
     { prop: 'name', label: '姓名', align: 'left' },
     { prop: 'country', label: '所在国家（地区）', align: 'left' },
     { prop: 'city', label: '工作、生活城市', align: 'left' },
-    { prop: 'strartTime', label: '起止时间', type: 'date', align: 'left' },
+    { prop: 'strartTime', label: '开始时间', type: 'date', align: 'left' },
+    { prop: 'endTime', label: '结束时间', type: 'date', align: 'left' },
     { prop: 'comment', label: '备注', align: 'left' },
 ]
 // 配偶、子女及其配偶被司法机关追究刑事责任的情况
@@ -230,13 +234,13 @@ let columns21 = [
 
 // 本人从事讲学、写作、咨询、审稿、书画等劳务所得  （万元/全年）
 let columns22 = [
-    { prop: 'name', label: '讲学', align: 'left' },
-    { prop: 'date', label: '写作', align: 'left' },
-    { prop: 'province', label: '咨询', align: 'left' },
-    { prop: 'province', label: '审稿', align: 'left' },
-    { prop: 'province', label: '书画', align: 'left' },
-    { prop: 'province', label: '其他', align: 'left' },
-    { prop: 'zip', label: '合计', align: 'left' },
+    { prop: 'giveLectures', label: '讲学', align: 'left' },
+    { prop: 'writing', label: '写作', align: 'left' },
+    { prop: 'consultation', label: '咨询', align: 'left' },
+    { prop: 'peerReview', label: '审稿', align: 'left' },
+    { prop: 'paintingCalligraphy', label: '书画', align: 'left' },
+    { prop: '', label: '其他', align: 'left' },
+    { prop: 'total', label: '合计', align: 'left' },
 ]
 
 // 本人、配偶、共同生活的子女为所有权人或者共有人的房产情况
@@ -438,7 +442,7 @@ let columns210 = [
 ]
 
 let tableData = [
-    { columns: columns1, data: [], headerTab: 2, headerParam:{edit:false, value1: '1',changeDesc:'222'} }, // 111
+    { columns: columns1, data: [], headerTab: 2, headerParam:{edit:false} }, // 111
     { columns: columns2, data: [data1[0]] },
     { columns: columns3, data: [] },
     { columns: columns4, data: [] },
@@ -447,7 +451,7 @@ let tableData = [
     { columns: columns7, data: [] },
     { columns: columns8, data: [] },
     { columns: columns9, data: [] },
-    { columns: columns9, data: [data1[0]], headerTab: 3,headerParam:{edit:false} }, // 111
+    { columns: columns9, data: [], headerTab: 3,headerParam:{edit:false} }, // 111
     { columns: columns11, data: [] },
 ]
 

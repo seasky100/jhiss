@@ -14,12 +14,12 @@
     <span class="explain">
       {{title.explain?title.explain:''}}
     </span>
-    <div class="changeBtn">
+    <!-- <div class="changeBtn">
       <el-radio-group v-model="changeFlag">
         <el-radio :label="1">有变化</el-radio>
         <el-radio :label="0">无变化</el-radio>
       </el-radio-group>
-    </div>
+    </div> -->
     <!-- 普通表格 -->
     <el-table class="generalTab" v-if="headerTab == 1"
       @cell-dblclick="cellHandleDbClick"
@@ -73,12 +73,18 @@
 </template>
 
 <script>
+import { format } from 'date-fns'
 import NavTable from './NavTable'
 import customTable from './customTable'
 export default {
   components: { 
     NavTable,
     customTable 
+  },
+  provide () {
+    return {
+      reportTab: this
+    }
   },
   props: {
     // 是否为表头表格
@@ -146,7 +152,8 @@ export default {
       columns2: [],
       tableData2: [],
       // columns3: [],
-      menuKey: 1
+      menuKey: 1,
+      verificationDateFlag: true
     }
   },
   watch: {
@@ -180,9 +187,13 @@ export default {
       }else if(this.headerTab == 2){
         // console.log(this.headerParam)
         this.headerParam.edit = true
-        // this.$parent.menuKey++
+        if(this.headerParam.changeTime != null){
+          this.headerParam.changeTime = format(new Date(this.headerParam.changeTime), 'yyyy-MM-dd')
+        }
+        if(this.headerParam.buildTime != null){
+          this.headerParam.buildTime = format(new Date(this.headerParam.buildTime), 'yyyy-MM-dd')
+        }
         this.menuKey++
-        // console.log(this.headerParam)
       }else{
         let addData = { edit: true }
         let columnsArr = this.columns2
@@ -204,8 +215,15 @@ export default {
     },
     // 修改后获取新增数据保存
     saveBtnClick(){
+      if(!this.verificationDateFlag){
+        this.$message({
+          type: 'warning',
+          message: '请输入正确的日期'
+        })
+        return
+      }
       let paramData = null
-      if(this.headerTab == 1){
+      if(this.headerTab == 1 || this.headerTab == 3){
         let paramArr = []
         let arr = [...this.tableData]
         for(let i=0;i<arr.length;i++){

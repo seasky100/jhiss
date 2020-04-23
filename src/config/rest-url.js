@@ -211,7 +211,9 @@ const DEFAULT_URL = {
     saveDeclareExitAnnual: `${GAISMSERVER}declareExit/saveDeclareExitAnnual`,
     saveRelativesAbroadAnnual: `${GAISMSERVER}relativesAbroad/saveRelativesAbroadAnnual`,
     saveRelativesIllegalAnnual: `${GAISMSERVER}relativesIllegal/saveRelativesIllegalAnnual`,
+    saveRelativesWorkAnnual: `${GAISMSERVER}relativesWork/saveRelativesWorkAnnual`,
     // 报表二
+    saveServiceIncome: `${UUMSSERVER}serviceIncome/save`,
     saveSecuredLoanAnnual: `${GAISMSERVER}securedLoan/saveSecuredLoanAnnual`,
     saveRelativesBusinessAnnual: `${GAISMSERVER}relativesBusiness/saveRelativesBusinessAnnual`,
     saveOverseasDepositAnnual: `${GAISMSERVER}overseasDeposit/saveOverseasDepositAnnual`,

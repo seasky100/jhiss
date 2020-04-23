@@ -70,7 +70,8 @@ import { saveMarrageAnnual, saveDeclareExitAnnual,
     saveSecuredLoanAnnual, saveRelativesBusinessAnnual,
     saveOverseasDepositAnnual, saveOverseasInvestmentAnnual,
     saveDomesticInvestmentAnnual, saveDeclareHouseAnnual,
-    saveOtherReportAnnual,
+    saveOtherReportAnnual, saveRelativesWorkAnnual,
+    saveServiceIncome,
   } from '@/api/report.js'
 import AnnualReportInfo from './AnnualReportInfo'
 import tableData from '../DeclarationTemplate/eventsTemplate.js'
@@ -114,12 +115,12 @@ export default {
         {saveEvent: 'addMarrageAnnual', code:307, label: '子女与港澳以及台湾居民通婚的情况', explain: `说明：①首次填报的，无此类情况的，应在“子女姓名”列下方空白处填写“无”；有此类情况的，应填写现状。②继续填报的，应先在表格右上方“有变化”或“无变化”后的□内划“√”，有变化的在表格内填写变化情况。`},
         {saveEvent: 'addRelativesAbroadAnnual', code:308, label: '配偶、子女移居国（境）外的情况', explain: `说明：①首次填报的，无此类情况的，应在“姓名”列下方空白处填写“无”；有此类情况的，应填写现状。②继续填报的，应先在表格右上方“有变化”或“无变化”后的□内划“√”，有变化的在表格内填写变化情况。③“移居国（境）外”是指取得外国国籍或者获取国（境）外永久居留资格、长期居留许可等情况。④配偶、子女原本就是外国公民或者香港、澳门、台湾居民的，也属于“移居国（境）外”情形。⑤应报告配偶和子女均已移居国（境）外的情况，也应报告配偶、子女中任何一人已移居国（境）外的情况。⑥“备注”栏填写移居国（境）外的变化情况，比如“已放弃”“无法放弃但已被列为公安机关登记备案人员”等。`},
         {saveEvent: 'addRelativesAbroadAnnual', code:309, label: '配偶、子女虽未移居国（境）外，但连续在国（境）外工作、生活一年以上的情况', explain: `说明：①首次填报的，无此类情况的，应在“姓名”列下方空白处填写“无”；有此类情况的，应填写现状。②继续填报的，应先在表格右上方“有变化”或“无变化”后的□内划“√”，有变化的在表格内填写变化情况。③配偶、子女“虽未移居国（境）外，但连续在国（境）外工作、生活一年以上”是指干部的配偶、子女虽然没有取得外国国籍或者获取国（境）外永久居留资格、长期居留许可，但截至填报日连续在国（境）外工作、生活（含留学）一年以上的情况。④在国（境）外工作、生活期间，因探亲、旅行、出差等短期回国（入境）的，仍视为连续在国（境）外工作、生活。`},
-        {saveEvent: '', code:310, label: '配偶、子女及其配偶从业情况', explain: `说明：①首次填报的，应填写现状。②继续填报的，应先在表格右上方“有变化”或“无变化”后的□内划“√”，有变化的在表格内填写变化情况。子女无配偶的，应在“配偶姓名”列下方空格内填写“无”。③未从业人员应填写就读情况、学龄前或待业等；退休人员应填写退休前工作单位及原任职务，退休后再就业的，再就业情况一并填写。④持有居民身份证的，填写18位公民身份证号码；同时持有军官证等其他证件的，证件情况填写在“个人认为需要报告的其他事项”栏。⑤受聘担任私营企业高级职务，或在外商投资企业、在中国境内从事生产经营活动的外国（地区）企业、以及外国（地区）企业常驻境内代表机构、境外非政府组织在境内设立的代表机构中担任由外方委派、聘任的高级职务的，需在“是否担任高级职务”栏“是”后的□内划“√”。⑥外商投资企业（含港澳台地区投资企业），包括外商独资企业、中外合资经营企业和中外合作经营企业。⑦关于“高级职务”，对上市公司，以公司章程对经营管理层的具体设定为准；对具有独立法人资格的非上市企业，以其章程对经营管理层的具体设定为准。“高级职务”一般包括：法定代表人、正副董事长、董事、监事、正副经理（总裁）、总会计师（财务总监）、上市公司董事会秘书等，以及外国（地区）企业常驻代表机构、境外非政府组织境内代表机构的首席代表、代表。`},
+        {saveEvent: 'addRelativesWorkAnnual', code:310, label: '配偶、子女及其配偶从业情况', explain: `说明：①首次填报的，应填写现状。②继续填报的，应先在表格右上方“有变化”或“无变化”后的□内划“√”，有变化的在表格内填写变化情况。子女无配偶的，应在“配偶姓名”列下方空格内填写“无”。③未从业人员应填写就读情况、学龄前或待业等；退休人员应填写退休前工作单位及原任职务，退休后再就业的，再就业情况一并填写。④持有居民身份证的，填写18位公民身份证号码；同时持有军官证等其他证件的，证件情况填写在“个人认为需要报告的其他事项”栏。⑤受聘担任私营企业高级职务，或在外商投资企业、在中国境内从事生产经营活动的外国（地区）企业、以及外国（地区）企业常驻境内代表机构、境外非政府组织在境内设立的代表机构中担任由外方委派、聘任的高级职务的，需在“是否担任高级职务”栏“是”后的□内划“√”。⑥外商投资企业（含港澳台地区投资企业），包括外商独资企业、中外合资经营企业和中外合作经营企业。⑦关于“高级职务”，对上市公司，以公司章程对经营管理层的具体设定为准；对具有独立法人资格的非上市企业，以其章程对经营管理层的具体设定为准。“高级职务”一般包括：法定代表人、正副董事长、董事、监事、正副经理（总裁）、总会计师（财务总监）、上市公司董事会秘书等，以及外国（地区）企业常驻代表机构、境外非政府组织境内代表机构的首席代表、代表。`},
         {saveEvent: 'addRelativesIllegalAnnual', code:311, label: '配偶、子女及其配偶被司法机关追究刑事责任的情况', explain: `说明：①填写时，应在表格右上方“有此类情况”或“无此类情况”后的□内划“√”。②有此类情况的，填写截至填报日配偶、子女及其配偶被追究刑事责任的情况。`},
       ],
       reportList3: [
         {saveEvent: '', code:312, label: '本人的工资及各类奖金、津贴、补贴等（万元/全年）', explain: `说明：①应填报本人上一年（1月1日至12月31日）扣除所得税、养老保险、医疗保险、职业年金等后的工资及各类奖金、津贴、补贴等全年实际所得的情况。②住房公积金包括个人缴纳部分和单位缴纳部分，计入工资收入。`},
-        {saveEvent: '', code:313, label: '本人从事讲学、写作、咨询、审稿、书画等劳务所得（万元/全年）', explain: `说明：①无此类情况的，在“无此类情况”后的□内划“√”。②有此类情况的，应先在表格右上方“有此类情况”后的□内划“√”，再填报本人上一年（1月1日至12月31日）扣除所得税后的讲学、写作、咨询、审稿、书画等劳务所得的情况，并填写具体金额。`},
+        {saveEvent: 'addServiceIncome', code:313, label: '本人从事讲学、写作、咨询、审稿、书画等劳务所得（万元/全年）', explain: `说明：①无此类情况的，在“无此类情况”后的□内划“√”。②有此类情况的，应先在表格右上方“有此类情况”后的□内划“√”，再填报本人上一年（1月1日至12月31日）扣除所得税后的讲学、写作、咨询、审稿、书画等劳务所得的情况，并填写具体金额。`},
         {saveEvent: 'addDeclareHouseAnnual', code:314, label: '本人、配偶、共同生活的子女为所有权人或者共有人的房产情况', explain: `说明：①首次填报的，应填写现状。无房产的，应在“产权人”列下方空格处填写“无”；有房产的，应在表格内详细完整填写。②继续填报的，应先在表格右上方“有变化”或“无变化”后的□内划“√”，有变化的在表格内详细填写上次填报以来的变化情况。③填写变化情况时，既要填写购买、继承、接受赠与等方式获取的房产情况，也要填写出售、赠与他人等方式处置房产的情况。④应填报本人、配偶、共同生活的子女名下的所有房产，包括本人、配偶、共同生活的子女为所有权人的房产，以及本人、配偶、共同生活的子女为共有权人的房产。⑤房产是共有产权的，应填写所有的产权人姓名，同时在“产权人”栏中注明共有方式（共同共有或按份共有），其中按份共有的应注明所占份额。⑥房产性质和功能类型主要包括商品房、福利房、经济适用房、限价房、自建房以及有单独产权证书的车库、车位、储藏间等。厂房、商铺、酒店式公寓等房产，也需要填报。租住的房屋，租赁的车库、车位、储藏间等，不需要填报。⑦已取得不动产权证、房屋所有权证的，具体地址、建筑面积、房产性质和功能类型等以证书记载的信息为准；尚未取得不动产权证、房屋所有权证的，以房屋买卖合同记载的信息为准。与他人共有的房产，“建筑面积”应填写整套房产的建筑面积。⑧在国（境）外（包括香港、澳门、台湾）的房产情况，填写在“国（境）外的投资情况”事项中。`},
         {saveEvent: 'addDomesticInvestmentAnnual', code:315, label: '本人、配偶、共同生活的子女投资或者以其他方式持有股票的情况', explain: `说明：①填报时，应先在表格右上方“有此类情况”或“无此类情况”后的□内划“√”。②有此类情况的，应逐人、逐只填写持有的所有股票的名称或代码、持股数量、填报前一交易日收盘时的市值（市值=单只持股数量×收盘时股价），并合计填写填报前一交易日所有股票的总市值。③通过“港股通”购买的股票，也需要填报。开通融资融券账户购买的股票，应当在“备注”栏注明融资融券使用额度等情况。④在国（境）外（包括香港、澳门、台湾）的持有股票情况，填写在“国（境）外的投资情况”事项中。⑤持有非上市公司股份的情况应在“备注”栏注明。`},
         {saveEvent: 'addDomesticInvestmentAnnual', code:316, label: '本人、配偶、共同生活的子女投资或者以其他方式持有基金的情况', explain: `说明：①填报时，应先在表格右上方“有此类情况”或“无此类情况”后的□内划“√”。②有此类情况的，应逐人、逐只填写持有的所有基金的名称或代码、份额、填报前一交易日收盘时的净值（净值=单只基金份数×收盘时单位净值），并合计填写填报前一交易日所有基金的总净值。③通过证券公司、商业银行、互联网等各类基金销售机构购买的理财产品中属于基金的产品（含以理财形式为名的各种形式的集合资产管理计划），均需填报。④在国（境）外（包括香港、澳门、台湾）的持有基金情况，填写在“国（境）外的投资情况”事项中。`},
@@ -162,11 +163,20 @@ export default {
     collectionData(reportInfo){
       const _this = this
       for(let key in reportInfo){
+        if(key == 322){
+          let n = reportInfo[key].length - 1
+          this.othersReport = JSON.parse(reportInfo[key][n].formData).reportDesc
+        }
         // console.log(key)
         this.reportList2.forEach((item,index) => {
           if(item.code == key){
             if(tableData1[index].headerTab == 2){
-               tableData1[index].headerParam = JSON.parse(reportInfo[key][0].formData)
+              // let n = reportInfo[key].length - 1
+              // tableData1[index].headerParam = JSON.parse(reportInfo[key][n].formData)
+              let formData = reportInfo[key].map(item => {
+                return JSON.parse(item.formData)
+              })
+              tableData1[index].headerParam = Object.assign(...formData)
             }else{
               tableData1[index].data = reportInfo[key].map(item => {
                 return JSON.parse(item.formData)
@@ -177,7 +187,12 @@ export default {
         this.reportList3.forEach((item,index) => {
           if(item.code == key){
             if(tableData2[index].headerTab == 2){
-               tableData2[index].headerParam = JSON.parse(reportInfo[key][0].formData)
+              // let n = reportInfo[key].length - 1
+              // tableData2[index].headerParam = JSON.parse(reportInfo[key][n].formData)
+              let formData = reportInfo[key].map(item => {
+                return JSON.parse(item.formData)
+              })
+              tableData2[index].headerParam = Object.assign(...formData)
             }else{
               tableData2[index].data = reportInfo[key].map(item => {
                 return JSON.parse(item.formData)
@@ -207,13 +222,13 @@ export default {
         // 其他
         this.$nextTick(() => {
           let scroll = this.$refs.others.offsetTop - height
-          $(this.$refs.printCon).animate({scrollTop: scroll },2000)
+          $(this.$refs.printCon).animate({scrollTop: scroll },500)
         });
         return
       }else if(this.menu_active == 0){
         // 基本信息
         this.$nextTick(() => {
-          $(this.$refs.printCon).animate({scrollTop: 0 },2000)
+          $(this.$refs.printCon).animate({scrollTop: 0 },500)
         });
         return
       }else if(this.menu_active == 2){
@@ -222,7 +237,7 @@ export default {
       }
       this.$nextTick(() => {
         let scroll = this.$refs.table_box[index].offsetTop - height
-        $(this.$refs.printCon).animate({scrollTop: scroll },2000)
+        $(this.$refs.printCon).animate({scrollTop: scroll },500)
       });
     },
     listClick2(index){
@@ -313,10 +328,10 @@ export default {
       for(let i=0;i<columns.option.length;i++){
         let obj = columns.option[i]
         if(obj.value == row.houseType){
-          str += `<span style="display:inline-block;width:90px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true checked/><br/>`
         }else {
-          str += `<span style="display:inline-block;width:90px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true/><br/>`
         }
       }
@@ -328,10 +343,10 @@ export default {
       for(let i=0;i<columns.option.length;i++){
         let obj = columns.option[i]
         if(obj.value == row.houseSource){
-          str += `<span style="display:inline-block;width:90px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true checked/><br/>`
         }else {
-          str += `<span style="display:inline-block;width:90px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true/><br/>`
         }
       }
@@ -447,10 +462,24 @@ export default {
         this.successOperation(index, res)
       })
     },
+    // 10. 亲属从业情况 saveRelativesWorkAnnual
+    addRelativesWorkAnnual(index, param){
+      console.log('10. 亲属从业情况')
+      saveRelativesWorkAnnual(param).then(res => {
+        this.successOperation(index, res)
+      })
+    },
     // 11. 亲属违法违纪
     addRelativesIllegalAnnual(index, param){
       console.log('11. 亲属违法违纪')
       saveRelativesIllegalAnnual(param).then(res => {
+        this.successOperation(index, res)
+      })
+    },
+    // 22. 劳务所得
+    addServiceIncome(index, param){
+      console.log('22. 劳务所得')
+      saveServiceIncome(param).then(res => {
         this.successOperation(index, res)
       })
     },
@@ -527,7 +556,7 @@ export default {
           return 
         }
         if(index < 11){
-          if(tableData1[index].headerParam != null){
+          if(tableData1[index].headerTab == 2){
             let param = tableData1[index].headerParam
             param.edit = false
             tableData1[index].headerParam = param

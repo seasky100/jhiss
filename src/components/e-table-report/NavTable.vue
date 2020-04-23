@@ -43,7 +43,7 @@
               </div>
             </template>
             <template v-else-if="item.type == 'date'">
-              <el-input v-model="scope.row[item.prop]"></el-input>
+              <el-input @change="verificationDate" v-model="scope.row[item.prop]"></el-input>
             </template>
           </span>
           <span v-else-if="(!item.formatter) && (!scope.row.summaryfunc)">
@@ -74,7 +74,7 @@
           </span>
           <span v-else-if="item.type == 'date'">
             <template v-if="headerParam.edit">
-              <el-input v-model="headerParam[item.prop]"></el-input>
+              <el-input @change="verificationDate" v-model="headerParam[item.prop]"></el-input>
             </template>
             <template v-else>
               {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
@@ -102,7 +102,7 @@
 import { format } from 'date-fns';
 export default {
   name: 'NavTable',
-  inject: ['orgAdd'],
+  inject: ['orgAdd', 'reportTab'],
   props: {
     // 表头数据
     columns: {
@@ -150,6 +150,17 @@ export default {
 		renderContent(h, { column, $index }){
       // console.log(column)
       return column.label
+    },
+    // 日期验证
+    verificationDate(val){
+      // console.log(val)
+      if(!(isNaN(val)&&!isNaN(Date.parse(val)))){
+        this.reportTab.verificationDateFlag = false
+        this.$message({
+          type: 'warning',
+          message: '请输入正确的日期'
+        })
+      }
     },
     format(row, columns){
       let data = ''

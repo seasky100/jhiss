@@ -1,162 +1,52 @@
 <template>
-  <div class="customTab">
-    <!-- 夫妻关系 -->
-    <table>
-      <tr>
-        <td>配偶</td>
-        <td width="60">姓名</td>
-        <td>工作（学习）单位</td>
-        <td>现任职务</td>
-        <td colspan="2">单位性质</td>
-      </tr>
-      <tr>
-        <td rowspan="4">
-          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].relation">
-            <template v-for="(item,index) of relationship1">
-              <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-            </template>
-          </el-radio-group>
-        </td>
-        <td rowspan="2">
-          <!-- <el-input v-model="customData[0].name"></el-input> -->
-          <template v-if="customData[0].edit">
-            <el-input v-model="customData[0].name"></el-input>
-          </template>
-          <template v-else>
-            {{customData[0].name}}
-          </template>
-        </td>
-        <td>
-          <!-- <el-input v-model="customData[0].value1"></el-input> -->
-          <template v-if="customData[0].edit">
-            <el-input v-model="customData[0].workCompany"></el-input>
-          </template>
-          <template v-else>
-            {{customData[0].workCompany}}
-          </template>
-        </td>
-        <td>
-          <!-- <el-input v-model="customData[0].value2"></el-input> -->
-          <template v-if="customData[0].edit">
-            <el-input v-model="customData[0].post"></el-input>
-          </template>
-          <template v-else>
-            {{customData[0].post}}
-          </template>
-        </td>
-        <td colspan="2">
-          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value3">
-            <template v-for="(item,index) of unitNature">
-              <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-            </template>
-          </el-radio-group>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <span style="margin-right:10px;">是否在国（境）外</span>
-          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].isAbroad">
-            <template v-for="(item,index) of whetherList">
-              <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-            </template>
-          </el-radio-group>
-        </td>
-        <td>
-          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value5">
-            <template v-for="(item,index) of unitInfoNature">
-              <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-            </template>
-          </el-radio-group>
-        </td>
-        <td>
-          <span style="margin-right:10px;">是否担任高级职务</span>
-          <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].isDuty">
-            <template v-for="(item,index) of whetherList">
-              <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-            </template>
-          </el-radio-group>
-        </td>
-      </tr>
-      <tr>
-        <td>证件名称</td>
-        <td colspan="4">
-          <!-- <el-input v-model="customData[0].value7"></el-input> -->
-          <template v-if="customData[0].edit">
-            <el-input v-model="customData[0].certificateName"></el-input>
-          </template>
-          <template v-else>
-            {{customData[0].certificateName}}
-          </template>
-        </td>
-      </tr>
-      <tr>
-        <td>证件号码</td>
-        <td colspan="4">
-          <!-- <el-input v-model="customData[0].value8"></el-input> -->
-          <template v-if="customData[0].edit">
-            <el-input v-model="customData[0].certificateNum"></el-input>
-          </template>
-          <template v-else>
-            {{customData[0].certificateNum}}
-          </template>
-        </td>
-      </tr>
-    </table>
-    <!-- 子女关系 -->
-    <template v-for="(item,index) of customData">
-      <table :key="index" v-if="index > 0">
+  <div class="customTab" :key="pageKey">
+    <template v-if="customData.length > 0">
+      <!-- 夫妻关系 -->
+      <table>
         <tr>
-          <td>子女{{cnNums[index]}}</td>
+          <td>配偶</td>
           <td width="60">姓名</td>
-          <td>是否为共同生活子女</td>
           <td>工作（学习）单位</td>
           <td>现任职务</td>
           <td colspan="2">单位性质</td>
         </tr>
         <tr>
           <td rowspan="4">
-            <el-radio-group :disabled="!item.edit" v-model="item.relation">
-              <template v-for="(item,index) of relationship2">
+            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].relation">
+              <template v-for="(item,index) of relationship1">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td rowspan="2">
-            <!-- <el-input v-model="item.name"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.name"></el-input>
+            <!-- <el-input v-model="customData[0].name"></el-input> -->
+            <template v-if="customData[0].edit">
+              <el-input v-model="customData[0].name"></el-input>
             </template>
             <template v-else>
-              {{item.name}}
+              {{customData[0].name}}
             </template>
-          </td>
-          <td rowspan="2">
-            <el-radio-group :disabled="!item.edit" v-model="item.isLife">
-              <template v-for="(item,index) of whetherList">
-                <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-              </template>
-            </el-radio-group>
           </td>
           <td>
             <!-- <el-input v-model="customData[0].value1"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.workCompany"></el-input>
+            <template v-if="customData[0].edit">
+              <el-input v-model="customData[0].workCompany"></el-input>
             </template>
             <template v-else>
-              {{item.workCompany}}
+              {{customData[0].workCompany}}
             </template>
           </td>
           <td>
             <!-- <el-input v-model="customData[0].value2"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.post"></el-input>
+            <template v-if="customData[0].edit">
+              <el-input v-model="customData[0].post"></el-input>
             </template>
             <template v-else>
-              {{item.post}}
+              {{customData[0].post}}
             </template>
           </td>
           <td colspan="2">
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
+            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value3">
               <template v-for="(item,index) of unitNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -166,14 +56,14 @@
         <tr>
           <td colspan="2">
             <span style="margin-right:10px;">是否在国（境）外</span>
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].isAbroad">
+            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].isAbroad">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td>
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
+            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value5">
               <template v-for="(item,index) of unitInfoNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -181,7 +71,7 @@
           </td>
           <td>
             <span style="margin-right:10px;">是否担任高级职务</span>
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].isDuty">
+            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].isDuty">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -190,122 +80,237 @@
         </tr>
         <tr>
           <td>证件名称</td>
-          <td colspan="5">
+          <td colspan="4">
             <!-- <el-input v-model="customData[0].value7"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.certificateName"></el-input>
+            <template v-if="customData[0].edit">
+              <el-input v-model="customData[0].certificateName"></el-input>
             </template>
             <template v-else>
-              {{item.certificateName}}
+              {{customData[0].certificateName}}
             </template>
           </td>
         </tr>
         <tr>
           <td>证件号码</td>
-          <td colspan="5">
+          <td colspan="4">
             <!-- <el-input v-model="customData[0].value8"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.certificateNum"></el-input>
+            <template v-if="customData[0].edit">
+              <el-input v-model="customData[0].certificateNum"></el-input>
             </template>
             <template v-else>
-              {{item.certificateNum}}
-            </template>
-          </td>
-        </tr>
-        <!-- 配偶信息 -->
-        <tr>
-          <td rowspan="5"></td>
-          <td>配偶姓名</td>
-          <td>工作（学习）单位</td>
-          <td colspan="2">现任职务</td>
-          <td colspan="2">单位性质</td>
-        </tr>
-        <tr>
-          <td rowspan="2">
-            <!-- <el-input v-model="customData[0].name2"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.name2"></el-input>
-            </template>
-            <template v-else>
-              {{item.name2}}
-            </template>
-          </td>
-          <td>
-            <!-- <el-input v-model="customData[0].value"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.value"></el-input>
-            </template>
-            <template v-else>
-              {{item.value}}
-            </template>
-          </td>
-          <td colspan="2">
-            <!-- <el-input v-model="customData[0].value"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.value"></el-input>
-            </template>
-            <template v-else>
-              {{item.value}}
-            </template>
-          </td>
-          <td colspan="2">
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
-              <template v-for="(item,index) of unitNature">
-                <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-              </template>
-            </el-radio-group>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <span style="margin-right:10px;">是否在国（境）外</span>
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].value4">
-              <template v-for="(item,index) of whetherList">
-                <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-              </template>
-            </el-radio-group>
-          </td>
-          <td>
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
-              <template v-for="(item,index) of unitInfoNature">
-                <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-              </template>
-            </el-radio-group>
-          </td>
-          <td>
-            <span style="margin-right:10px;">是否担任高级职务</span>
-            <el-radio-group :disabled="!item.edit" v-model="customData[0].value6">
-              <template v-for="(item,index) of whetherList">
-                <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
-              </template>
-            </el-radio-group>
-          </td>
-        </tr>
-        <tr>
-          <td>证件名称</td>
-          <td colspan="5">
-            <!-- <el-input v-model="customData[0].value7"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.certificateName"></el-input>
-            </template>
-            <template v-else>
-              {{item.certificateName}}
-            </template>
-          </td>
-        </tr>
-        <tr>
-          <td>证件号码</td>
-          <td colspan="5">
-            <!-- <el-input v-model="customData[0].value8"></el-input> -->
-            <template v-if="item.edit">
-              <el-input v-model="item.certificateNum"></el-input>
-            </template>
-            <template v-else>
-              {{item.certificateNum}}
+              {{customData[0].certificateNum}}
             </template>
           </td>
         </tr>
       </table>
+      <!-- 子女关系 -->
+      <template v-for="(item,index) of customData">
+        <table :key="index" v-if="index > 0">
+          <tr>
+            <td>子女{{cnNums[index]}}</td>
+            <td width="60">姓名</td>
+            <td>是否为共同生活子女</td>
+            <td>工作（学习）单位</td>
+            <td>现任职务</td>
+            <td colspan="2">单位性质</td>
+          </tr>
+          <tr>
+            <td rowspan="4">
+              <el-radio-group :disabled="!item.edit" v-model="item.relation">
+                <template v-for="(item,index) of relationship2">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+            <td rowspan="2">
+              <!-- <el-input v-model="item.name"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.name"></el-input>
+              </template>
+              <template v-else>
+                {{item.name}}
+              </template>
+            </td>
+            <td rowspan="2">
+              <el-radio-group :disabled="!item.edit" v-model="item.isLife">
+                <template v-for="(item,index) of whetherList">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+            <td>
+              <!-- <el-input v-model="customData[0].value1"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.workCompany"></el-input>
+              </template>
+              <template v-else>
+                {{item.workCompany}}
+              </template>
+            </td>
+            <td>
+              <!-- <el-input v-model="customData[0].value2"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.post"></el-input>
+              </template>
+              <template v-else>
+                {{item.post}}
+              </template>
+            </td>
+            <td colspan="2">
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
+                <template v-for="(item,index) of unitNature">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <span style="margin-right:10px;">是否在国（境）外</span>
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].isAbroad">
+                <template v-for="(item,index) of whetherList">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+            <td>
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
+                <template v-for="(item,index) of unitInfoNature">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+            <td>
+              <span style="margin-right:10px;">是否担任高级职务</span>
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].isDuty">
+                <template v-for="(item,index) of whetherList">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>证件名称</td>
+            <td colspan="5">
+              <!-- <el-input v-model="customData[0].value7"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.certificateName"></el-input>
+              </template>
+              <template v-else>
+                {{item.certificateName}}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>证件号码</td>
+            <td colspan="5">
+              <!-- <el-input v-model="customData[0].value8"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.certificateNum"></el-input>
+              </template>
+              <template v-else>
+                {{item.certificateNum}}
+              </template>
+            </td>
+          </tr>
+          <!-- 配偶信息 -->
+          <tr>
+            <td rowspan="5"></td>
+            <td>配偶姓名</td>
+            <td>工作（学习）单位</td>
+            <td colspan="2">现任职务</td>
+            <td colspan="2">单位性质</td>
+          </tr>
+          <tr>
+            <td rowspan="2">
+              <!-- <el-input v-model="customData[0].name2"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.name2"></el-input>
+              </template>
+              <template v-else>
+                {{item.name2}}
+              </template>
+            </td>
+            <td>
+              <!-- <el-input v-model="customData[0].value"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.value"></el-input>
+              </template>
+              <template v-else>
+                {{item.value}}
+              </template>
+            </td>
+            <td colspan="2">
+              <!-- <el-input v-model="customData[0].value"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.value"></el-input>
+              </template>
+              <template v-else>
+                {{item.value}}
+              </template>
+            </td>
+            <td colspan="2">
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
+                <template v-for="(item,index) of unitNature">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <span style="margin-right:10px;">是否在国（境）外</span>
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value4">
+                <template v-for="(item,index) of whetherList">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+            <td>
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
+                <template v-for="(item,index) of unitInfoNature">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+            <td>
+              <span style="margin-right:10px;">是否担任高级职务</span>
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value6">
+                <template v-for="(item,index) of whetherList">
+                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                </template>
+              </el-radio-group>
+            </td>
+          </tr>
+          <tr>
+            <td>证件名称</td>
+            <td colspan="5">
+              <!-- <el-input v-model="customData[0].value7"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.certificateName"></el-input>
+              </template>
+              <template v-else>
+                {{item.certificateName}}
+              </template>
+            </td>
+          </tr>
+          <tr>
+            <td>证件号码</td>
+            <td colspan="5">
+              <!-- <el-input v-model="customData[0].value8"></el-input> -->
+              <template v-if="item.edit">
+                <el-input v-model="item.certificateNum"></el-input>
+              </template>
+              <template v-else>
+                {{item.certificateNum}}
+              </template>
+            </td>
+          </tr>
+        </table>
+      </template>
+    </template>
+    <template v-else>
+      <div class="customSty">暂无数据</div>
     </template>
   </div>
 </template>
@@ -330,6 +335,7 @@ export default {
   },
   data() {
     return {
+      pageKey: 0,
       // customData: [
       //   {name: '',},
       //   {name: '',},
@@ -373,12 +379,14 @@ export default {
   watch: {
     customData: {
       handler(cval, oval) {
-        console.log(cval)
+        // console.log(cval)
+        this.pageKey++
       },
       deep: true
     }
   },
   mounted() {
+    // console.log(this.customData)
   },
   methods: {
     // 
@@ -398,4 +406,8 @@ export default {
     color #606266
     font-size 14px
     border 1px solid #EBEEF5
+.customSty
+  background #ffffff
+  padding 20px
+  text-align center
 </style>

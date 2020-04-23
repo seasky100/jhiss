@@ -358,5 +358,23 @@ export function getReportById (params) {
   })
 }
 
+// 10. 亲属从业信息 
+export function saveRelativesWorkAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveRelativesWorkAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
+// 22. 劳务所得
+export function saveServiceIncome (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveServiceIncome,
+    method: 'post',
+    data: params
+  })
+}
+
 // 
 
