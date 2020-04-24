@@ -4,7 +4,7 @@
       <img style="margin-right:8px;" src="@/utils/img/home_round_bar@2x.png" />
       <span>层级管理</span>
       <el-button class="titleBtn" size="mini" @click="returnClick"
-        >返回上一级</el-button
+        >层级关系图</el-button
       >
     </div>
     <div class="individual_title"></div>
@@ -55,9 +55,9 @@
     </div>
     <div class="post_status">
       <span>岗位状态颜色说明：</span>
-      <li style="color:#DABC85;">一般</li>
-      <li style="color:#1ACE80;">良好</li>
-      <li style="color:#AB2C31;">注意</li>
+      <li style="color:#1ACE80;">正常</li>
+      <li style="color:#DABC85;">关注</li>
+      <li style="color:#AB2C31;">预警</li>
     </div>
     <div class="relationship">
       <org-tree
@@ -73,8 +73,6 @@
   </div>
 </template>
 <script>
-// import treeData from './treeData.js';
-import { getUserInfo } from '@/api/user-server.js';
 export default {
   name: 'Departmental_level',
   data() {
@@ -85,27 +83,14 @@ export default {
       horizontal: true,
       // 人员关系跳转地址
       path_url: 'Personnel_relation',
-      model: '',
+      model: 'dep',
       timer: null,
       //
     };
   },
-  watch: {
-    tree_data(newVal, oldVal) {
-      this.$store.state.depInfo.value = newVal;
-    },
-    active(newVal, oldVal) {
-      this.$store.state.depInfo.value.id = newVal;
-    },
-    entranceList(newVal, oldVal) {
-      this.$store.state.depInfo.list = newVal;
-    },
-    model(newVal, oldVal) {
-      this.$store.state.depInfo.model = newVal;
-    },
-  },
   mounted() {
     this.init();
+    // this.getData();
   },
   methods: {
     returnClick() {
@@ -120,15 +105,14 @@ export default {
       }
      
       // this.userInfo = JSON.parse(sessionStorage.userInfo)
-      this.active = query.id;
+      this.active = (query&&query.id)||sessionStorage.orgId;
       this.entranceList =JSON.parse(window.localStorage.dep_list);
 
-      this.model = query.model;
       const _this = this;
       let n = 0;
       for (let i = 0; i < this.entranceList.length; i++) {
         let obj = this.entranceList[i];
-        if (obj.id == this.active) {
+        if (obj.id == this.active||obj.orgId==this.active) {
           n = i;
           let tree_data = {
             children: [],
@@ -136,7 +120,6 @@ export default {
           };
           this.getChildren(obj, tree_data.children);
           this.tree_data = tree_data;
-          console.log(obj,this.tree_data)
           break;
         }
       }
@@ -211,11 +194,62 @@ export default {
           realName: value.userPname
       };
       this.getChildren(value, tree_data.children);
-      console.log(1111,value)
       this.tree_data = tree_data;
     },
     //
+    getData(){
+      if (window.localStorage.tree_data) {
+        this.getDeptChidren();
+        // this.dep_list = JSON.parse(window.localStorage.dep_list)
+      } else {
+        treeAndUser(
+          Object.assign({
+            currentId: '', // 当前区域id
+          })
+        ).then((res) => {
+          let tree_data = res.data[0];
+          tree_data.children = tree_data.childrens[0].userList;
+          tree_data.level = 1;
+          tree_data.expand = true;
+          window.localStorage.tree_data = JSON.stringify(tree_data);
+          this.getDeptChidren();
+        });
+      }
+    },
+     //处理第三层部门的数据
+     getDeptChidren() {
+      let data = JSON.parse(window.localStorage.tree_data);
+      data.userInfo = data.userList[0];
+      let arr1 = data.children; //第二层的人员
+      let arr2 = data.childrens[0].childrens; //第三次的人员
+      for (let i = 0; i < arr1.length; i++) {
+        //遍历第二次人员
+        let obj = arr1[i];
+        obj.index = i;
+        obj.level = 2;
+        obj.expand = true;
+        obj.name = data.childrens[0].name;
+        obj.orgName = data.childrens[0].orgName;
+        let children = [];
+        for (let j = 0; j < arr2.length; j++) {
+          //遍历第三次人员，如果相等则把部门名称加到第二层的children里面
+          let obj2 = arr2[j];
+          if (obj2.userPname.includes(obj.realName)) {
+            children.push(obj2);
+          }
+        }
+        let dep = { dep: children, level: 3 };
+        // obj.children = children
+        if (children.length > 0) {
+          obj.children = [dep];
+        }
+      }
+      if(!window.localStorage.dep_list){
+        window.localStorage.dep_list = JSON.stringify(arr2);
+      }
+    }
   },
+ 
 };
 </script>
 <style lang="stylus" scoped>

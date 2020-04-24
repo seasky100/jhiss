@@ -3,8 +3,8 @@
     <div class="individual_title"></div>
     <div class="explain">
       <li class="explain_li" style="color:#A0C5A2;"><span>正常</span></li>
-      <li class="explain_li" style="color:#FFAC42;"><span>注意</span></li>
-      <li class="explain_li" style="color:#E85C43;"><span>危险</span></li>
+      <li class="explain_li" style="color:#FFAC42;"><span>关注</span></li>
+      <li class="explain_li" style="color:#E85C43;"><span>预警</span></li>
     </div>
     <div class="relationship">
       <org-tree
@@ -35,6 +35,7 @@ export default {
   },
   mounted() {
     // this.getData()
+
   },
   methods: {
     init() {
@@ -43,7 +44,6 @@ export default {
     getData() {
       if (window.localStorage.tree_data) {
         this.collectData();
-        // console.log(this.tree_data)
         // this.dep_list = JSON.parse(window.localStorage.dep_list)
       } else {
         treeAndUser(
@@ -61,12 +61,13 @@ export default {
       }
     },
     collectData(data) {
-      // this.tree_data = JSON.parse(window.localStorage.tree_data);
       let tree_data = JSON.parse(window.localStorage.tree_data);
       tree_data.userInfo = tree_data.userList[0];
-      this.getDeptChidren(tree_data);
+      let returnObjcet=this.getDeptChidren(tree_data);
+      this.tree_data = returnObjcet.data;
+      this.dep_list =returnObjcet.arr2;
     },
-    //处理第三次部门的数据
+    //处理第三层部门的数据
     getDeptChidren(data) {
       let arr1 = data.children; //第二层的人员
       let arr2 = data.childrens[0].childrens; //第三次的人员
@@ -92,9 +93,11 @@ export default {
           obj.children = [dep];
         }
       }
-      this.tree_data = data;
-      this.dep_list = arr2;
-      window.localStorage.dep_list = JSON.stringify(arr2);
+      console.log(arr2)
+      if(!window.localStorage.dep_list){
+        window.localStorage.dep_list = JSON.stringify(arr2);
+      }
+      return {data,arr2}
     },
     // 转化获取列属性对象
     flatten(arr) {

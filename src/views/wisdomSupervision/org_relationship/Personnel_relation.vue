@@ -117,7 +117,7 @@ export default {
         {bg: '#E6FAF5',color: '#81D5C0'},
         {bg: '#D6E9FF',color: '#4D86F0'}
       ],
-      model: '',
+      model: 'person_info',
       level: 2, // 1: 只有上级；2：上下级都有；3：只有下级
       dialogVisible: false, // 岗位预警
       dialogVisible2: false, // 责任清单
@@ -146,10 +146,8 @@ export default {
     },
     init() {
       let query = this.$route.query
-      this.model = query.model
       this.personInfo = query.value
       // this.labelList = [this.personInfo.orgName,this.personInfo.orgPname]
-    
       this.getData(query)
     },
     getChildren(node, newchildren) {
@@ -186,8 +184,6 @@ export default {
       })
       const _this = this
       const params = {
-        // userId: _this.$store.state.user.userId
-        // 39411b303f3346c69c7a7c507a6d0afd fc7e5d3b2f91477f8ab329b18b4ccb30 36e773bf0298409980c289a9dd922d6a
         userId:query.value.userPid
       }
       getUserInfo(params).then(res => {
@@ -250,8 +246,7 @@ export default {
       getRiskByUserId(
         Object.assign(
           {
-            userId: '27b50377217444538a041e15d9b83bcc'
-            // userId: userId
+            userId: JSON.parse(sessionStorage.userInfo).id
           },
         )
       ).then(res => {
