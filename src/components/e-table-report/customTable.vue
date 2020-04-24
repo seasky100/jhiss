@@ -63,7 +63,7 @@
             </el-radio-group>
           </td>
           <td>
-            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value5">
+            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value3">
               <template v-for="(item,index) of unitInfoNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -174,7 +174,7 @@
               </el-radio-group>
             </td>
             <td>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
                 <template v-for="(item,index) of unitInfoNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -267,7 +267,7 @@
               </el-radio-group>
             </td>
             <td>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value5">
+              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
                 <template v-for="(item,index) of unitInfoNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -358,16 +358,16 @@ export default {
         {name: '国有企业', value:'3'},
         {name: '军队', value:'4'},
         {name: '学生', value:'5'},
-        {name: '其他', value:'6'},
+        {name: '其他', value:'8'},
       ],
       // 单位性质细则
       unitInfoNature:[
-        {name: '个体工商户', value:'1'},
-        {name: '私营企业', value:'2'},
-        {name: '外商投资企业', value:'3'},
-        {name: '境内从事生产经营活动的外国（地区）企业', value:'4'},
-        {name: '外国（地区）企业常驻境内代表机构', value:'5'},
-        {name: '境外非政府组织的境内代表机构', value:'6'},
+        {name: '个体工商户', value:'6'},
+        {name: '私营企业', value:'7'},
+        {name: '外商投资企业', value:'9'},
+        {name: '境内从事生产经营活动的外国（地区）企业', value:'10'},
+        {name: '外国（地区）企业常驻境内代表机构', value:'11'},
+        {name: '境外非政府组织的境内代表机构', value:'12'},
       ],
       // 是否选项
       whetherList: [

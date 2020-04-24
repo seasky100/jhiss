@@ -347,10 +347,10 @@ export default {
       for(let i=0;i<columns.option.length;i++){
         let obj = columns.option[i]
         if(obj.value == row.houseType){
-          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:80px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true checked/><br/>`
         }else {
-          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:80px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true/><br/>`
         }
       }
@@ -358,32 +358,30 @@ export default {
     },
     // 房产来源
     propertySource(row, columns){
-      let str = ''
+      let str = `<div style="background:#f5f7fa;border-radius:5px;padding:5px 0;margin-bottom:5px;" >`
       for(let i=0;i<columns.option.length;i++){
         let obj = columns.option[i]
         if(obj.value == row.houseSource){
-          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:60px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true checked/><br/>`
         }else {
-          str += `<span style="display:inline-block;width:40px;">${obj.name}</span>
+          str += `<span style="display:inline-block;width:60px;">${obj.name}</span>
             <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true/><br/>`
         }
       }
+      str += `</div><div style="background:#f5f7fa;border-radius:5px;padding:5px 0;" >`
+      for(let i=0;i<columns.option2.length;i++){
+        let obj = columns.option2[i]
+        if(obj.value == row.houseSource){
+          str += `<span style="display:inline-block;width:60px;">${obj.name}</span>
+            <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true checked/><br/>`
+        }else {
+          str += `<span style="display:inline-block;width:60px;">${obj.name}</span>
+            <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true/><br/>`
+        }
+      }
+      str += `</div>`
       return str
-      // let str = `<div style="background:#f5f7fa;border-radius:5px;padding:5px 0;margin-bottom:5px;" >`
-      // for(let i=0;i<columns.option.length;i++){
-      //   let obj = columns.option[i]
-      //   str += `<span style="display:inline-block;width:60px;">${obj.name}</span>
-      //   <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true checked/><br/>`
-      // }
-      // str += `</div><div style="background:#f5f7fa;border-radius:5px;padding:5px 0;" >`
-      // for(let i=0;i<columns.option2.length;i++){
-      //   let obj = columns.option2[i]
-      //   str += `<span style="display:inline-block;width:60px;">${obj.name}</span>
-      //   <input style="position:relative;top:2px;left:3px;" type="checkbox" name="checkbox" value="0" disabled=true checked/><br/>`
-      // }
-      // str += `</div>`
-      // return str
     },
     summaryfunc1(row, columns){
       if(row[columns.prop] == null){
