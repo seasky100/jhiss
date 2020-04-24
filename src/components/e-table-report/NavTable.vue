@@ -9,7 +9,7 @@
 				:fixed="item.fixed ? item.fixed : false"
 				show-overflow-tooltip>
 				<template v-if="item.children && item.children.length > 0">
-					<nav-table :columns="item.children" :headerTab="headerTab" :headerParam="headerParam"></nav-table>
+					<nav-table :tableData="tableData" :columns="item.children" :headerTab="headerTab" :headerParam="headerParam"></nav-table>
 				</template>
         <!-- 表格数据 -->
         <template v-if="!item.children || item.children.length == 0" slot-scope="scope">
@@ -42,14 +42,108 @@
                 </el-radio-group>
               </div>
             </template>
+            <template v-else-if="item.type == 'date'">
+              <el-input @change="verificationDate" v-model="scope.row[item.prop]"></el-input>
+            </template>
           </span>
-          <span v-else-if="(!item.formatter) && (!scope.row.summaryfunc)">{{scope.row[item.prop]}}</span>
+          <span v-else-if="(!item.formatter) && (!scope.row.summaryfunc)">
+            <!-- {{scope.row[item.prop]}} -->
+            <template v-if="item.type == 'date'">
+              {{scope.row[item.prop] != null ? formatterDate(scope.row[item.prop]) : ''}}
+            </template>
+            <template v-else>
+              {{scope.row[item.prop]}}
+            </template>
+          </span>
           <span v-else v-html="format(scope.row, item)"></span>
         </template>
         <!-- 表头数据 -->
         <!-- eslint-disable-next-line -->
         <template slot="header" slot-scope="scope">
           <span v-if="headerTab == 1">{{item.label}}</span>
+          <span v-else-if="headerTab == 2">
+            <!-- 首次进入 -->
+            <template v-if="tableData.length == 0">
+              <span v-if="(!item.type) || item.type == null || item.type == ''">
+                {{item.label}}
+              </span>
+              <span v-else-if="item.type == 'text'">
+                <template v-if="item.status != 'fixedState'">
+                  {{headerParam[item.prop2]}}
+                </template>
+                <template v-else-if="headerParam.edit">
+                  <el-input v-model="headerParam[item.prop2]"></el-input>
+                </template>
+                <template v-else>
+                  {{headerParam[item.prop2]}}
+                </template>
+              </span>
+              <span v-else-if="item.type == 'date'">
+                <template v-if="item.status != 'fixedState'">
+                  {{headerParam[item.prop2]}}
+                </template>
+                <template v-else-if="headerParam.edit">
+                  <el-input @change="verificationDate" v-model="headerParam[item.prop2]"></el-input>
+                </template>
+                <template v-else>
+                  {{headerParam[item.prop2] != null ? formatterDate(headerParam[item.prop2]) : ''}}
+                </template>
+              </span>
+              <span v-else-if="item.type == 'checkbox'">
+                <el-radio-group v-if="item.status != 'fixedState'" :disabled="true" v-model="headerParam[item.prop2]">
+                  <template v-for="(item,index) of item.option">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+                <el-radio-group v-else :disabled="!headerParam.edit" v-model="headerParam[item.prop2]">
+                  <template v-for="(item,index) of item.option">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+              </span>
+            </template>
+            <!-- 不是首次进入 -->
+            <template v-if="tableData.length > 0">
+              <span v-if="(!item.type) || item.type == null || item.type == ''">
+                {{item.label}}
+              </span>
+              <span v-else-if="item.type == 'text'">
+                <template v-if="item.status == 'fixedState'">
+                  {{headerParam[item.prop]}}
+                </template>
+                <template v-else-if="headerParam.edit">
+                  <el-input v-model="headerParam[item.prop]"></el-input>
+                </template>
+                <template v-else>
+                  {{headerParam[item.prop]}}
+                </template>
+              </span>
+              <span v-else-if="item.type == 'date'">
+                <template v-if="item.status == 'fixedState'">
+                  {{headerParam[item.prop]}}
+                </template>
+                <template v-if="headerParam.edit">
+                  <el-input @change="verificationDate" v-model="headerParam[item.prop]"></el-input>
+                </template>
+                <template v-else>
+                  {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
+                </template>
+              </span>
+              <span v-else-if="item.type == 'checkbox'">
+                <el-radio-group v-if="item.status == 'fixedState'" :disabled="true" v-model="headerParam[item.prop]">
+                  <template v-for="(item,index) of item.option">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+                <el-radio-group v-else :disabled="!headerParam.edit" v-model="headerParam[item.prop]">
+                  <template v-for="(item,index) of item.option">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+              </span>
+            </template>
+          </span>
+          <!-- 11111 -->
           <span v-else-if="(!item.type) || item.type == null || item.type == ''">
             {{item.label}}
           </span>
@@ -59,6 +153,14 @@
             </template>
             <template v-else>
               {{headerParam[item.prop]}}
+            </template>
+          </span>
+          <span v-else-if="item.type == 'date'">
+            <template v-if="headerParam.edit">
+              <el-input @change="verificationDate" v-model="headerParam[item.prop]"></el-input>
+            </template>
+            <template v-else>
+              {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
             </template>
           </span>
           <!-- headerParam[item.prop] -->
@@ -80,9 +182,10 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
 export default {
   name: 'NavTable',
-  inject: ['orgAdd'],
+  inject: ['orgAdd', 'reportTab'],
   props: {
     // 表头数据
     columns: {
@@ -102,6 +205,12 @@ export default {
         return {};
       }
     },
+    tableData: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    }
   },
   watch: {
     columns(newV, oldV){
@@ -124,9 +233,23 @@ export default {
     // this.list = this.recursionList(this.columns)
   },
   methods: {
+    formatterDate(dataString){
+      return format(new Date(dataString), 'yyyy-MM-dd')
+    },
 		renderContent(h, { column, $index }){
       // console.log(column)
       return column.label
+    },
+    // 日期验证
+    verificationDate(val){
+      // console.log(val)
+      if(!(isNaN(val)&&!isNaN(Date.parse(val)))){
+        this.reportTab.verificationDateFlag = false
+        this.$message({
+          type: 'warning',
+          message: '请输入正确的日期'
+        })
+      }
     },
     format(row, columns){
       let data = ''

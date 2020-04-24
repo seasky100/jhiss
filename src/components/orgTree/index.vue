@@ -52,6 +52,11 @@ export default {
       default: '',
     },
   },
+  watch:{
+    data(){
+      this. isGotoPerson_info=false;
+    }
+  },
   data() {
     return {
       labelClassName: '',
@@ -70,6 +75,7 @@ export default {
         children: 'childrens',
         label: 'name',
       },
+      isGotoPerson_info:false
     };
   },
   methods: {
@@ -184,30 +190,19 @@ export default {
             </el-image>
           );
           let routeUrl = '';
-          let userInfo = sessionStorage.userInfo;
-          // if(userInfo != null && userInfo != '' && JSON.parse(userInfo).id == data.id){
-          // fc7e5d3b2f91477f8ab329b18b4ccb30 36e773bf0298409980c289a9dd922d6a
-          if (data.userPid == '36e773bf0298409980c289a9dd922d6a') {
+          if (data.id == JSON.parse(sessionStorage.userInfo).id) {
             routeUrl = 'person_info';
           }
+
           let handleEvent = () => this.nodePanelClick(data, '', routeUrl);
+          console.log(this.isGotoPerson_info)
           return (
-            <div class="user_panel_dep" onclick={handleEvent}>
+            <div class="user_panel_dep" onclick={routeUrl?handleEvent:()=>{}}>
               <div class='part_icon'>      
                   <img style="height: 16px;margin-left: 10px;" class="dep_img"src={ require('../../assets/images/dangyuan.png')}/></div>
               {img}
-              <span
-                style={
-                  data.userPid == '36e773bf0298409980c289a9dd922d6a'
-                    ? 'cursor:pointer'
-                    : ''
-                }
-                class={
-                  data.userPid == '36e773bf0298409980c289a9dd922d6a'
-                    ? 'current_user'
-                    : ''
-                }
-              >
+              <span 
+                class={routeUrl? 'current_user': ''}>
                 {data.realName}
               </span>
             </div>
@@ -216,7 +211,7 @@ export default {
           return (
             <div
               class={
-                data.userPid == '36e773bf0298409980c289a9dd922d6a'
+                data.id ==JSON.parse(sessionStorage.userInfo).id
                   ? 'user_panel_others current_user_bg'
                   : 'user_panel_others'
               }
@@ -258,33 +253,20 @@ export default {
         window.open(data.url);
       }
     },
-    // 几点面板点击事件
+    // 节点面板点击事件
     nodePanelClick(data, valueObj, model) {
       console.log(data, valueObj, model);
-      // console.log(valueObj)
-      const _this = this;
+         // 无权限
+      if (model == ''||this.path_url == null || this.path_url == '') {
+        return;
+      }
       let query = {};
-      if (valueObj == '') {
-        // console.log(data)
-        // 跳转层级人员
+      if (valueObj == '') {// 跳转层级人员
         query.value = data;
-        query.model = model;
-        // 当前用户才可点击
-        // if(data.id != _this.$store.state.user.userId){
-        //   return
-        // }
-      } else {
-        // 跳转层级部门
+      } else { // 跳转层级部门
         query.id = valueObj.id;
-        query.model = model;
       }
-      if (this.path_url == null || this.path_url == '') {
-        return;
-      }
-      // 无权限
-      if (model == '') {
-        return;
-      }
+   
       this.$router.push({ path: this.path_url, query });
     },
     collapse(list) {
@@ -467,6 +449,7 @@ export default {
 }
 .com.com.org_tree .current_user {
   color: #320dac;
+  cursor:pointer
 }
 .com.com.org_tree .current_user_bg {
   background: #235ff6;
