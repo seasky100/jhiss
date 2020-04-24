@@ -444,7 +444,7 @@ export default {
         // param.forEach((obj,index) => {
         //   this[eventObj.saveEvent](index, obj)
         // })
-        console.log(data)
+        // console.log(data)
         const param = data[0]
         param.gmtCreate = format(new Date(), 'yyyy-MM-dd'),
         param.gmtModified = format(new Date(), 'yyyy-MM-dd'),
