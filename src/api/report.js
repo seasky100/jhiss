@@ -259,6 +259,16 @@ export function saveMarrageAnnual (params) {
     data: params
   })
 }
+
+// 2. 护照管理
+export function savePassportAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.savePassportAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
 // 3. 4. 5. 本人因私出国情况 POST /declareExit/saveDeclareExitAnnual
 export function saveDeclareExitAnnual (params) {
   return request({
@@ -367,10 +377,10 @@ export function saveRelativesWorkAnnual (params) {
   })
 }
 
-// 22. 劳务所得
-export function saveServiceIncome (params) {
+// 22. 劳务所得 
+export function saveLaborIncomeAnnual (params) {
   return request({
-    url: DEFAULT_URL.saveAnnualReport.saveServiceIncome,
+    url: DEFAULT_URL.saveAnnualReport.saveLaborIncomeAnnual,
     method: 'post',
     data: params
   })

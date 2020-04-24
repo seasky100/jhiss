@@ -119,11 +119,11 @@ let columns1 = [
 ]
 // 本人持有普通护照的情况
 let columns2 = [
-    { prop: 'zip', label: '护照号', align: 'left' },
-    { prop: 'date', label: '签发日期', type: 'date', align: 'left' },
-    { prop: 'date', label: '有效期截至', type: 'date', align: 'left' },
-    { prop: 'city', label: '保管机构', align: 'left' },
-    { prop: 'address', label: '备注', align: 'left' },
+    { prop: 'certificatesNumber', label: '护照号', align: 'left' },
+    { prop: 'issueDate', label: '签发日期', type: 'date', align: 'left' },
+    { prop: 'validity', label: '有效期截至', type: 'date', align: 'left' },
+    { prop: 'orgName', label: '保管机构', align: 'left' },
+    { prop: 'remark', label: '备注', align: 'left' },
 ]
 // 本人因私出国的情况
 let columns3 = [
@@ -131,7 +131,7 @@ let columns3 = [
     { prop: 'endTime', label: '归国时间', type: 'date', align: 'left' },
     { prop: 'exitCountry', label: '所到国家', align: 'left' },
     { prop: 'cause', label: '事由', align: 'left' },
-    { prop: 'city', label: '审批机构', align: 'left' },
+    { prop: 'approvalAgency', label: '审批机构', align: 'left' },
     { prop: 'certificateNumber', label: '所用护照号', align: 'left' },
 ]
 // 本人持有往来港澳通行证、因私持有大陆居民往来台湾通行证的情况
@@ -240,7 +240,7 @@ let columns22 = [
     { prop: 'consultation', label: '咨询', align: 'left' },
     { prop: 'peerReview', label: '审稿', align: 'left' },
     { prop: 'paintingCalligraphy', label: '书画', align: 'left' },
-    { prop: '', label: '其他', align: 'left' },
+    { prop: 'other', label: '其他', align: 'left' },
     { prop: 'total', label: '合计', align: 'left' },
 ]
 

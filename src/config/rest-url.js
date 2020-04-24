@@ -208,12 +208,13 @@ const DEFAULT_URL = {
     getReportById: `${GAISMSERVER}annualReportInformation/getReportById`,
     // 报表一
     saveMarrageAnnual: `${GAISMSERVER}marrage/saveDeclareExitAnnual`,
+    savePassportAnnual: `${GAISMSERVER}passport/savePassportAnnual`,
     saveDeclareExitAnnual: `${GAISMSERVER}declareExit/saveDeclareExitAnnual`,
     saveRelativesAbroadAnnual: `${GAISMSERVER}relativesAbroad/saveRelativesAbroadAnnual`,
     saveRelativesIllegalAnnual: `${GAISMSERVER}relativesIllegal/saveRelativesIllegalAnnual`,
     saveRelativesWorkAnnual: `${GAISMSERVER}relativesWork/saveRelativesWorkAnnual`,
     // 报表二
-    saveServiceIncome: `${UUMSSERVER}serviceIncome/save`,
+    saveLaborIncomeAnnual: `${GAISMSERVER}user/saveLaborIncomeAnnual`,
     saveSecuredLoanAnnual: `${GAISMSERVER}securedLoan/saveSecuredLoanAnnual`,
     saveRelativesBusinessAnnual: `${GAISMSERVER}relativesBusiness/saveRelativesBusinessAnnual`,
     saveOverseasDepositAnnual: `${GAISMSERVER}overseasDeposit/saveOverseasDepositAnnual`,
