@@ -243,7 +243,9 @@ export default {
     // 日期验证
     verificationDate(val){
       // console.log(val)
-      if(!(isNaN(val)&&!isNaN(Date.parse(val)))){
+      if(isNaN(val)&&!isNaN(Date.parse(val))){
+        this.reportTab.verificationDateFlag = true
+      }else{
         this.reportTab.verificationDateFlag = false
         this.$message({
           type: 'warning',
