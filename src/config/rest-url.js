@@ -222,7 +222,14 @@ const DEFAULT_URL = {
     saveDomesticInvestmentAnnual: `${GAISMSERVER}/domesticInvestment/saveDeclareExitAnnual`,
     saveDeclareHouseAnnual: `${GAISMSERVER}/declareHouse/saveDeclareHouseAnnual`,
     saveOtherReportAnnual: `${GAISMSERVER}/otherReport/saveOtherReportAnnual`,
-  }
+  },
+  // 护照管理
+  passport: {
+    findPassport: `${GAISMSERVER}passport/findPassport`,
+    StatisticsCustodyStatus: `${GAISMSERVER}passport/StatisticsCustodyStatus`,
+    StatisticsPassportType: `${GAISMSERVER}passport/StatisticsPassportType`,
+    findPassportById: `${GAISMSERVER}passport/findPassportById`,
+  },
 }
 
 export default DEFAULT_URL;

@@ -325,3 +325,39 @@ export function indexCalendar (params) {
     params
   })
 }
+
+// 护照管理 
+export function findPassport (params) {
+  return request({
+    url: DEFAULT_URL.passport.findPassport,
+    method: 'get',
+    params
+  })
+}
+
+// 根据护照的保管状态进行统计护照的数量 
+export function StatisticsCustodyStatus (params) {
+  return request({
+    url: DEFAULT_URL.passport.StatisticsCustodyStatus,
+    method: 'post',
+    data: params
+  })
+}
+
+// 根据护照类型统计
+export function StatisticsPassportType (params) {
+  return request({
+    url: DEFAULT_URL.passport.StatisticsPassportType,
+    method: 'post',
+    data: params
+  })
+}
+
+// 获取护照详情
+export function findPassportById (params) {
+  return request({
+    url: DEFAULT_URL.passport.findPassportById,
+    method: 'get',
+    params
+  })
+}

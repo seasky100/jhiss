@@ -42,6 +42,62 @@ const dictionary = [
         value: '2'
       }
     ]
+  },
+  {
+    type: '业务字段',
+    label: '证件类型',
+    childrens: [
+      {
+        label: '护照',
+        value: '1'
+      },
+      {
+        label: '港澳通行证',
+        value: '2'
+      },
+      {
+        label: '台湾通行证',
+        value: '3'
+      },
+      {
+        label: '中华人民共和国出入证',
+        value: '4'
+      },
+      {
+        label: '其他证件类型',
+        value: '5'
+      }
+    ]
+  },
+  {
+    type: '业务字段',
+    label: '证件状态',
+    childrens: [
+      {
+        label: '统一保管',
+        value: '1'
+      },
+      {
+        label: '本人领取',
+        value: '2'
+      },
+      {
+        label: '过期退回',
+        value: '3'
+      },
+      {
+        label: '退休满两年',
+        value: '4'
+      },
+      {
+        label: '单位调出',
+        value: '5'
+      },
+      {
+        label: '其他',
+        value: '6'
+      }
+    ]
   }
 ]
 export default {

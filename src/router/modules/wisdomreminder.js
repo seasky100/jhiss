@@ -91,6 +91,14 @@ const wisdomReminderRouter = [
         path: "/travel-management",
         component: () => import('@/views/WisdomReminder/TravelManagement')
       },
+      {
+        title: '护照管理',
+        icon: 'el-icon-menu',
+        img: 'float_travel@2x.png',
+        name: 'PassportManagement',
+        path: "/PassportManagement",
+        component: () => import('@/views/WisdomReminder/PassportManagement')
+      },
       // 
       {
         title: '检查通报',
