@@ -39,15 +39,17 @@
           @handleSearch="handleSearch"
           :searchData="searchData"
           :searchForm="searchForm" />
-          <el-button type="small" class="addBtn" @click="addFormClick">
-            新增
-          </el-button>
-          <el-button type="small" class="addBtn" @click="export2Excel">
-            导出excel
-          </el-button>
-          <e-upload class="addBtn" :limit="1"
-            style="display:inline-block;margin-left:10px;"
-            @changeHandler="addExcelClick" />
+          <div style="display:inline-block;position:relative;top:8px;left:-15px;">
+            <el-button type="small" class="addBtn" @click="addFormClick">
+              新增
+            </el-button>
+            <el-button type="small" class="addBtn" @click="export2Excel">
+              导出excel
+            </el-button>
+            <e-upload class="addBtn" :limit="1"
+              style="display:inline-block"
+              @changeHandler="addExcelClick" />
+          </div>
       </div>
       <div class="search-wrap" style="height:444px;">
         <e-table
@@ -71,6 +73,7 @@ import {
   StatisticsPassportType,
   bulletinExceptionStatistics,
   ImportExcelPassport,
+  deletePassport,
 } from '@/api/warn.js';
 import { mapGetters } from 'vuex';
 import passportInfo from './modal/passportInfo';
@@ -280,6 +283,7 @@ export default {
             disabled: false,
             method: (key, row) => {
               console.log('删除',row)
+              this.deleteHandlerPassport(row)
             },
             showCallback: () => {
               return true;
@@ -395,6 +399,19 @@ export default {
         }
       })
     },
+    // 根据护照类型统计 
+    deleteHandlerPassport(row) {
+      const params = {
+        id: row.id,
+        version: row.version
+      }
+      deletePassport(params).then(res => {
+        // console.log(res)
+        if (res.success && res.data) {
+          console.log(res)
+        }
+      })
+    },
     addFormClick(){
       this.passportTitle = '新增护照信息'
       this.dialogType = 2
@@ -439,7 +456,5 @@ export default {
 <style lang="stylus" scoped>
 @import "../../../styles/common.styl"
 .addBtn
-  position relative
-  top 7px
-  left -10px
+  margin-left 10px
 </style>

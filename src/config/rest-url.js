@@ -232,6 +232,7 @@ const DEFAULT_URL = {
     savePassport: `${GAISMSERVER}passport/savePassport`,
     updatePassport: `${GAISMSERVER}passport/updatePassport`,
     ImportExcelPassport: `${GAISMSERVER}passport/ImportExcelPassport`,
+    deletePassport: `${GAISMSERVER}passport/deletePassport`,
   },
 }
 

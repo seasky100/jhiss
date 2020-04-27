@@ -388,3 +388,12 @@ export function ImportExcelPassport (params) {
     data: params
   })
 }
+
+// 删除护照 
+export function deletePassport (params) {
+  return request({
+    url: DEFAULT_URL.passport.deletePassport,
+    method: 'delete',
+    params
+  })
+}
