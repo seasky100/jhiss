@@ -117,7 +117,7 @@ export default {
     onClickNode(node) {
       this.labelModel = node[this.props.label];
       this.valueModel = node[this.props.value];
-      this.$emit("change", this.valueModel);
+      this.$emit("change", this.valueModel, this.labelModel);
       this.onCloseTree();
     },
     // 隐藏树状菜单

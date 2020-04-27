@@ -34,11 +34,20 @@
       </el-row>
       <div class="search-wrap" style="min-width:1090px;">
         <!-- <div class="section-title">查询条件</div> -->
-        <e-search
+        <e-search style="display:inline-block;"
           class="search-form"
           @handleSearch="handleSearch"
           :searchData="searchData"
           :searchForm="searchForm" />
+          <el-button type="small" class="addBtn" @click="addFormClick">
+            新增
+          </el-button>
+          <el-button type="small" class="addBtn" @click="export2Excel">
+            导出excel
+          </el-button>
+          <e-upload class="addBtn" :limit="1"
+            style="display:inline-block;margin-left:10px;"
+            @changeHandler="addExcelClick" />
       </div>
       <div class="search-wrap" style="height:444px;">
         <e-table
@@ -51,7 +60,7 @@
         />
       </div>
     </div>
-    <passport-info ref="passportInfo" />
+    <passport-info :title="passportTitle" :dialogType="dialogType" ref="passportInfo" />
   </div>
 </template>
 
@@ -61,6 +70,7 @@ import {
   StatisticsCustodyStatus,
   StatisticsPassportType,
   bulletinExceptionStatistics,
+  ImportExcelPassport,
 } from '@/api/warn.js';
 import { mapGetters } from 'vuex';
 import passportInfo from './modal/passportInfo';
@@ -76,6 +86,8 @@ export default {
   },
   data() {
     return {
+      passportTitle: '',
+      dialogType: 1, // 1.详情 2.添加 3.修改
       departmentTitle: {
         text: '根据护照的保管状态进行统计护照的数量'
       },
@@ -155,6 +167,7 @@ export default {
         //   isolationNum: '123123'
         // }
       ],
+      tableData: [],
       options: {
         // 每页数据数
         pageSize: 10,
@@ -189,12 +202,12 @@ export default {
           align: 'left'
         },
         {
-          prop: 'issueDate',
+          prop: 'validity', 
           label: '有效期至',
           align: 'left'
         },
         {
-          prop: 'validity',
+          prop: 'issueDate',
           label: '签发日期',
           align: 'left'
         },
@@ -231,7 +244,11 @@ export default {
             disabled: false,
             method: (key, row) => {
               // console.log(row)
-              this.$refs.passportInfo.open(row);
+              this.passportTitle = '护照详情'
+              this.dialogType = 1
+              this.$nextTick(() => {
+                this.$refs.passportInfo.open(row);
+              })
             },
             showCallback: () => {
               return true;
@@ -244,7 +261,12 @@ export default {
             icon: '<i class="el-icon-edit-outline"></i>',
             disabled: false,
             method: (key, row) => {
-              console.log('修改',row)
+              // console.log('修改',row)
+              this.passportTitle = '修改护照信息'
+              this.dialogType = 3
+              this.$nextTick(() => {
+                this.$refs.passportInfo.open(row);
+              })
             },
             showCallback: () => {
               return true;
@@ -266,6 +288,12 @@ export default {
         ]
       }
     }
+  },
+  mounted() {
+    this.getStatisticsCustodyStatus();
+    this.getStatisticsPassportType();
+    this.getBulletinExceptionStatistics();
+    this.query();
   },
   methods: {
     certificatesType_format(row, column, prop){
@@ -289,6 +317,7 @@ export default {
     // 查询列表
     query(nCurrent = 1) {
       const $this = this;
+      this.$store.commit('showLoading')
       findPassport(
         Object.assign(
           {
@@ -305,6 +334,8 @@ export default {
           res.data.total,
           res.data.records
         );
+        this.tableData = res.data.records
+        this.$store.commit('hideLoading')
       })
     },
     // 根据护照的保管状态进行统计护照的数量 
@@ -345,27 +376,7 @@ export default {
         }
       })
     },
-    // 根据护照类型统计
-    // getStatisticsPassportType() {
-    //   const params = {
-    //     userId: this.userId
-    //   }
-    //   StatisticsPassportType(params).then(res => {
-    //     // console.log(res)
-    //     if (res.success && res.data) {
-    //       let result = [];
-    //       for (let item in res.data) {
-    //         result.push({
-    //           exception: item,
-    //           times: res.data[item]
-    //         })
-    //       }
-    //       this.monthlyData.rows = result;
-    //       // this.monthlyData.rows = res.data;
-    //     }
-    //   })
-    // },
-    // 根据护照的保管状态进行统计护照的数量 
+    // 根据护照类型统计 
     getStatisticsPassportType() {
       const params = {
         userId: this.userId
@@ -384,16 +395,51 @@ export default {
         }
       })
     },
-  },
-  mounted() {
-    this.getStatisticsCustodyStatus();
-    this.getStatisticsPassportType();
-    this.getBulletinExceptionStatistics();
-    this.query();
+    addFormClick(){
+      this.passportTitle = '新增护照信息'
+      this.dialogType = 2
+      this.$nextTick(() => {
+        this.$refs.passportInfo.open()
+      })
+    },
+    // 导入excel护照信息
+    addExcelClick(fileList){
+      // console.log(fileList)
+      this.$store.commit('showLoading')
+      const params = {
+        file: fileList[0].raw,
+        uploadFile: fileList[0].raw
+      }
+      ImportExcelPassport(params).then(res => {
+        // console.log(res)
+        if (res.success && res.data) {
+          this.$store.commit('hideLoading')
+        }
+      })
+    },
+    // 导出excel表格
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
+    },
+    export2Excel() {
+      require.ensure([], () => {
+        const { export_json_to_excel } = require('@/vendor/Export2Excel')
+        const tHeader = ['姓名', '证件类型', '证件号码', '有效期至', '签发日期', '证件编号', '证件状态']
+        const filterVal = ['userName', 'certificatesType', 'certificatesNumber', 'validity', 'issueDate', 'certificateNo', 'certificatesStatus']
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        export_json_to_excel(tHeader, data, '护照信息')
+      })
+    },
+    // 
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 @import "../../../styles/common.styl"
+.addBtn
+  position relative
+  top 7px
+  left -10px
 </style>

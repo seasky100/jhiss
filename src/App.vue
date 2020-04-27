@@ -1,11 +1,19 @@
 <template>
   <div id="app" class="app">
     <router-view/>
+    <!-- 封装的loading 组件 -->
+    <loading v-if='LOADING'/> 
   </div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
   name: 'App',
+  computed:{
+    ...mapState([
+        'LOADING'
+    ])
+  },
   data () {
     return {
     }

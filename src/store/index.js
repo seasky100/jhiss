@@ -8,6 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store(
   {
     state: {
+      LOADING: false,
       pointInfo: {type: ''},
       lineInfo: {type: ''},
       PolygonInfo: {type: ''},
@@ -19,6 +20,12 @@ export default new Vuex.Store(
     //   }
     // },
     mutations: {
+      showLoading(state){
+        state.LOADING = true    
+      },
+      hideLoading (state) {
+        state.LOADING = false
+      },
       pushToken(state, payload){
         state.cancelTokenArr.push(payload.cancelToken);
       },

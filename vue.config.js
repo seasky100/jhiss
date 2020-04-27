@@ -120,7 +120,8 @@ module.exports = {
       .set('components', resolve('src/components'))
       .set('layout', resolve('src/layout'))
       .set('base', resolve('src/base'))
-      .set('static', resolve('src/static'));
+      .set('static', resolve('src/static'))
+      .set('vendor', path.resolve(__dirname, 'src/vendor'))
     // 移除 prefetch 插件
     config.plugins.delete('prefetch');
     // 移除 preload 插件

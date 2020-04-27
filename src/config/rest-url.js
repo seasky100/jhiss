@@ -229,6 +229,9 @@ const DEFAULT_URL = {
     StatisticsCustodyStatus: `${GAISMSERVER}passport/StatisticsCustodyStatus`,
     StatisticsPassportType: `${GAISMSERVER}passport/StatisticsPassportType`,
     findPassportById: `${GAISMSERVER}passport/findPassportById`,
+    savePassport: `${GAISMSERVER}passport/savePassport`,
+    updatePassport: `${GAISMSERVER}passport/updatePassport`,
+    ImportExcelPassport: `${GAISMSERVER}passport/ImportExcelPassport`,
   },
 }
 

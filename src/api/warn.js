@@ -361,3 +361,30 @@ export function findPassportById (params) {
     params
   })
 }
+
+// 新增护照信息 
+export function savePassport (params) {
+  return request({
+    url: DEFAULT_URL.passport.savePassport,
+    method: 'post',
+    data: params
+  })
+}
+
+// 修改护照信息 
+export function updatePassport (params) {
+  return request({
+    url: DEFAULT_URL.passport.updatePassport,
+    method: 'put',
+    data: params
+  })
+}
+
+// excel导入 
+export function ImportExcelPassport (params) {
+  return request({
+    url: DEFAULT_URL.passport.ImportExcelPassport,
+    method: 'post',
+    data: params
+  })
+}
