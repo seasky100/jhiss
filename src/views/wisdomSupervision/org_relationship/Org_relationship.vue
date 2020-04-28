@@ -3,8 +3,8 @@
     <div class="individual_title"></div>
     <div class="explain">
       <li class="explain_li" style="color:#A0C5A2;"><span>正常</span></li>
-      <li class="explain_li" style="color:#FFAC42;"><span>注意</span></li>
-      <li class="explain_li" style="color:#E85C43;"><span>危险</span></li>
+      <li class="explain_li" style="color:#FFAC42;"><span>关注</span></li>
+      <li class="explain_li" style="color:#E85C43;"><span>预警</span></li>
     </div>
     <div class="relationship">
       <org-tree
@@ -17,9 +17,8 @@
 </template>
 <script>
 import { treeAndUser } from '@/api/report.js';
-import { getUserInfo } from '@/api/user-server.js';
 export default {
-  name: 'Org_relationship',
+  name: 'Org_relationship',//全局层级关系图
   data() {
     return {
       tree_data: {},
@@ -35,6 +34,7 @@ export default {
   },
   mounted() {
     // this.getData()
+
   },
   methods: {
     init() {
@@ -43,8 +43,6 @@ export default {
     getData() {
       if (window.localStorage.tree_data) {
         this.collectData();
-        // console.log(this.tree_data)
-        // this.dep_list = JSON.parse(window.localStorage.dep_list)
       } else {
         treeAndUser(
           Object.assign({
@@ -53,20 +51,21 @@ export default {
         ).then((res) => {
           let tree_data = res.data[0];
           tree_data.children = tree_data.childrens[0].userList;
-          tree_data.level = 1;
-          tree_data.expand = true;
           window.localStorage.tree_data = JSON.stringify(tree_data);
           this.collectData();
         });
       }
     },
     collectData(data) {
-      // this.tree_data = JSON.parse(window.localStorage.tree_data);
       let tree_data = JSON.parse(window.localStorage.tree_data);
       tree_data.userInfo = tree_data.userList[0];
-      this.getDeptChidren(tree_data);
+      tree_data.level = 1;
+      tree_data.expand = true;
+      let returnObjcet=this.getDeptChidren(tree_data);
+      this.tree_data = returnObjcet.data;
+      this.dep_list =returnObjcet.arr2;
     },
-    //处理第三次部门的数据
+    //处理第三层部门的数据
     getDeptChidren(data) {
       let arr1 = data.children; //第二层的人员
       let arr2 = data.childrens[0].childrens; //第三次的人员
@@ -92,9 +91,10 @@ export default {
           obj.children = [dep];
         }
       }
-      this.tree_data = data;
-      this.dep_list = arr2;
-      window.localStorage.dep_list = JSON.stringify(arr2);
+      if(!window.localStorage.dep_list){
+        window.localStorage.dep_list = JSON.stringify(arr2);
+      }
+      return {data,arr2}
     },
     // 转化获取列属性对象
     flatten(arr) {
@@ -104,61 +104,8 @@ export default {
         )
       );
     },
-    data_collation(data) {
-      const _this = this;
-      let arr1 = [...data.childrens];
-      let arr2 = [...data.children_dep];
-      let child = [];
-      for (let i = 0; i < arr1.length; i++) {
-        let obj = arr1[i];
-        let arr3 = _this.flatten(JSON.parse(JSON.stringify(arr2)));
-        // console.log(arr3)
-        obj.index = i;
-        obj.level = 2;
-        obj.expand = true;
-        let children = [];
-        for (let j = 0; j < arr2.length; j++) {
-          let obj2 = arr2[j];
-          if (obj2.userPname.includes(obj.realName)) {
-            children.push(obj2);
-          }
-        }
-        let dep = { dep: children, level: 3 };
-        // obj.children = children
-        if (children.length > 0) {
-          obj.children = [dep];
-        }
-        child.push(obj);
-      }
-      data.children = child;
-      // console.log(data)
-      data.level = 1;
-      data.expand = true;
-      data.children_dep = null;
-      _this.getPostUserInfo(data);
-      _this.dep_list = arr2;
-      window.localStorage.dep_list = JSON.stringify(arr2);
-    },
-    getPostUserInfo(data) {
-      const _this = this;
-      const params = {
-        userId: data.userPid,
-      };
-      getUserInfo(params)
-        .then((res) => {
-          if (res.success == true) {
-            let userInfo = res.data.userInfo;
-            data.userInfo = userInfo;
-            _this.tree_data = data;
-            window.localStorage.tree_data = JSON.stringify(data);
-          } else {
-            console.log(res.message);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+
+
     //
   },
 };
