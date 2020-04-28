@@ -387,14 +387,21 @@ export default {
       if(row[columns.prop] == null){
         return row.labelName
       }else{
-        return row[columns.prop]
+        // console.log(tableData2[3])
+        let countSum = 0
+        tableData2[3].data.forEach(obj => {
+          countSum = countSum + obj.total
+        })
+        // return row[columns.prop]
+        return countSum
       }
     },
     summaryfunc2(row, columns){
       if(row[columns.prop] == null){
         return row.labelName
       }else{
-        return row[columns.prop]
+        // return row[columns.prop]
+        return `<input style="position:relative;top:2px;left:3px;" type="text" />`
       }
     },
     summaryfunc3(row, columns){
@@ -403,7 +410,9 @@ export default {
       if(row[columns.prop] == null){
         return row.labelName
       }else{
-        return row[columns.prop]
+        console.log(columns.prop)
+        // return row[columns.prop]
+        return `<input style="position:relative;top:2px;left:3px;" type="text" />`
       }
     },
     // const param = {

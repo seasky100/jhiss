@@ -212,7 +212,8 @@ module.exports = {
         }
       },
       '/gaism_server': {
-        target: 'http://39.106.157.136:8080/gaism-server/',
+        // target: 'http://39.106.157.136:8080/gaism-server/',
+        target: 'http://39.106.157.136:9090/gaism-server/',
         // target: 'http://192.168.1.111:8080/gaism-server/',
         changeOrigin: true,
         pathRewrite: {

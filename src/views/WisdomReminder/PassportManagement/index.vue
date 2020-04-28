@@ -71,7 +71,7 @@ import {
   findPassport,
   StatisticsCustodyStatus,
   StatisticsPassportType,
-  bulletinExceptionStatistics,
+  StatisticsPassportwhether,
   ImportExcelPassport,
   deletePassport,
 } from '@/api/warn.js';
@@ -106,7 +106,7 @@ export default {
         ]
       },
       exceptionTitle: {
-        text: '11111'
+        text: '统计民警有护照没护照情况'
       },
       exceptionSettings: {
         labelMap: {
@@ -142,20 +142,27 @@ export default {
         endTime: ''
       },
       searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '姓名'},
+        {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
+        // {
+        //   type: 'select',
+        //   prop: 'department',
+        //   width: '150px',
+        //   options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+        //   change: row => console.log(row),
+        //   placeholder: '所属部门'
+        // },
         {
           type: 'select',
-          prop: 'department',
+          prop: 'certificatesStatus',
           width: '150px',
-          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
-        {
-          type: 'select',
-          prop: 'problemType',
-          width: '150px',
-          options: [{label:'表彰通报', value:'0'},{label:'批评通报', value:'1'}],
+          options: [
+            {label:'统一保管', value:'1'},
+            {label:'本人领取', value:'2'},
+            {label:'过期退回', value:'3'},
+            {label:'退休满两年', value:'4'},
+            {label:'单位调出', value:'5'},
+            {label:'其他', value:'6'},
+          ],
           change: row => console.log(row),
           placeholder: '护照状态'
         },
@@ -296,7 +303,7 @@ export default {
   mounted() {
     this.getStatisticsCustodyStatus();
     this.getStatisticsPassportType();
-    this.getBulletinExceptionStatistics();
+    this.getStatisticsPassportwhether();
     this.query();
   },
   methods: {
@@ -361,12 +368,12 @@ export default {
         }
       })
     },
-    // 问题性质
-    getBulletinExceptionStatistics() {
+    // 统计民警有护照没护照情况 StatisticsPassportwhether
+    getStatisticsPassportwhether() {
       const params = {
         userId: this.userId
       }
-      bulletinExceptionStatistics(params).then(res => {
+      StatisticsPassportwhether(params).then(res => {
         // console.log(res)
         if (res.success && res.data) {
           let result = [];
@@ -408,7 +415,16 @@ export default {
       deletePassport(params).then(res => {
         // console.log(res)
         if (res.success && res.data) {
-          console.log(res)
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.query()
+        }else{
+          this.$message({
+            type: 'error',
+            message: '删除失败'
+          })
         }
       })
     },

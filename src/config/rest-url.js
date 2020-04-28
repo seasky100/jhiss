@@ -214,6 +214,7 @@ const DEFAULT_URL = {
     saveRelativesIllegalAnnual: `${GAISMSERVER}relativesIllegal/saveRelativesIllegalAnnual`,
     saveRelativesWorkAnnual: `${GAISMSERVER}relativesWork/saveRelativesWorkAnnual`,
     // 报表二
+    saveDeclareExitTotalAnnual: `${GAISMSERVER}domesticInvestment/saveDeclareExitTotalAnnual`,
     saveLaborIncomeAnnual: `${GAISMSERVER}user/saveLaborIncomeAnnual`,
     saveSecuredLoanAnnual: `${GAISMSERVER}securedLoan/saveSecuredLoanAnnual`,
     saveRelativesBusinessAnnual: `${GAISMSERVER}relativesBusiness/saveRelativesBusinessAnnual`,
@@ -233,6 +234,8 @@ const DEFAULT_URL = {
     updatePassport: `${GAISMSERVER}passport/updatePassport`,
     ImportExcelPassport: `${GAISMSERVER}passport/ImportExcelPassport`,
     deletePassport: `${GAISMSERVER}passport/deletePassport`,
+    findById: `${GAISMSERVER}passportHistory/findById`,
+    StatisticsPassportwhether: `${GAISMSERVER}passport/StatisticsPassportwhether`,
   },
 }
 

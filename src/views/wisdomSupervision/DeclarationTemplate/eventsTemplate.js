@@ -302,8 +302,19 @@ let columns23 = [
 
 let appendTab4 = [
     { columnIndex: 0, rowSpan: 3, summaryfunc:'summaryfunc1', labelName: '填报前一交易日所有股票的总市值', total: 200333 },
-    { columnIndex: 0, rowSpan: 3, summaryfunc:'summaryfunc2', labelName: '账户总资产', total: 200333 },
-    { columnIndex: 1, rowSpan: 3, summaryfunc:'summaryfunc3', labelName: '备注',total: 200333 },
+    // { columnIndex: 0, rowSpan: 3, summaryfunc:'summaryfunc2', labelName: '账户总资产', total: 200333 },
+    // { columnIndex: 1, rowSpan: 3, summaryfunc:'summaryfunc3', labelName: '备注',total: 200333 },
+]
+
+let headerAppend24 = [
+    { prop: 'holderName', label: '账户总资产', align: 'left',
+        children: [
+            { prop: 'productName', label: '备注', align: 'left' },
+        ]},
+    { index: 0, prop: 'businessPlace', type: 'text', label: '文本', align: 'left',
+        children: [
+            { index: 0, prop: 'businessPlace', type: 'text', label: '文本', align: 'left' },
+        ]},
 ]
 
 // 本人、配偶、共同生活的子女投资或者以其他方式持有股票的情况
@@ -462,7 +473,9 @@ let tableData2 = [
     { columns: columns21, data: [data1[0]] }, 
     { columns: columns22, data: [data1[0]] },    
     { columns: columns23, data: [] }, // 第二列行合并
-    { columns: columns24, data: [], appendTab: [...appendTab4] },
+    // { columns: columns24, data: [], appendTab: [...appendTab4] },
+    // headerAppend:headerAppend24,headerParam:{edit:false}
+    { columns: columns24, data: [], headerTab: 5, appendTab: [...appendTab4] },
     { columns: columns25, data: [] },
     { columns: columns26, data: [] },
     { columns: columns27, data: [], headerTab: 4, headerAppend: headerAppend27, headerParam:{edit:false} }, // 111

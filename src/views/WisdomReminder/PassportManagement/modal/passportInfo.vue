@@ -44,6 +44,15 @@
               </el-form-item>
             </el-form>
           </div>
+          <div class="passportHistory" v-if="dialogType == 1">
+            <e-table
+              ref="recordSpTableRef"
+              :tableList="tableList"
+              :options="options"
+              :columns="columns"
+              :operates="operates"
+            />
+          </div>
         </el-scrollbar>
       </div>
     </el-dialog>
@@ -52,7 +61,7 @@
 
 <script>
 import { format } from 'date-fns';
-import { findPassportById, savePassport, updatePassport } from '@/api/warn.js';
+import { findPassportById, savePassport, updatePassport, findById } from '@/api/warn.js';
 import { mapGetters } from 'vuex';
 export default {
   props: {
@@ -74,6 +83,10 @@ export default {
   },
   data() {
     return {
+      tableList:this.$parent.tableList,
+      options:this.$parent.options,
+      columns:this.$parent.columns,
+      operates:this.$parent.operates,
       visible: false,
       infoFlag: true,
       // 部门配置
@@ -144,6 +157,7 @@ export default {
       }else{
         this.infoFlag = true
         this.ruleForm = option
+        this.findHistroy()
       }
       // this.getPassportById(option);
     },
@@ -160,6 +174,21 @@ export default {
       findPassportById(params).then(res => {
         if(res.success) {
           this.form = res.data;
+        }
+      })
+    },
+    // 查询护照操作历史 findById
+    findHistroy(){
+      if(this.dialogType != 1){
+        return
+      }
+      const param = {
+        id: this.ruleForm.id
+      }
+      findById(param).then(res => {
+        // console.log(res)
+        if(res.success) {
+          console.log(res)
         }
       })
     },

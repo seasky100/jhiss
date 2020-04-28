@@ -341,6 +341,15 @@ export function saveDomesticInvestmentAnnual (params) {
   })
 }
 
+// 24. 股票总资产 
+export function saveDeclareExitTotalAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveDeclareExitTotalAnnual,
+    method: 'post',
+    data: params
+  })
+}
+
 // 23. 房产情况 
 export function saveDeclareHouseAnnual (params) {
   return request({

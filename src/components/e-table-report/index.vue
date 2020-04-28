@@ -10,6 +10,10 @@
           注：保存按钮可获取新增数组数据
         </span> -->
       </template>
+      <template v-if="headerTab == 5">
+        <span style="margin-left:20px;" class="imgAdd" @click="addTabData2"></span>
+        <span class="saveImg" @click="saveBtnClick2"></span>
+      </template>
     </h2>
     <span class="explain">
       {{title.explain?title.explain:''}}
@@ -21,12 +25,54 @@
       </el-radio-group>
     </div> -->
     <!-- 普通表格 -->
-    <el-table class="generalTab" v-if="headerTab == 1"
+    <el-table class="generalTab" v-if="headerTab == 1 || headerTab == 5"
       @cell-dblclick="cellHandleDbClick"
       :span-method="arraySpanMethod" border
       :data="tableData2" 
       style="width:100%;">
       <nav-table :columns="columns2"></nav-table>
+      <template v-if="headerTab == 5" slot="append" class="appendTab">
+        <el-table :class="['headerTab']" :data="[]" style="width: 100%">
+          <el-table-column
+            prop="name"
+            label="账户总资产"
+            width="180">
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="账户总资产">
+            <template slot="header" slot-scope="scope">
+              <template v-if="editTotal.edit">
+                <el-input v-model="editTotal.total"></el-input>
+              </template>
+              <template v-else>
+                {{editTotal.total}}
+              </template>
+            </template>
+          </el-table-column>
+          <template slot="append" class="appendTab">
+            <el-table :class="['headerTab']" :data="[]" style="width: 100%">
+              <el-table-column
+                prop="name"
+                label="备注"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="address"
+                label="备注">
+                <template slot="header" slot-scope="scope">
+                  <template v-if="editTotal.edit">
+                    <el-input v-model="editTotal.comment"></el-input>
+                  </template>
+                  <template v-else>
+                    {{editTotal.comment}}
+                  </template>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table>
+      </template>
     </el-table>
     <!-- 表头表格 -->
     <el-table v-if="headerTab == 2"
@@ -89,6 +135,7 @@
 import { format } from 'date-fns'
 import NavTable from './NavTable'
 import customTable from './customTable'
+import { saveDeclareExitTotalAnnual } from '@/api/report.js'
 export default {
   components: { 
     NavTable,
@@ -166,7 +213,12 @@ export default {
       tableData2: [],
       // columns3: [],
       menuKey: 1,
-      verificationDateFlag: true
+      verificationDateFlag: true,
+      // 账户总资产备注信息
+      editTotal:{
+        total: 0,
+        comment: ''
+      },
     }
   },
   watch: {
@@ -225,6 +277,39 @@ export default {
         this.tableData2 = [...this.tableData,...this.appendTab]
       }
     },
+    addTabData2(){
+      this.$set(this.editTotal,'edit',true)
+    },
+    saveBtnClick2(){
+      // saveDeclareExitTotalAnnual
+      const flowProcess = {
+        // id: this.reportObj.id,
+        // reportId: this.reportObj.rapporteurId,
+        id: '',
+        reportId: this.$parent.reportObj.id,
+        reportType: 315,
+        gmtCreate: format(new Date(), 'yyyy-MM-dd'),
+        gmtModified: format(new Date(), 'yyyy-MM-dd'),
+      }
+      let param = this.editTotal
+      param.gmtCreate = format(new Date(), 'yyyy-MM-dd'),
+      param.gmtModified = format(new Date(), 'yyyy-MM-dd'),
+      param.flowProcessDto = flowProcess
+      saveDeclareExitTotalAnnual(param).then(res => {
+        if(res.success) {
+          this.$message({
+            type: 'success',
+            message: '提交成功'
+          })
+          this.$set(this.editTotal,'edit',false)
+        }else {
+          this.$message({
+            type: 'error',
+            message: '提交失败'
+          })
+        }
+      })
+    },
     // 转化获取列属性对象
     flatten(arr) { 
       return [].concat( ...arr.map(x => Array.isArray(x.children) ? this.flatten(x.children) : {prop:x.prop,type:x.type}) ) 
@@ -267,6 +352,8 @@ export default {
           return [1,row.rowSpan]
         } else if (columnIndex === 1 || columnIndex === 2 ) {
           return [0, 0];
+        } else {
+          return 0
         }
       }
     },
