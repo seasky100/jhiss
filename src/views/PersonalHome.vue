@@ -288,12 +288,6 @@ export default {
       careerData:[],
       marksData:[],
       selected: 0,
-//       qpdata : [
-// {name:"name1",count:14},{name:"name2",count:34},
-// {name:"mike",count:64},
-// {name:"joke",count:224},
-// {name:"jobs",count:112}
-// ],
       timeIndex: 0,
       warnList:[
         { name:'刷卡预警',num:0},
