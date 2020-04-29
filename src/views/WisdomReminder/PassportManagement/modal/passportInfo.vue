@@ -45,13 +45,21 @@
             </el-form>
           </div>
           <div class="passportHistory" v-if="dialogType == 1">
-            <e-table
-              ref="recordSpTableRef"
-              :tableList="tableList"
-              :options="options"
-              :columns="columns"
-              :operates="operates"
-            />
+            <el-table v-if="tableData.length > 0"
+              border
+              :data="tableData"
+              stripe
+              style="width: 100%">
+              <template v-for="(item,index) of columns">
+                <el-table-column :key="index+'_column'"
+                  :prop="item.prop"
+                  :width="item.width"
+                  align="center"
+                  :formatter="item.formatter"
+                  :label="item.label">
+                </el-table-column>
+              </template>
+            </el-table>
           </div>
         </el-scrollbar>
       </div>
@@ -83,10 +91,42 @@ export default {
   },
   data() {
     return {
-      tableList:this.$parent.tableList,
-      options:this.$parent.options,
-      columns:this.$parent.columns,
-      operates:this.$parent.operates,
+      columns: [
+        {prop: 'userName', label: '姓名', width: ''},
+        {prop: 'certificatesType', label: '证件类型', width: '',formatter: (row, column) => {
+          const options = {
+            1: '护照',
+            2: '港澳通行证',
+            3: '台湾通行证',
+            4: '中华人民共和国出入证',
+            5: '其他'
+          }
+          return options[row.certificatesType]
+        }},
+        {prop: 'certificatesNumber', label: '证件号码', width: ''},
+        {prop: 'validity', label: '有效期至', width: '',formatter: (row, column) => {
+          return format(new Date(row.validity), 'yyyy-MM-dd')
+        }},
+        {prop: 'issueDate', label: '签发日期', width: '',formatter: (row, column) => {
+          return format(new Date(row.issueDate), 'yyyy-MM-dd')
+        }},
+        {prop: 'certificateNo', label: '证件编号', width: ''},
+        {prop: 'certificatesStatus', label: '证件状态', width: '',formatter: (row, column) => {
+          const options = {
+            1: '统一保管',
+            2: '本人领取',
+            3: '过期退回',
+            4: '退休满两年',
+            5: '单位调出',
+            6: '其他'
+          }
+          return options[row.certificatesStatus]
+        }},
+        {prop: 'gmtCreate', label: '修改时间', width: '',formatter: (row, column) => {
+          return format(new Date(row.gmtCreate), 'yyyy-MM-dd')
+        }},
+      ],
+      tableData: [],
       visible: false,
       infoFlag: true,
       // 部门配置
@@ -188,7 +228,8 @@ export default {
       findById(param).then(res => {
         // console.log(res)
         if(res.success) {
-          console.log(res)
+          // console.log(res)
+          this.tableData = res.data
         }
       })
     },
