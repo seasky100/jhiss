@@ -45,6 +45,7 @@
             </el-form>
           </div>
           <div class="passportHistory" v-if="dialogType == 1">
+            <div style="margin-bottom:8px;font-weight:bold;">操作历史记录：</div>
             <el-table v-if="tableData.length > 0"
               border
               :data="tableData"
