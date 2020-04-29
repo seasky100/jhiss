@@ -54,7 +54,7 @@
             <div class='m_xin'><span>职级：</span>{{userInfo.postLevel}}</div>
             <div class='m_xin'><span>籍贯：</span>{{userInfo.realName}}</div>
             <div class='m_xin'><span>技术职称：</span>{{userInfo.technicalTitle}}</div>
-            <div v-if="userInfo.startWorkTime !=''&&userInfo.startWorkTime !=undefined&&userInfo.startWorkTime !='undefined'">
+            <!-- <div v-if="userInfo.startWorkTime !=''&&userInfo.startWorkTime !=undefined&&userInfo.startWorkTime !='undefined'">
                 <div class='m_xin'>
                     <span>参加工作时间：</span>{{new Date(userInfo.startWorkTime).toLocaleDateString() || ''}}</div>
             </div>
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div class='m_xin'><span>入职形式：</span>{{userInfo.entryForm}}</div>
-            <div class='m_xin'><span>工作年限：</span>{{userInfo.workingLife}}</div>
+            <div class='m_xin'><span>工作年限：</span>{{userInfo.workingLife}}</div> -->
  
                 <!-- <span>楼华安</span> -->
                 <!-- <img src='../../utils/img/lha.png' class='' style=" max-height: 100px;border-radius: 24px; "/> -->
@@ -95,6 +95,9 @@ import { getUserInfo } from '../../api/user-server.js';
 import { myPhotoSrc } from '../../utils/common.js'
     export default {
         name: 'MenuPage',
+        props: {
+            id: String
+        },
         data() {
             return {
                 isCollapse: false,
@@ -105,13 +108,32 @@ import { myPhotoSrc } from '../../utils/common.js'
                 organizationNames:''
             }
         },
-        mounted() {
-            this.userInfo = JSON.parse(sessionStorage.userInfo)
-            this.name = sessionStorage.realName
-            this.organizationNames = sessionStorage.orgName
-            this.src = myPhotoSrc(this.userInfo)
+        mounted() {   
+            this.getInfo();
+            // this.userInfo = JSON.parse(sessionStorage.userInfo)
+            // this.name = sessionStorage.realName
+            // this.organizationNames = sessionStorage.orgName
+            // this.src = myPhotoSrc(this.userInfo)
         },
         methods: {
+                // 获取用户信息
+            getInfo() {
+                getUserInfo({ userId: this.id }).then(res => {
+                    this.name = res.data.realName
+                    console.log('用户信息',res.data)
+                    sessionStorage.setItem('infoName', this.name)
+                    this.organizationNames = res.data.organizationNames
+                    this.userInfo = res.data.userInfo
+                    const id = res.data.userInfo.info
+                    sessionStorage.setItem('id', id)
+                    const cardNum = res.data.userInfo.cardNum
+                    sessionStorage.setItem('cardNum', cardNum)
+                    this.src = myPhotoSrc(this.userInfo)
+                }).catch(error => {
+
+                })
+
+            },
         }
     }
 </script>

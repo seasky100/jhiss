@@ -13,7 +13,7 @@
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
-      <div class="search-wrap" style="height:444px;">
+      <div class="search-wrap" style="height:675px;">
         <e-table
           ref="recordSpTableRef"
           :tableList="tableList"
@@ -29,7 +29,7 @@
 
 <script>
 import { getAbroadRecordPage } from '@/api/integrity-risk-serve.js';
-
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -41,16 +41,28 @@ export default {
         endTime: ''
       },
       searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+        // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
         {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
         {
-          type: 'select',
-          prop: 'dept_id',
-          width: '150px',
-          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
-          change: row => console.log(row),
-          placeholder: '所属部门'
+          // label: '所属部门',
+          type: 'select_tree',
+          prop: 'department',
+          options: this.orgData,
+          config: {
+            value: 'id',
+            label: 'name',
+            children: 'childrens',
+            disabled: true
+          },
         },
+        // {
+        //   type: 'select',
+        //   prop: 'dept_id',
+        //   width: '150px',
+        //   options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+        //   change: row => console.log(row),
+        //   placeholder: '所属部门'
+        // },
         {
           type: 'daterange',
           options: [
@@ -78,7 +90,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'730'
+        height:'600'
       },
       columns: [
         {
@@ -102,7 +114,7 @@ export default {
           align: 'left'
         },
         {
-          prop: 'startTime',
+          prop: 'actualStartTime',
           label: '出国时间',
           align: 'left',
           type: 'date'
@@ -122,13 +134,13 @@ export default {
           prop: 'agency',
           label: '操作人',
           align: 'left'
-        },
-        {
-          prop: 'actualStartTime',
-          label: '领取时间',
-          align: 'left',
-          type: 'date'
         }
+        // {
+        //   prop: 'actualStartTime',
+        //   label: '领取时间',
+        //   align: 'left',
+        //   type: 'date'
+        // }
       ],
       operates: {
         width: 150,
@@ -151,6 +163,11 @@ export default {
         ]
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'orgData'
+    ])
   },
   methods: {
     // 查询
@@ -187,6 +204,7 @@ export default {
     },
   },
   mounted() {
+    this.searchForm[1].options = this.orgData
     this.query();
   }
 }

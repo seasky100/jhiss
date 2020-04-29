@@ -15,21 +15,18 @@
           />
         </el-col>
         <el-col :span="12">
+            <HistogramChart
+            :chart-data="repastPlace.data"
+            :label-map="repastPlace.labelMap"
+            title="部门预警次数(Top5)"
+            />
           <!-- 次数统计 -->
-          <!-- <ve-line
-            :title="title"
-            :chartData="humanStatistics"
-            :extend="chartExtend"
-            :chartSettings="chartSettings"
-            :legend-visible="false">
-          </ve-line> -->
-
-          <LineChart
+          <!-- <LineChart
           :title="title"
           :chartData="humanStatistics"
           :chartSettings="chartSettings"
           >
-        </LineChart>
+        </LineChart> -->
 
 
         </el-col>
@@ -62,9 +59,11 @@ import { getHumanStatistics, getWarnStatusStatistics, getWarnPage } from '@/api/
 import ViolationInfo from './modal/violationInfo';
 import LineChart from "@/components/line-chart";
 import { mapGetters } from 'vuex';
-
+import HistogramChart from "@/components/histogram-chart";
+import { getRepastSiteWarnStatistics} from '@/api/wisdom-reminder/perceptual-wisdom.js'
 export default {
   components: {
+    HistogramChart,
     ViolationInfo,
     LineChart
   },
@@ -112,6 +111,16 @@ export default {
     //   }
     // }
     return {
+      repastPlace: {
+        data: {
+          userInfo: {},
+          columns: ['department', 'warnnum'],
+          rows: []
+        },
+        labelMap: {
+          warnnum: '次数'
+        }
+      },
       searchData: {
         userName: '',
         policeCode: '',
@@ -121,42 +130,54 @@ export default {
         endTime: ''
       },
       searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+        // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
         {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
-        {type: 'input', prop: 'reason', width: '120px', placeholder: '预警原因'},
+        // {type: 'input', prop: 'reason', width: '120px', placeholder: '预警原因'},
         {
-          type: 'daterange',
-          options: [
-            {
-              prop: 'startTime',
-              format: '',
-              valueformat: '',
-              placeholder: '起始时间'
-            },
-            {
-              prop: 'endTime',
-              format: '',
-              valueformat: '',
-              placeholder: '结束时间'
-            }
-          ]
+          // label: '所属部门',
+          type: 'select_tree',
+          prop: 'department',
+          options: this.orgData,
+          config: {
+            value: 'id',
+            label: 'name',
+            children: 'childrens',
+            disabled: true
+          },
         },
-        {
-          type: 'select',
-          prop: 'dept_id',
-          width: '150px',
-          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
-        {
-          type: 'select',
-          prop: 'response',
-          width: '150px',
-          options: [{label:'否', value: 0},{label:'是', value: 1}],
-          change: row => console.log(row),
-          placeholder: '是否反馈'
-        },
+        // {
+        //   type: 'daterange',
+        //   options: [
+        //     {
+        //       prop: 'startTime',
+        //       format: '',
+        //       valueformat: '',
+        //       placeholder: '起始时间'
+        //     },
+        //     {
+        //       prop: 'endTime',
+        //       format: '',
+        //       valueformat: '',
+        //       placeholder: '结束时间'
+        //     }
+        //   ]
+        // },
+        // {
+        //   type: 'select',
+        //   prop: 'dept_id',
+        //   width: '150px',
+        //   options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+        //   change: row => console.log(row),
+        //   placeholder: '所属部门'
+        // },
+        // {
+        //   type: 'select',
+        //   prop: 'response',
+        //   width: '150px',
+        //   options: [{label:'否', value: 0},{label:'是', value: 1}],
+        //   change: row => console.log(row),
+        //   placeholder: '是否反馈'
+        // },
       ],
       tableList: [],
       options: {
@@ -170,11 +191,11 @@ export default {
         height:'372'
       },
       columns: [
-        {
-          prop: 'policeCode',
-          label: '警号',
-          align: 'left'
-        },
+        // {
+        //   prop: 'policeCode',
+        //   label: '警号',
+        //   align: 'left'
+        // },
         {
           prop: 'userName',
           label: '姓名',
@@ -198,15 +219,15 @@ export default {
           align: 'left'
         },
         {
-          prop: 'content',
-          label: '反馈内容',
+          prop: 'comment',
+          label: '备注',
           align: 'left'
         },
-        {
-          prop: 'warnLevel',
-          label: '预警级别',
-          align: 'left'
-        }
+        // {
+        //   prop: 'warnLevel',
+        //   label: '预警级别',
+        //   align: 'left'
+        // }
       ],
       operates: {
         width: 150,
@@ -249,7 +270,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'userId'
+      'userId',
+      'orgData'
+
     ])
   },
   methods: {
@@ -264,17 +287,18 @@ export default {
       this.query(val);
       next();
     },
-    // 获取考勤预警按人员名称统计
+
+
+    // 获取考勤预警按部门名称统计
     getHumanStatistics() {
       const params = {
-        userId: this.userId
-      }
-      getHumanStatistics(params).then(res => {
-        // console.log(res)
-        if (res.success) {
-          this.humanStatistics.rows = res.data;
-        }
-      })
+        warnType: 4,
+    }
+    getRepastSiteWarnStatistics(params).then((res) => {       
+        const data = res.sort(this.sortfunc('warnnum'))
+        const arry = data.splice(0,5)
+        this.repastPlace.data.rows = arry
+    })
     },
     // 预警处置情况统计x未反馈，已反馈，y轴对应次数
     getWarnStatusStatistics() {
@@ -304,7 +328,7 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            user_id: $this.userId,
+            // user_id: $this.userId,
             isAsc: false,
             orderByField: 'warnTime',
             role: 10,
@@ -322,8 +346,25 @@ export default {
         );
       })
     },
+    sortfunc(attr, rev) {
+      if (rev == undefined) {
+        rev = 1
+      }
+      return (a, b) => {
+        a = a[attr]
+        b = b[attr]
+        if (a < b) {
+          return rev * 1
+        }
+        if (a > b) {
+          return rev * -1
+        }
+        return 0
+      }
+    },
   },
   mounted() {
+    this.searchForm[1].options = this.orgData
     this.getHumanStatistics();
     this.getWarnStatusStatistics();
     this.query();

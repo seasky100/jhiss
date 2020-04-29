@@ -88,9 +88,9 @@ textarea:focus{
   display: flex;
 } */
 .a_head{
-  height: 10%;
+  height: 4%;
   text-align: center;
-  font-size: larger;
+  font-size: initial;
   margin-top: 15px;
   font-weight: 700;
 }
@@ -164,7 +164,7 @@ line-height: 10px !important;
           overflow: -moz-scrollbars-none;
       } */
       .scroll-list ul::-webkit-scrollbar{
-          display: none;
+          /* display: none; */
       }
       .scroll_bar{
         width: 50px;
