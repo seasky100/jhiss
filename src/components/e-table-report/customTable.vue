@@ -19,7 +19,6 @@
             </el-radio-group>
           </td>
           <td rowspan="2">
-            <!-- <el-input v-model="tabData.name"></el-input> -->
             <template v-if="tabData.edit">
               <el-input v-model="tabData.name"></el-input>
             </template>
@@ -28,7 +27,6 @@
             </template>
           </td>
           <td>
-            <!-- <el-input v-model="tabData.value1"></el-input> -->
             <template v-if="tabData.edit">
               <el-input v-model="tabData.workCompany"></el-input>
             </template>
@@ -37,7 +35,6 @@
             </template>
           </td>
           <td>
-            <!-- <el-input v-model="tabData.value2"></el-input> -->
             <template v-if="tabData.edit">
               <el-input v-model="tabData.post"></el-input>
             </template>
@@ -46,7 +43,7 @@
             </template>
           </td>
           <td colspan="2">
-            <el-radio-group :disabled="!tabData.edit" v-model="tabData.value3">
+            <el-radio-group :disabled="!tabData.edit" v-model="tabData.nature">
               <template v-for="(item,index) of unitNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -63,7 +60,7 @@
             </el-radio-group>
           </td>
           <td>
-            <el-radio-group :disabled="!tabData.edit" v-model="tabData.value3">
+            <el-radio-group :disabled="!tabData.edit" v-model="tabData.nature">
               <template v-for="(item,index) of unitInfoNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -81,7 +78,6 @@
         <tr>
           <td>证件名称</td>
           <td colspan="4">
-            <!-- <el-input v-model="tabData.value7"></el-input> -->
             <template v-if="tabData.edit">
               <el-input v-model="tabData.certificateName"></el-input>
             </template>
@@ -93,7 +89,6 @@
         <tr>
           <td>证件号码</td>
           <td colspan="4">
-            <!-- <el-input v-model="tabData.value8"></el-input> -->
             <template v-if="tabData.edit">
               <el-input v-model="tabData.certificateNum"></el-input>
             </template>
@@ -104,10 +99,10 @@
         </tr>
       </table>
       <!-- 子女关系 customData -->
-      <template v-for="(item,index) of 1">
-        <table :key="index" v-if="index > 0">
+      <template v-if="tabData.childRelativesWorkDo.length > 0" >
+        <table :key="index" v-for="(item,index) of tabData.childRelativesWorkDo">
           <tr>
-            <td>子女{{cnNums[index]}}</td>
+            <td>子女{{cnNums[index + 1]}}</td>
             <td width="60">姓名</td>
             <td>是否为共同生活子女</td>
             <td>工作（学习）单位</td>
@@ -123,7 +118,6 @@
               </el-radio-group>
             </td>
             <td rowspan="2">
-              <!-- <el-input v-model="item.name"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.name"></el-input>
               </template>
@@ -139,7 +133,6 @@
               </el-radio-group>
             </td>
             <td>
-              <!-- <el-input v-model="tabData.value1"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.workCompany"></el-input>
               </template>
@@ -148,7 +141,6 @@
               </template>
             </td>
             <td>
-              <!-- <el-input v-model="tabData.value2"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.post"></el-input>
               </template>
@@ -157,7 +149,7 @@
               </template>
             </td>
             <td colspan="2">
-              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.nature">
                 <template v-for="(item,index) of unitNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -174,7 +166,7 @@
               </el-radio-group>
             </td>
             <td>
-              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.nature">
                 <template v-for="(item,index) of unitInfoNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -192,7 +184,6 @@
           <tr>
             <td>证件名称</td>
             <td colspan="5">
-              <!-- <el-input v-model="tabData.value7"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.certificateName"></el-input>
               </template>
@@ -204,7 +195,6 @@
           <tr>
             <td>证件号码</td>
             <td colspan="5">
-              <!-- <el-input v-model="tabData.value8"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.certificateNum"></el-input>
               </template>
@@ -214,98 +204,97 @@
             </td>
           </tr>
           <!-- 配偶信息 -->
-          <tr>
-            <td rowspan="5"></td>
-            <td>配偶姓名</td>
-            <td>工作（学习）单位</td>
-            <td colspan="2">现任职务</td>
-            <td colspan="2">单位性质</td>
-          </tr>
-          <tr>
-            <td rowspan="2">
-              <!-- <el-input v-model="tabData.name2"></el-input> -->
-              <template v-if="item.edit">
-                <el-input v-model="item.name2"></el-input>
-              </template>
-              <template v-else>
-                {{item.name2}}
-              </template>
-            </td>
-            <td>
-              <!-- <el-input v-model="tabData.value"></el-input> -->
-              <template v-if="item.edit">
-                <el-input v-model="item.value"></el-input>
-              </template>
-              <template v-else>
-                {{item.value}}
-              </template>
-            </td>
-            <td colspan="2">
-              <!-- <el-input v-model="tabData.value"></el-input> -->
-              <template v-if="item.edit">
-                <el-input v-model="item.value"></el-input>
-              </template>
-              <template v-else>
-                {{item.value}}
-              </template>
-            </td>
-            <td colspan="2">
-              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
-                <template v-for="(item,index) of unitNature">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+          <!-- v-if="item.spouseRelativesWorkDo != null" -->
+          <template v-if="item.spouseRelativesWorkDo != null">
+            <tr>
+              <td rowspan="5"></td>
+              <td>配偶姓名</td>
+              <td>工作（学习）单位</td>
+              <td colspan="2">现任职务</td>
+              <td colspan="2">单位性质</td>
+            </tr>
+            <tr>
+              <td rowspan="2">
+                <template v-if="item.edit">
+                  <el-input v-model="item.spouseRelativesWorkDo.name"></el-input>
                 </template>
-              </el-radio-group>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3">
-              <span style="margin-right:10px;">是否在国（境）外</span>
-              <el-radio-group :disabled="!item.edit" v-model="tabData.value4">
-                <template v-for="(item,index) of whetherList">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                <template v-else>
+                  {{item.spouseRelativesWorkDo.name}}
                 </template>
-              </el-radio-group>
-            </td>
-            <td>
-              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
-                <template v-for="(item,index) of unitInfoNature">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+              </td>
+              <td>
+                <template v-if="item.edit">
+                  <el-input v-model="item.spouseRelativesWorkDo.workCompany"></el-input>
                 </template>
-              </el-radio-group>
-            </td>
-            <td>
-              <span style="margin-right:10px;">是否担任高级职务</span>
-              <el-radio-group :disabled="!item.edit" v-model="tabData.value6">
-                <template v-for="(item,index) of isDutyList">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                <template v-else>
+                  {{item.spouseRelativesWorkDo.workCompany}}
                 </template>
-              </el-radio-group>
-            </td>
-          </tr>
-          <tr>
-            <td>证件名称</td>
-            <td colspan="5">
-              <!-- <el-input v-model="tabData.value7"></el-input> -->
-              <template v-if="item.edit">
-                <el-input v-model="item.certificateName"></el-input>
-              </template>
-              <template v-else>
-                {{item.certificateName}}
-              </template>
-            </td>
-          </tr>
-          <tr>
-            <td>证件号码</td>
-            <td colspan="5">
-              <!-- <el-input v-model="tabData.value8"></el-input> -->
-              <template v-if="item.edit">
-                <el-input v-model="item.certificateNum"></el-input>
-              </template>
-              <template v-else>
-                {{item.certificateNum}}
-              </template>
-            </td>
-          </tr>
+              </td>
+              <td colspan="2">
+                <template v-if="item.edit">
+                  <el-input v-model="item.spouseRelativesWorkDo.post"></el-input>
+                </template>
+                <template v-else>
+                  {{item.spouseRelativesWorkDo.post}}
+                </template>
+              </td>
+              <td colspan="2">
+                <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.nature">
+                  <template v-for="(item,index) of unitNature">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <span style="margin-right:10px;">是否在国（境）外</span>
+                <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.isAbroad">
+                  <template v-for="(item,index) of whetherList">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+              </td>
+              <td>
+                <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.nature">
+                  <template v-for="(item,index) of unitInfoNature">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+              </td>
+              <td>
+                <span style="margin-right:10px;">是否担任高级职务</span>
+                <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.isDuty">
+                  <template v-for="(item,index) of isDutyList">
+                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  </template>
+                </el-radio-group>
+              </td>
+            </tr>
+            <tr>
+              <td>证件名称</td>
+              <td colspan="5">
+                <template v-if="item.edit">
+                  <el-input v-model="item.spouseRelativesWorkDo.certificateName"></el-input>
+                </template>
+                <template v-else>
+                  {{item.spouseRelativesWorkDo.certificateName}}
+                </template>
+              </td>
+            </tr>
+            <tr>
+              <td>证件号码</td>
+              <td colspan="5">
+                <template v-if="item.edit">
+                  <el-input v-model="item.spouseRelativesWorkDo.certificateNum"></el-input>
+                </template>
+                <template v-else>
+                  {{item.spouseRelativesWorkDo.certificateNum}}
+                </template>
+              </td>
+            </tr>
+          </template>
+          
         </table>
       </template>
     </template>
@@ -316,6 +305,8 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
+import { saveRelativesWorkAnnual } from '@/api/report.js'
 export default {
   name: 'customTable',
   inject: ['orgAdd'],
@@ -332,17 +323,45 @@ export default {
         return {};
       }
     },
+    addCoutusIndex: {
+      type: Number,
+      default: () => {
+        return 0;
+      }
+    },
+    customType: {
+      type: String,
+      default: () => {
+        return '';
+      }
+    },
   },
   data() {
     return {
+      // tabData: {
+      //   name:'',
+      //   childRelativesWorkDo:[
+      //     {name: '', spouseRelativesWorkDo:{name:''}}
+      //   ],
+      // },
       tabData: null,
+      // childRelativesWorkDo: {
+      //   certificateName: '',
+      //   certificateNum : '',
+      //   comment : '',
+      //   gmtCreate : '',
+      //   gmtModified : '',
+      //   isAbroad : '',
+      //   isDuty : '',
+      //   isLife : '',
+      //   name: '',
+      //   nature : '',
+      //   post : '',
+      //   relation : '',
+      //   workCompany : '',
+      //   spouseRelativesWorkDo: null,
+      // },
       pageKey: 0,
-      // customData: [
-      //   {name: '',},
-      //   {name: '',},
-      //   {name: '',}
-      // ],
-      // '零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'
       cnNums: ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'],
       relationship1: [
         {name: '妻子', value:'1'},
@@ -383,22 +402,91 @@ export default {
     }
   },
   watch: {
-    customData: {
-      handler(cval, oval) {
-        // console.log(cval)
-        this.pageKey++
-      },
-      deep: true
-    }
+    // customData: {
+    //   handler(cval, oval) {
+    //     // console.log(cval)
+    //     this.pageKey++
+    //   },
+    //   deep: true
+    // },
+    addCoutusIndex(){
+      this.addTabFData()
+    },
+    customType(){
+      if(this.customType == 'add'){
+        this.saveCustomData()
+      }
+    },
   },
   mounted() {
     if(this.customData.length > 0){
       let n = this.customData.length - 1
-      this.tabData = this.customData[n]
+      let param = this.customData[n]
+      if((!param.childRelativesWorkDo) || param.childRelativesWorkDo == null){
+        param.childRelativesWorkDo = []
+      }
+      this.tabData = param
     }
-    console.log(this.tabData)
   },
   methods: {
+    isArray(o){
+      return Object.prototype.toString.call(o)== '[object Array]'
+    },
+    addTabFData(){
+      if(this.tabData == null){
+        this.tabData = {
+          edit: true,
+          name:'',
+          childRelativesWorkDo:[],
+        }
+      }else{
+        let childRelativesWorkDo = []
+        if(this.tabData.childRelativesWorkDo == null || (!this.isArray(this.tabData.childRelativesWorkDo))){
+          childRelativesWorkDo.push({name:'',edit:true,spouseRelativesWorkDo:{name:'',edit:true}})
+        }else {
+          childRelativesWorkDo = this.tabData.childRelativesWorkDo
+          childRelativesWorkDo.push({name:'',edit:true,spouseRelativesWorkDo:{name:'',edit:true}})
+        }
+        this.$set(this.tabData,'childRelativesWorkDo',childRelativesWorkDo)
+      }
+    },
+    saveCustomData(){
+      const flowProcess = {
+        id: '',
+        reportId: this.$parent.$parent.reportObj.id,
+        reportType: 310,
+        gmtCreate: format(new Date(), 'yyyy-MM-dd'),
+        gmtModified: format(new Date(), 'yyyy-MM-dd'),
+      }
+      const param = this.tabData
+      param.gmtCreate = format(new Date(), 'yyyy-MM-dd'),
+      param.gmtModified = format(new Date(), 'yyyy-MM-dd'),
+      param.flowProcessDto = flowProcess
+      saveRelativesWorkAnnual(param).then(res => {
+        if(res.success) {
+          this.$message({
+            type: 'success',
+            message: '提交成功'
+          })
+          let data = this.tabData
+          data.edit = false
+          let childRelativesWorkDo = data.childRelativesWorkDo.map(item => {
+            item.edit = false
+            let spouseRelativesWorkDo = item.spouseRelativesWorkDo
+            if(spouseRelativesWorkDo.edit != null){
+              spouseRelativesWorkDo.edit = false
+            }
+            item.spouseRelativesWorkDo = spouseRelativesWorkDo
+            return item
+          })
+        }else{
+          this.$message({
+            type: 'error',
+            message: '提交失败'
+          })
+        }
+      })
+    },
     // 
   },
 };

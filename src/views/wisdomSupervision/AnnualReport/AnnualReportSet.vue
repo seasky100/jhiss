@@ -627,22 +627,6 @@ export default {
             item.edit = false
             return item
           })
-          // if(tableData2[index].headerParam != null){
-          //   let param = tableData2[index].headerParam
-          //   param.edit = false
-          //   tableData2[index].headerParam = param
-          //   this.menuKey++
-          //   let height = this.$refs.printCon.offsetTop
-          //   this.$nextTick(() => {
-          //     let scroll = this.$refs.table_box[index+11].offsetTop - height
-          //     $(this.$refs.printCon).animate({scrollTop: scroll },0)
-          //   });
-          // }else{
-          //   tableData2[index].data = tableData2[index].data.map(item => {
-          //     item.edit = false
-          //     return item
-          //   })
-          // }
         }
         
       }else {

@@ -126,7 +126,7 @@
     </template>
     <!-- 自定义表格 -->
     <template v-if="headerTab == 3">
-      <customTable :customData="tableData" :headerParam="headerParam"></customTable>
+      <customTable :customType="customType" :addCoutusIndex="addCoutusIndex" :customData="tableData" :headerParam="headerParam"></customTable>
     </template>
   </div>
 </template>
@@ -219,6 +219,8 @@ export default {
       tableData2: [],
       // columns3: [],
       menuKey: 1,
+      addCoutusIndex: 0,
+      customType: '',
       verificationDateFlag: true,
       // 账户总资产备注信息
       editTotal:{
@@ -253,7 +255,10 @@ export default {
     },
     // 添加数据
     addTabData(){
-      if(this.headerTab == 3){
+      if(this.saveEvent.code == 310){
+        this.customType = ''
+        this.addCoutusIndex++
+      }else if(this.headerTab == 3){
         // console.log('报表一10',3)
         let addData = { edit: true }
         this.tableData.push(addData)
@@ -325,6 +330,10 @@ export default {
     },
     // 修改后获取新增数据保存
     saveBtnClick(){
+      if(this.saveEvent.code == 310){
+        this.customType = 'add'
+        return
+      }
       if(!this.verificationDateFlag){
         this.$message({
           type: 'warning',
