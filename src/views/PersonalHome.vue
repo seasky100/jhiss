@@ -270,7 +270,7 @@ export default {
       userscore: '',
       deptscore: '',
       maxValue: 30,
-      warnData:[30, 30, 30, 30, 30, 30, 30,30],
+      warnData:[30, 30, 30, 30, 30, 30, 30, 32],
       xztxNum: 0,
       countotal: 0,
       infoData:[], 
