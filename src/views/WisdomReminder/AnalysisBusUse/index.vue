@@ -4,10 +4,17 @@
       <span>公车使用分析</span>
     </div>
     <div class="content flex-grow flex" style="background: none;padding: 0;overflow: hidden;">
-      <div class="flex flex-direction-column" style="flex-basis: 58%;padding-right: 5px;">
+      <div class="flex flex-direction-column" style="flex-basis: 50%;padding-right: 5px;">
         <div class="bg-fff">
           <div class="title">车辆状态</div>
           <div class="flex flex-justify-between car-static">
+              <div class="flex">
+              <img src="../../../assets/images/vehicle_home_gps@2x.png">
+              <div class="flex flex-direction-column flex-justify-between count">
+                <div class="num online">{{num}}</div>
+                <div class="text">在线</div>
+              </div>
+            </div>
             <div class="flex" v-for="(item, index) in vehicleCondition" :key="index">
               <img :src="item.imgUrl" alt="">
               <div class="flex flex-direction-column flex-justify-between count">
@@ -17,6 +24,7 @@
             </div>
           </div>
         </div>
+
         <div style="margin-top: 10px;overflow: hidden;" class="flex-grow flex flex-direction-column">
           <div class="flex" style="margin-bottom: 10px;height: 50%;">
             <div class="flex" style="width: 100%;">
@@ -24,6 +32,7 @@
                 <div class="title">异常统计</div>
                 <div class="flex-grow" ref="echartItem" style="overflow: hidden;">
                   <div id='abnormal' style="height: 90%"></div>
+
                   <!-- <ve-ring :data="abnormalStatistics" :height="echartHeight"></ve-ring> -->
                 </div>
               </div>
@@ -45,38 +54,25 @@
             <div class="echart-item bg-fff" style="margin-right: 10px;">
               <div class="title">部门用车统计</div>
               <div class="flex-grow" style="overflow: hidden;height: 90%">
-                <!-- <e-histogram
-                  :height="echartHeight"
-                  :chartSettings="departmentSettings"
-                  :chartData="departmentVehicleStatistics"
-                  :xAxis="departxAxisOptions"
-                /> -->
                 <div id='department' style="height: 100%"></div>
               </div>
             </div>
             <div class="echart-item bg-fff">
               <div class="title">范围提醒</div>
-              <div class="flex-grow" style="overflow: hidden;">
-                <!-- <e-table
-                  :style="{height: echartHeight}"
-                  ref="recordSpTableRef"
-                  :tableList="tableList"
-                  :options="options"
-                  :columns="columns"
-                /> -->
+              <div class="flex-grow" style="overflow: auto;">
                 <el-table
                 :data="tableData"
                 style="width: 100%"
                 :row-class-name="tableRowClassName">
                 <el-table-column
-                  prop="num"
+                  prop="carNumber"
                   label=""
-                  width="100">
+                  width="110">
                 </el-table-column>
                 <el-table-column
                 prop="line"
                 label=""
-                width="100"
+                width="60"
                 >
                 <template slot-scope="scope">
                   <span  class="line">上线</span>
@@ -85,14 +81,14 @@
                 </template>
               </el-table-column>                
                 <el-table-column
-                  prop="name"
+                  prop="userName"
                   label=""
-                  width="100">
+                  width="70">
                 </el-table-column>   
                 <el-table-column
                 prop="approval"
                 label=""
-                width="100"
+                width="70"
                 >
                 <template slot-scope="scope">
                   <span @click='approval(scope.row)' class="approval">审批单</span>
@@ -101,7 +97,7 @@
                 <el-table-column
                 prop="type"
                 label=""
-                width="100"
+                width="70"
                 >
                 <template slot-scope="scope">
                   <span @click='remind(scope.row)' class="remind">提醒</span>
@@ -128,7 +124,6 @@
             </div>
           </div>
         </div>
-
         <div style="margin-top: 10px;overflow: hidden;" class="flex-grow flex flex-direction-column bg-fff">
           <div id="map"  style="width:100%;height:100%;"></div> 
         </div>
@@ -136,14 +131,15 @@
     </div>
   </div>
 </template>
-
 <script>
 import {
   getCarTimesStatistics,
   getDepartmentTimes,
   getCarRecordPage,
   usedCarsStatistics,
-  carStatusStatistics
+  carStatusStatistics,
+  warnInfoTypeStatistics,
+  findCar
 } from '@/api/warn.js';
 
 export default {
@@ -152,6 +148,16 @@ export default {
       mapUrl: require('../../../assets/images/map.png'),
       echartHeight: '',
       map: '',
+      websocket:null,
+      csData: 0,
+      cwData: 0,
+      wspData: 0,
+      num:0,
+      carNum:[],
+      infowindow:null,
+      socketData: [],
+      carData:[],
+      markerObj:{},
       tableData: [{
           num: '浙154687',
           line: '上线',
@@ -176,30 +182,42 @@ export default {
           name: '王小虎',
           approval: '审批单',
           type: '提醒'
+        },{
+          num: '浙154687',
+          line: '上线',
+          name: '王小虎',
+          approval: '审批单',
+          type: '提醒'
         }],
-      vehicleCondition: [
-        {
-          imgUrl: require('../../../assets/images/vehicle_home_gps@2x.png'),
-          count: 0,
-          status: '在线',
-          color: 'online'
-        },
+      department:[],
+      denum:[],
+      vehicleCondition: [ // 1 使用 2 维护 0 空闲 
+        // {
+        //   imgUrl: require('../../../assets/images/vehicle_home_gps@2x.png'),
+        //   count: 0,
+        //   status: '在线',
+        //   type: 3,
+        //   color: 'online'
+        // },
         {
           imgUrl: require('../../../assets/images/vehicle_home_idle@2x.png'),
           count: 0,
           status: '空闲',
+          type: 0,
           color: 'free'
         },
         {
           imgUrl: require('../../../assets/images/vehicle_home_occupied@2x.png'),
           count: 0,
           status: '使用中',
+          type: 1,
           color: 'useing'
         },
         {
           imgUrl: require('../../../assets/images/vehicle_home_maintenance@2x.png'),
           count: 0,
           status: '维修中',
+          type: 2,
           color: 'maintenance'
         }
       ],
@@ -223,12 +241,6 @@ export default {
           color: 'abnormal'
         }
       ],
-      usageChartExtend: {
-        // series: {
-        //   smooth: false
-        // },
-        'xAxis.0.axisLabel.rotate': 30
-      },
       abnormalStatistics: {
         columns: ['type', 'count'],
         rows: [
@@ -246,72 +258,134 @@ export default {
           count: '使用次数'
         }
       },
-      departmentVehicleStatistics: {
-        columns: ['department', 'count'],
-        rows: []
-      },
-      departxAxisOptions: {
-        axisLabel: {
-          rotate: 30
-        }
-      },
-      departmentSettings: {
-        labelMap: {
-          count: '人次'
-        }
-      },
-      tableList: [
-
-      ],
-      options: {
-        // 每页数据数
-        pageSize: 10,
-        hasIndex: false,
-        hasPagination: false,
-        showHeader: false,
-        // 当前页码
-        currentPage: 1,
-        loading: true,
-        maxHeight: null,
-        height:'350'
-      },
-      columns: [
-        {
-          prop: 'policeCode',
-          label: '车牌',
-          align: 'left',
-          width: '20%'
-        },
-        {
-          prop: 'a',
-          label: '在线',
-          align: 'left',
-          width: '20%'
-        },
-        {
-          prop: 'userName',
-          label: '姓名',
-          align: 'left',
-          width: '20%'
-        },
-        {
-          prop: 'c',
-          label: '审批状态',
-          align: 'left',
-          width: '20%'
-        },
-        {
-          prop: 'd',
-          label: '提醒状态',
-          align: 'left',
-          width: '20%'
-        }
-      ]
     }
   },
   methods: {
+    testWebSocket() { 
+      const wsUri ="ws://41.232.3.191:4100/";
+      this.websocket = new WebSocket(wsUri); 
+      this.websocket.onopen = (evt)=> { 
+          this.onOpen(evt) 
+          console.log("成功")
+      }; 
+      this.websocket.onclose = (evt)=>{ 
+        this.onClose(evt) 
+      }; 
+      this.websocket.onmessage= (evt)=> { 
+        this.onMessage(evt) 
+      }; 
+      this.websocket.onerror = (evt)=> { 
+        this.onError(evt) 
+      }; 
+    },
+    onOpen(evt) { 
+      this.writeToScreen("CONNECTED"); 
+      this.doSend("WebSocket rocks"); 
+    },  
+ 
+    onClose(evt) { 
+      this.writeToScreen("DISCONNECTED"); 
+    },  
+ 
+    onMessage(evt) { 
+      this.socketData = evt.data
+      // this.num++
+        // onMessage(evt)
+        const Data  = this.carData
+        const socketData = JSON.parse(evt.data)
+        for (let i = 0; i < Data.length; i++) {
+          if(Data[i].gpsid == socketData.gid ){
+            const pData = {
+              id:socketData.gid,
+              speed:Number(socketData.speed),
+              date:socketData.date,
+              carNumber:Data[i].carNumber,
+              department:Data[i].department,
+              detaildevtype:Data[i].detaildevtype,
+              status: Data[i].status,
+              lon:Number(socketData.longitude),
+              lat:Number(socketData.latitude)
+            }
+            // const numdata = {
+            //   carNumber:Data[i].carNumber,
+            // }
+            // this.carNum.push(numdata)
+            this.toggleIconMarkers(pData);
+          } 
+        }
+        // console.log('车牌号',this.carNum)
+        // const arry = this.carNum
+        // var hash = {}
+        // const arr = arry.reduce((item,next) =>{
+        //   hash[next.carNumber] ? '' : hash[next.carNumber] = true && item.push(next)
+        //   return item
+        // }, [])
+        // console.log(arr)
+        // for (let j = 0; j < arr.length; j++) {
+        //       this.num++
+        // }
+        // writeToScreen('<span style="color: blue;">RESPONSE: '+ evt.data+'</span>'); 
+        // this.websocket.close(); 
+    },  
+ 
+    onError(evt) { 
+      this.writeToScreen('<span style="color: red;">ERROR:</span> '+ evt.data); 
+    }, 
+    doSend(message) { 
+      this.writeToScreen("SENT: " + message);
+      var msg = "FLAG=websocket&PASSWORD=greatmap_push&RESULTTYPE=JSON"// gps请求串
+      msg = "FLAG=websocket&COMPANY=350M&RESULTTYPE=JSON";
+      console.log("success");
+    // this.ws.send(msg);
+    this.websocket.send(msg); 
+    }, 
+    writeToScreen(message) { 
+      var pre = document.createElement("p"); 
+      pre.style.wordWrap = "break-word"; 
+      pre.innerHTML = message; 
+      // output.appendChild(pre); 
+    },
+	    //添加批量点图标
+    toggleIconMarkers(positions) {
+      var marker, markers = [];
+      if (this.map) {
+        if (this.markerObj[positions.id]) {
+          this.toggleUpdateMarker(positions)
+         } else {
+          var opts = new IMAP.MarkerOptions();
+          opts.anchor = IMAP["Constants"]["BOTTOM_CENTER"];
+          // opts.icon=new IMAP.Icon(IMAP.MapConfig.API_REALM_NAME+"images/point_1.png",{"size":{"width":34,"height":30},"offset":{"x":markIcon[i][0],"y":markIcon[i][1]}});
+          // ../../../assets/images/vehicle_home_gps@2x.png
+          if(positions.detaildevtype == "摩托车"){
+            opts.icon = new IMAP.Icon(require("../../../assets/images/muotuo.png"), { "size": new IMAP.Size(60, 60) });
+          }else{
+            opts.icon = new IMAP.Icon(require("../../../assets/images/jingche.gif"), { "size": new IMAP.Size(60, 60) });
+            
+          }
+          // opts.icon = new IMAP.Icon(IMAP.MapConfig.API_REALM_NAME + "images/car.png", { "size": new IMAP.Size(43, 21) });
+          var lnglat = new IMAP.LngLat(positions.lon, positions.lat);
+          var marker = new IMAP.Marker(lnglat, opts);
+          this.markerObj[positions.id] = marker.getId();
+          markers.push(marker);
+          marker.openInfoWindow(
+            '<div style="line-height: 30px;"><span class="a_name">所属部门 ：</span><span>'+positions.department+'</span></div>'+
+            '<div><span class="a_name">车牌号码 ：</span>' + positions.carNumber + '</div>'+
+            '<div style="line-height: 30px;"><span class="a_name">车辆类型 ：</span>' + positions.detaildevtype + '</div>', { "size": new IMAP.Size(80, 55), "offset": new IMAP.Pixel(5, -45), "title": "", visible: true });
+          var infowindow = marker.getInfoWindow();
+          infowindow.addEventListener(IMAP.Constants.TIP_CLICK, function (evt) {
+            document.getElementById("infowindow").checked = false;
+          }, infowindow);
+          this.map.getOverlayLayer().addOverlays(markers, false);
+        }
+
+      }
+    },
+      //更新点标注
+    toggleUpdateMarker(positions) {
+      let marker = this.map.getOverlayLayer().getOverlayById((this.markerObj[positions.id]));
+      marker.setPosition(new IMAP.LngLat(positions.lon, positions.lat));
+    },
     tableRowClassName({row, rowIndex}) {
-      debugger
         if (rowIndex === 1) {
           return 'warning-row';
         } else if (rowIndex === 3) {
@@ -320,15 +394,15 @@ export default {
         return '';
       },
       approval(data){
-        debugger
       },
       remind(data){
 
       },
-    // 车辆使用统计
+    // 车辆使用频次统计
     getCarTimes() {
       getCarTimesStatistics().then(res => {
         if(res.success && res.data){
+          console.log('频次1',res)
           let result = [];
           for (let item in res.data) {
             result.push({
@@ -336,6 +410,7 @@ export default {
               count: res.data[item]
             })
           }
+          console.log('频次',result)
           this.vehicleFrequency.rows = result;
         }
       })
@@ -343,29 +418,48 @@ export default {
     // 部门用车
     getDepartmentTimes() {
       getDepartmentTimes().then(res => {
-        // console.log(res);
         if(res.success && res.data){
-          let department = [];
-          for (let item in res.data) {
-            department.push({
-              department: item,
-              count: res.data[item]
-            })
-          }
-          this.departmentVehicleStatistics.rows = department;
+          this.department = Object.keys(res.data).sort()
+          this.denum =  Object.keys(res.data).sort().map(item =>
+          res.data[item])     
+          this.getRadar3(); 
+        }
+      })
+    },
+    // 获取车辆信息
+    findCar() {
+      const params = {
+        orgid: '330700BJ0000'
+      }
+      findCar().then(res => {
+        if (res.success && res.data) {
+          console.log(66666,res)
+          this.carData = res.data     
+          // this.getRadar3();
+        }
+      })
+    },
+    // 车辆使用异常统计
+    warnInfoTypeStatistics() {
+      const params = {
+        warnType: 0
+      }
+      warnInfoTypeStatistics(params).then(res => {
+        if (res.success && res.data) {
+            if (res.data.length > 0) {
+              this.csData = res.data['用车超时']
+              this.cwData = res.data['用车超维']
+              this.wspData = res.data['未审批用车']
+            }  
+          this.getRadar();
         }
       })
     },
     // 范围提醒列表
     getCarRecord() {
       getCarRecordPage().then(res => {
-        // console.log(res)
-        this.$refs.recordSpTableRef.setPageInfo(
-          1,
-          res.data.size,
-          res.data.total,
-          res.data.records
-        );
+        console.log('4.133',res)
+        this.tableData = res.data.records
       })
     },
     // 用车统计
@@ -383,11 +477,11 @@ export default {
     // 车辆状态
     getCarStatusStatistics() {
       carStatusStatistics().then(res => {
-        // console.log(res)
+        console.log('状态',res) // 1 使用 2 维护 0 空闲 
         let result = res.data;
         this.vehicleCondition.forEach(item => {
-          if(result[item.status]) {
-            item.count = result[item.status];
+          if(result[item.type]) {
+            item.count = result[item.type];
           }
         })
       })
@@ -448,9 +542,9 @@ export default {
               show: false
             },
             data: [
-              { value: 335, name: '用车超时' },
-              { value: 310, name: '未审批用车' },
-              { value: 234, name: '用车超维' }
+              { value: this.csData, name: '用车超时' },
+              { value: this.wspData, name: '未审批用车' },
+              { value: this.cwData, name: '用车超维' }
             ]
           }
         ]
@@ -474,7 +568,7 @@ export default {
           //     top: '15'
           // },
           grid: {
-              top: 20,
+              // top: 20,
               bottom: 50
           },
           xAxis: [
@@ -497,7 +591,7 @@ export default {
                           }
                       }
                   },
-                  data: ['01', '02', '03', '04', '05', '06']
+                  data: ['01', '02', '03', '04','05']
               }
     
           ],
@@ -531,7 +625,7 @@ export default {
                 }
                 ])
               },
-              data: [5, 15, 11.1, 21.7, 34.3, 2]
+              data: [2,  7, 2.3, 9,0]
             },
           ]
     }
@@ -564,7 +658,7 @@ export default {
       xAxis: [
           {
               type: 'category',
-              data: ['01', '02', '03', '04', '05', '06']
+              data: this.department
           }
       ],
       yAxis: [
@@ -574,31 +668,49 @@ export default {
       ],
       series: [
           {
-              name: '上班',
+              name: '用车',
               type: 'bar',
               barWidth: 13,
               color: '#8B69F6',
               stack: '广告',
-              data: [19, 15, 11.1, 21.7, 34.3, 46.2]
+              data: this.denum
           },
       ]
     }
       radarDom2.setOption(option)
   },
-  initMap() {
-    debugger
-    var map = new IMAP.Map('map', {
+    //添加覆盖物
+    toggleAddVector() {
+      if (this.map) {
+        var vectors = [];
+        var polygonArr = [];
+        polygonArr.push(new IMAP.LngLat(119.6533119678, 29.1170044477));
+        polygonArr.push(new IMAP.LngLat(119.6547925472, 29.1169013446));
+        polygonArr.push(new IMAP.LngLat(119.6547979116, 29.1155141283));
+        polygonArr.push(new IMAP.LngLat(119.6532475948, 29.1156219195));
+        polygonArr.push(new IMAP.LngLat(119.6533119678, 29.1170044477));
+        console.log(99999,polygonArr)
+        var polygon = new IMAP.Polygon(
+          polygonArr, 
+          {fillColor:'transparent' },
+          );
+        vectors.push(polygon);
+        this.map.getOverlayLayer().addOverlays(vectors);
+      }
+    },
+  },
+  mounted() {
+      this.map = new IMAP.Map('map', {
       minZoom: 3,
       maxZoom: 22,
       zoom: 9,//设置地图初始化级别
-      center: new IMAP.LngLat(120.143671, 30.286106),//设置地图中心点坐标
+      center: new IMAP.LngLat(119.6533763409,29.1167841818),//设置地图中心点坐标
       animation: true//设置地图缩放动画效果
     });
-    // return map;
-  }
-    	// initMap(); addRoadNetLayer() //添加路网图层    
-  },
-  mounted() {
+    this.toggleAddVector();
+    this.findCar();
+    this.warnInfoTypeStatistics();
+    this.testWebSocket();
     this.getRadar3();
     this.getRadar2();
     this.getRadar();
@@ -609,13 +721,13 @@ export default {
     this.getCarStatusStatistics();
     this.calcHeight();
     window.addEventListener('resize', this.calcHeight);
-    this.map = this.initMap(map);
   }
 }
 </script>
 
 <style lang="stylus" scoped>
 @import "../../../styles/common.styl";
+@import "../../../styles/common.css";
 .approval{
   color: #8A68F6;
   cursor: pointer;
@@ -629,6 +741,9 @@ export default {
 }
 .flex-grow{
   height: 90%;
+}
+.el-table__header-wrapper{
+   height: 10px !important;
 }
 .flex
   display: flex;

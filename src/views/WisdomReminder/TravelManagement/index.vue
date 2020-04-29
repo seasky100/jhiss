@@ -30,7 +30,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div class="search-wrap" style="height:750px;">
+            <div class="search-wrap" style="height:430px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"
@@ -89,7 +89,7 @@ export default {
           endTime: ''
       },
       searchForm: [
-            {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+            // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
             {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
             {
                 type: 'select',
@@ -126,11 +126,11 @@ export default {
           height: '368'
       },
       columns: [
-          {
-              prop: 'policeCode',
-              label: '警号',
-              align: 'left'
-          },
+        //   {
+        //       prop: 'policeCode',
+        //       label: '警号',
+        //       align: 'left'
+        //   },
           {
               prop: 'userName',
               label: '姓名',

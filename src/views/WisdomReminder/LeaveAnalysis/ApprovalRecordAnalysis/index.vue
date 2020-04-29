@@ -10,7 +10,7 @@
                     <HistogramChart
                             :chart-data="checkingInResult.data"
                             :label-map="checkingInResult.labelMap"
-                            title="数量"
+                            title="审批数量"
                     />
                 </el-col>
                 <el-col :span="12">
@@ -31,7 +31,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div class="search-wrap" style="height:750px;">
+            <div class="search-wrap" style="height:608px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"
@@ -52,7 +52,8 @@ import HistogramChart from "@/components/histogram-chart";
 import LineChart from '@/components/line-chart';
 import {getApplyException, getVacationApplyByMonth, getFindVacationPage} from '@/api/wisdom-reminder/leave-analysis.js'
 import LeaveSituationDetails from './model/leaveSituationDetails'
-
+import { getList } from '@/api/user-server.js';
+import { mapGetters } from 'vuex';
 export default {
     components: {
         HistogramChart,
@@ -83,23 +84,35 @@ export default {
             },
             // 审批记录分析表格
             searchData: {
-                policeCode: '',
                 userName: '',
+                policeCode: '',
                 department: '',
                 startTime: '',
                 endTime: '',
                 applyType: ''
             },
             searchForm: [
-                {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
-                {type: 'input', prop: 'user_name', width: '120px', placeholder: '姓名'},
+                // {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
+                {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
+                // {
+                //     type: 'select',
+                //     prop: 'department',
+                //     width: '150px',
+                //     options: [],
+                //     change: row => console.log(row),
+                //     placeholder: '所属部门'
+                // },
                 {
-                    type: 'select',
+                    // label: '所属部门',
+                    type: 'select_tree',
                     prop: 'department',
-                    width: '150px',
-                    options: [],
-                    change: row => console.log(row),
-                    placeholder: '所属部门'
+                    options: this.orgData,
+                    config: {
+                        value: 'name',
+                        label: 'name',
+                        children: 'childrens',
+                        disabled: true
+                    },
                 },
                 {
                     type: 'daterange',
@@ -119,13 +132,21 @@ export default {
                     ]
                 },
                 {
-                    type: 'select',
-                    prop: 'applyType',
-                    width: '150px',
-                    options: [],
+                    type: "select",
+                    prop: "applyType",
+                    width: "150px",
+                    options: this.listData,
                     change: row => console.log(row),
-                    placeholder: '请假类型'
-                }
+                    placeholder: "请假类型"
+                },
+                // {
+                //     type: 'select',
+                //     prop: 'applyType',
+                //     width: '150px',
+                //     options: [],
+                //     change: row => console.log(row),
+                //     placeholder: '请假类型'
+                // }
             ],
             options: {
                 pageSize: 10,
@@ -133,14 +154,14 @@ export default {
                 currentPage: 1,
                 loading: true,
                 maxHeight: null,
-                height: '368'
+                height: '535'
             },
             columns: [
-                {
-                    prop: 'policeCode',
-                    label: '警号',
-                    align: 'left'
-                },
+                // {
+                //     prop: 'policeCode',
+                //     label: '警号',
+                //     align: 'left'
+                // },
                 {
                     prop: 'userName',
                     label: '姓名',
@@ -195,6 +216,7 @@ export default {
                 ]
             },
             tableList: [],
+            listData:[],
             userParams: {
                 userId: '',
                 deptId: '111',
@@ -214,7 +236,32 @@ export default {
             this.query(val);
             next();
         },
-
+        // 字典值
+        getList() {
+            getList(
+                Object.assign(
+                    {
+                        appId: 'c62d6b0a56b045b597b2069cd9b9e6b9',
+                        type: '请假类型'
+                    },
+                )
+            ).then(res => {
+                if (res.success) {
+                    const dicData = res.data
+                    console.log('请假类型', dicData)
+                    for (let i = 0; i < dicData.length; i++) {
+                        const list = {
+                            label: dicData[i].label,
+                            value: dicData[i].value
+                        }
+                        this.listData.push(list)
+                    }
+                    // const aa = dicData.map(inventor => `label:${inventor.label},value:${inventor.value}`)
+                    // console.log(aa)
+                    this.searchForm[3].options = this.listData
+                }
+            })
+        },
         // 查询列表
         query(nCurrent = 1) {
             const $this = this;
@@ -233,9 +280,18 @@ export default {
             })
         }
     },
+    computed: {
+        ...mapGetters([
+            'orgData'
+        ])
+    },
     created() {
+        this.searchForm[1].options = this.orgData
         const userInfo = JSON.parse(sessionStorage.userInfo)
-        this.params.userId = userInfo.info
+        this.userId = userInfo.info
+        // 分页表格
+        this.query();
+        this.getList();
         // 审批情况统计
         getApplyException(this.userParams).then((res) => {
             let arr = []
@@ -257,13 +313,10 @@ export default {
                 }
             })
         });
-
-        // 分页表格
-        this.query();
     }
 };
 </script>
 
 <style lang="stylus" scoped>
-@import "../../../../styles/common.styl"
+@import "../../../../styles/common.styl";
 </style>

@@ -9,37 +9,40 @@
                             <span>{{detailInfo.police_code ? detailInfo.police_code : ''}}</span>
                             <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
                         </div>
-                        <div class="mb-ten">
-                            <span>刷卡时间：</span>
-                            <span>{{detailInfo.record_time | formatTime}}</span>
-                        </div>
+
                         <div class="mb-ten">
                             <span>刷卡地点：</span>
-                            <span>{{detailInfo.record_place ? detailInfo.record_place : ''}}</span>
+                            <span>{{detailInfo.source ? detailInfo.source : ''}}</span>
                         </div>
                         <div class="mb-ten">
-                            <span>刷卡金额：</span>
-                            <span></span>
+                            <span>预警原因：</span>
+                            <span>{{detailInfo.warnReason ? detailInfo.warnReason : ''}}</span>
                         </div>
-                        <div class="mb-ten">
-                            <span>卡号：</span>
-                            <span></span>
-                        </div>
+
                         <div class="mb-ten">
                             <span>预警时间：</span>
-                            <span>{{detailInfo.warn_time | formatTime}}</span>
+                            <span>{{detailInfo.warnTime | formatTime}}</span>
                         </div>
                         <div class="mb-ten">
-                            <span>预警内容：</span>
-                            <span></span>
+                            <span>备注：</span>
+                            <span>{{detailInfo.comment ? detailInfo.comment : ''}}</span>
                         </div>
                         <div class="advice">
-                            <p>反馈时间：.2019年12月2日 16:00:52</p>
-                            <el-input
-                                    type="textarea"
-                                    :autosize="{ minRows: 3, maxRows: 6}"
-                                    placeholder="请输入内容"
-                            >
+                            <p>反馈时间：{{detailInfo.gmtCreate | formatTime}}</p>
+                            <p>本人反馈：</p>
+                            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 6}" placeholder="请输入内容" v-model="detailInfo.content">
+                            </el-input>
+                        </div>
+                        <div v-if='detailInfo.warnLevel == 2 || detailInfo.warnLevel == 3' class="advice">
+                            <p>反馈时间：{{detailInfo.gmtBranch | formatTime}}</p>
+                            <p>层级领导反馈：</p>
+                            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 6}" placeholder="请输入内容" v-model="detailInfo.leaderAdvice">
+                            </el-input>
+                        </div>
+                        <div v-if='detailInfo.warnLevel == 3' class="advice">
+                            <p>反馈时间：{{detailInfo.gmtLeader | formatTime}}</p>
+                            <p>职能部门反馈：</p>
+                            <el-input type="textarea" :autosize="{ minRows: 3, maxRows: 6}" placeholder="请输入内容" v-model="detailInfo.branchAdvice">
                             </el-input>
                         </div>
                     </div>
@@ -75,6 +78,7 @@ export default {
     methods: {
         open(option) {
             this.visible = true;
+            console.log('77',option)
             this.detailInfo = option
         },
     }

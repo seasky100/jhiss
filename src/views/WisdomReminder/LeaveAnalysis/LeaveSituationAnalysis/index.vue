@@ -30,7 +30,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div class="search-wrap" style="height:750px;">
+            <div class="search-wrap" style="height:430px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"
@@ -54,6 +54,8 @@ import {
     getFindVacationPage
 } from "@/api/wisdom-reminder/leave-analysis.js";
 import LeaveSituationDetails from './model/leaveSituationDetails'
+import { getList } from '@/api/user-server.js';
+import { mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -76,7 +78,7 @@ export default {
             approvalNumber: {
                 data: {
                     columns: ["type", "number"],
-                    rows: []
+                    rows: [{number:0,type:0}]
                 },
                 labelMap: {
                     number: "数量"
@@ -92,15 +94,27 @@ export default {
                 applyType: ''
             },
             searchForm: [
-                {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
-                {type: 'input', prop: 'user_name', width: '120px', placeholder: '姓名'},
+                // {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
+                {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
+                // {
+                //     type: 'select',
+                //     prop: 'department',
+                //     width: '150px',
+                //     options: [],
+                //     change: row => console.log(row),
+                //     placeholder: '所属部门'
+                // },
                 {
-                    type: 'select',
+                    // label: '所属部门',
+                    type: 'select_tree',
                     prop: 'department',
-                    width: '150px',
-                    options: [],
-                    change: row => console.log(row),
-                    placeholder: '所属部门'
+                    options: this.orgData,
+                    config: {
+                        value: 'name',
+                        label: 'name',
+                        children: 'childrens',
+                        disabled: true
+                    },
                 },
                 {
                     type: 'daterange',
@@ -119,14 +133,22 @@ export default {
                         }
                     ]
                 },
+                // {
+                //     type: 'select',
+                //     prop: 'applyType',
+                //     width: '150px',
+                //     options: [],
+                //     change: row => console.log(row),
+                //     placeholder: '请假类型'
+                // }
                 {
-                    type: 'select',
-                    prop: 'applyType',
-                    width: '150px',
-                    options: [],
+                    type: "select",
+                    prop: "applyType",
+                    width: "150px",
+                    options: this.listData,
                     change: row => console.log(row),
-                    placeholder: '请假类型'
-                }
+                    placeholder: "请假类型"
+                },
             ],
             userId: {
               userId: '2020'
@@ -140,11 +162,11 @@ export default {
                 height: '368'
             },
             columns: [
-                {
-                    prop: 'policeCode',
-                    label: '警号',
-                    align: 'left'
-                },
+                // {
+                //     prop: 'policeCode',
+                //     label: '警号',
+                //     align: 'left'
+                // },
                 {
                     prop: 'userName',
                     label: '姓名',
@@ -167,11 +189,11 @@ export default {
                     label: '请假类型',
                     align: 'left'
                 },
-                {
-                    prop: 'isException',
-                    label: '是否异常',
-                    align: 'left'
-                }
+                // {
+                //     prop: 'isException',
+                //     label: '是否异常',
+                //     align: 'left'
+                // }
             ],
             operates: {
                 width: 150,
@@ -194,6 +216,7 @@ export default {
                 ]
             },
             tableList: [],
+            listData: [],
             id:''
         };
     },
@@ -215,8 +238,7 @@ export default {
             const $this = this;
             getFindVacationPage(Object.assign({
                 nCurrent: nCurrent,
-                nSize: 10,
-                userId: $this.id
+                nSize: 10
             }, $this.searchData)).then((res) => {
                 console.log(res);
                 this.$refs.recordSpTableRef.setPageInfo(
@@ -226,21 +248,56 @@ export default {
                     res.data
                 );
             })
-        }
+        },
+        // 字典值
+        getList() {
+            getList(
+                Object.assign(
+                    {
+                        appId: 'c62d6b0a56b045b597b2069cd9b9e6b9',
+                        type: '请假类型'
+                    },
+                )
+            ).then(res => {
+                if (res.success) {
+                    const dicData = res.data
+                    console.log('请假类型',dicData)
+                    for (let i = 0; i < dicData.length; i++) {
+                        const list = {
+                            label: dicData[i].label,
+                            value: dicData[i].value
+                        }
+                        this.listData.push(list)
+                    }
+                    // const aa = dicData.map(inventor => `label:${inventor.label},value:${inventor.value}`)
+                    // console.log(aa)
+                    this.searchForm[3].options = this.listData
+                }
+            })
+        },
+    },
+    computed: {
+        ...mapGetters([
+            'orgData'
+        ])
     },
     created() {
+        this.searchForm[1].options = this.orgData
         const userInfo = JSON.parse(sessionStorage.userInfo)
         this.id = userInfo.info
         const data ={
             userId : this.id
         }
         // 请假次数
-        getAskForLeave(data).then((res) => {
+        getAskForLeave().then((res) => {
             let arr = [];
             for (let key in res) {
                 arr.push({type: key, number: res[key]});
             }
-            this.leaveTime.data.rows = arr;
+            if(arr.length>=1){
+               this.leaveTime.data.rows = arr;
+            }
+           
         });
 
         // 请假异常情况统计
@@ -249,11 +306,14 @@ export default {
             for (let key in res) {
                 arr.push({type: key, number: res[key]});
             }
-            this.approvalNumber.data.rows = arr;
+            if(arr.length>=1){
+                this.approvalNumber.data.rows = arr;
+            }
         });
 
         // 分页表格
         this.query();
+        this.getList();
     }
 };
 </script>

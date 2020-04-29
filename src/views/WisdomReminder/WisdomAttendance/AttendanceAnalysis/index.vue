@@ -10,7 +10,7 @@
                     <HistogramChart
                             :chart-data="checkingInResult.data"
                             :label-map="checkingInResult.labelMap"
-                            title="考勤结果"
+                            title="考勤方式"
                     />
                 </el-col>
                 <el-col :span="12">
@@ -18,7 +18,7 @@
                             :chart-data="workTime.data"
                             :label-map="workTime.labelMap"
                             :rotate="60"
-                            title="上班时长"
+                            title="在岗时长"
                     />
                 </el-col>
             </el-row>
@@ -31,7 +31,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div class="search-wrap" style="height:760px;">
+            <div class="search-wrap" style="height:430px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"
@@ -47,12 +47,13 @@
 <script>
 import HistogramChart from "@/components/histogram-chart";
 import LineChart from "@/components/line-chart";
+import { getList } from '@/api/user-server.js';
 import {
     getClockWarnReasonStatistics,
     getClockWarnTimesStatistics,
     getFindClockPage
 } from "@/api/wisdom-reminder/wisdom-attendance.js";
-
+import { mapGetters } from 'vuex';
 export default {
     components: {
         HistogramChart,
@@ -60,6 +61,7 @@ export default {
     },
     data() {
         return {
+            listData:[],
             // 考勤结果 - 柱状图
             checkingInResult: {
                 data: {
@@ -84,22 +86,28 @@ export default {
             searchData: {
                 policeCode: "",
                 userName: "",
-                department: "",
                 startTime: '',
+                department:'',
                 endTime: '',
                 location: '',
+                isAsc:false,
+                orderByField:'clock_date',
                 status: ''
             },
             searchForm: [
-                {type: "input", prop: "policeCode", width: "120px", placeholder: "警号"},
+                // {type: "input", prop: "policeCode", width: "120px", placeholder: "警号"},
                 {type: "input", prop: "userName", width: "120px", placeholder: "姓名"},
                 {
-                    type: 'select',
+                    // label: '所属部门',
+                    type: 'select_tree',
                     prop: 'department',
-                    width: '150px',
-                    options: [],
-                    change: row => console.log(row),
-                    placeholder: '所属部门'
+                    options: this.orgData,
+                    config: {
+                        value: 'id',
+                        label: 'name',
+                        children: 'childrens',
+                        disabled: true
+                    },
                 },
                 {
                     type: "daterange",
@@ -120,9 +128,9 @@ export default {
                 },
                 {
                     type: "select",
-                    prop: "location",
+                    prop: "clockWay",
                     width: "150px",
-                    options: [{label: "门禁", value: "门禁"}, {label: "app", value: "app"}, {label: '钉钉', value: '钉钉'}],
+                    options: this.listData,
                     change: row => console.log(row),
                     placeholder: "打卡方式"
                 },
@@ -130,13 +138,19 @@ export default {
                     type: "select",
                     prop: "status",
                     width: "150px",
-                    options: [{label: '正常', value: '正常'}, {label: '迟到', value: '迟到'}, {
-                        label: '早退',
-                        value: '早退'
-                    }, {label: '请假', value: '请假'}, {label: '未打卡', value: '未打卡'}],
+                    options: [{label: "上班未打卡", value: "上班未打卡"}, {label: "下班未打卡", value: "下班未打卡"}, {label: '正常', value: '正常'},{label: '迟到', value: '迟到'},{label: '早退', value: '早退'}],
                     change: row => console.log(row),
                     placeholder: "考勤结果"
-                }
+                },
+
+                // {
+                //     type: "select",
+                //     prop: "status",
+                //     width: "150px",
+                //     options: this.listData,
+                //     change: row => console.log(row),
+                //     placeholder: "考勤方式"
+                // }
             ],
             userInfo:'',
             options: {
@@ -153,24 +167,34 @@ export default {
                     label: '时间',
                     align: 'left'
                 },
-                {
-                    prop: 'policeCode',
-                    label: '警号',
-                    align: 'left'
-                },
+                // {
+                //     prop: 'policeCode',
+                //     label: '警号',
+                //     align: 'left'
+                // },
                 {
                     prop: 'userName',
                     label: '姓名',
                     align: 'left'
                 },
-                {
-                    prop: 'department',
-                    label: '部门',
-                    align: 'left'
-                },
+                // {
+                //     prop: 'department',
+                //     label: '部门',
+                //     align: 'left'
+                // },
                 {
                     prop: 'startTime',
                     label: '上班打卡时间',
+                    align: 'left'
+                },
+                // {
+                //     prop: 'clockWay',
+                //     label: '打卡方式',
+                //     align: 'left'
+                // },
+                {
+                    prop: 'endTime',
+                    label: '下班打卡时间',
                     align: 'left'
                 },
                 {
@@ -178,21 +202,11 @@ export default {
                     label: '打卡方式',
                     align: 'left'
                 },
-                {
-                    prop: 'endTime',
-                    label: '下班打卡时间',
-                    align: 'left'
-                },
-                {
-                    prop: 'location',
-                    label: '下班打卡方式',
-                    align: 'left'
-                },
-                {
-                    prop: 'overtime',
-                    label: '加班时长',
-                    align: 'left'
-                },
+                // {
+                //     prop: 'overtime',
+                //     label: '加班时长',
+                //     align: 'left'
+                // },
                 {
                     prop: 'resultStatus',
                     label: '考勤结果',
@@ -203,7 +217,42 @@ export default {
             id:''
         };
     },
+    watch: {
+		filterText(val) {
+			this.$refs.tree.filter(val);
+		}
+	},
+    computed: {
+    ...mapGetters([
+      'orgData'
+    ])
+  },
     methods: {
+        // 字典值
+        getList() {
+            getList(
+                Object.assign(
+                    {
+                        appId: 'c62d6b0a56b045b597b2069cd9b9e6b9',
+                        type: '考勤方式'
+                    },
+                )
+            ).then(res => {
+                if (res.success) {
+                    const dicData = res.data
+                    for (let i = 0; i < dicData.length; i++) {
+                        const list = {
+                            label: dicData[i].label,
+                            value: dicData[i].value
+                        }
+                        this.listData.push(list)
+                    }
+                    // const aa = dicData.map(inventor => `label:${inventor.label},value:${inventor.value}`)
+                    // console.log(aa)
+                    this.searchForm[3].options = this.listData
+                }
+            })
+        },
         // 查询
         handleSearch(params) {
             Object.assign(this.searchData, params);
@@ -218,7 +267,6 @@ export default {
 
         // 查询列表
         query(nCurrent = 1) {
-            debugger
             const $this = this;
             getFindClockPage(Object.assign({
                 nCurrent: nCurrent,
@@ -235,6 +283,8 @@ export default {
         }
     },
     created() {
+        this.searchForm[1].options = this.orgData
+        this.getList()
         this.userInfo = JSON.parse(sessionStorage.userInfo)
         this.id = this.userInfo.info
         const data = {
@@ -242,7 +292,7 @@ export default {
         }
         // 刷卡地点次数统计
         getClockWarnReasonStatistics(data).then((res) => {
-            console.log(res);
+            console.log(1111,res);
             for (let key in res) {
                 this.checkingInResult.data.rows.push({type: key, num: res[key]})
             }

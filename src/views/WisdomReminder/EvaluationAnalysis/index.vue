@@ -55,6 +55,8 @@ import {
     getFindAuditWarningPage
 } from "@/api/wisdom-reminder/evaluation-analysis.js";
 import EvaluationInfo from './modal/evaluationInfo'
+import {findWorkEvaluatePage,workEvaluateStatistics,countWorkNoteByDay} from '@/api/report.js'
+// findWorkEvaluatePage
 
 export default {
     components: {
@@ -66,14 +68,14 @@ export default {
         return {
             searchData: {
                 police_code: '',
-                user_name: '',
+                userName: '',
                 department: '',
                 startTime: '',
                 endTime: ''
             },
             searchForm: [
-                {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
-                {type: 'input', prop: 'user_name', width: '120px', placeholder: '姓名'},
+                // {type: 'input', prop: 'police_code', width: '120px', placeholder: '警号'},
+                {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
                 {
                     type: 'select',
                     prop: 'department',
@@ -113,7 +115,7 @@ export default {
             // 预警次数
             warningNumber: {
                 data: {
-                    columns: ["everyday", "warnnum"],
+                    columns: ["date", "count"],
                     rows: []
                 },
                 labelMap: {
@@ -122,9 +124,7 @@ export default {
             },
             // 评价分析预警分页
             userParams: {
-                userId: '123',
-                deptId: '123',
-                role: '123'
+                audited: sessionStorage.orgId,
             },
             options: {
                 pageSize: 10,
@@ -132,39 +132,44 @@ export default {
                 currentPage: 1,
                 loading: true,
                 maxHeight: null,
-                height: '740'
+                height: '430'
             },
             columns: [
+                // {
+                //     prop: 'police_code',
+                //     label: '警号',
+                //     align: 'left'
+                // },
                 {
-                    prop: 'police_code',
-                    label: '警号',
-                    align: 'left'
-                },
-                {
-                    prop: 'user_name',
+                    prop: 'userName',
                     label: '姓名',
                     align: 'left'
                 },
                 {
-                    prop: 'department',
+                    prop: 'deptName',
                     label: '部门',
                     align: 'left'
                 },
                 {
-                    prop: 'warn_time',
+                    prop: 'noteDate',
                     label: '预警时间',
                     align: 'left',
                     type: 'date',
                     dateFormat: 'yyyy-MM-dd'
                 },
+                // {
+                //     prop: 'content',
+                //     label: '预警原因',
+                //     align: 'left'
+                // },
+                    {
+                        prop: 'noteScore',
+                        label: '得分',
+                        align: 'left'
+                    },
                 {
-                    prop: 'warn_reason',
-                    label: '预警原因',
-                    align: 'left'
-                },
-                {
-                    prop: 'note_score',
-                    label: '得分',
+                    prop: 'content',
+                    label: '内容',
                     align: 'left'
                 }
             ],
@@ -207,10 +212,13 @@ export default {
         // 查询列表
         query(nCurrent = 1) {
             const $this = this;
-            getFindAuditWarningPage(Object.assign({
+            findWorkEvaluatePage(Object.assign({
                 nCurrent: nCurrent,
-                nSize: 10
-            }, $this.searchData, $this.userParams)).then((res) => {
+                nSize: 10,
+                orderByField: 'noteDate',
+                orderFlag: false
+            }, $this.searchData)).then((res) => {
+                console.log(255,res)
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
                     res.size,
@@ -222,12 +230,14 @@ export default {
     },
     created() {
         // 日志预警柱线图
-        getAuditWarnBarChat(this.userParams).then((res) => {
-            this.warningType.data.rows = res
+        workEvaluateStatistics(this.userParams).then((res) => {
+            for (let key in res) {
+                this.warningType.data.rows.push({matter: key, warnnum: res[key]})
+            }    
         });
-
+        
         // 日志预警柱线图
-        getAuditWarnLineChat(this.userParams).then((res) => {
+        countWorkNoteByDay(this.userParams).then((res) => {      
             this.warningNumber.data.rows = res
         });
 
