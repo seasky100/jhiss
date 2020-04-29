@@ -1,6 +1,5 @@
 <template>
   <div class="IndividualReport">
-		<div>
       <e-table
         ref="recordTableRef"
         :tableList="tableList"
@@ -9,36 +8,39 @@
         :operates="operates"
         @afterCurrentPageClick="afterCurrentPageClickHandle"
       />
-    </div>
-    <DisposalAgent ref="DisposalAgent" />
+    <!-- <DisposalAgent ref="DisposalAgent" /> -->
   </div>
 </template>
 <script>
 import { findReportPage } from '@/api/report.js';
-import DisposalAgent from '../DisposalAgent';
+import { getUserListByUserId } from '@/api/user-server.js';
+import { mapGetters } from 'vuex';
+
 export default {
-    components: {
-      DisposalAgent
-  },
   name: "IndividualReport",
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
+  },
   data() {
     return {
-      userId: '5ba98b66cd3549b9b92ea8723e89207e',
       addForm: '/organizationRequestAdd',
 			searchData: {
         userName: '',
         policeCode: '',
-        department: '',
+        approvalId: '',
         problemType: '',
         startTime: '',
         endTime: ''
-			},
+      },
+      userIds:'',
 			searchForm: [
         {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
         {type: 'input', prop: 'approvalName', width: '120px', placeholder: '发起人姓名'},
         {
           type: 'select',
-          prop: 'deptId',
+          prop: 'approvalId',
           width: '150px',
           options: [
             {label:'治安部门', value:'0'},
@@ -98,7 +100,7 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'550'
+        height:'560'
 			},
 			columns: [
         {
@@ -107,7 +109,7 @@ export default {
           align: 'left'
         },
         {
-          prop: 'approvalName',
+          prop: 'sponsorName',
           label: '发起人姓名',
           align: 'left'
         },
@@ -164,7 +166,8 @@ export default {
             icon: '<i class="el-icon-view"></i>',
             disabled: false,
             method: (key, row) => {
-              this.$refs.DisposalAgent.open(row);
+              console.log('row', row);
+              this.$router.push({path: '/organizationRequestDetail', query: { flowCode: row.flowCode }})
             },
             showCallback: () => {
               return true;
@@ -176,7 +179,8 @@ export default {
   },
   watch: {},
   mounted() {
-    this.init()
+    // this.init();
+    this.getUserListByUserId()
   },
   methods: {
 		init() {
@@ -203,7 +207,20 @@ export default {
 			this.query(val);
 			// console.log(val)
       next();
-		},
+    },
+    // 根据用户ID查询所有下属用户
+		getUserListByUserId() {
+        const _this= this;
+        const params = {
+          userId: _this.userId 
+        }
+        getUserListByUserId(params).then(res => {
+          if (res.success) {
+            _this.userIds = res.data.map(item => item.id).join()
+            this.query();
+          }
+        })
+      },
 		// 查询列表
     query(nCurrent = 1) {
 			// console.log(nCurrent)
@@ -213,7 +230,8 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: _this.userId
+            userId:  _this.userId + ','+ _this.userIds,
+            reportType: '2'
           },
           _this.searchData
         )
@@ -231,12 +249,17 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-.individual_title{
+  @import "../../styles/common.styl";
+  @import "../../styles/agency.css";
+  .el-table__fixed-body-wrapper{
+  top: 53px !important;
+}
+/* .individual_title{
 	height:40px;
 	line-height:40px;
 	background:#fff;
 	padding:0 10px;
 	font-size:16px;
     font-weight:bold
-}
+} */
 </style>

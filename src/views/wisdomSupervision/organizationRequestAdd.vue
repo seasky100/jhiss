@@ -17,16 +17,16 @@
             </el-select>
           </el-form-item>
           <el-form-item label="申报开始时间" prop="applyTime">
-            <el-date-picker :disabled="disabled" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyTime" style="width: 100%;"></el-date-picker>
+            <el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyTime" style="width: 100%;"></el-date-picker>
           </el-form-item>
           <el-form-item label="申报结束时间" prop="applyEnd">
-            <el-date-picker :disabled="disabled" type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
+            <el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
           </el-form-item>
           <el-form-item label="事由" prop="applyDesc">
-            <el-input :disabled="disabled" type="textarea" v-model="ruleForm.applyDesc" :rows="4"></el-input>
+            <el-input :disabled="disabled" type="textarea" v-model="ruleForm.applyDesc" :rows="3"></el-input>
           </el-form-item>
           <el-form-item label="附件">
-            <e-upload />
+              <e-upload @changeHandler="changeHandler" />
           </el-form-item>
           <el-form-item label="审批人" required>
             <el-col :span="11">
@@ -56,7 +56,7 @@
           </el-form-item>
           <el-form-item style="text-align: center;">
             <el-button type="primary" @click="submit">提交</el-button>
-            <el-button>取消</el-button>
+            <el-button @click="goBack">取消</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -66,9 +66,8 @@
 <script>
 import { saveAffairApply, getApprovalById } from '@/api/report.js';
 import { getUserList } from '@/api/user-server.js';
-
+import { uploadMultiple } from '@/api/warn.js';
 import getFlowNode from '../../mixin/getFlowNode.js';
-
 import { mapGetters } from 'vuex';
 import { format } from 'date-fns';
 
@@ -77,13 +76,19 @@ export default {
   data() {
     return {
       disabled: false,
+      pickerOptions0 :{
+        disabledDate(time){
+          return time.getTime() <  Date.now() - 8.64e6;
+        }
+      },
       ruleForm: {
         applyType: '',
         applyTime: '',
         applyEnd: '',
         applyDesc: '',
-        department: '',
-        approvalId: ''
+        department: sessionStorage.orgId,
+        approvalId: '',
+        contentUrl: ''
       },
       rules: {
         applyType: [
@@ -120,7 +125,8 @@ export default {
       // 审批人
       approvalArr: [],
       // 审批人对象
-      approvalList: []
+      approvalList: [],
+      files: []
     }
   },
   computed: {
@@ -132,6 +138,9 @@ export default {
     // 机构人员 下拉change事件
     orgChange(orgId) {
       this.getUserListData(orgId);
+    },
+    goBack() {
+      this.$router.go(-1)
     },
     // 获取机构对应的人员
     getUserListData(id) {
@@ -152,21 +161,45 @@ export default {
       return new Date(year, month, date, hour, minute, second).toLocaleString('chinese', {hour12: false}).replace(new Date('').toString(), '')
 
     },
-
-
-
-
-
-
+    // 文件
+    changeHandler(fileList) {
+      const data = fileList;
+      for (let i = 0; i < data.length; i++) {
+        const cur = data[i].raw;
+        this.files.push(cur)  
+      }
+      this.uploadFile();
+    },
+    uploadFile(){
+      const _this = this
+      const params = {
+        userId : sessionStorage.userId,
+        userName : sessionStorage.realName,
+        file : this.files
+      }
+      uploadMultiple(params).then(res => {
+        if (res.success) {
+          _this.ruleForm.contentUrl = res.data
+          this.$message({
+            type: 'success',
+            message: '上传成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '上传失败'
+          })
+        }
+      })
+    },    
     // 提交
     submit() {
-      this.$refs.ruleForm.validate((valid) => {
-        debugger
+      this.$refs.ruleForm.validate((valid) => {   
         if (valid) {
           const params = {
             flowProcess: {
               flowId: this.flowId,
-              reportType: '201',
+              reportType: this.ruleForm.applyType,
               sponsorId: this.userId,
               sponsorName: this.realName,
               department: this.orgName,
@@ -181,7 +214,8 @@ export default {
             applyType: this.ruleForm.applyType,
             applyTime: this.ruleForm.applyTime,
             applyEnd: this.ruleForm.applyEnd,
-            applyDesc: this.ruleForm.applyDesc
+            applyDesc: this.ruleForm.applyDesc,
+            contentUrl: this.ruleForm.contentUrl
           }
           saveAffairApply(params).then(res => {
             // console.log(res);
@@ -208,7 +242,6 @@ export default {
       });
     },
     selectChange(val) {
-      debugger
       const result = this.approvalArr.filter(item => {
         return item.id === val;
       })
@@ -242,6 +275,8 @@ export default {
   mounted() {
     this.getData('201');
     this.getDetailInfo();
+    const orgId = this.ruleForm.department
+    this.getUserListData(orgId);
   }
 }
 </script>

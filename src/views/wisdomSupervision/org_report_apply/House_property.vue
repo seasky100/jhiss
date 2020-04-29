@@ -79,7 +79,7 @@
             <el-input v-model="ruleForm.comment"></el-input>
           </el-form-item>
           <el-form-item label="附件">
-            <e-upload />
+            <e-upload @changeHandler="changeHandler" />
           </el-form-item>
           <el-form-item label="审批人" required>
             <el-col :span="11">
@@ -108,7 +108,7 @@
           </el-form-item>
           <el-form-item style="text-align: center;">
             <el-button type="primary" @click="submit">提交</el-button>
-            <el-button>取消</el-button>
+            <el-button @click="goBack">取消</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -118,7 +118,7 @@
 <script>
 import { saveDeclareHouse } from '@/api/report.js';
 import { getUserList } from '@/api/user-server.js';
-
+import { uploadMultiple } from '@/api/warn.js';
 import getFlowNode from '../../../mixin/getFlowNode.js';
 import garageForm from './components/garageForm';
 
@@ -144,8 +144,9 @@ export default {
         tradeTime: '',
         isLoan: '',
         comment: '',
-        department: '',
-        approvalId: ''
+        department: sessionStorage.orgId,
+        approvalId: '',
+        contentUrl:''
       },
       rules: {
         houseType: [
@@ -233,7 +234,8 @@ export default {
       // 审批人
       approvalArr: [],
       // 审批人对象
-      approvalList: []
+      approvalList: [],
+      files: []
     }
   },
   computed: {
@@ -257,6 +259,37 @@ export default {
         }
       })
     },
+    // 文件
+    changeHandler(fileList) {
+      const data = fileList;
+      for (let i = 0; i < data.length; i++) {
+        const cur = data[i].raw;
+        this.files.push(cur)
+      }
+      this.uploadFile();
+    },
+    uploadFile() {
+      const _this = this
+      const params = {
+        userId: sessionStorage.userId,
+        userName: sessionStorage.realName,
+        file: this.files
+      }
+      uploadMultiple(params).then(res => {
+        if (res.success) {
+          _this.ruleForm.contentUrl = res.data
+          this.$message({
+            type: 'success',
+            message: '上传成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '上传失败'
+          })
+        }
+      })
+    },    
     // 提交
     submit() {
       this.$refs.ruleForm.validate((valid) => {
@@ -286,7 +319,8 @@ export default {
             isLoan: this.ruleForm.isLoan,
             ownership: this.ruleForm.ownership,
             total: this.ruleForm.total,
-            tradeTime: this.ruleForm.tradeTime
+            tradeTime: this.ruleForm.tradeTime,
+            contentUrl: this.ruleForm.contentUrl
           }
           saveDeclareHouse(params).then(res => {
             // console.log(res);
@@ -319,6 +353,9 @@ export default {
       })
       this.approvalList = result;
     },
+    goBack() {
+      this.$router.go(-1)
+    },   
     // 附房数据
     setGarage(data) {
       if(data.length === 1) {
@@ -342,6 +379,8 @@ export default {
   },
   mounted() {
     this.getData('201')
+    const orgId = this.ruleForm.department
+    this.getUserListData(orgId);
   }
 }
 </script>

@@ -45,7 +45,8 @@ export default {
   name: "IndividualReport",
   computed: {
     ...mapGetters([
-      'userId'
+      'userId',
+      'orgData'
     ])
   },
   data() {
@@ -69,22 +70,35 @@ export default {
 			searchData: {
         userName: '',
         policeCode: '',
-        // approvalId: '',
+        approvalId: '',
         status: '',
+        code:'',
         startTime: '',
         endTime: ''
 			},
 			searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
+        // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
         {type: 'input', prop: 'userName', width: '120px', placeholder: '发起人姓名'},
+        // {
+        //   type: 'select',
+        //   prop: 'approvalId',
+        //   width: '150px',
+        //   options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+        //   change: row => console.log(row),
+        //   placeholder: '所属部门'
+        // },
         {
-          type: 'select',
-          prop: 'approvalId',
-          width: '150px',
-          options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
-          change: row => console.log(row),
-          placeholder: '所属部门'
-        },
+					// label: '所属部门',
+					type: 'select_tree',
+					prop: 'approvalId',
+					options: this.orgData,
+					config: {
+						value: 'id',
+						label: 'name',
+						children: 'childrens',
+						disabled: true
+					},
+				},
         {
           type: 'daterange',
           options: [
@@ -103,8 +117,8 @@ export default {
           ]
 				},
 				{
-          type: 'select',
-          prop: 'problemType',
+          type: 'select1',
+          prop: 'code',
           width: '150px',
           options: [
 						{label:'婚姻情况', value:'101'},
@@ -125,7 +139,7 @@ export default {
           placeholder: '即报类型'
 				},
 				{
-          type: 'select',
+          type: 'select1',
           prop: 'status',
           width: '150px',
           options: [
@@ -149,11 +163,11 @@ export default {
         height:'560'
 			},
 			columns: [
-        {
-          prop: 'policeCode',
-          label: '发起人警号',
-          align: 'left'
-        },
+        // {
+        //   prop: 'policeCode',
+        //   label: '发起人警号',
+        //   align: 'left'
+        // },
         {
           prop: 'sponsorName',
           label: '发起人姓名',
@@ -228,6 +242,7 @@ export default {
   },
   watch: {},
   mounted() {
+    this.searchForm[1].options = this.orgData
     this.getUserListByUserId()
     // this.init()
   },
@@ -296,7 +311,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 @import "../../styles/common.styl";
-
+/* @import "../../styles/report.css"; */
 .Individual_type{
   padding: 10px 10px 0;
   cursor: pointer;

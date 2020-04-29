@@ -55,7 +55,7 @@ export default {
 			},
 			searchForm: [
 				{
-					label:'被谈话人',
+					label:'',
           type: 'select_tree',
           prop: 'department',
           width: '100%',
@@ -63,10 +63,6 @@ export default {
             {
               prop: 'deptName',
               placeholder: '请选择机构'
-            },
-            {
-              prop: 'userName',
-              placeholder: '请选择审批人'
             }
           ],
           change: row => console.log(row),
