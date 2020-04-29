@@ -8,7 +8,7 @@ import router from '@/router'
 const service = axios.create({
   withCredentials: true,
   baseURL: process.env.BASE_API, // api的base_url
-  timeout: 60000 // 请求超时时间
+  timeout: 6000 // 请求超时时间
 })
 // request拦截器
 service.interceptors.request.use(config => {
