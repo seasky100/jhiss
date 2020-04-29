@@ -8,7 +8,7 @@ import store from "./store";
 import request from '@/utils/request'
 import echarts from 'echarts';
 import 'echarts/map/js/china';
-
+import './permission.js';
 import './components';
 import dayjs from 'dayjs';
 // import Print from 'vue-print-nb';
@@ -22,7 +22,6 @@ Vue.prototype.$dayjs = dayjs;
 // import '@/utils/permission'
 import { findRouter } from '@/utils/findRouter'
 Vue.config.productionTip = false
-
 import VCharts from 'v-charts';
 Vue.use(VCharts);
 import Vue2OrgTree from 'vue2-org-tree';
