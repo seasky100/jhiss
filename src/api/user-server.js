@@ -9,6 +9,14 @@ export function signIn(params) {
         params
       })
 }
+// 身份证号登录
+export function jhLogin(params) {
+  return request({
+      url: DEFAULT_URL.user.jhLogin,
+      method: 'post',
+      params
+    })
+}
 // // 获取userId,userName,token
 export function checkTokenByAppKey(params) {
     return request({
@@ -86,10 +94,26 @@ export function getPoliceCareer(params) {
         params
       })
 }
+// 根据身份证号获取用户信息
+export function getUserByCardNum(params) {
+  return request({
+      url: DEFAULT_URL.user.getUserByCardNum,
+      method: 'get',
+      params
+    })
+}
 // 从根据userId查询相应层级成员的id列表
 export function getUserListByUserId(params) {
   return request({
       url: DEFAULT_URL.user.getUserListByUserId,
+      method: 'get',
+      params
+    })
+}
+// 查询字典数据
+export function getList(params) {
+  return request({
+      url: DEFAULT_URL.user.getList,
       method: 'get',
       params
     })

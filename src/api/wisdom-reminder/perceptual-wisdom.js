@@ -66,7 +66,7 @@ export function getRepastWarnTimesStatistics(params) {
 // 提前就餐分页
 export function getFindMealCardPage(params) {
   return request({
-    url: DEFAULT_URL.perceptualWisdom.findMealCardPage,
+    url: DEFAULT_URL.perceptualWisdom.getFindMealCardPage,
     method: 'get',
     params
   }).then((res) => {

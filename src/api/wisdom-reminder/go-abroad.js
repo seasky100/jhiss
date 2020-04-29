@@ -30,7 +30,15 @@ export function getPalaceInfoStatistics() {
     return res.data
   });
 }
-
+// 按部门显示今年出国次数top10
+export function departmentInfoStatistics() {
+  return request({
+    url: DEFAULT_URL.goAbroad.departmentInfoStatistics,
+    method: "get"
+  }).then((res) => {
+    return res.data
+  });
+}
 // 获取出勤出境分页
 export function getFindAbroadRecordPage(params) {
   return request({

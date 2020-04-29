@@ -247,6 +247,19 @@ export function illgalBySource (params) {
     params
   })
 }
+// 加班数据
+export function overtimeApply(params) {
+  return request({
+    url: DEFAULT_URL.vacation.overtimeApply,
+    method: 'get',
+    params: params
+  }).then((res) => {
+    let size = res.data.size;
+    let data = res.data.records;
+    let total = res.data.total;
+    return { data, total, size }
+  });
+}
 // addCertificateApportion(params) {
 //   return request({
 //     url: URL.addZSFP,
@@ -325,7 +338,22 @@ export function indexCalendar (params) {
     params
   })
 }
-
+// 车辆使用异常统计
+export function warnInfoTypeStatistics (params) {
+  return request({
+    url: DEFAULT_URL.warn.warnInfoTypeStatistics,
+    method: 'get',
+    params
+  })
+}
+// 获取车辆信息
+export function findCar (params) {
+  return request({
+    url: DEFAULT_URL.warn.findCar,
+    method: 'get',
+    params
+  })
+}
 // 护照管理 
 export function findPassport (params) {
   return request({
@@ -397,7 +425,6 @@ export function deletePassport (params) {
     params
   })
 }
-
 // 护照操作历史 
 export function findById (params) {
   return request({
@@ -411,6 +438,14 @@ export function findById (params) {
 export function StatisticsPassportwhether (params) {
   return request({
     url: DEFAULT_URL.passport.StatisticsPassportwhether,
+    method: 'post',
+    data: params
+  })
+}
+// 上传附件
+export function uploadMultiple (params) {
+  return request({
+    url: DEFAULT_URL.upload.uploadMultiple,
     method: 'post',
     data: params
   })

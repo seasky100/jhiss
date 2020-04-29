@@ -94,6 +94,14 @@ export function getRiskByUserId (params) {
     params
   })
 }
+// 个人廉政风险岗位预警 GET /risk/getRiskByUserId
+export function getRiskPage (params) {
+  return request({
+    url: DEFAULT_URL.post.getRiskPage,
+    method: 'get',
+    params
+  })
+}
 
 // 年度报告
 export function getUserList (params) {
@@ -232,7 +240,6 @@ export function updateApproval (params) {
     data: params
   })
 }
-
 // 年度报告列表 分页
 export function findAnnualReportPage (params) {
   return request({
@@ -241,7 +248,6 @@ export function findAnnualReportPage (params) {
     params
   })
 }
-
 // 年度报告新增
 export function saveAnnualReport (params) {
   return request({
@@ -250,7 +256,39 @@ export function saveAnnualReport (params) {
     data: params
   })
 }
-
+// 查看评价分析数据 
+export function findWorkEvaluatePage (params) {
+  return request({
+    url: DEFAULT_URL.post.findWorkEvaluatePage,
+    method: 'get',
+    params
+  }).then((res) => {
+    let size = res.data.size;
+    let data = res.data.records;
+    let total = res.data.total;
+    return { data, total, size }
+  })
+}
+// 工作评价按部门统计
+export function workEvaluateStatistics (params) {
+  return request({
+    url: DEFAULT_URL.post.workEvaluateStatistics,
+    method: 'get',
+    params
+  }).then((res) => {
+    return res.data
+})
+}
+// 工作评价按月统计
+export function countWorkNoteByDay (params) {
+  return request({
+    url: DEFAULT_URL.post.countWorkNoteByDay,
+    method: 'get',
+    params
+  }).then((res) => {
+    return res.data
+})
+}
 // 1. 6. 7. 本人婚姻情况
 export function saveMarrageAnnual (params) {
   return request({
@@ -349,7 +387,6 @@ export function saveDeclareExitTotalAnnual (params) {
     data: params
   })
 }
-
 // 23. 房产情况 
 export function saveDeclareHouseAnnual (params) {
   return request({
@@ -394,7 +431,6 @@ export function saveLaborIncomeAnnual (params) {
     data: params
   })
 }
-
 // 本人基本情况 
 export function saveBasicAnnual (params) {
   return request({
@@ -403,5 +439,3 @@ export function saveBasicAnnual (params) {
     data: params
   })
 }
-// 
-

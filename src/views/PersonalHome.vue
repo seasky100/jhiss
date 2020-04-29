@@ -51,7 +51,7 @@
         </div>
       </div>
       <el-row class='content' :gutter="10">
-        <el-col :xs="12" :sm="8" :md="8" :lg="7" :xl="7">
+        <el-col :xs="12" :sm="8" :md="8" :lg="6.5" :xl="6.5">
           <div class='person_left'>
               <div class="person_title">
                   <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
@@ -65,7 +65,7 @@
                           <div class='h32 warn'><span class='wnum'>{{item.num}}</span></div>
                       </div>
                       <div v-else>
-                          <div class='h32 warn'><span class='wnum'>{{item.num}}</span></div>
+                          <div class='h32 warn'><span class='pnum'>{{item.num}}</span></div>
                       </div>
                       <div class='h32 warn'><span class='pname'>{{item.name}}</span></div>
                     </div>  
@@ -82,7 +82,7 @@
                 </div>
           </div>
         </el-col>
-        <el-col :xs="12" :sm="8" :md="8" :lg="10" :xl="10">
+        <el-col :xs="12" :sm="8" :md="8" :lg="11" :xl="11">
           <div class='person_center'>
             <div class='p_top'>
                 <div class="person_title">
@@ -96,37 +96,50 @@
                     <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
                     层级评价
                   </div>
-                  <div class='p_evaluate' style="float : left; height: 85%; margin-left: 2.5em;width: 50%;border-right: 1px solid rgb(228, 233, 243);">
+                  <div class='p_evaluate' style="float : left;height: calc(100% - 70px);width: 45%;border-right: 1px solid rgb(228, 233, 243);">
+                    <div style="height: 10%;">
+                      <!-- <div class='p_change'>切换</div> -->
+                      <select class='p_select' v-model='value' >
+                        <option
+                        v-for='item in options2'
+                        :key='item.value'
+                        :label='item.label'
+                        :value='item.value'>
+                      </option>
+                      </select>
+                    </div>
                     <div id='gauge'  class='p_gauge' ></div>
                   </div>
-                  <div class='p_eright'>
-                    <div style="height:15%;" @click='pchange'>切换</div>
-                    <div v-show='change' >
-                    <div style="height:16%;display:flex">
-                      <div style="width: 25%">正面评价清单</div>
-                      <el-progress style="width: 70%" :color="customColor1"  :stroke-width="15" :percentage="70">正面评价清单</el-progress>
+                  <div class='p_heright'>
+                    <div style="height:10%;">
+                      <div class='p_change' @click='pchange' >切换</div>
                     </div>
-                    <div style="height:16%;display:flex">
-                      <div style="width: 25%">绩效评价清单</div>
-                      <el-progress style="width: 70%" :color="customColor2" :stroke-width="15" :percentage="90" ></el-progress>
+                    <div v-show='change' style="height:90%; margin-top: 2em;">
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>层级履职清单：</div>
+                      <el-progress style="width: 70%" :color="customColor1"  :stroke-width="10" :percentage="70">正面评价清单</el-progress>
                     </div>
-                    <div style="height:16%;display:flex">
-                      <div style="width: 25%">负面评价清单</div>
-                      <el-progress style="width: 70%" :color="customColor3" :stroke-width="15" :percentage="80" ></el-progress>
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>正面争优清单：</div>
+                      <el-progress style="width: 70%" :color="customColor2" :stroke-width="10" :percentage="90" ></el-progress>
                     </div>
-                    <div style="height:16%;display:flex">
-                      <div style="width: 25%">层级评价清单</div>
-                      <el-progress style="width: 70%" :color="customColor4" :stroke-width="15" :percentage="70" ></el-progress>
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>负面扣分清单：</div>
+                      <el-progress style="width: 70%" :color="customColor3" :stroke-width="10" :percentage="80" ></el-progress>
+                    </div>
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>季度评价清单：</div>
+                      <el-progress style="width: 70%;" :color="customColor4" :stroke-width="10" :percentage="70" ></el-progress>
+                    </div>
+                  </div>
+                  <div v-show='!change' style="height:90%; margin-top: 2em;">
+                      <svg ref="element" width="150" height="150" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
                     </div> 
-                  </div>  
-                  <div v-show='!change' style="height: 80%; width: 100%; ">
-                    <svg ref="element" width="150" height="150" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
-                  </div>     
+                  </div>
                 </div>
-            </div>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="8" :md="8" :lg="7" :xl="7">
+        <el-col :xs="24" :sm="8" :md="8" :lg="6.5" :xl="6.5">
           <div class='person_right'>
             <div class='p_top'>
               <div class="person_title">
@@ -159,13 +172,13 @@
                   <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
                 </div>
                 <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
-                <div @click='cjgx' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                <div @click='warncon' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
                   <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
                   <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
                     <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #F09B38">
                       <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                         style="width: '4em'; height: 4em; background: #F09B38" title='待办箱'>
-                        <span style="font-size: 1.5em">{{cjnum}}</span>
+                        <span style="font-size: 1.5em">{{countotal}}</span>
                       </Link>
                     </div>
                   </div>
@@ -253,7 +266,7 @@ export default {
     return {
       id: this.$store.state.user.userId,
       showSearch: false,
-      change:false,
+      change: true,
       customColor1: '#FF9711',
       customColor2: '#155BFF',
       customColor3: '#1989fa',
@@ -267,18 +280,23 @@ export default {
       dateStart:'', //开始时间
       dateEnd:'',//结束时间
       tjData:'',//考勤数据
+      ntoday: this.$dayjs(new Date()),
+      nt7:'',
+      daynum: 7,
+      total: 0,
       userscore: '',
       deptscore: '',
       maxValue: 30,
-      warnData:[30, 30, 30, 30, 30, 30, 30, 32],
+      warnData:[30, 30, 30, 30, 30, 30, 30,30],
       xztxNum: 0,
       countotal: 0,
-      infoData:[], 
-      cjnum: 0,       
+      countotal1: 0,
+      infoData:[],       
       // userId:'',
       userInfo:[],
       value: new Date(),
       timer:'',
+      timer2:'',
       year:'',
       month:'',
       date:'',
@@ -289,16 +307,18 @@ export default {
       marksData:[],
       selected: 0,
       timeIndex: 0,
+      options2:[{value:'2020',label:'2020年'},{value:'2019',label:'2019年'}],
+      value:"2020",
       warnList:[
-        { name:'刷卡预警',num:0},
-        { name:'出国分析',num:0},
-        { name:'涉嫌违法',num:0},
-        { name:'请假分析',num:0},
-        { name:'日志预警',num:0},
-        { name:'事项申报',num:0},
-        { name:'用车预警',num:0},
-        { name:'智慧考勤',num:0}
-        ], 
+      { name:'遵章守纪',type: '13',num:0},
+      { name:'违规查询',type: '4',num:0},
+      { name:'涉嫌违法',type: '6',num:0},
+      { name:'护照保管',type: '8',num:0},
+      { name:'日志业绩',type: '5',num:0},
+      { name:'效能提醒',type: '3',num:0},
+      { name:'违规用车',type: '7',num:0},
+      { name:'考勤预警',type: '1',num:0}
+      ], 
       weekMap: [
         { name: '日', num: '1' },
         { name: '一', num: '1' },
@@ -332,207 +352,117 @@ export default {
 },
 // created(){  
 // },
-    mounted() {
-      debugger
-      this.initCircle()
-      this.getRadar3()
+    mounted() {  
+      this.setTimer2(); 
+      this.setTimer(); 
+      if(this.total == 3){
+        clearInterval(this.timer)
+        alert(44444)
+      }
       this.userInfo = JSON.parse(sessionStorage.userInfo)
-      const today = this.$dayjs(new Date());
-      this.ydata.year = today.year(),
-      this.ydata.month = today.month(),
-      this.ydata.date = today.date();
-      this.nyear = today.year(),
-      this.nmonth = today.month() + 1,
-      this.ndate = today.date();
-      this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
-        index % 7
-          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-          : [...prev, [item]]
-      ), [])
-      this.commitQuery(this.ydata.year, this.ydata.month, this.userInfo.info);
       this.getData();
-      this.getUserListByUserId();
+      // this.getUserListByUserId();
       this.allWarnByType();
       this.sevenday();
       this.getPoliceCareer();
       this.indexRecordDeatil();
       this.sectorAverageStatistics();
       this.indexCalendar();
+      this.initCircle()
     },
+  // watch: {
+  //   'countotal' : (newVal,oldVal) =>{ 
+  //     // this.$notify({
+  //     //   title: '提示',
+  //     //   message: '您有新的信息',
+  //     //   duration: 0
+  //     // })
+  //   }     
+  // },
   methods: {
     init() {
-      
       this.getRadar()
       this.getRadar2()
-      // this.getRadar3()
-      this.getRadar4()
-      this.getRadar5()
+      this.getRadar3()
     },
-    getMonthDays(year, month) {
-      const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
-      const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), 'day');
-      const lastDayOfMonth = firstDayOfMonth.add(1, 'month').subtract(1, 'day');
-      const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), 'day');
-      return new Array(firstDayOfMonth.daysInMonth() + firstDayOfMonth.day() + 6 - lastDayOfMonth.day()).fill(0).map((item, index) =>
-        from.add(index, 'day')
-      );
-    },
-    backToday() {
-      const d = this.$dayjs(new Date());
-      this.rData = []
-      this.ydata.year = d.year()
-      this.ydata.month = d.month()
-      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
-        index % 7
-          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-          : [...prev, [item]]
-      ), [])
-      this.commitQuery(d.year(), d.month(), this.userInfo.info);
-    },
-   // 是否已评分
-    isMarked(item) {
-     return item && '012345678910'.includes(item.noteScore)
-    },
-    scoreItemOf(d) {
-       return  this.scores.find(item =>
-          new Date(item.noteDate).getDate() === d.date()
-        )
-      },
-    // 查询首页日历评分数据
-    commitQuery(year, month, userId) {
-      debugger
-      const _this = this;
-      const first = _this.$dayjs(new Date(year, month, 1))
-      const last = first.add(1, 'month').subtract(1, 'day')
-      const params = {
-        staffed: userId,
-        startTime: first.format('YYYY/MM/DD'),
-        endTime: last.format('YYYY/MM/DD'),
-        orderByField: 'noteDate',
-        nCurrent: 1,
-        nSize: 100,
-        orderFlag: false
-      }
-      findWorknotePage(params).then(res => {
-        if (res.success) {
-          debugger
-          _this.scores = res.data.records
-        }
-      })
-    },  
-    prevMonth() {
-      debugger
-      const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
-      this.rData = []
-      this.ydata.year = d.year()
-      this.ydata.month = d.month()
-      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
-        index % 7
-          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-          : [...prev, [item]]
-      ), [])
-      this.commitQuery(d.year(), d.month(), this.userInfo.info);
-    },
-    nextMonth(){
-      const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).add(1, 'month');
-      this.rData = []
-      this.ydata.year = d.year()
-      this.ydata.month = d.month()
-      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
-        index % 7
-          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-          : [...prev, [item]]
-      ), [])
-      this.commitQuery(d.year(), d.month(), this.userInfo.info);
-    },
-  scoreOf (d){
-    (this.scoreItemOf(d) || {}).noteScore
-  },
-  colorOf (score)  {
-    if(score >= 9){
-      '#73CD6C'
-    }
-    if(score >= 7){
-      '#235FF6'
-    }else {
-      if('0123456'.includes(score)){
-        '#DB0F2C'
-      }
-      
-    }
-  },
   pchange(){
-    this.change = !this.change
+  this.change = !this.change
   },
-    initCircle() {
-      // const data = this.qpdata
-      const data = [
-        { name: "争优", count: 324 }, 
-        { name: "业绩", count: 174 },
-        { name: "考勤", count: 278 },
-        { name: "重点", count: 294 },
-        { name: "共性", count: 250 }
-      ]
-      debugger
-      d3.select("svg").selectAll("g").remove();//清空作图区域
-      const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
-      const format = d3.format(",d");
+  initCircle() {
+    const data = [
+      { name: "", count: 1 },
+      { name: "", count: 2 },
+      { name: "争优", count: 10 }, 
+      { name: "业绩", count: 7 },
+      { name: "", count: 1 },
+      { name: "", count: 2 },
+      { name: "考勤", count: 8 },
+      { name: "重点", count: 9 },
+      { name: "业绩", count: 7 },
+      { name: "", count: 1 },
+      { name: "", count: 2 },
+      { name: "", count: 3 },
+      { name: "", count: 1 },
+      { name: "共性", count: 8 }
+    ]      
+    d3.select("svg").selectAll("g").remove();//清空作图区域
+    const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
+    const format = d3.format(",d");
 
-      //       var color = d3.scaleOrdinal(d3.schemeCategory20c);
-      const color = ["#FF9700", "#416DF6","#63C073", "#8B6FFE", "#F34252"];//自定义颜色
-      const pack = d3.pack()
-        .size([width, height])
-        .padding(1.5);
-      var num, pid;
-      const root = d3.hierarchy({ children: data })
-        .sum((d) => { return d.count; })
-        .each((d) => {
-          if (d.parent == null) { num = d.value };
-          if (id = d.data.name) {
-            var id
-            d.id = id;
-            d.class = id;
-            pid = num / (d.value);
-            d.colorPick = pid > 50 ? 5 : (pid > 50 ? 4 : (pid > 20 ? 3 : (pid > 2 ? 2 : 1)));
-            console.log(d.colorPick);
-          }
-        });
-      const node = svg.selectAll(".node")
-        .data(pack(root).leaves())
-        .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")"; });
+    //       var color = d3.scaleOrdinal(d3.schemeCategory20c);
+    const color = ["#FF9700", "#416DF6","#63C073", "#8B6FFE", "#8B6FFE", "#FF9700", "#416DF6","#63C073", "#8B6FFE", "#8B6FFE", "#F34252"];//自定义颜色
+    const pack = d3.pack()
+      .size([width, height])
+      .padding(1.5);
+    var num, pid;
+    const root = d3.hierarchy({ children: data })
+      .sum((d) => { return d.count; })
+      .each((d) => {
+        if (d.parent == null) { num = d.value };
+        if (id = d.data.name) {
+          var id
+          d.id = id;
+          d.class = id;
+          // pid = num / (d.value);
+          // d.colorPick = pid > 12 ? 5 : (pid > 10 ? 4 : (pid > 8 ? 3 : (pid > 5 ? 2 : 1)));
+        }
+      });
+    const node = svg.selectAll(".node")
+      .data(pack(root).leaves())
+      .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")"; });
 
-      node.append("circle")
-        .attr("id", (d) => { return d.id; })
-        .attr("r", (d) => { return d.r; })
-        .style("fill", (d) => { return color[d.colorPick]; });
+    node.append("circle")
+      .attr("id", (d) => { return d.id; })
+      .attr("r", (d) => { return d.r; })
+      .style("fill", (d) => { return color[Math.round(Math.random()*10)]; });
 
-      node.append("clipPath")
-        .attr("id", (d) => { return "clip-" + d.id; })
-        .append("use")
-        .attr("xlink:href", (d) => { return "#" + d.id; });
+    node.append("clipPath")
+      .attr("id", (d) => { return "clip-" + d.id; })
+      .append("use")
+      .attr("xlink:href", (d) => { return "#" + d.id; });
 
-      node.append("text")
-        .attr("clip-path", (d) => { return "url(#clip-" + d.id + ")"; })
-        .selectAll("tspan")
-        .data((d) => {
-          var arr = new Array();
-          arr.push(d.class);
-          arr.push(d.data.count);
-          return arr;//圆内显示内容
-        })
-        .enter().append("tspan")
-        .attr("x", 0)
-        .attr("y", (d, i, nodes) => { return 25 + (i - nodes.length / 2 - 0.5) * 20; })
-        .text((d) => { return d; });
-
-      node.append("title")
-        .text((d) => { return d.id + "\n" + format(d.value); });
-      node.on("click", (d) => {
-        clickBubble(d.id);//自定义点击事件
+    node.append("text")
+      .attr("clip-path", (d) => { return "url(#clip-" + d.id + ")"; })
+      .selectAll("tspan")
+      .data((d) => {
+        var arr = new Array();
+        arr.push(d.class);
+        arr.push(d.data.count);
+        return arr;//圆内显示内容
       })
-    },
+      .enter().append("tspan")
+      .attr("x", 0)
+      .attr("y", (d, i, nodes) => { return 25 + (i - nodes.length / 2 - 0.5) * 20; })
+      .text((d) => { return d; });
+
+    node.append("title")
+      .text((d) => { return d.id + "\n" + format(d.value); });
+    node.on("click", (d) => {
+      clickBubble(d.id);//自定义点击事件
+    })
+  },
   changeScroll(direction = 'right'){
     // const _this = this
     let scroll = this.$refs.career_list.scrollLeft
@@ -607,7 +537,7 @@ export default {
               var returnStr = '';
               const data = params.value;
               for (let i = 0; i< data.length; i++) {
-                returnStr += params.name[i]+ ':'+(this.maxValue - data[i])+'<br/>'           
+                returnStr += params.name[i]+ '：'+(this.maxValue - data[i])+'<br/>'           
               }
               return returnStr;
             }
@@ -627,7 +557,7 @@ export default {
                     },
             },
             indicator: [{
-                name: '智慧考勤',
+                name: '遵章守纪',
                 max: this.maxValue,
                 //若将此属性放在radar下，则每条indicator都会显示圈上的数值，放在这儿，只在通信这条indicator上显示
                 axisLabel: {
@@ -638,15 +568,16 @@ export default {
                     showMinLabel: true   , //显示最小数字，即中心点显示0
                 },
             },
-            { name: '请假分析', max: this.maxValue},
-            { name: '出国分析', max: this.maxValue},
-            { name: '事项申报', max: this.maxValue},
-            { name: '用车预警', max: this.maxValue},
+            { name: '违规查询', max: this.maxValue},
+            { name: '涉嫌违法', max: this.maxValue},
+            { name: '护照保管', max: this.maxValue},
+            { name: '日志业绩', max: this.maxValue},
+            { name: '效能提醒', max: this.maxValue},
+            { name: '违规用车', max: this.maxValue},
             // { name: '违规查询', max: 30},
             // { name: '差旅管理', max: 30},
-            { name: '日志预警', max: this.maxValue},
-            { name: '涉嫌违法', max: this.maxValue},
-            { name: '刷卡预警', max: this.maxValue},
+                   
+            { name: '考勤预警', max: this.maxValue},
             // { name: '就餐预警', max: 30},
             // { name: '审批预警', max: 30},
             ],
@@ -679,36 +610,24 @@ export default {
             },
             data: [
                 {
-                    value: this.warnData,
-                    name: ['智慧考勤','请假分析','出国分析','事项申报','用车预警','日志预警','涉嫌违法','刷卡预警'],
-                    // 设置区域边框和区域的颜色
-                    itemStyle: {
-                      normal: {
-                            color: '#409eff',
-                            lineStyle: {
-                                width: 1,
-                                color: '#409eff',
-                            },
-                        },
-                    },
+                  value: this.warnData,
+                  name: ['遵章守纪','违规查询 ','涉嫌违法','护照保管','日志业绩','效能提醒','违规用车','考勤预警'],
+                  // 设置区域边框和区域的颜色
+                  itemStyle: {
+                    normal: {
+                          color: '#409eff',
+                          // lineStyle: {
+                          //     width: 1,
+                          //     color: '#409eff',
+                          // },
+                      },
+                  },
                 },
-                //  {
-                //     value: [30, 15, 30, 12, 30, 30, 30, 30, 30,30,30,30],
-                //     name: '上月',
-                //     itemStyle: {
-                //         normal: {
-                //           color: '#FF7F0E',
-                //           lineStyle: {
-                //               color: '#FF7F0E',
-                //           },
-                //       },
-                //     },
-                // },
             ],
         }],
         }
         radarDom.setOption(option)
-        $(window).resize(function() {//这是能够让图表自适应的代码
+        $(window).resize(() => {//这是能够让图表自适应的代码
           radarDom.resize();
         }); 
       },
@@ -718,10 +637,18 @@ export default {
         let option = {
           color: colors,
           tooltip: {
-              trigger: 'none',
+              trigger: 'axis',
               axisPointer: {
-                  type: 'cross'
+                  label: 'cross'
+              },
+            formatter:  (params) => {
+              const data = params
+              var returnStr = ''
+              for (let i = 0; i < data.length; i++) {
+                returnStr += data[i].seriesName + '：' + data[i].data + '小时' + '<br/>'
               }
+              return returnStr;
+            }
           },
           legend: {
               data:['加班', '上班','部门平均'],
@@ -745,20 +672,14 @@ export default {
                           color: colors[1]
                       }
                   },
-                  axisPointer: {
-                      label: {
-                          formatter: function (params) {
-                              return '小时' + params.value
-                                  + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                          }
-                      }
-                  },
                   data: this.clockDate
               } 
           ],
           yAxis: [
               {
-                  type: 'value'
+                  type: 'value',
+                  axisLabel:{
+                  }
               }
           ],
           series: [
@@ -820,9 +741,9 @@ export default {
               symbol: 'none',
               itemStyle: {
                 normal: {
-                  color: "red",//折线点的颜色
+                  color: "green",//折线点的颜色
                   lineStyle: {
-                    color: "red"//折线的颜色
+                    color: "green"//折线的颜色
                   }
                 }
               },
@@ -832,483 +753,236 @@ export default {
     }
       radarDom2.setOption(option)
           //折线图宽高自适应
-          window.onresize = function () {
+          window.onresize = () => {
             radarDom2.resize();
         }
   },
   getRadar3(){
-        let radarDom3 = this.$echarts.init(document.getElementById('gauge'))
-        // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
-        let option = {
-          backgroundColor: '#fff',
-        angleAxis: {
-            show: false,
-            max: 12 * 3 / 2, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
-            type: 'value',
-            startAngle: 210, //极坐标初始角度，从第一象限算起，大约在7-8点钟角度之间
-            splitLine: {
-                show: false //隐藏坐标
-            }
-        },
-        barMaxWidth: 18, //圆环宽度
-        radiusAxis: { //隐藏坐标
-            show: false,
-            type: 'category',
-        },
-        polar: { //设置圆环位置和大小
-            center: ['50%', '50%'],
-            radius: '250'
-        },
-        series: [{
-                type: 'bar',
-                data: [{ //上层圆环，用于显示真实数据
-                    value: 5,
-                    itemStyle: {
-                        color: { //图形渐变颜色方法，四个数字分别代表，右，下，左，上，offset表示0%到100%
-                            type: 'linear',
-                            x: 0,
-                            y: 0,
-                            x2: 1, //从左到右 0-1
-                            y2: 0,
-                            colorStops: [{
-                                offset: 0,
-                                color: '#2CABFC' // 0% 处的颜色
-                            }, {
-                                offset: 1,
-                                color: '#CD48AE' // 100% 处的颜色
-                            }],
-                            globalCoord: false // 缺省为 false
-                        },
-                    }
-                }],
-                coordinateSystem: 'polar', //类型，极坐标
-                roundCap: true, //顶端圆角
-                z: 5 //圆环层级，和zindex相似
-            }, 
-            { //仪表盘
-                type: 'gauge',
-                radius: '80%',
-                startAngle: 210, //起始角度，同极坐标
-                endAngle: -30, //终止角度，同极坐标
-                max: 12,
-                splitNumber: 4, //分割线个数（除原点外）
-                axisLine: { // 坐标轴线
-                    show: false
-                },
-                pointer: {
-                    show: false
-                },
-                axisLabel: {
-                    // 坐标轴数字
-                 fontWeight: 'bolder',
-                distance:-80,
-                color: '#8593a7',
-                shadowColor: 'green', //默认透明
-                shadowBlur: 5,
-                formatter:(b)=>{
-                    var s=Number((b/3).toFixed(0))
-                    if(s>0){
-                    return  ""+(s)+'季度\n'+'\n100'
-                        
-                    }else{
-                        return '2020年度'
-                    }
-                }
-                },
-                axisTick: { // 坐标轴标记
-                splitNumber:10,
-                    length: 10,
-                    lineStyle: {
-                        color: "#13B5FC"
-                    }
-                },
-                 splitLine: {           // 分隔线
-                length: 15,         // 属性length控制线长
-                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                    width: 2,
-                    color: '#78849a',
-                }
-            },
-                title: { //标题，显示'馆藏量'
-                    textStyle: {
-                        color: '#155bff',
-                        shadowColor: '#fff',
-                        fontSize: 30
-                    },
-                    offsetCenter: ["0", '-35%'] //位置偏移
-                },
-                detail: { //仪表盘数值
-                  formatter: function (params) {
-                    return ['{a|' + params + '}',
-                      '{b|A}'].join('\n')
-                  },
-                    rich:{
-                        a:{
-                            color: '#155bff',
-                            lineHeight: 50,
-                        fontSize:50
-                        },
-                        b:{
-                            color:'#fff',
-                            backgroundColor:'#155bff',
-                             lineHeight: 30,
-                             height: 20,
-                             fontSize:20,
-                             width:40,
-                             borderRadius:10
-                             
-                        }
-                    },
-                    color:'#155bff',
-                    offsetCenter: ["0", '5%'],
-                },
-                data: [{
-                    value: 100,
-                    name: ''
-                }]
-            }
-        ]
-        //   tooltip: {
-        //     formatter: '{a} <br/>{b} : {c}分'
-        // },
-        //   series: [
-        //     {
-        //       startAngle: 180, //开始角度 左侧角度
-        //       endAngle: 0, //结束角度 右侧
-        //       type: 'gauge',
-        //       min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
-        //       max: 10,
-        //       splitNumber: 0.5,
-        //       radius: '100%',
-        //       center: ['50%', '75%'],//
-        //       axisLabel: {
-        //         distance: -10
-        //       },
-        //       axisLine: {
-        //         lineStyle: {
-        //           width: 10,
-        //           color: [
-        //             [1, new this.$echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-        //               offset: 0.1,
-        //               color: "#59BCFf"
-        //             },
-        //             {
-        //               offset: 0.5,
-        //               color: "#409eff"
-        //             },
-        //             {
-        //               offset: 1,
-        //               color: "#E373FF"
-        //             }
-        //             ])]
-        //           ],
-        //           shadowColor: '#fff', //默认透明
-        //           shadowBlur: 8
-        //         }
-        //       },
-        //       // 分割线
-        //       splitLine: {
-        //         show: false,
-               
-        //       },
-        //       // 刻度线
-        //       axisTick: {
-        //         show: false,
-              
-        //       },
-        //       pointer: {
-        //         width: 5,
-        //         color: 'red'
-        //       },
-        //       title: {
-        //         offsetCenter: ['-30%', '70%']
-        //       },
-        //       detail: { show: false },
-        //       data: [{ value: this.deptscore, name: '' }]
-        //     },
-        //     {
-        //       startAngle: 180, //开始角度 左侧角度
-        //       endAngle: 0, //结束角度 右侧
-        //       type: 'gauge',
-        //       axisLabel: {
-        //         distance: -68
-        //       },
-        //       min: 0,					// 最小的数据值,默认 0 。映射到 minAngle。
-        //       max: 10,
-        //       splitNumber: 5,
-        //       radius: '55%',
-        //       center: ['50.5%', '75%'],//
-        //       axisLine: {
-        //         lineStyle: {
-        //           width: 8,
-        //           color: [
-        //             [1, new this.$echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-        //               offset: 0.1,
-        //               color: "#59BCFF"
-        //             },
-        //             {
-        //               offset: 0.5,
-        //               color: "#409eff"
-        //             },
-        //             {
-        //               offset: 1,
-        //               color: "#E373FF"
-        //             }
-        //             ])]
-        //           ],
-        //           shadowColor: '#fff', //默认透明
-        //           shadowBlur: 5
-        //         }
-        //       },
-        //       // 分割线
-        //       splitLine: {
-        //         show: false,
-        
-        //       },
-        //       // 刻度线
-        //       axisTick: {
-        //         show: false,
-           
-        //       },
-        //       pointer: {
-        //         width: 3
-        //       },
-        //       title: {
-        //         offsetCenter: ['-50%', '70%']
-        //       },
-        //       detail: { show: false },
-        //       data: [{ value: this.userscore, name: '' }]
-        //     }
-        //   ]
-    }
-      radarDom3.setOption(option)
-        window.addEventListener("resize", () => { radarDom3.resize();});
-  },
-    getRadar4() {
-      debugger
-      let category = ['服务器数（台）'];
-      let barData = [this.userscore];
-      let lineData = [10]
-      let radarDom4 = this.$echarts.init(document.getElementById('pbar'))
-      let option = {
-        backgroundColor: 'white',
-        grid: [{ //控制显示位置的属性grid
-            left: '',
-            bottom: '',
-            top: '',
-            right: '48%' //在此图中可用于控制柱子的长度
-        }],
-        xAxis: {
-            show: false
-        },
-        yAxis: {
-            data: category,
-            show: true,
-            axisLabel: {
-                verticalAlign: 'left',
-                color: 'white',
-                fontSize: '30'
-            },
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            }
-        },
-        series: [
-    
-            { // 蓝柱下面方块
-                name: '',
-                type: 'pictorialBar',
-                symbol: 'roundRect',
-                barWidth: '30%',
-                symbolOffset: ['200%', '-30%'],
-                itemStyle: {
-                    normal: {
-    
-                        color: '#235FF6'
-                    }
-                },
-                z: -41,
-                symbolRepeat: true,
-                symbolSize: ['50%', '150%'],
-                data: lineData,
-                barGap: 10,
-                barCategoryGap:20,
-                animationEasing: 'elasticOut',
-    
-            },
-    
-    
-            { // 蓝柱
-                name: '', // blue bar
-                type: 'pictorialBar',
-                symbol: 'roundRect',
-                barWidth: '30%',
-                symbolOffset: ['200%', '-30%'],
-                itemStyle: {
-                    normal: {
-                        barMaxWidth: '20%',
-                        barBorderRadius: 100,
-                        color: '#409eff',
-                    }
-                },
-                symbolRepeat: true,
-                symbolSize: ['50%', '150%'],
-                // symbolClip: true,
-                data: barData,
-            },
-    
-        ],
-      }
-      radarDom4.setOption(option)
-      window.addEventListener("resize", () => { radarDom4.resize(); });
+    let radarDom3 = this.$echarts.init(document.getElementById('gauge'))
+    // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
+    let option = {
+      backgroundColor: '#fff',
+    angleAxis: {
+        show: false,
+        max: 12 * 3 / 2, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
+        type: 'value',
+        startAngle: 210, //极坐标初始角度，从第一象限算起，大约在7-8点钟角度之间
+        splitLine: {
+            show: false //隐藏坐标
+        }
     },
-    getRadar5() {
-      let category = ['服务器数（台）'];
-      let barData = [this.deptscore];
-      let lineData = [10]
-      let radarDom5 = this.$echarts.init(document.getElementById('bbar'))
-      let option = {
-        backgroundColor: 'white',
-        grid: [{ //控制显示位置的属性grid
-            left: '',
-            bottom: '',
-            top: '',
-            right: '48%' //在此图中可用于控制柱子的长度
-        }],
-        xAxis: {
-            show: false
-        },
-        yAxis: {
-            data: category,
-            show: true,
+    barMaxWidth: 12, //圆环宽度
+    radiusAxis: { //隐藏坐标
+        show: false,
+        type: 'category',
+    },
+    polar: { //设置圆环位置和大小
+        center: ['50%', '50%'],
+        radius: '100'
+    },
+    series: [{
+            type: 'bar',
+            data: [{ //上层圆环，用于显示真实数据
+                value: 5,
+                itemStyle: {
+                    color: { //图形渐变颜色方法，四个数字分别代表，右，下，左，上，offset表示0%到100%
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 1, //从左到右 0-1
+                        y2: 0,
+                        colorStops: [{
+                            offset: 0,
+                            color: '#2CABFC' // 0% 处的颜色
+                        }, {
+                            offset: 1,
+                            color: '#CD48AE' // 100% 处的颜色
+                        }],
+                        globalCoord: false // 缺省为 false
+                    },
+                }
+            }],
+            coordinateSystem: 'polar', //类型，极坐标
+            roundCap: true, //顶端圆角
+            z: 5 //圆环层级，和zindex相似
+        }, 
+        { //仪表盘
+            type: 'gauge',
+            radius: '58%',
+            startAngle: 210, //起始角度，同极坐标
+            endAngle: -30, //终止角度，同极坐标
+            max: 12,
+            splitNumber: 4, //分割线个数（除原点外）
+            axisLine: { // 坐标轴线
+                show: false
+            },
+            pointer: {
+                show: false
+            },
             axisLabel: {
-                verticalAlign: 'left',
-                color: 'white',
-                fontSize: '20'
-            },
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
+                // 坐标轴数字
+            //  fontWeight: 'bolder',
+            distance:-53,
+            color: '#8593a7',
+            shadowColor: 'green', //默认透明
+            shadowBlur: 15,
+            formatter:(b)=>{
+                var s=Number((b/3).toFixed(0))
+                if(s>0){
+                return  ""+(s)+'季度'+'\n100'
+                    
+                }else{
+                    return '2020年度'
+                }
             }
-        },
-        series: [
-            { // 蓝柱下面方块
-                name: '',
-                type: 'pictorialBar',
-                symbol: 'roundRect',
-                barWidth: '30%',
-                symbolOffset: ['200%', '-30%'],
-                itemStyle: {
-                    normal: {
-    
-                        color: '#838d9e'
-                    }
-                },
-                z: -41,
-                symbolRepeat: true,
-                symbolSize: ['50%', '150%'],
-                data: lineData,
-                barGap: 10,
-                barCategoryGap:20,
-                animationEasing: 'elasticOut',
-    
             },
-            { // 蓝柱
-                name: '', // blue bar
-                type: 'pictorialBar',
-                symbol: 'roundRect',
-                barWidth: '30%',
-                symbolOffset: ['200%', '-30%'],
-                itemStyle: {
-                    normal: {
-                        barMaxWidth: '20%',
-                        barBorderRadius: 10,
-                        color: '#8162FF',
-                    }
-                },
-                symbolRepeat: true,
-                symbolSize: ['50%', '150%'],
-                // symbolClip: true,
-                data: barData,
+            axisTick: { // 坐标轴标记
+            splitNumber:10,
+                length: 10,
+                lineStyle: {
+                    color: "#13B5FC"
+                }
             },
-        ],
-      }
-      radarDom5.setOption(option)
-      // $(window).resize(function() {//这是能够让图表自适应的代码
-      window.addEventListener("resize", () => { radarDom5.resize(); });
+          splitLine: {           // 分隔线
+            length: 15,         // 属性length控制线长
+            lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+              width: 2,
+              color: '#78849a',
+            }
+          },
+            title: { //标题，显示'馆藏量'
+                textStyle: {
+                    color: '#155bff',
+                    shadowColor: '#fff',
+                    fontSize: 10
+                },
+                offsetCenter: ["10", '-25%'] //位置偏移
+            },
+            detail: { //仪表盘数值
+              formatter:  (params) => {
+                return ['{a|' + params + '}',
+                  '{b|A}'].join('\n')
+              },
+              rich: {
+                a: {
+                  color: '#155bff',
+                  lineHeight: 30,
+                  fontSize: 25
+                },
+                b: {
+                  color: '#fff',
+                  backgroundColor: '#155bff',
+                  lineHeight: 30,
+                  height: 20,
+                  fontSize: 10,
+                  width: 30,
+                  borderRadius: 10
+
+                }
+              },
+                color:'#155bff',
+                offsetCenter: ["0", '5%'],
+            },
+            data: [{
+                value: 98,
+                name: ''
+            }]
+        }
+    ]
+}
+  radarDom3.setOption(option)
+    window.addEventListener("resize", () => { radarDom3.resize();});
+},   
+    setTimer2() { // 
+      this.timer2 = setInterval(() => {
+        this.allWarnByType();
+      }, 3000)
     },
     // 查询分类风险提醒数据
     allWarnByType() {
       const _this = this;
       const params = {
-        userId: this.userInfo.info
+        userId: sessionStorage.userId
       }
       allWarnByType(params).then(res => {
-        console.log(res)
         if (res.success) {
           const tdata = res.data.thismonth
+          const list = _this.warnList
+          let total = 0
           if (tdata) {
-            // const pdata = res.data.premonth
-            const data = tdata.map((countnum) => {
-              return countnum.countnum;
-            })
-            for (let i = 0; i < data.length; i++) {
-              const Data = _this.maxValue - data1[i]
-              _this.warnData.push(Data)
+            const array = [
+              { name: '遵章守纪', type: '13', value: 30 },
+              { name: '违规查询', type: '4', value: 30 },
+              { name: '涉嫌违法', type: '6', value: 30 },
+              { name: '护照保管', type: '8', value: 30 },
+              { name: '日志业绩', type: '5', value: 30 },
+              { name: '效能提醒', type: '3', value: 30 },
+              { name: '违规用车', type: '7', value: 30 },
+              { name: '考勤预警', type: '1', value: 30 }
+            ]
+            for (let i = 0; i < tdata.length; i++) {
+              for (let j = 0; j < array.length; j++) {
+                if(tdata[i].warn_type ==array[j].type ){
+                  array[j].value = array[j].value - tdata[i].countnum 
+                }                                
+              }
+              for (let k = 0; k < list.length; k++) {
+                if(tdata[i].warn_type == list[k].type){
+                  list[k].num  = tdata[i].countnum
+                  total += tdata[i].countnum
+                }                
+              }
             }
+            _this.countotal  = total
+            // _this.countotal1++
+            // _this.$store.commit('countotal',_this.countotal)
+            let aa = localStorage.getItem('countotal')
+            if(aa != _this.countotal){
+              localStorage.setItem('countotal', _this.countotal)
+            }
+            _this.warnData = array.map((value) => {
+              return value.value;
+            })
           }else{
-
           }
-          // _this.premonth = pdata.map((countnum) => {
-          //   return countnum.countnum;
-          // })
-  //         const riskThisMonth = (this.props.riskResult.thismonth || []).reduce((prev, item) => ({
-  //   ...prev,
-  //   [item.warn_type]: item.countnum || 0
-  // }), {});
           _this.init();
         }
       })
+
     },
   // 根据用户ID查询所有下属用户
-  getUserListByUserId() {
-    debugger
-      const _this = this;
-      const params = {
-        userId: _this.id 
-      }
-      getUserListByUserId(params).then(res => {
-        if (res.success) {
-          _this.userIds = res.data.map(item => item.userInfo.info).join()
-          _this.countWorkNote();
-        }
-      })
-    },
-  // 工作日志统计
-  countWorkNote(){
-    const _this = this
-    countWorkNote(
-      Object.assign(
-        {
-          user_id: _this.userIds
-          // user_id: '2020'
-        },
-      )
-    ).then(res => {
-      // console.log(res)
-      if(res.success){
-        // _this.$message.success('成功！')
-        // _this.labelList[0].count = res.data.allnote
-        _this.cjnum = res.data.noaudit
-        // _this.labelList[2].count = res.data.audited
-      }
-    })
-  },
+  // getUserListByUserId() {
+  //     const _this = this;
+  //     const params = {
+  //       userId: _this.id 
+  //     }
+  //     getUserListByUserId(params).then(res => {
+  //       if (res.success) {
+  // 				_this.userIds = res.data.map(item => item.userInfo.info).join()
+  // 				_this.countWorkNote();
+  //       }
+  //     })
+  //   },
+  // // 工作日志统计
+  // countWorkNote(){
+  // 	const _this = this
+  // 	countWorkNote(
+  //     Object.assign(
+  //       {
+  // 				user_id: _this.userIds
+  // 				// user_id: '2020'
+  //       },
+  //     )
+  //   ).then(res => {
+  // 		// console.log(res)
+  // 		if(res.success){
+  // 			// _this.$message.success('成功！')
+  // 			// _this.labelList[0].count = res.data.allnote
+  // 			_this.cjnum = res.data.noaudit
+  // 			// _this.labelList[2].count = res.data.audited
+  // 		}
+  // 	})
+  // },
     agency(dt,data){
       // this.showSearch = ! this.showSearch
     },
@@ -1392,12 +1066,11 @@ export default {
     xztxt(){
       this.$router.push({path:'/CooperationAgency'})
     },
-    cjgx(){
-      this.$router.push({path:'/HierEvaluation'})
-    },
+    // cjgx(){
+    //   this.$router.push({path:'/HierEvaluation'})
+    // },
     // 协作提效总数  http://192.168.1.102/sys/sysPendings/getAllDealCount
     getData() {
-      debugger
       var _this = this
       const data = {
         sysId: 'ZHJD',
@@ -1412,6 +1085,22 @@ export default {
           console.log(error)
         })
     },
+    setTimer(){ //动态展示近90天的考勤数据
+      this.timer = setInterval(() => {
+        // this.ntoday = this.$dayjs(new Date());
+      this.nt7 = this.ntoday.subtract(this.daynum, 'day');
+      this.dateStart = this.nt7.format('YYYY-MM-DD');
+      this.dateEnd = this.ntoday.format('YYYY-MM-DD');
+      // this.ntoday = this.nt7
+      this.daynum = this.daynum + 10
+      this.total++
+      if (this.total == 9) { // 清除定时器
+          clearInterval(this.timer)
+        }
+      this.indexRecordDeatil();
+      this.sectorAverageStatistics();
+      },2000)
+    },
     // 查询七天上班时间统计数据
     indexRecordDeatil() {
       const _this = this;
@@ -1422,8 +1111,6 @@ export default {
 
       }
       indexRecordDeatil(params).then(res => {
-        debugger
-        console.log(res)
         if (res.success) {
           const Data = res.data
           _this.worklength = Data.map(({ worklength }) => worklength)
@@ -1435,7 +1122,6 @@ export default {
     },
     // 查询部门平均上班时间数据
     sectorAverageStatistics() {
-      debugger
       const _this = this;
       const params = {
         department: _this.orgId,
@@ -1444,7 +1130,6 @@ export default {
 
       }
       sectorAverageStatistics(params).then(res => {
-        console.log(res)
         if (res.success) {
           const Data = res.data
           _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
@@ -1463,8 +1148,6 @@ export default {
 
     }
     indexCalendar(params).then(res => {
-      debugger
-      console.log(res)
       if (res.success) {
         const Data = res.data.yearscore
         for (let i= 0; i < Data.length; i++) {
@@ -1560,7 +1243,7 @@ export default {
 .person_head{
     height: 25% !important;
     background-color: #fff;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     width: 100%;
     /* overflow: auto hidden; */
 }
@@ -1608,12 +1291,24 @@ export default {
   background-color: white;
   height: 50%;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+}
+.p_change{
+  text-align: -webkit-center;
+  margin-right: 1em;
+  float: right;
+  width: 55px;
+  color: #8593a7;
+  font-size: 12px;
+  border-radius: 20px;
+  border: 1px solid #f1f2f7;
+  height: 23px;
+  cursor: pointer;
 }
 .p_foot{
   width: 100%;
   background-color: white;
-  height: calc(50% - 15px);
+  height: calc(50% - 10px);
   margin-bottom: 15px;
 }
 /* .person_main{
@@ -1639,6 +1334,14 @@ export default {
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
+  }
+  .p_select{
+    width: 67px;
+    height: 26px;
+    float: right;
+    border: 1px solid #f1f2f7;
+    border-radius: 5px;
+    margin-right: 1.5em;
   }
   .person_title{
     float:left;
@@ -1709,7 +1412,7 @@ export default {
   }
 .pft{
     text-align: center;
-    /* margin-top: 3%; */
+    margin-top: 3%;
     color: #838D9E;
 }
 .p_inter{
@@ -1739,8 +1442,9 @@ export default {
     width: 100%
 }
 .p_gauge{
-  height: 100%;
+  height: 82%;
   width: 100%;
+  margin-top: 1.5em;
 }
 .p_tscore{
   width: 72%;
@@ -1763,19 +1467,16 @@ export default {
   height: 100%;
   float: left;
 }
-.pbar{
+/* .pbar{
   height: 100%;
   width: 100%;
-}
-.bbar{
-  height: 100%;
-  width: 100%;
-}
-.p_eright{
-  height: 100%;
+} */
+.p_heright{
+  height: calc(100% - 70px);
     /* float: left; */
-    width: 44%;
-    float: right;
+  width: 54%;
+  float: right;
+  margin-top: 2em;
 }
 .tscore{
   color:  rgb(51, 11, 230)
@@ -1786,6 +1487,10 @@ export default {
 .crea_left{
   width: 12%;
     float: left;
+}
+.p_list{
+  width: 41%;
+  color: #8593A7;
 }
 .calendar-day{
       text-align: center;
@@ -1818,17 +1523,6 @@ export default {
   #calendar .el-button-group>.el-button:not(:first-child):not(:last-child):after{
       content: '当月';
   }
-  .bubble circle{
-            stroke: black;
-            stroke-width: 2px;
-        }
- 
-        .bubble text{
-            fill: black;
-            font-size: 14px;
-            font-family: arial;
-            text-anchor: middle;
-        }
   /* .left-score-image {
         width: 100% !important;
         height: 100% !important;
