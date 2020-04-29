@@ -158,6 +158,12 @@ export default {
         return {};
       }
     },
+    annualTotal: {
+      type: Object,
+      default: () => {
+        return null;
+      }
+    },
     headerAppend: {
       type: Array,
       default: () => {
@@ -233,6 +239,9 @@ export default {
     // }
   },
   mounted() {
+    if(this.annualTotal != null){
+      this.editTotal = this.annualTotal
+    }
     this.columns2 = this.columns
     this.tableData2 = [...this.tableData,...this.appendTab]
     // this.columns3 = this.recursionList(this.columns)
@@ -287,7 +296,7 @@ export default {
         // reportId: this.reportObj.rapporteurId,
         id: '',
         reportId: this.$parent.reportObj.id,
-        reportType: 315,
+        reportType: 323,
         gmtCreate: format(new Date(), 'yyyy-MM-dd'),
         gmtModified: format(new Date(), 'yyyy-MM-dd'),
       }

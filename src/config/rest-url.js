@@ -206,6 +206,8 @@ const DEFAULT_URL = {
   saveAnnualReport: {
     // 获取年度报告详情信息
     getReportById: `${GAISMSERVER}annualReportInformation/getReportById`,
+    // 本人基本情况信息
+    saveBasicAnnual: `${GAISMSERVER}user/saveBasicAnnual`,
     // 报表一
     saveMarrageAnnual: `${GAISMSERVER}marrage/saveDeclareExitAnnual`,
     savePassportAnnual: `${GAISMSERVER}passport/savePassportAnnual`,

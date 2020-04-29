@@ -395,5 +395,13 @@ export function saveLaborIncomeAnnual (params) {
   })
 }
 
+// 本人基本情况 
+export function saveBasicAnnual (params) {
+  return request({
+    url: DEFAULT_URL.saveAnnualReport.saveBasicAnnual,
+    method: 'post',
+    data: params
+  })
+}
 // 
 

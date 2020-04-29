@@ -1,6 +1,6 @@
 <template>
   <div class="customTab" :key="pageKey">
-    <template v-if="customData.length > 0">
+    <template v-if="tabData != null">
       <!-- 夫妻关系 -->
       <table>
         <tr>
@@ -12,41 +12,41 @@
         </tr>
         <tr>
           <td rowspan="4">
-            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].relation">
+            <el-radio-group :disabled="!tabData.edit" v-model="tabData.relation">
               <template v-for="(item,index) of relationship1">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td rowspan="2">
-            <!-- <el-input v-model="customData[0].name"></el-input> -->
-            <template v-if="customData[0].edit">
-              <el-input v-model="customData[0].name"></el-input>
+            <!-- <el-input v-model="tabData.name"></el-input> -->
+            <template v-if="tabData.edit">
+              <el-input v-model="tabData.name"></el-input>
             </template>
             <template v-else>
-              {{customData[0].name}}
+              {{tabData.name}}
             </template>
           </td>
           <td>
-            <!-- <el-input v-model="customData[0].value1"></el-input> -->
-            <template v-if="customData[0].edit">
-              <el-input v-model="customData[0].workCompany"></el-input>
+            <!-- <el-input v-model="tabData.value1"></el-input> -->
+            <template v-if="tabData.edit">
+              <el-input v-model="tabData.workCompany"></el-input>
             </template>
             <template v-else>
-              {{customData[0].workCompany}}
+              {{tabData.workCompany}}
             </template>
           </td>
           <td>
-            <!-- <el-input v-model="customData[0].value2"></el-input> -->
-            <template v-if="customData[0].edit">
-              <el-input v-model="customData[0].post"></el-input>
+            <!-- <el-input v-model="tabData.value2"></el-input> -->
+            <template v-if="tabData.edit">
+              <el-input v-model="tabData.post"></el-input>
             </template>
             <template v-else>
-              {{customData[0].post}}
+              {{tabData.post}}
             </template>
           </td>
           <td colspan="2">
-            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value3">
+            <el-radio-group :disabled="!tabData.edit" v-model="tabData.value3">
               <template v-for="(item,index) of unitNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -56,14 +56,14 @@
         <tr>
           <td colspan="2">
             <span style="margin-right:10px;">是否在国（境）外</span>
-            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].isAbroad">
+            <el-radio-group :disabled="!tabData.edit" v-model="tabData.isAbroad">
               <template v-for="(item,index) of whetherList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
             </el-radio-group>
           </td>
           <td>
-            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].value3">
+            <el-radio-group :disabled="!tabData.edit" v-model="tabData.value3">
               <template v-for="(item,index) of unitInfoNature">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -71,7 +71,7 @@
           </td>
           <td>
             <span style="margin-right:10px;">是否担任高级职务</span>
-            <el-radio-group :disabled="!customData[0].edit" v-model="customData[0].isDuty">
+            <el-radio-group :disabled="!tabData.edit" v-model="tabData.isDuty">
               <template v-for="(item,index) of isDutyList">
                 <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
               </template>
@@ -81,30 +81,30 @@
         <tr>
           <td>证件名称</td>
           <td colspan="4">
-            <!-- <el-input v-model="customData[0].value7"></el-input> -->
-            <template v-if="customData[0].edit">
-              <el-input v-model="customData[0].certificateName"></el-input>
+            <!-- <el-input v-model="tabData.value7"></el-input> -->
+            <template v-if="tabData.edit">
+              <el-input v-model="tabData.certificateName"></el-input>
             </template>
             <template v-else>
-              {{customData[0].certificateName}}
+              {{tabData.certificateName}}
             </template>
           </td>
         </tr>
         <tr>
           <td>证件号码</td>
           <td colspan="4">
-            <!-- <el-input v-model="customData[0].value8"></el-input> -->
-            <template v-if="customData[0].edit">
-              <el-input v-model="customData[0].certificateNum"></el-input>
+            <!-- <el-input v-model="tabData.value8"></el-input> -->
+            <template v-if="tabData.edit">
+              <el-input v-model="tabData.certificateNum"></el-input>
             </template>
             <template v-else>
-              {{customData[0].certificateNum}}
+              {{tabData.certificateNum}}
             </template>
           </td>
         </tr>
       </table>
-      <!-- 子女关系 -->
-      <template v-for="(item,index) of customData">
+      <!-- 子女关系 customData -->
+      <template v-for="(item,index) of 1">
         <table :key="index" v-if="index > 0">
           <tr>
             <td>子女{{cnNums[index]}}</td>
@@ -139,7 +139,7 @@
               </el-radio-group>
             </td>
             <td>
-              <!-- <el-input v-model="customData[0].value1"></el-input> -->
+              <!-- <el-input v-model="tabData.value1"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.workCompany"></el-input>
               </template>
@@ -148,7 +148,7 @@
               </template>
             </td>
             <td>
-              <!-- <el-input v-model="customData[0].value2"></el-input> -->
+              <!-- <el-input v-model="tabData.value2"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.post"></el-input>
               </template>
@@ -157,7 +157,7 @@
               </template>
             </td>
             <td colspan="2">
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
                 <template v-for="(item,index) of unitNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -167,14 +167,14 @@
           <tr>
             <td colspan="2">
               <span style="margin-right:10px;">是否在国（境）外</span>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].isAbroad">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.isAbroad">
                 <template v-for="(item,index) of whetherList">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
             <td>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
                 <template v-for="(item,index) of unitInfoNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -182,7 +182,7 @@
             </td>
             <td>
               <span style="margin-right:10px;">是否担任高级职务</span>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].isDuty">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.isDuty">
                 <template v-for="(item,index) of isDutyList">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -192,7 +192,7 @@
           <tr>
             <td>证件名称</td>
             <td colspan="5">
-              <!-- <el-input v-model="customData[0].value7"></el-input> -->
+              <!-- <el-input v-model="tabData.value7"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.certificateName"></el-input>
               </template>
@@ -204,7 +204,7 @@
           <tr>
             <td>证件号码</td>
             <td colspan="5">
-              <!-- <el-input v-model="customData[0].value8"></el-input> -->
+              <!-- <el-input v-model="tabData.value8"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.certificateNum"></el-input>
               </template>
@@ -223,7 +223,7 @@
           </tr>
           <tr>
             <td rowspan="2">
-              <!-- <el-input v-model="customData[0].name2"></el-input> -->
+              <!-- <el-input v-model="tabData.name2"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.name2"></el-input>
               </template>
@@ -232,7 +232,7 @@
               </template>
             </td>
             <td>
-              <!-- <el-input v-model="customData[0].value"></el-input> -->
+              <!-- <el-input v-model="tabData.value"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.value"></el-input>
               </template>
@@ -241,7 +241,7 @@
               </template>
             </td>
             <td colspan="2">
-              <!-- <el-input v-model="customData[0].value"></el-input> -->
+              <!-- <el-input v-model="tabData.value"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.value"></el-input>
               </template>
@@ -250,7 +250,7 @@
               </template>
             </td>
             <td colspan="2">
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
                 <template v-for="(item,index) of unitNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -260,14 +260,14 @@
           <tr>
             <td colspan="3">
               <span style="margin-right:10px;">是否在国（境）外</span>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value4">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.value4">
                 <template v-for="(item,index) of whetherList">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
             <td>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value3">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.value3">
                 <template v-for="(item,index) of unitInfoNature">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -275,7 +275,7 @@
             </td>
             <td>
               <span style="margin-right:10px;">是否担任高级职务</span>
-              <el-radio-group :disabled="!item.edit" v-model="customData[0].value6">
+              <el-radio-group :disabled="!item.edit" v-model="tabData.value6">
                 <template v-for="(item,index) of isDutyList">
                   <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
                 </template>
@@ -285,7 +285,7 @@
           <tr>
             <td>证件名称</td>
             <td colspan="5">
-              <!-- <el-input v-model="customData[0].value7"></el-input> -->
+              <!-- <el-input v-model="tabData.value7"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.certificateName"></el-input>
               </template>
@@ -297,7 +297,7 @@
           <tr>
             <td>证件号码</td>
             <td colspan="5">
-              <!-- <el-input v-model="customData[0].value8"></el-input> -->
+              <!-- <el-input v-model="tabData.value8"></el-input> -->
               <template v-if="item.edit">
                 <el-input v-model="item.certificateNum"></el-input>
               </template>
@@ -335,6 +335,7 @@ export default {
   },
   data() {
     return {
+      tabData: null,
       pageKey: 0,
       // customData: [
       //   {name: '',},
@@ -391,7 +392,11 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.customData)
+    if(this.customData.length > 0){
+      let n = this.customData.length - 1
+      this.tabData = this.customData[n]
+    }
+    console.log(this.tabData)
   },
   methods: {
     // 
