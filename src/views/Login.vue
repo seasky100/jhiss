@@ -124,12 +124,13 @@
 </template>
 <script>
 import { encryptByDES, getUrl } from "../utils/common.js";
-import { signIn } from "../api/user-server.js";
+import { signIn,getUserByCardNum,jhLogin } from "../api/user-server.js";
 export default {
   name: "login",
   data() {
     return {
-      certification: false,
+      certification: true,
+      tk: '',
       form: {
         username: "",
         password: ""
@@ -144,92 +145,159 @@ export default {
       checked: false
     };
   },
-
-  mounted() {},
+  created(){
+    if(this.$route.query.tk){
+      const tk = window.atob(this.$route.query.tk) 
+      const parameter = {
+            cardNum: tk,
+          };
+      getUserByCardNum(parameter).then(res => {
+        console.log(res)
+        if (res.success) {
+          const loginName = res.data.loginName
+          this.jhlogin(loginName);
+        }
+      })
+    }
+  },
+  // mounted() {
+  // },
   methods: {
     change() {
       this.certification = !this.certification;
     },
     onSubmit() {
-      this.$refs["loginForm"].validate(valid => {
-        if (valid) {
-          // 复选框状态
-          if (this.checked === true) {
-            this.setCookie(this.form.username, this.form.password, 7);
+      if (this.certification == false) {
+        this.$refs["loginForm"].validate(valid => {
+          if (valid) {
+            // 复选框状态
+            if (this.checked === true) {
+              this.setCookie(this.form.username, this.form.password, 7);
+            } else {
+              this.clearCookie();
+            }
+            const params = {
+              username: this.form.username,
+              password: encryptByDES(this.form.password),
+              base64Code: "",
+              service: getUrl() + "/police/",
+              appKey: "JHGA",
+              privateKey: 'LTAI4Fd5AxPaiK2SxUYA94zN'
+            };
+            signIn(params)
+              .then(res => {
+                const _this = this;
+                // console.log(res)
+                if (res.data && res.success === true) {
+                  _this.$message({
+                    type: "success",
+                    message: "登录成功"
+                  });
+                  const parameter = {
+                    token: res.data.gmsso_cli_ec_key,
+                    appKey: "JHGA"
+                  };
+                  document.cookie = `token=${res.data.gmsso_cli_ec_key}`
+                  // 调用checkTokenByAppKey 状态管理userName，token，uesrId
+                  _this.$store
+                    .dispatch("user/loginSaveToken", parameter)
+                    .then(res => {
+                      if (res.data && res.success === true) {
+                        _this.$store
+                          .dispatch("user/getInfo")
+                          .then(() => {
+                            _this.$message({
+                            type: "success",
+                            message: "登录成功"
+                          });
+                            _this.$router.push("/PersonalHome");
+                          })
+                          .catch(err => {
+                           _this.$message({
+                            type: "error",
+                            message: "登录失败"
+                          });
+                            console.log(err);
+                          });
+                      }
+                    })
+                    .catch(() => {
+                      // this.loading = false
+                      return false;
+                    });
+                } else {
+                  // this.loading = false
+                  this.$message.error(res.message);
+                  return false;
+                }
+              })
+              .catch(error => {
+                // this.loading = false
+                this.$message.error(error.message);
+                return false;
+              });
           } else {
-            this.clearCookie();
+            this.$message({
+              type: "warning",
+              message: "用户名和密码不匹配，请重新输入"
+            });
+            // this.loading = false
+            return false;
           }
-          const params = {
-            username: this.form.username,
-            password: encryptByDES(this.form.password),
-            base64Code: "",
+        });
+      } else {
+        const url = window.location.href
+        window.location.href='https://41.232.3.197:8443/calogin.jsp?url='+url     //给证书传参 
+      }
+    },
+    jhlogin(loginName){
+      const _this = this
+      const parameter = {
+            username: loginName,
+            password: '',
+            base64Code:'',
             service: getUrl() + "/police/",
             appKey: "JHGA",
             privateKey: 'LTAI4Fd5AxPaiK2SxUYA94zN'
           };
-          signIn(params)
-            .then(res => {
-              const _this = this;
-              // console.log(res)
-              if (res.data && res.success === true) {
-                const parameter = {
-                  token: res.data.gmsso_cli_ec_key,
-                  appKey: "JHGA"
-                };
-                // 调用checkTokenByAppKey 状态管理userName，token，uesrId
-                _this.$store
-                  .dispatch("user/loginSaveToken", parameter)
-                  .then(res => {
-                    if (res.data && res.success === true) {
-                      _this.$store
-                        .dispatch("user/getInfo")
-                        .then(() => {
-                          _this.$message({
-                            type: "success",
-                            message: "登录成功"
+          jhLogin(parameter).then(res => {
+				console.log(res)
+				if (res.success) {
+          // _this.listData = res.data.records
+          const parameter = {
+                    token: res.data.gmsso_cli_ec_key,
+                    appKey: "JHGA"
+                  };
+                  // 调用checkTokenByAppKey 状态管理userName，token，uesrId
+                  _this.$store
+                    .dispatch("user/loginSaveToken", parameter)
+                    .then(res => {
+                      if (res.data && res.success === true) {
+                        _this.$store
+                          .dispatch("user/getInfo")
+                          .then(() => {
+                            _this.$router.push("/PersonalHome");
+                          })
+                          .catch(err => {
+                            console.log(err);
                           });
-                          _this.$router.push("/PersonalHome");
-                        })
-                        .catch(err => {
-                          _this.$message({
-                            type: "error",
-                            message: "登录失败"
-                          });
-                          console.log(err);
-                        });
-                    }
-                  })
-                  .catch(() => {
-                    // this.loading = false
-                    return false;
-                  });
-              } else {
-                // this.loading = false
-                this.$message.error(res.message);
-                return false;
-              }
-            })
-            .catch(error => {
-              // this.loading = false
-              this.$message.error(error.message);
-              return false;
-            });
-        } else {
-          this.$message({
-            type: "warning",
-            message: "用户名和密码不匹配，请重新输入"
-          });
-          // this.loading = false
-          return false;
-        }
-      });
+                      }
+                    })
+                    .catch(() => {
+                      // this.loading = false
+                      return false;
+                    });
+          
+
+				}
+			})
     },
     // 设置cookie
     setCookie(c_name, c_pwd, exdays) {
       // 获取时间
       var exdate = new Date();
       // 保存的天数
-      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays);
+      exdate.setTime(exdate.getTime() + 12 * 60 * 60 * 1000 * exdays);
       // 字符串拼接cookie
       window.document.cookie =
         "userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
