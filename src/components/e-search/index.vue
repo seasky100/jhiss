@@ -27,10 +27,25 @@
           <el-option
             v-for="option in item.options"
             :label="option.label"
-            :value="option.value"
+            :value="option.label"
             :key="option.value">
           </el-option>
       </el-select>
+      <!-- 字典 -->
+      <el-select :disabled="disabled"
+      v-else-if="item.type==='select1'"
+      clearable
+      :placeholder="item.placeholder"
+      v-model="searchData[item.prop]"
+      :style="{width: item.width}"
+      @change="item.change(searchData[item.prop])">
+        <el-option
+          v-for="option in item.options"
+          :label="option.label"
+          :value="option.value"
+          :key="option.value">
+        </el-option>
+    </el-select>
       <!-- 单选 -->
       <el-radio-group :disabled="disabled"
         v-else-if="item.type==='radio'"
@@ -72,9 +87,9 @@
         <el-date-picker
           style="width: 150px"
           v-model="searchData[item.options[0].prop]"
-          type="date"
-          :format="item.options[0].format || 'yyyy-MM-dd'"
-          :value-format="item.options[0].valueformat || 'yyyy-MM-dd'"
+          type="datetime"
+          :format="item.options[0].format || 'yyyy-MM-dd hh:mm:ss'"
+          :value-format="item.options[0].valueformat || 'yyyy-MM-dd hh:mm:ss'"
           :placeholder="item.options[0].placeholder"
           :picker-options="startTime(searchData[item.options[1].prop])"
         >
@@ -85,9 +100,9 @@
         <el-date-picker
           style="width: 150px"
           v-model="searchData[item.options[1].prop]"
-          type="date"
-          :format="item.options[1].format || 'yyyy-MM-dd'"
-          :value-format="item.options[1].valueformat || 'yyyy-MM-dd'"
+          type="datetime"
+          :format="item.options[1].format || 'yyyy-MM-dd hh:mm:ss'"
+          :value-format="item.options[1].valueformat || 'yyyy-MM-dd hh:mm:ss'"
           :placeholder="item.options[1].placeholder"
           :picker-options="endTime(searchData[item.options[0].prop])"
         >
@@ -109,7 +124,14 @@
       </el-upload>
       <!-- 审批人 -->
       <template v-else-if="item.type==='select_tree'">
-        <el-input readonly @click.native="changelag"
+          <select-tree   
+          v-model="item.labelModel"
+          :props="item.config"
+          :treeData="item.options"
+          @change='(value)=>{onTreeSelect(item.prop,value)}'
+          placeholder="请选择部门"></select-tree>
+ 
+        <!-- <el-input readonly @click.native="changelag"
           size="mini" :disabled="disabled"
           style="float:left;width:50%;"
           :placeholder="item.options[0].placeholder"
@@ -123,7 +145,7 @@
             :label="item.realName"
             :value="item.id">
           </el-option>
-        </el-select>
+        </el-select> -->
         <!-- 组织机构选择器 -->
         <div v-show="org_flag" class="selectDiv">
           <el-input size="mini"
@@ -145,11 +167,9 @@
     </el-form-item>
     <el-form-item v-if="!disabled">
       <el-button type="primary" @click="submitForm">查询</el-button>
-      <el-button @click="resetForm">清空</el-button>
-      <el-button v-if="btnsConfig.showAdd" @click="addClickHandle">新增</el-button>
-
-
-      <el-button v-if="addForm != ''" @click="addFormClick">新增</el-button>
+      <el-button @click="resetForm" type="danger">清空</el-button>
+      <el-button v-if="btnsConfig.showAdd" type="success" @click="addClickHandle">新增</el-button>
+      <el-button v-if="addForm != ''" type="success" @click="addFormClick">新增</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -201,6 +221,10 @@ export default {
       startTime: {},
       dataTree:[],
       person_arr:[],
+      // 输入框显示值
+      labelModel: "",
+      // 实际请求传值
+      valueModel: "",
       defaultProps: {
         children: 'childrens',
         label: 'name'
@@ -215,6 +239,15 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
+    },
+    labelModel(val) {
+      if (!val) {
+        this.valueModel = "";
+      }
+      this.$refs.tree.filter(val);
+    },
+    value(val) {
+      this.labelModel = this.queryTree(this.treeData, val);
     }
   },
   created() {
@@ -232,11 +265,22 @@ export default {
         }
       };
     };
+    // 获取输入框宽度同步至树状菜单宽度
+    this.$nextTick(() => {
+      this.treeWidth = `${(this.width ||
+        this.$refs.input.$refs.input.clientWidth) - 24}px`;
+    });
   },
   mounted(){
     // this.getOrgData()
+    console.log(this.searchData)
   },
   methods: {
+    // 单击节点
+    onTreeSelect(prop,value) {
+      console.log(prop,value)
+      this.searchData[prop]=value
+    },
     // 提交
     submitForm() {
       if (this.rules) {
@@ -294,7 +338,6 @@ export default {
     getOrgData(){
       this.$request.get(`/api/uums-server/organization/tree`)
       .then(res => {
-          // console.log(res.data)
           this.dataTree = res.data
       })
       .catch(error => {

@@ -258,7 +258,6 @@ export default {
   computed: {
     optionsComputed: {
       get: function() {
-        debugger
         let temp = Object.assign({}, this.optionsDefault);
         for (let index in this.options) {
           temp[index] = this.options[index];
@@ -306,7 +305,7 @@ export default {
         stripe: true,
         highlightCurrentRow: true,
         hasPagination: true,
-        maxHeight: '750px',
+        maxHeight: '430px',
         height: '100%',
         // height: this.height,
         marginTop: '0px',
