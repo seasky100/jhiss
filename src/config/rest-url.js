@@ -206,6 +206,8 @@ const DEFAULT_URL = {
   saveAnnualReport: {
     // 获取年度报告详情信息
     getReportById: `${GAISMSERVER}annualReportInformation/getReportById`,
+    // 本人基本情况信息
+    saveBasicAnnual: `${GAISMSERVER}user/saveBasicAnnual`,
     // 报表一
     saveMarrageAnnual: `${GAISMSERVER}marrage/saveDeclareExitAnnual`,
     savePassportAnnual: `${GAISMSERVER}passport/savePassportAnnual`,
@@ -214,6 +216,7 @@ const DEFAULT_URL = {
     saveRelativesIllegalAnnual: `${GAISMSERVER}relativesIllegal/saveRelativesIllegalAnnual`,
     saveRelativesWorkAnnual: `${GAISMSERVER}relativesWork/saveRelativesWorkAnnual`,
     // 报表二
+    saveDeclareExitTotalAnnual: `${GAISMSERVER}domesticInvestment/saveDeclareExitTotalAnnual`,
     saveLaborIncomeAnnual: `${GAISMSERVER}user/saveLaborIncomeAnnual`,
     saveSecuredLoanAnnual: `${GAISMSERVER}securedLoan/saveSecuredLoanAnnual`,
     saveRelativesBusinessAnnual: `${GAISMSERVER}relativesBusiness/saveRelativesBusinessAnnual`,
@@ -233,6 +236,8 @@ const DEFAULT_URL = {
     updatePassport: `${GAISMSERVER}passport/updatePassport`,
     ImportExcelPassport: `${GAISMSERVER}passport/ImportExcelPassport`,
     deletePassport: `${GAISMSERVER}passport/deletePassport`,
+    findById: `${GAISMSERVER}passportHistory/findById`,
+    StatisticsPassportwhether: `${GAISMSERVER}passport/StatisticsPassportwhether`,
   },
 }
 

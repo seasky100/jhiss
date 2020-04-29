@@ -375,7 +375,7 @@ export function savePassport (params) {
 export function updatePassport (params) {
   return request({
     url: DEFAULT_URL.passport.updatePassport,
-    method: 'put',
+    method: 'post',
     data: params
   })
 }
@@ -393,7 +393,25 @@ export function ImportExcelPassport (params) {
 export function deletePassport (params) {
   return request({
     url: DEFAULT_URL.passport.deletePassport,
-    method: 'delete',
+    method: 'get',
     params
+  })
+}
+
+// 护照操作历史 
+export function findById (params) {
+  return request({
+    url: DEFAULT_URL.passport.findById,
+    method: 'get',
+    params
+  })
+}
+
+// 民警有护照没护照情况 
+export function StatisticsPassportwhether (params) {
+  return request({
+    url: DEFAULT_URL.passport.StatisticsPassportwhether,
+    method: 'post',
+    data: params
   })
 }

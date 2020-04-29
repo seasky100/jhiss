@@ -28,9 +28,10 @@
       </div>
       <div class="list report_content">
         <div class="reportTable" ref="printCon" id="printCon" :key="menuKey">
-          <AnnualReportInfo :key="list_active"></AnnualReportInfo>
+          <AnnualReportInfo :reportInfoData="reportInfoData" :key="list_active"></AnnualReportInfo>
           <div v-for="(item,index) of tableDataList" :key="index+'_tableCon'" ref="table_box">
             <e-table-report
+              :annualTotal="annualTotal"
               :title="index < 11 ? reportList2[index]: reportList3[index - 11]" 
               :index="index"
               :saveEvent="index < 11 ?reportList2[index]:reportList3[index-11]"
@@ -147,7 +148,9 @@ export default {
       appendTab: [],
       checked: true,
       tableDataList: [...tableData1,...tableData2],
+      annualTotal: null,
       disabledOthers: true,
+      reportInfoData: null, // 本人基本情况信息
       othersReport: '', // 个人认为需要报告的其他事项
       // 11111
     }
@@ -173,11 +176,21 @@ export default {
         return item
       })
       for(let key in reportInfo){
+        if(key == 300){
+          let n = reportInfo[key].length - 1
+          this.reportInfoData = JSON.parse(reportInfo[key][n].formData)
+          continue
+        }
+        if(key == 323){
+          let n = reportInfo[key].length - 1
+          this.annualTotal = JSON.parse(reportInfo[key][n].formData)
+          continue
+        }
         if(key == 322){
           let n = reportInfo[key].length - 1
           this.othersReport = JSON.parse(reportInfo[key][n].formData).reportDesc
+          continue
         }
-        // console.log(key)
         this.reportList2.forEach((item,index) => {
           if(item.code == key){
             if(tableData1[index].headerTab == 2){
@@ -387,14 +400,21 @@ export default {
       if(row[columns.prop] == null){
         return row.labelName
       }else{
-        return row[columns.prop]
+        // console.log(tableData2[3])
+        let countSum = 0
+        tableData2[3].data.forEach(obj => {
+          countSum = countSum + obj.total
+        })
+        // return row[columns.prop]
+        return countSum
       }
     },
     summaryfunc2(row, columns){
       if(row[columns.prop] == null){
         return row.labelName
       }else{
-        return row[columns.prop]
+        // return row[columns.prop]
+        return `<input style="position:relative;top:2px;left:3px;" type="text" />`
       }
     },
     summaryfunc3(row, columns){
@@ -403,7 +423,9 @@ export default {
       if(row[columns.prop] == null){
         return row.labelName
       }else{
-        return row[columns.prop]
+        console.log(columns.prop)
+        // return row[columns.prop]
+        return `<input style="position:relative;top:2px;left:3px;" type="text" />`
       }
     },
     // const param = {
@@ -432,7 +454,9 @@ export default {
         // reportId: this.reportObj.rapporteurId,
         id: '',
         reportId: this.reportObj.id,
-        reportType: eventObj.code
+        reportType: eventObj.code,
+        gmtCreate: format(new Date(), 'yyyy-MM-dd'),
+        gmtModified: format(new Date(), 'yyyy-MM-dd'),
       }
       if(data == null || (this.isArray(data) && data.length == 0)){
         return 
@@ -603,22 +627,6 @@ export default {
             item.edit = false
             return item
           })
-          // if(tableData2[index].headerParam != null){
-          //   let param = tableData2[index].headerParam
-          //   param.edit = false
-          //   tableData2[index].headerParam = param
-          //   this.menuKey++
-          //   let height = this.$refs.printCon.offsetTop
-          //   this.$nextTick(() => {
-          //     let scroll = this.$refs.table_box[index+11].offsetTop - height
-          //     $(this.$refs.printCon).animate({scrollTop: scroll },0)
-          //   });
-          // }else{
-          //   tableData2[index].data = tableData2[index].data.map(item => {
-          //     item.edit = false
-          //     return item
-          //   })
-          // }
         }
         
       }else {
