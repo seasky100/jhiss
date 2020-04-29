@@ -1,6 +1,6 @@
 <template>
   <div class='person_home'>
-    <iframe style="height: 100%;width: 100%;" :src="src" ></iframe>
+    <iframe style="height: 100%;width: 100%;" :src='src' ></iframe>
   </div>
 </template>
 <script>
@@ -11,11 +11,18 @@ export default {
       src: ''
     }
   },
+  beforeCreate(){
+
+  },
   mounted() {
-      const token = sessionStorage.token
-      this.src = `http://41.232.3.207/sys/indexOA.shtml?ownerUnit=&sysId=ZHJD&token=${token}`
-     // http://41.232.3.207/sys/sysPendings/toDealIndex.html?ownerUnit=&sysId=ZHJD&token=${token}` // 协作提效
-    //  /sys/indexOA.shtml?ownerUnit=&sysId=ZHJD&token=${token}`}
+    const getToken = () => {
+      const tokenRaw = document.cookie.split(';').find(item =>
+        /token=([a-zA-Z0-9]+)/.test(item)
+      );
+      return tokenRaw ? RegExp.$1 : '';
+    }
+    const token = getToken()
+    this.src = `http://41.232.3.207/sys/indexOA.shtml?ownerUnit=&sysId=ZHJD&token=${token}`
   },
   methods: {
   }
