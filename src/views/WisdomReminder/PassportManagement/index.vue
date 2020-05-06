@@ -47,8 +47,12 @@
               导出excel
             </el-button>
             <e-upload class="addBtn" :limit="1"
+              titleLabel="上传模板数据"
               style="display:inline-block"
               @changeHandler="addExcelClick" />
+            <el-link style="margin-left:15px;" type="primary" :href="path+'护照导入模板.xlsx'">
+              下载模板 <i class="el-icon-download"></i>
+            </el-link>
           </div>
       </div>
       <div class="search-wrap" style="height:444px;">
@@ -89,6 +93,7 @@ export default {
   },
   data() {
     return {
+      path: process.env.BASE_URL,
       passportTitle: '',
       dialogType: 1, // 1.详情 2.添加 3.修改
       departmentTitle: {

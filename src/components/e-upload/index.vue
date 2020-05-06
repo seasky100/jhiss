@@ -9,7 +9,7 @@
       :limit="limit"
       :on-exceed="handleExceed"
       :on-change="handleChange">
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button size="small" type="primary">{{titleLabel}}</el-button>
     </el-upload>
   </div>
 </template>
@@ -21,6 +21,12 @@ export default {
       type: Number,
       default:() => {
         return 10
+      }
+    },
+    titleLabel: {
+      type: String,
+      default: () => {
+        return '点击上传'
       }
     }
   },
