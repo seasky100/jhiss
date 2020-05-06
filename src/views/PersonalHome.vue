@@ -352,6 +352,9 @@
   },
   // created(){  
   // },
+  beforeDestroy(){
+    clearInterval(this.timer2)
+  },
       mounted() {  
         this.setTimer2(); 
         this.setTimer(); 
@@ -418,7 +421,7 @@
       const root = d3.hierarchy({ children: data })
         .sum((d) => { return d.count; })
         .each((d) => {
-          if (d.parent == null) { num = d.value };
+          if (d.parent == null) { num = d.value }
           if (id = d.data.name) {
             var id
             d.id = id;
