@@ -7,7 +7,7 @@
     <div class="content">
       <el-row class="bg-fff">
         <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
-          <!-- 以部门进行分类统计 -->
+          <!-- 保管状态统计 -->
           <e-histogram
             :chartSettings="departmentSettings"
             :title="departmentTitle"
@@ -15,7 +15,7 @@
           />
         </el-col>
         <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
-          <!-- 问题性质分类统计 -->
+          <!-- 护照类型统计 -->
           <!-- <ve-histogram :data="chartData"></ve-histogram> -->
           <e-histogram
             :chartSettings="monthlySettings"
@@ -24,7 +24,7 @@
           />
         </el-col>
         <el-col :span="8" style="width:calc(33.3% - 5px);">
-          <!-- 按月统计 -->
+          <!-- 有无护照情况 -->
           <e-histogram
             :chartSettings="exceptionSettings"
             :title="exceptionTitle"
@@ -92,11 +92,11 @@ export default {
       passportTitle: '',
       dialogType: 1, // 1.详情 2.添加 3.修改
       departmentTitle: {
-        text: '根据护照的保管状态进行统计护照的数量'
+        text: '保管状态统计'
       },
       departmentSettings: {
         labelMap: {
-          bulletinNum: '通报次数'
+          bulletinNum: '保管数量'
         }
       },
       departData: {
@@ -106,25 +106,25 @@ export default {
         ]
       },
       exceptionTitle: {
-        text: '统计民警有护照没护照情况'
+        text: '民警持有证件情况'
       },
       exceptionSettings: {
         labelMap: {
-          times: '次数'
+          NoPassport: '数量'
         }
       },
       exceptionData: {
-        columns: ['exception', 'times'],
+        columns: ['havePassport', 'NoPassport'],
         rows: [
           // { 'exception': '1', 'times': 1}
         ]
       },
       monthlyTitle: {
-        text: '问题性质分类统计'
+        text: '护照类型统计'
       },
       monthlySettings: {
         labelMap: {
-          COUNT: '次数'
+          bulletinNum: '护照数量'
         }
       },
       monthlyData: {
@@ -139,7 +139,8 @@ export default {
         department: '',
         problemType: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        certificatesStatus: null,
       },
       searchForm: [
         {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
@@ -190,6 +191,11 @@ export default {
       },
       columns: [
         {
+          prop: 'certificateNo',
+          label: '证件编号',
+          align: 'left'
+        },
+        {
           prop: 'userName',
           label: '姓名',
           align: 'left'
@@ -220,11 +226,6 @@ export default {
         {
           prop: 'issueDate',
           label: '签发日期',
-          align: 'left'
-        },
-        {
-          prop: 'certificateNo',
-          label: '证件编号',
           align: 'left'
         },
         {
@@ -290,7 +291,7 @@ export default {
             icon: '<i class="el-icon-delete"></i>',
             disabled: false,
             method: (key, row) => {
-              console.log('删除',row)
+              // console.log('删除',row)
               this.deleteHandlerPassport(row)
             },
             showCallback: () => {
@@ -359,9 +360,17 @@ export default {
         // console.log(res)
         if (res.success && res.data) {
           let result = [];
+          const options = {
+            1: '统一保管',
+            2: '本人领取',
+            3: '过期退回',
+            4: '退休满两年',
+            5: '单位调出',
+            6: '其他'
+          }
           for (let item in res.data) {
             result.push({
-              department: item,
+              department: options[item],
               bulletinNum: res.data[item]
             })
           }
@@ -380,8 +389,8 @@ export default {
           let result = [];
           for (let item in res.data) {
             result.push({
-              exception: item,
-              times: res.data[item]
+              havePassport: item.includes('have')?'有护照':'无护照',
+              NoPassport: res.data[item]
             })
           }
           this.exceptionData.rows = result;
@@ -397,9 +406,16 @@ export default {
         // console.log(res)
         if (res.success && res.data) {
           let result = [];
+          const options = {
+            1: '护照',
+            2: '港澳通行证',
+            3: '台湾通行证',
+            4: '中华人民共和国出入证',
+            5: '其他'
+          }
           for (let item in res.data) {
             result.push({
-              department: item,
+              department: options[item],
               bulletinNum: res.data[item]
             })
           }
