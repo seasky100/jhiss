@@ -42,6 +42,7 @@ export default {
   data() {
     return {
       userId: '',
+      orgName:'',
       addForm: '/TalkAdd',
       btnsConfig: {
         showAdd: true
@@ -208,6 +209,7 @@ export default {
   watch: {},
   mounted() {
     this.userId = sessionStorage.userId
+    this.orgName = sessionStorage.orgName
     this.init()
   },
   methods: {
@@ -240,8 +242,8 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: _this.userId,
-            isAsc: false,
+            department: _this.orgName,
+            orderFlag: false,
             orderByField: 'interviewTime'
           },
           _this.searchData
@@ -264,5 +266,5 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import "../../styles/common.styl"
+@import "../../styles/common.styl";
 </style>

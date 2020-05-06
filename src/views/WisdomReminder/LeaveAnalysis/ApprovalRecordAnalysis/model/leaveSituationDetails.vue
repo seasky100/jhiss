@@ -41,7 +41,7 @@
                             <span>审批意见：</span>
                             <span></span>
                         </div>
-                        <div class="mb-ten">
+                        <!-- <div class="mb-ten">
                             <span>预警时间：</span>
                             <span></span>
                         </div>
@@ -80,7 +80,7 @@
                                     placeholder="请输入内容"
                             >
                             </el-input>
-                        </div>
+                        </div> -->
                     </div>
                 </el-scrollbar>
             </div>

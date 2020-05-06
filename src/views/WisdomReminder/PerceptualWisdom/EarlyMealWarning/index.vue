@@ -10,14 +10,14 @@
                     <HistogramChart
                             :chart-data="repastPlace.data"
                             :label-map="repastPlace.labelMap"
-                            title="预警次数"
+                            title="部门预警次数(Top5)"
                     />
                 </el-col>
                 <el-col :span="12">
                     <LineChart
                             :chart-data="creditCardTime.data"
                             :label-map="creditCardTime.labelMap"
-                            title="次数"
+                            title="每日预警次数"
                     />
                 </el-col>
             </el-row>
@@ -30,7 +30,7 @@
                         :searchForm="searchForm"
                 />
             </div>
-            <div class="search-wrap" style="height:750px;">
+            <div class="search-wrap" style="height:430px;">
                 <e-table
                         ref="recordSpTableRef"
                         :options="options"
@@ -64,7 +64,7 @@ export default {
       repastPlace: {
         data: {
             userInfo:{},
-          columns: ['record_place', 'warnnum'],
+          columns: ['department', 'warnnum'],
           rows: []
         },
         labelMap: {
@@ -88,19 +88,21 @@ export default {
           department: '',
           startTime: '',
           endTime: '',
+          orderByField: 'warnTime',
+          isAsc: false,
           recordPlace: ''
       },
       searchForm: [
-            {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+            // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
             {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
-            {
-                type: 'select',
-                prop: 'department',
-                width: '150px',
-                options: [],
-                change: row => console.log(row),
-                placeholder: '所属部门'
-            },
+            // {
+            //     type: 'select',
+            //     prop: 'department',
+            //     width: '150px',
+            //     options: [],
+            //     change: row => console.log(row),
+            //     placeholder: '所属部门'
+            // },
             {
                 type: 'daterange',
                 options: [
@@ -118,14 +120,14 @@ export default {
                     }
                 ]
             },
-            {
-                type: 'select',
-                prop: 'recordPlace',
-                width: '150px',
-                options: [{label: '超市', value: '超市'},{label: '食堂', value: '食堂'}],
-                change: row => console.log(row),
-                placeholder: '刷卡地点'
-            }
+            // {
+            //     type: 'select',
+            //     prop: 'recordPlace',
+            //     width: '150px',
+            //     options: [{label: '超市', value: '超市'},{label: '食堂', value: '食堂'}],
+            //     change: row => console.log(row),
+            //     placeholder: '刷卡地点'
+            // }
       ],
       options: {
             pageSize: 10,
@@ -136,30 +138,36 @@ export default {
             height: '368'
         },
       columns: [
+            // {
+            //     prop: 'police_code',
+            //     label: '警号',
+            //     align: 'left'
+            // },
             {
-                prop: 'police_code',
-                label: '警号',
-                align: 'left'
-            },
-            {
-                prop: 'user_name',
+                prop: 'userName',
                 label: '姓名',
                 align: 'left'
             },
+            
             {
                 prop: 'department',
                 label: '部门',
                 align: 'left'
             },
             {
-                prop: 'record_time',
-                label: '刷卡时间',
-                align: 'left',
-                type: 'date',
-                dateFormat: 'yyyy-MM-dd'
+                prop: 'warnReason',
+                label: '预警原因',
+                align: 'left'
             },
             {
-                prop: 'record_place',
+                prop: 'comment',
+                label: '预警内容',
+                align: 'left',
+                // type: 'date',
+                // dateFormat: 'yyyy-MM-dd HH:mm:ss'
+            },
+            {
+                prop: 'source',
                 label: '刷卡地点',
                 align: 'left',
             }
@@ -211,9 +219,10 @@ export default {
             getFindMealCardPage(Object.assign({
                 nCurrent: nCurrent,
                 nSize: 10,
+                warnType:11,
                 orderByField: ''
-            }, $this.searchData, {userId: this.userParams.userID, role: '2020'})).then((res) => {
-                console.log(res);
+            }, $this.searchData)).then((res) => {
+                console.log(res.data);
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,
                     res.size,
@@ -221,18 +230,39 @@ export default {
                     res.data
                 );
             });
-        }
+        },
+      sortfunc(attr, rev) {
+          if (rev == undefined) {
+              rev = 1
+          }
+          return (a, b) => {
+              a = a[attr]
+              b = b[attr]
+              if (a < b) {
+                  return rev * 1
+              }
+              if (a > b) {
+                  return rev * -1
+              }
+              return 0
+          }
+      },
     },
   created() {
     this.userInfo = JSON.parse(sessionStorage.userInfo)
     this.userParams.userID = this.userInfo.info
     // 就餐地点预警地点统计 (给参数userParams会无数据)
-    getRepastSiteWarnStatistics().then((res) => {
-        this.repastPlace.data.rows = res
+    const params = {
+        warnType: 11,
+    }
+    getRepastSiteWarnStatistics(params).then((res) => {
+        const data = res.sort(this.sortfunc('warnnum')) // 排序后获得前五组数值最大的数据
+        const arry = data.splice(0,5)
+        this.repastPlace.data.rows = arry
     })
 
     // 每日就餐预警次数统计 (给参数userParams会无数据)
-    getRepastWarnTimesStatistics().then((res) => {
+    getRepastWarnTimesStatistics(params).then((res) => {
         this.creditCardTime.data.rows = res
     })
 

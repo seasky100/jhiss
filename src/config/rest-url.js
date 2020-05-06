@@ -33,6 +33,8 @@ const DEFAULT_URL = {
     findIlluseCarPage: GAISMSERVER + 'warn/findIlluseCarPage', //
     monthIllUsecarStatistics: GAISMSERVER + 'warn/monthIllUsecarStatistics', //
     illUsecarHumanStatistics: GAISMSERVER + 'warn/illUsecarHumanStatistics', //
+    // 车辆使用异常统计
+    warnInfoTypeStatistics: GAISMSERVER + 'warn/warnInfoTypeStatistics', //
     // 用车分析
     carTimesStatistics: GAISMSERVER + 'carRecord/carTimesStatistics', //车辆使用次数统计
     departmentTimesStatistics: GAISMSERVER + 'carRecord/departmentTimesStatistics', //部门用车统计
@@ -41,6 +43,8 @@ const DEFAULT_URL = {
     carStatusStatistics: GAISMSERVER + 'carInfo/carStatusStatistics', //车辆状态统计
     carExceptionStatistics: GAISMSERVER + 'carRecord/carExceptionStatistics', //异常统计
     carCoordinatesStatistics: GAISMSERVER + 'carCoordinates/carCoordinatesStatistics', //获取车辆轨迹信息
+    findCar: GAISMSERVER + 'carInfo/findCar', //车辆信息与socket接收的数据对比
+    
     // 首页分类预警提醒
     allWarnByType: GAISMSERVER + 'warn/allWarnByType', //
     //查询七天上班时间统计数据
@@ -55,6 +59,8 @@ const DEFAULT_URL = {
     findVacationPage: GAISMSERVER + 'vacationApply/findVacationPage', //获取考勤信息分页
     vacationApplyByMonth: GAISMSERVER + 'vacationApply/vacationApplyByMonth', //请假按月统计
     vacationExceptionStatistics: GAISMSERVER + 'vacationApply/vacationExceptionStatistics', //请假按月统计
+    overtimeApply: GAISMSERVER + 'overtimeApply/findVacationPage', //加班列表数据
+
     // 护照管理
     findAbroadRecordPage: GAISMSERVER + 'tAbroadRecord/findAbroadRecordPage', //获取出勤出境分页
     // 涉嫌违法管控
@@ -112,6 +118,8 @@ const DEFAULT_URL = {
     // updatePassword: `${userService}/updatePassword`,
     // 退出登录
     logout: `${GMSSOSERVER}logout`,
+    // 身份证号登陆
+    jhLogin: `${GMSSOSERVER}jhLogin`,
     // 获取所有的机构树
     getOrganization: `${UUMSSERVER}organization/tree`,
     // 获取机构下对应的人员
@@ -124,6 +132,10 @@ const DEFAULT_URL = {
     getPoliceCareer: `${GAISMSERVER}policeCareer/getPoliceCareerByUserId`,
     // 根据userId查询相应层级成员的id列表 层级评价列表使用
     getUserListByUserId: `${UUMSSERVER}post/getUserListByUserId`,
+    // 根据身份证号查询用户信息
+    getUserByCardNum: `${UUMSSERVER}user/getUserByCardNum`,
+    // 查询字典数据
+    getList: `${UUMSSERVER}dict/getList`,
   },
     // 层级管理
     post: {
@@ -133,6 +145,10 @@ const DEFAULT_URL = {
       countWorkNote: `${GAISMSERVER}workNote/countWorkNote`,
       getUserList: `${GAISMSERVER}user/getUserList`,
       getRiskByUserId: `${UUMSSERVER}risk/getRiskByUserId`,
+      getRiskPage: `${UUMSSERVER}risk/page`, // 分页查询风险列表
+      findWorkEvaluatePage: `${GAISMSERVER}workNote/findWorkEvaluatePage`, // 查看评价分析数据
+      workEvaluateStatistics: `${GAISMSERVER}workNote/workEvaluateStatistics`, // 工作评价按部门统计
+      countWorkNoteByDay: `${GAISMSERVER}workNote/countWorkNoteByDay`, // 工作评价按月统计
     },
     exposure: {
       findExposurePage: `${GAISMSERVER}exposure/findExposurePage`,
@@ -163,7 +179,8 @@ const DEFAULT_URL = {
     countPassport: UUMSSERVER + '/passport/countPassport', // 统计有无护照的管理员数量
     certificateInfoStatistics: GAISMSERVER + "/tCertificateInfo/certificateInfoStatistics", // 显示当前护照在管和在民警手里的数量饼状图
     palaceInfoStatistics: GAISMSERVER + "/tAbroadRecord/palaceInfoStatistics",  // 按目的地显示今年出国次数top10
-    findAbroadRecordPage: GAISMSERVER + "/tAbroadRecord/findAbroadRecordPage" // 获取出勤出境分页
+    findAbroadRecordPage: GAISMSERVER + "/tAbroadRecord/findAbroadRecordPage", // 获取出勤出境分页
+    departmentInfoStatistics: GAISMSERVER + "/tAbroadRecord/departmentInfoStatistics" // 出国次数按部门统计
   },
   // 【差旅管理-报销异常分析】
   travelManagement: {
@@ -180,7 +197,7 @@ const DEFAULT_URL = {
     // 【提前就餐预警】
     repastSiteWarnStatistics: GAISMSERVER + '/warnStatistics/repastSiteWarnStatistics', // 就餐地点预警地点统计
     repastWarnTimesStatistics: GAISMSERVER + '/warnStatistics/repastWarnTimesStatistics', // 每日就餐预警次数统计
-    findMealCardPage: GAISMSERVER + '/warn/findMealCardPage' // 提前就餐分页
+    getFindMealCardPage: GAISMSERVER + '/warn/findWarnPage' // 所有的预警分页
   },
   // 【工作评价-评价分析预警】
   evaluation: {
@@ -206,8 +223,8 @@ const DEFAULT_URL = {
   saveAnnualReport: {
     // 获取年度报告详情信息
     getReportById: `${GAISMSERVER}annualReportInformation/getReportById`,
-    // 本人基本情况信息
-    saveBasicAnnual: `${GAISMSERVER}user/saveBasicAnnual`,
+        // 本人基本情况信息
+        saveBasicAnnual: `${GAISMSERVER}user/saveBasicAnnual`,
     // 报表一
     saveMarrageAnnual: `${GAISMSERVER}marrage/saveDeclareExitAnnual`,
     savePassportAnnual: `${GAISMSERVER}passport/savePassportAnnual`,
@@ -239,6 +256,11 @@ const DEFAULT_URL = {
     findById: `${GAISMSERVER}passportHistory/findById`,
     StatisticsPassportwhether: `${GAISMSERVER}passport/StatisticsPassportwhether`,
   },
+  // 上传附件
+  upload: {
+    uploadMultiple: `${GAISMSERVER}image/uploadMultiple`,
+  },
 }
+
 
 export default DEFAULT_URL;

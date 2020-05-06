@@ -24,59 +24,62 @@
             </div>
         </div>
         <!-- 预警详情 -->
-        <PersonnelParameterDetail ref="personnelParameterDetail" title="人员台账详情" />
+        <!-- <parameterDetail ref="parameterDetail"  /> -->
     </div>
 </template>
 
 <script>
 // 接口无数据暂时使用预警接口
+// import {
+//     getWarnPage
+// } from '@/api/warn.js';
 import {
-    getWarnPage
-} from '@/api/warn.js';
-import PersonnelParameterDetail from './modal/personnelParameterDetail'
+    getUserList
+} from '@/api/user-server.js';
+import parameterDetail from './modal/parameterDetail'
 // import { getUserList } from '@/api/wisdom-reminder/personnel-parameter.js'
 
 export default {
     components: {
-        PersonnelParameterDetail
+        parameterDetail
     },
     data() {
         return {
             searchData: {
-                userName: '',
-                policeCode: '',
-                department: '',
-                startTime: '',
-                endTime: ''
+                realName: '',
+                // loginName: '',
+                // orgId: '',
+                // startTime: '',
+                // endTime: ''
             },
             searchForm: [
-                {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
-                {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
+                // {type: 'input', prop: 'loginName', width: '120px', placeholder: '警号'},
+                {type: 'input', prop: 'realName', width: '120px', placeholder: '姓名'},
                 {
                     type: 'select',
-                    prop: 'department',
+                    prop: 'orgId',
                     width: '150px',
                     options: [],
                     change: row => console.log(row),
                     placeholder: '所属部门'
-                },
-                {
-                    type: 'daterange',
-                    options: [
-                        {
-                            prop: 'startTime',
-                            format: '',
-                            valueformat: '',
-                            placeholder: '起始时间'
-                        },
-                        {
-                            prop: 'endTime',
-                            format: '',
-                            valueformat: '',
-                            placeholder: '结束时间'
-                        }
-                    ]
                 }
+                // {
+                //     type: 'daterange',
+                //     options: [
+                //         {
+                //             prop: 'startTime',
+                //             format: '',
+                //             valueformat: '',
+                //             placeholder: '起始时间'
+                //         },
+                //         {
+                //             prop: 'endTime',
+                //             format: '',
+                //             valueformat: '',
+                //             placeholder: '结束时间'
+                //         }
+                //     ]
+                // }
             ],
             tableList: [],
             options: {
@@ -87,21 +90,21 @@ export default {
                 currentPage: 1,
                 loading: true,
                 maxHeight: null,
-                height:'500'
+                height:'608'
             },
             columns: [
+                // {
+                //     prop: 'loginName',
+                //     label: '警号',
+                //     align: 'left'
+                // },
                 {
-                    prop: 'policeCode',
-                    label: '警号',
-                    align: 'left'
-                },
-                {
-                    prop: 'userName',
+                    prop: 'realName',
                     label: '姓名',
                     align: 'left'
                 },
                 {
-                    prop: 'department',
+                    prop: 'organizationNames',
                     label: '所属部门',
                     align: 'left'
                 }
@@ -118,7 +121,8 @@ export default {
                         icon: '<i class="el-icon-view"></i>',
                         disabled: false,
                         method: (key, row) => {
-                            this.$refs.personnelParameterDetail.open(row);
+                            console.log(111,row)
+                            this.$router.push({path: '/parameterDetail', query:{ id: row.id }})
                         },
                         showCallback: () => {
                             return true;
@@ -143,26 +147,23 @@ export default {
         // 查找列表数据
         query(nCurrent = 1) {
             const $this = this;
-            getWarnPage(
+            getUserList(
                 Object.assign(
                     {
-                        nCurrent: nCurrent,
-                        nSize: 10,
-                        user_id: '5ba98b66cd3549b9b92ea8723e89207e',
-                        isAsc: false,
-                        orderByField: 'warnTime',
-                        role: 10,
-                        warnType: 1
+                        // nCurrent: nCurrent,
+                        // nSize: 10,
+                        orgId: sessionStorage.orgId
                     },
-                    $this.searchData
+                    // $this.searchData
                 )
             ).then(res => {
-                // console.log(res)
+                console.log(333,res)
+                // $this.tableList = res.data
                 this.$refs.recordSpTableRef.setPageInfo(
-                    nCurrent,
-                    res.data.size,
-                    res.data.total,
-                    res.data.records
+                    1,
+                    100,
+                    res.data.length,
+                    res.data
                 );
             })
         },
@@ -175,4 +176,5 @@ export default {
 
 <style lang="stylus" scoped>
 @import "../../../styles/common.styl";
+@import "../../../styles/common.css";
 </style>

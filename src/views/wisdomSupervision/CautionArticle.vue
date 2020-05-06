@@ -7,6 +7,7 @@
                 <div class='c_top'>
                     <div class='c_portrait'>
                         <img style="border-radius: 27px;" :src='item.headUrl' />
+                        <span style="margin-left: 8px;">{{item.name}}</span>
                     </div>
                     <div class='c_right' style="width: 93%;">
                     <div class='c_introduce'>{{item.noteContent}}</div>
@@ -93,7 +94,6 @@
                 id: _this.id,
                 userId: _this.userId,
             }
-            debugger
             getExposureById(params).then(res => {
                 if (res.success) {
                     _this.listData = res.data
@@ -103,7 +103,6 @@
         },
         // 查看评论
         queryExposureNote() {
-            debugger
             const _this = this;
             const params = {
             exposureId: _this.id
@@ -111,6 +110,7 @@
             queryExposureNote(params).then(res => {
                 if (res.success) {
                     _this.nodeData = res.data
+                    console.log(666,res.data)
                     const data = res.data
                     for (let i = 0; i < data.length; i++) {
                         if(data[i].headUrl){
@@ -125,7 +125,6 @@
         },
         // 添加点赞
         updateLike(data) {
-            debugger
             const _this = this;
             const params = {
                 version: data.version,
@@ -162,6 +161,7 @@
                     const params = {
                         userId: _this.userId,
                         noteContent: _this.ruleForm.input,
+                        name: sessionStorage.realName,
                         exposureId: _this.id,
                         exposureTitle: _this.title,
                         headUrl: _this.userInfo.fileId

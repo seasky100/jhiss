@@ -401,7 +401,6 @@ export default {
   },
   methods: {
     init(){
-      debugger
       this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
                         index % 7
                         ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
@@ -455,13 +454,11 @@ export default {
       // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
   },
      // 是否已评分
-     isMarked (item){
-       debugger
+     isMarked (item){     
      item && '012345678910'.includes(item.noteScore)
      },
     
     scoreItemOf (d){
-      debugger
       this.scores.find(item =>
       new Date(item.noteDate).getDate() === d.date()
       )
@@ -511,7 +508,6 @@ export default {
       this.dayStart = this.msToDate(date).withoutTime
     },
     pick(date, mouseEvent, bbb) {
-      debugger
       if (this.clickNum < 2) {
         // console.log('if-clickNum', this.clickNum)
         this.clickNum++
@@ -1185,7 +1181,6 @@ dateToMs(date) {
         userId: '1D2G3F4H',
       }
       getPoliceCareer(params).then(res => {
-       debugger
         if (res.success) {
           const Data = res.data
           _this.careerData = Data.reduce((prev, item) =>
@@ -1296,7 +1291,6 @@ dateToMs(date) {
 
       }
       indexCalendar(params).then(res => {
-        debugger
         console.log(res)
         if (res.success) {
           // const Data = res.data

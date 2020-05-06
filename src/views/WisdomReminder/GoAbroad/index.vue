@@ -6,25 +6,18 @@
         </div>
         <div class="content">
             <el-row class="bg-fff">
-                <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
-                    <RingChart
-                            :chart-data="withoutPassport.data"
-                            :label-map="withoutPassport.labelMap"
-                            title="民警数量"
-                    />
-                </el-col>
-                <el-col :span="8" style="width:calc(33.3% - 5px);margin-right:8px;">
-                    <RingChart
-                            :chart-data="passport.data"
-                            :label-map="passport.labelMap"
-                            title="民警数量"
-                    />
-                </el-col>
-                <el-col :span="8" style="width:calc(33.3% - 5px);">
+                    <el-col :span="12">
+                            <HistogramChart
+                                    :chart-data="repastPlace.data"
+                                    :label-map="repastPlace.labelMap"
+                                    title="出国次数(部门统计Top5)"
+                            />
+                        </el-col>
+                <el-col :span="12" style="width:calc(50% - 5px);">
                     <HistogramChart
                             :chart-data="goingAbroad.data"
                             :label-map="goingAbroad.labelMap"
-                            title="次数"
+                            title="出国次数(地点统计)"
                     />
                 </el-col>
             </el-row>
@@ -60,9 +53,12 @@ import {
   getCountPassport,
   getCertificateInfoStatistics,
   getPalaceInfoStatistics,
-  getFindAbroadRecordPage
+  getFindAbroadRecordPage,
+  departmentInfoStatistics
 } from "@/api/wisdom-reminder/go-abroad.js";
 import GoAbroadDetail from './model/goAbroadDetail'
+import { getRepastSiteWarnStatistics, getRepastWarnTimesStatistics, getFindMealCardPage } from '@/api/wisdom-reminder/perceptual-wisdom.js'
+
 
 export default {
   components: {
@@ -72,6 +68,17 @@ export default {
   },
   data() {
     return {
+              // 就餐预警地点统计
+      repastPlace: {
+        data: {
+            userInfo:{},
+          columns: ['place', 'num'],
+          rows: []
+        },
+        labelMap: {
+          num: '次数'
+        }
+      },
       // 统计有无护照的警员数量
       withoutPassport: {
         data: {
@@ -111,16 +118,16 @@ export default {
             endTime: ''
         },
       searchForm: [
-            {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+            // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
             {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
-            {
-                type: 'select',
-                prop: 'department',
-                width: '150px',
-                options: [],
-                change: row => console.log(row),
-                placeholder: '所属部门'
-            },
+            // {
+            //     type: 'select',
+            //     prop: 'department',
+            //     width: '150px',
+            //     options: [],
+            //     change: row => console.log(row),
+            //     placeholder: '所属部门'
+            // },
             {
                 type: 'daterange',
                 options: [
@@ -138,17 +145,17 @@ export default {
                     }
                 ]
             },
-            {
-                type: 'select',
-                prop: '',
-                width: '150px',
-                options: [
-                    {label: '保管',value: '保管'},
-                    {label: '借出',value: '借出'}
-                ],
-                change: row => console.log(row),
-                placeholder: '护照情况'
-            }
+            // {
+            //     type: 'select',
+            //     prop: '',
+            //     width: '150px',
+            //     options: [
+            //         {label: '保管',value: '保管'},
+            //         {label: '借出',value: '借出'}
+            //     ],
+            //     change: row => console.log(row),
+            //     placeholder: '护照情况'
+            // }
         ],
       options: {
           pageSize: 10,
@@ -159,11 +166,11 @@ export default {
           height: '372'
       },
       columns: [
-          {
-              prop: 'policeCode',
-              label: '警号',
-              align: 'left'
-          },
+        //   {
+        //       prop: 'policeCode',
+        //       label: '警号',
+        //       align: 'left'
+        //   },
           {
               prop: 'userName',
               label: '姓名',
@@ -180,29 +187,29 @@ export default {
             align: 'left'
           },
           {
-              prop: 'startTime',
+              prop: 'actualStartTime',
               label: '开始时间',
               align: 'left',
               type: 'date',
               dateFormat: 'yyyy-MM-dd'
           },
           {
-              prop: 'endTime',
+              prop: 'actualEndTime',
               label: '结束时间',
               align: 'left',
-              type: 'date',
+              type: 'date || string',
               dateFormat: 'yyyy-MM-dd'
           },
-          {
-              prop: 'certificateType',
-              label: '护照情况',
-              align: 'left'
-          },
-          {
-              prop: 'isException',
-              label: '是否异常',
-              align: 'left'
-          }
+        //   {
+        //       prop: 'certificateType',
+        //       label: '护照情况',
+        //       align: 'left'
+        //   },
+        //   {
+        //       prop: 'isException',
+        //       label: '是否异常',
+        //       align: 'left'
+        //   }
       ],
       operates: {
           width: 150,
@@ -239,7 +246,22 @@ export default {
             this.query(val);
             next();
         },
-
+        sortfunc(attr, rev) {
+          if (rev == undefined) {
+              rev = 1
+          }
+          return (a, b) => {
+              a = a[attr]
+              b = b[attr]
+              if (a < b) {
+                  return rev * 1
+              }
+              if (a > b) {
+                  return rev * -1
+              }
+              return 0
+          }
+      },
         // 查询列表
         query(nCurrent = 1) {
             const $this = this;
@@ -264,7 +286,15 @@ export default {
             this.withoutPassport.data.rows.push({passport: key, number: res[key]})
         }
     });
-
+    // 出国次数按部门统计 (给参数userParams会无数据)
+    departmentInfoStatistics().then((res) => {
+        for (let key in res) {
+            this.repastPlace.data.rows.push({
+                place: key,
+                num: res[key]
+            })
+        }
+    })
     // 显示当前护照在管和在民警手里的数量饼状图
     getCertificateInfoStatistics().then((res) => {
         for (let key in res) {

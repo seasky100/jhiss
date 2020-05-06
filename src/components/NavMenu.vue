@@ -40,7 +40,7 @@
               </template>
               <!-- 第二次子循环 -->
               <template v-for="(seconditem,secondindex) in firstitem.children">
-                <el-submenu v-if="seconditem.children && seconditem.children.length>0" :key="secondindex+'s'" :index="secondindex+'s'">
+                <el-submenu v-if="seconditem.children && seconditem.children.length>0" :key="secondindex+'s'" :index="seconditem.path+'s'">
                   <template slot="title">
                     <img v-if="seconditem.img != undefined" style="margin-right:5px;width:18px;" :src="require(`@/assets/images/menu/${seconditem.img}`)" />
                     <span slot="title">{{seconditem.title}}</span>
@@ -139,5 +139,6 @@ export default {
   color: #fff;
   padding: 15px 20px;
   line-height: 20px;
+  border-right: solid 1px #e6e6e6;
 }
 </style>

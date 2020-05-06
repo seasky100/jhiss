@@ -42,7 +42,7 @@ const dictionary = [
         value: '2'
       }
     ]
-  },
+      },
   {
     type: '业务字段',
     label: '证件类型',

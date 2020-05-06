@@ -1,28 +1,58 @@
 <template>
   <div id="app" class="app">
     <router-view/>
-    <!-- 封装的loading 组件 -->
+        <!-- 封装的loading 组件 -->
     <loading v-if='LOADING'/> 
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
+  import { mapGetters } from 'vuex';
+  import {mapState} from 'vuex'
 export default {
   name: 'App',
-  computed:{
+  computed: {
+    ...mapGetters([
+      'userId',
+      // 'userInfo',
+      'orgId',
+      'token'
+    ]),
     ...mapState([
         'LOADING'
     ])
   },
   data () {
     return {
+      countotal: 0,
+      timer:'',
     }
   },
   created() {
     this.$store.dispatch('user/getOrgData')
   },
+  watch: {
+    'countotal': {
+      handler(newVal, oldVal) {
+        if (newVal > oldVal) {
+          const h = this.$createElement
+          this.$notify({
+            title: '',
+            dangerouslyUseHTMLString: true,
+            message: h('div', { class: 'message' }, [
+              h('div', { class: 'title',style:"margin-top: -8px;" }, '温馨提示：'),
+              h('div', { class: 'info',style:"color:red;margin-left: 51px; font-size:16px;"}, '您有新的预警信息！！！'),
+              h('btnlist', { class: 'info', on: { click: this.onClick },style:"font-size: 13px;float: right;margin-top: 9px; cursor: pointer;"}, '处理')
+            ]),
+            // message:'<strong><div style="margin-top: -8px;" >温馨提示：</div><span style="color:red;margin-left: 51px; font-size:16px;">您有新的预警信息！！！</span><div onclick="this.onClick">去处理</div>></strong>',
+            position: 'bottom-right',
+            duration: 0
+          })
+        }
+      }
+    }
+  },
   mounted() {
-    
+    this.setTimer();
     // const token = sessionStorage.getItem('token')
     // console.log(window.location.href)   
     // if(token){
@@ -34,8 +64,16 @@ export default {
     // this.init()
   },
   methods: {
-    init() {
-    }
+    setTimer() { //动态展示近90天的考勤数据
+      const $this = this
+      $this.timer = setInterval(() => {
+        //  const aa =  $this.$store.getters.countotal
+         $this.countotal = localStorage.getItem('countotal')
+        }, 3000)
+      },
+      onClick(){
+        this.$router.push('/agency')
+      }
   }
 }
 </script>
@@ -53,7 +91,21 @@ body >>> .el-dropdown-menu__item--divided{
 body >>> .el-popper .popper__arrow::after{
   border-top-color:#00081d;
 }
-
+.el-notification.right {
+  border: 1px solid rosybrown;
+  margin-right: 28px !important;
+  background-color: blanchedalmond;
+  margin-bottom: 32px !important;
+  border-left: 10px solid red;
+}
+.el-notification {
+  width: 283px !important;
+  padding: 11px 20px 3px 14px !important;
+}
+.el-notification__group {
+    margin-left: -5px !important;
+    /* margin-right: 2px; */
+}
 </style>
 <style scoped>
 .app{width:100%;height:100%;}

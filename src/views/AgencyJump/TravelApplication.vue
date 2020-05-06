@@ -12,10 +12,17 @@ export default {
     }
   },
   mounted() {
-      const token = sessionStorage.token
+    const getToken = () => {
+      const tokenRaw = document.cookie.split(';').find(item =>
+        /token=([a-zA-Z0-9]+)/.test(item)
+      );
+      return tokenRaw ? RegExp.$1 : '';
+    }
+    const token = getToken()
       this.src = `http://41.232.3.207/workflow/wfEntity/add.shtml?id=&wfDefineInfoId=ff8080816e43f74e016e5939609102b8&listState=&wfTypeLibId=ff8080816e0171bd016e027158610054&ownerUnit=&sysId=ZHJD&token=${token}`
   },
   methods: {
+
   }
 }
 </script>

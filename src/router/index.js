@@ -21,7 +21,7 @@ VueRouter.prototype.push = function push(location) {
 }
 Vue.use(VueRouter);
 
-const routes = [
+export  const constantRoutes = [
   // {
   //   path: "/Home",
   //   name: "home",
@@ -31,6 +31,9 @@ const routes = [
   {
     path: "/",
     name: "MenuPaage",
+    meta:{
+      permValue:'ZHKQ',
+    },
     component: MenuPage,
     children: [
       {
@@ -39,6 +42,9 @@ const routes = [
         icon: 'el-icon-s-home',
         // icon: 'el-icon-location',
         path: "/PersonalHome",
+        meta:{
+          permValue:'ZHKQ',
+        },
         name: "PersonalHome",
         component: PersonalHome
       },
@@ -59,6 +65,9 @@ const routes = [
         // icon: 'el-icon-location',
         path: "/Cooperation",
         name: "Cooperation",
+        meta:{
+          permValue:'ZHKQ',
+        },
         component: Cooperation
       },
       {
@@ -67,6 +76,9 @@ const routes = [
         icon: 'el-icon-s-home',
         // icon: 'el-icon-location', left_organization@2x.png
         path: "/Refinement",
+        meta:{
+          permValue:'ZHKQ',
+        },
         name: "Refinement",
         component: Refinement
       },
@@ -100,10 +112,14 @@ const routes = [
   // },
   //
 ];
-console.log(routes);
 
-const router = new VueRouter({
-  routes,
+const createRouter = () => new VueRouter({
+     scrollBehavior: () => ({ y: 0 }),
+     routes: constantRoutes
 });
+const router = createRouter()
+// const router = new VueRouter({
+//   routes,
+// });
 
 export default router;

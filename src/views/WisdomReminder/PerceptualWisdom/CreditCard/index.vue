@@ -9,14 +9,14 @@
                     <HistogramChart
                             :chart-data="creditCardSite.data"
                             :label-map="creditCardSite.labelMap"
-                            title="刷卡次数"
+                            title="刷卡次数(地点统计)"
                     />
                 </el-col>
                 <el-col :span="12">
                     <LineChart
                             :chart-data="creditCardTime.data"
                             :label-map="creditCardTime.labelMap"
-                            title="次数"
+                            title="刷卡次数(时间统计)"
                     />
                 </el-col>
             </el-row>
@@ -89,16 +89,16 @@ export default {
           endTime: ''
       },
       searchForm: [
-            {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+            // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
             {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
-            {
-                type: 'select',
-                prop: 'dept_id',
-                width: '150px',
-                options: [],
-                change: row => console.log(row),
-                placeholder: '所属部门'
-            },
+            // {
+            //     type: 'select',
+            //     prop: 'dept_id',
+            //     width: '150px',
+            //     options: [],
+            //     change: row => console.log(row),
+            //     placeholder: '所属部门'
+            // },
             {
                 type: 'daterange',
                 options: [
@@ -134,21 +134,21 @@ export default {
             height: '500'
         },
       columns: [
-            {
-                prop: 'policeCode',
-                label: '警号',
-                align: 'left'
-            },
+            // {
+            //     prop: 'policeCode',
+            //     label: '警号',
+            //     align: 'left'
+            // },
             {
                 prop: 'userName',
                 label: '姓名',
                 align: 'left'
             },
-            {
-                prop: 'department',
-                label: '部门',
-                align: 'left'
-            },
+            // {
+            //     prop: 'department',
+            //     label: '部门',
+            //     align: 'left'
+            // },
             {
                 prop: 'recordPlace',
                 label: '刷卡地点',
@@ -159,7 +159,7 @@ export default {
                 label: '刷卡时间',
                 align: 'left',
                 type: 'date',
-                dateFormat: 'yyyy-MM-dd'
+                dateFormat: 'yyyy-MM-dd HH:mm:ss'
             },
             {
                 prop: 'money',
@@ -227,7 +227,6 @@ export default {
         }
     },
   created() {
-      debugger
       this.userId = sessionStorage.userId
       const data = {
           userId : this.userId

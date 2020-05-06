@@ -54,7 +54,7 @@
             <el-input v-model="ruleForm.comment"></el-input>
           </el-form-item>
           <el-form-item label="附件">
-            <e-upload />
+            <e-upload @changeHandler="changeHandler" />
           </el-form-item>
           <el-form-item label="审批人" required>
             <el-col :span="11">
@@ -83,7 +83,7 @@
           </el-form-item>
           <el-form-item style="text-align: center;">
             <el-button type="primary" @click="submit">提交</el-button>
-            <el-button>取消</el-button>
+            <el-button @click="goBack">取消</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -93,11 +93,9 @@
 <script>
 import { saveSecuredLoan } from '@/api/report.js';
 import { getUserList } from '@/api/user-server.js';
-
+import { uploadMultiple } from '@/api/warn.js';
 import getFlowNode from '../../../mixin/getFlowNode.js';
-
 import { mapGetters } from 'vuex';
-
 export default {
   mixins: [getFlowNode],
   data() {
@@ -112,8 +110,9 @@ export default {
         interest: '',
         term: '',
         comment: '',
-        department: '',
-        approvalId: ''
+        department: sessionStorage.orgId,
+        approvalId: '',
+        contentUrl: ''
       },
       rules: {
         type: [
@@ -165,7 +164,8 @@ export default {
       // 审批人
       approvalArr: [],
       // 审批人对象
-      approvalList: []
+      approvalList: [],
+      files: []
     }
   },
   computed: {
@@ -186,6 +186,37 @@ export default {
       getUserList(params).then(res => {
         if(res.success && res.data && res.data.length > 0) {
           this.approvalArr = res.data;
+        }
+      })
+    },
+    // 文件
+    changeHandler(fileList) {
+      const data = fileList;
+      for (let i = 0; i < data.length; i++) {
+        const cur = data[i].raw;
+        this.files.push(cur)  
+      }
+      this.uploadFile();
+    },
+    uploadFile(){
+      const _this = this
+      const params = {
+        userId : sessionStorage.userId,
+        userName : sessionStorage.realName,
+        file : this.files
+      }
+      uploadMultiple(params).then(res => {
+        if (res.success) {
+          _this.ruleForm.contentUrl = res.data
+          this.$message({
+            type: 'success',
+            message: '上传成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '上传失败'
+          })
         }
       })
     },
@@ -216,7 +247,8 @@ export default {
             isBorrow: this.ruleForm.isBorrow,
             term: this.ruleForm.term,
             type: this.ruleForm.type,
-            workCompany: this.ruleForm.workCompany
+            workCompany: this.ruleForm.workCompany,
+            contentUrl: this.ruleForm.contentUrl
           }
           saveSecuredLoan(params).then(res => {
             // console.log(res);
@@ -242,6 +274,9 @@ export default {
         }
       });
     },
+    goBack() {
+      this.$router.go(-1)
+    },       
     selectChange(val) {
       const result = this.approvalArr.filter(item => {
         return item.id === val;
@@ -251,6 +286,8 @@ export default {
   },
   mounted() {
     this.getData('201')
+    const orgId = this.ruleForm.department
+    this.getUserListData(orgId);
   }
 }
 </script>

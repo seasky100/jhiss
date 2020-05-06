@@ -519,7 +519,7 @@
   }
   </script>
   <style lang="stylus" scoped>
-	  /* @import '../css/common.css'; */
+	  @import '../css/common.css';
 		  .child {
 		  height: auto;
 	  }

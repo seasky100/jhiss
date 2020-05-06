@@ -5,6 +5,7 @@
                 <el-scrollbar style="height: 100%;">
                     <div class="detail-info">
                         <div class="user-info mb-ten">
+                            <span>刷卡姓名：</span>
                             <span>{{detailInfo.userName ? detailInfo.userName : ''}}</span>
                             <span>{{detailInfo.policeCode ? detailInfo.policeCode : ''}}</span>
                             <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
@@ -15,16 +16,16 @@
                         </div>
                         <div class="mb-ten">
                             <span>刷卡地点：</span>
-                            <span>{{detailInfo.department ? detailInfo.department : ''}}</span>
+                            <span>{{detailInfo.recordPlace ? detailInfo.recordPlace : ''}}</span>
                         </div>
                         <div class="mb-ten">
                             <span>刷卡金额：</span>
                             <span>{{detailInfo.money ? detailInfo.money : ''}}</span>
                         </div>
-                        <div class="mb-ten">
+                        <!-- <div class="mb-ten">
                             <span>卡号：</span>
                             <span>{{detailInfo.cardNumber ? detailInfo.cardNumber : ''}}</span>
-                        </div>
+                        </div> -->
                     </div>
                 </el-scrollbar>
             </div>

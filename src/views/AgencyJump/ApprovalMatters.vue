@@ -12,7 +12,13 @@ export default {
     }
   },
   mounted() {
-      const token = sessionStorage.token
+    const getToken = () => {
+      const tokenRaw = document.cookie.split(';').find(item =>
+        /token=([a-zA-Z0-9]+)/.test(item)
+      );
+      return tokenRaw ? RegExp.$1 : '';
+    }
+    const token = getToken()
       this.src = `http://41.232.3.207/sys/sysPendings/toDealIndex.html?ownerUnit=&sysId=ZHJD&token=${token}`
   },
   methods: {

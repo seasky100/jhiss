@@ -66,12 +66,15 @@ const mutations = {
 }
 
 const actions = {
-    loginSaveToken({ commit }, params) {
+    loginSaveToken({ commit }, params) {       
+        console.log('token1',params.token)
+        // sessionStorage.setItem('token', params.token)
         return new Promise((resolve, reject) => {
             checkTokenByAppKey(params).then(res => {
                 commit('SET_USERNAME', res.data.userName)
                 commit('SET_USERID', res.data.userId)
                 commit('SET_TOKEN', res.token)
+                console.log('token2',res.token)
                 resolve(res)
             }).catch(error => {
                 reject(error)
@@ -79,7 +82,7 @@ const actions = {
         })
     },
     // 获取用户信息
-    getInfo({ commit, state }) {
+    getInfo({ commit, state }) {        
         return new Promise((resolve, reject) => {
             getUserInfo({ userId: state.userId }).then(res => {
                 // console.log(res)
@@ -89,10 +92,9 @@ const actions = {
                         permValueArr.push(item.permValue)
                     }
                 })
-
                 commit('SET_REALNAME', res.data.realName)
                 commit('SET_LOGINNAME', res.data.loginName)
-                commit('SET_PERMISSIONS', res.data.permValueArr)
+                commit('SET_PERMISSIONS', permValueArr)
                 commit('SET_ORGID', res.data.organizations[0].id)
                 commit('SET_ORGNAME', res.data.organizations[0].name)
                 commit('SET_ORGCODE', res.data.orgCode)

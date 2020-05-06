@@ -13,20 +13,33 @@
 					</div>
 				</div>
 			</div>
-      <e-table
-        ref="recordTableRef"
-        :tableList="tableList"
-        :options="options"
-        :columns="columns"
-        :operates="operates"
-        @afterCurrentPageClick="afterCurrentPageClickHandle"
-      />
+			<div class="content">
+					<div class="search-wrap">
+						<!-- <div class="section-title">查询条件</div> -->
+						<e-search
+							class="search-form"
+							@handleSearch="handleSearch"
+							:searchData="searchData"
+							:searchForm="searchForm"
+							/>
+					</div>
+					<div>
+							<e-table
+							ref="recordTableRef"
+							:tableList="tableList"
+							:options="options"
+							:columns="columns"
+							:operates="operates"
+							@afterCurrentPageClick="afterCurrentPageClickHandle"
+						/>
+					</div> 
+				</div>
     </div>
 		<!-- 评分 -->
 		<el-dialog class="dialog_info" v-if="infoObj != null"
 			title="总结审阅"
 			:visible.sync="dialogVisible"
-			width="30%">
+			width="50%">
 			<div class="dialog_content">
 				<span style="text-align:center;margin-bottom:15px;">
 					{{infoObj.userName}} 
@@ -35,20 +48,21 @@
 				</span>
 				<span>{{infoObj.content}}</span>
 				<span style="text-align:center;margin-top:20px;">
-					总体评分
+					总体评阅
 					<!-- <span class="score_con">
 						{{noteScore}}
-					</span>分 -->
+					</span>阅 -->
 				</span>
 				<!-- <el-slider v-model="noteScore" :max="10" style="margin:0 35px;margin-top:10px;"></el-slider> -->
 				<div style="text-align:center;">
-					<div class="score_span">
+					<!-- <div class="score_span">
 						<span @click="scoreClick(index)" :style="[{background:activeScore==index?'#1760ff':'',color:activeScore==index?'#fff':'#333'}]"
 							v-for="(item,index) of 10" :key="index">
 							{{index + 1}}
 						</span>
-					</div>
+					</div> -->
 				</div>
+				
 				<div style="text-align:center;margin-top:10px;">
 					<el-input style="margin:0 15px;height:auto;"
 						type="textarea" :disabled="!disabled"
@@ -75,15 +89,16 @@
 <script>
 import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
 import { getUserListByUserId } from '@/api/user-server.js';
+import { mapGetters } from 'vuex';
 export default {
   name: "HierEvaluation",
   data() {
     return {
 			userId: this.$store.state.user.userId,
 			labelList: [
-				{label: '本月全部评分', count: 0, imgPath: require('../../assets/images/all.png')},
-				{label: '本月待评分', count: 0, imgPath: require('../../assets/images/todo.png')},
-				{label: '本月已评分', count: 0, imgPath: require('../../assets/images/done.png')}
+				{label: '本月全部评阅', count: 0, imgPath: require('../../assets/images/all.png')},
+				{label: '本月待评阅', count: 0, imgPath: require('../../assets/images/todo.png')},
+				{label: '本月已评阅', count: 0, imgPath: require('../../assets/images/done.png')}
 			],
 			dialogVisible: true,
 			infoObj: null,
@@ -91,6 +106,68 @@ export default {
 			leaderContent: '',
 			tableList:[],
 			userIds:'',
+			btnsConfig: {
+        showAdd: true
+      },
+			searchData: {
+        userName: '',
+				deptId: '',
+				audited: '',
+        startTime: '',
+        endTime: '',
+			},
+			searchForm: [
+        {label:'姓名：',type: 'input', prop: 'userName', width: '120px', placeholder: ''},
+        // {label:'警号：',type: 'input', prop: 'policeCode', width: '120px', placeholder: ''},
+        // {
+        //   label:'',
+        //   type: 'select',
+        //   prop: 'department',
+        //   width: '150px',
+        //   options: [{label:'治安部门', value:'0'},{label:'交通管理部门', value:'1'}],
+        //   change: row => console.log(row),
+        //   placeholder: '所属部门'
+				// },
+				{
+					// label: '所属部门',
+					type: 'select_tree',
+					prop: 'deptId',
+					options: this.orgData,
+					config: {
+						value: 'id',
+						label: 'name',
+						children: 'childrens',
+						disabled: true
+					},
+				},
+        {
+          label:'',
+          type: 'daterange',
+          options: [
+            {
+              prop: 'startTime',
+              format: 'yyyy-MM-dd',
+              valueformat: 'yyyy-MM-dd',
+              placeholder: '起始时间'
+            },
+            {
+              prop: 'endTime',
+              format: 'yyyy-MM-dd',
+              valueformat: 'yyyy-MM-dd',
+              placeholder: '结束时间'
+            }
+          ]
+				},
+				{
+          label:'',
+          type: 'select',
+          prop: 'audited',
+          width: '150px',
+          options: [{label:'是', value:'1'},{label:'否', value:'2'}],
+          change: row => console.log(row),
+          placeholder: '是否已阅'     
+        },
+			],
 			options: {
         // 每页数据数
         pageSize: 10,
@@ -134,7 +211,7 @@ export default {
           //   2: '已通过',
           //   3: '已驳回'
           // },
-          label: '评分状态',
+          label: '评阅状态',
           align: 'left'
 				}
       ],
@@ -167,7 +244,7 @@ export default {
 					},
 					{
             id: '2',
-            label: '评分',
+            label: '评阅',
             show: true,
             underline: false,
             icon: '<i class="el-icon-edit"></i>',
@@ -209,7 +286,13 @@ export default {
 			}
 		}
 	},
+	computed: {
+    ...mapGetters([
+      'orgData'
+    ])
+  },
   mounted() {
+		this.searchForm[1].options = this.orgData
 		this.getUserListByUserId()
     // this.init()
   },
@@ -217,16 +300,21 @@ export default {
 		init() {
 			
 			// this.countWorkNote()
-    },
+		},
+		// 查询
+		handleSearch(params) {
+			Object.assign(this.searchData, params);
+			this.query();
+		},
     noteDate_format(row, column, prop){
-      return new Date(prop).toLocaleString('chinese', {hour12: false})
+      return new Date(prop).toLocaleDateString()
 		},
 		noteScore_format(row, column, prop){
 			// console.log(prop)
 			if(prop == null){
-				return `<span style="color:#ff9700;">待评分</span>`
+				return `<span style="color:#ff9700;">待评阅</span>`
 			}else {
-				return `<span style="color:#00c538;">已评分（${prop}）</span>`
+				return `<span style="color:#00c538;">已评阅</span>` // （${prop}）
 			}
 		},
 		// 分页点击事件
@@ -257,8 +345,7 @@ export default {
 		},
 		// 查询列表
     query(nCurrent = 1) {
-			debugger
-      // const _this = this;
+      const _this = this;
       findWorknotePage(
         Object.assign(
           {
@@ -268,9 +355,7 @@ export default {
 						orderByField: 'noteDate',
 						orderFlag: false
             // userId: _this.userId
-          },
-        )
-      ).then(res => {
+          },_this.searchData)).then(res => {
         // console.log(res)
         this.$refs.recordTableRef.setPageInfo(
           nCurrent,
@@ -282,7 +367,6 @@ export default {
 		},
 		// 根据用户ID查询所有下属用户
 		getUserListByUserId() {
-			debugger
         const _this = this;
         const params = {
           userId: _this.userId 
@@ -302,7 +386,7 @@ export default {
           {
 						noteId: noteId,
 						userId: _this.userId,
-						score: _this.noteScore,
+						score: 0,
 						leaderContent: _this.leaderContent,
 						pushyn: _this.pushyn
           },
@@ -310,7 +394,7 @@ export default {
       ).then(res => {
 				// console.log(res)
 				if(res.success){
-					_this.$message.success('评分成功！')
+					_this.$message.success('评阅成功！')
 					_this.infoObj.noteScore = _this.noteScore
 					_this.infoObj.comment = _this.leaderContent
 					_this.dialogVisible = false
@@ -328,6 +412,10 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+	@import "../../styles/common.styl";
+	.search-wrap .search-form{
+		padding: 15px 2px 0;
+	}
 .individual_title
 	height:40px;
 	line-height:40px;

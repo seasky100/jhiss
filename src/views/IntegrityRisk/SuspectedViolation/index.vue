@@ -5,33 +5,7 @@
       <span>涉嫌违法管控</span>
     </div>
     <div class="content">
-      <el-row class="bg-fff">
-        <el-col :span="12" style="margin-right:10px;">
-          <!-- 被查询系统次数统计 -->
-          <e-histogram
-            :chartSettings="warnStatusSettings"
-            :title="warnStatusTitle"
-            :chartData="warnStatusStatistics"
-            :xAxis="axisOptions"
-          />
-        </el-col>
-        <el-col :span="12">
-          <!-- 次数统计 -->
-          <!-- <ve-line
-            :title="title"
-            :data="humanStatistics"
-            :extend="chartExtend"
-            :settings="chartSettings"
-            :legend-visible="false">
-          </ve-line> -->
-          <LineChart
-          :title="title"
-          :chartData="humanStatistics"
-          :chartSettings="chartSettings"
-          >
-        </LineChart>
-        </el-col>
-      </el-row>
+    
       <div class="search-wrap" style="min-width:1000px;">
         <!-- <div class="section-title">查询条件</div> -->
         <e-search
@@ -40,7 +14,7 @@
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
-      <div class="search-wrap" style="height:444px;">
+      <div class="search-wrap" style="height:667px;">
         <e-table
           ref="recordSpTableRef"
           :tableList="tableList"
@@ -128,7 +102,7 @@ export default {
         endTime: ''
       },
       searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
+        // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '警号'},
         {type: 'input', prop: 'userName', width: '120px', placeholder: '姓名'},
         {
           type: 'daterange',
@@ -165,14 +139,14 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'340'
+        height:'600'
       },
       columns: [
-        {
-          prop: 'policeCode',
-          label: '警号',
-          align: 'left'
-        },
+        // {
+        //   prop: 'policeCode',
+        //   label: '警号',
+        //   align: 'left'
+        // },
         {
           prop: 'userName',
           label: '姓名',

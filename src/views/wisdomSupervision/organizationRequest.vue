@@ -46,14 +46,14 @@ export default {
         userName: '',
         policeCode: '',
         approvalId: '',
-        problemType: '',
+        code: '',
         startTime: '',
         endTime: ''
       },
       userIds:'',
 			searchForm: [
-        {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
-        {type: 'input', prop: 'approvalName', width: '120px', placeholder: '发起人姓名'},
+        // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
+        {type: 'input', prop: 'userName', width: '120px', placeholder: '发起人姓名'},
         // {
         //   type: 'select',
         //   prop: 'approvalId',
@@ -65,18 +65,18 @@ export default {
         //   change: row => console.log(row),
         //   placeholder: '所属部门'
         // },
-        // {
-				// 	// label: '所属部门',
-				// 	type: 'select_tree',
-				// 	prop: 'approvalId',
-				// 	options: this.orgData,
-				// 	config: {
-				// 		value: 'id',
-				// 		label: 'name',
-				// 		children: 'childrens',
-				// 		disabled: true
-				// 	},
-				// },
+        {
+					// label: '所属部门',
+					type: 'select_tree',
+					prop: 'approvalId',
+					options: this.orgData,
+					config: {
+						value: 'id',
+						label: 'name',
+						children: 'childrens',
+						disabled: true
+					},
+				},
         {
           type: 'daterange',
           options: [
@@ -95,8 +95,8 @@ export default {
           ]
         },
         {
-          type: 'select',
-          prop: 'reportType',
+          type: 'select1',
+          prop: 'code',
           width: '150px',
           options: [
             {label:'饮酒', value:'201'},
@@ -107,8 +107,8 @@ export default {
           placeholder: '--申报类型--'
         },
         {
-          type: 'select',
-          prop: 'approvalStatus',
+          type: 'select1',
+          prop: 'status',
           width: '150px',
           options: [
             {label:'审批中', value:'1'},
@@ -131,11 +131,11 @@ export default {
         height:'560'
 			},
 			columns: [
-        {
-          prop: 'policeCode',
-          label: '发起人警号',
-          align: 'left'
-        },
+        // {
+        //   prop: 'policeCode',
+        //   label: '发起人警号',
+        //   align: 'left'
+        // },
         {
           prop: 'sponsorName',
           label: '发起人姓名',
@@ -147,8 +147,8 @@ export default {
           align: 'left'
         },
         {
-          prop: 'reportType',
-          formatter: 'reportType_format',
+          prop: 'formData',
+          formatter: 'formData_format2',
           options: {
             201: '饮酒',
             202: '离开辖区',
@@ -208,7 +208,7 @@ export default {
   watch: {},
   mounted() {
     // this.init();
-    this.searchForm[2].options = this.orgData
+    this.searchForm[1].options = this.orgData
     this.getUserListByUserId()
   },
   methods: {
@@ -219,11 +219,15 @@ export default {
       // console.log(column.options)
       return column.options[prop]
     },
+    
     gmtCreate_format(row, column, prop){
-      return new Date(prop).toLocaleString('chinese', {hour12: false})
+      return new Date(prop).toLocaleDateString()
     },
-    formData_format(row, column, prop){
+    formData_format(row, column, prop){    
       return JSON.parse(prop).applyDesc
+    },
+    formData_format2(row, column, prop){
+      return column.options[JSON.parse(prop).applyType]
     },
 		// 查询
     handleSearch(params) {

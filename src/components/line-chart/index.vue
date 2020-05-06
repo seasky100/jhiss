@@ -63,14 +63,15 @@
           // 直角坐标系 grid 中的 x 轴
           xAxis: {
             // 坐标轴刻度标签的相关设置
+       
             axisLabel: {
-              interval: 0, // 坐标轴刻度标签的显示间隔,设置0显示所有标签(防止文字重叠隐藏)
+              // interval: 0, // 坐标轴刻度标签的显示间隔,设置0显示所有标签(防止文字重叠隐藏)
               // rotate: 10, // 刻度标签旋转的角度
-              fontSize: 10, // 字体大小
-              rich: {
-                width: "5px"
-              },
-              rotate: this.rotate
+              fontSize: 12, // 字体大小
+              // rich: {
+              //   width: "5px"
+              // },
+              // rotate: this.rotate
               // formatter: value => {
               //   let valueTxt = "";
               //   if (value.length > 4) {

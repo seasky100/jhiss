@@ -12,6 +12,7 @@ const getters = {
   resource: state => state.user.resource,
   setting: state => state.user.setting,
   permission_routers: state => state.permission.routers,
+  permValueArr: state => state.permission.permValueArr,
   addRouters: state => state.permission.addRouters,
   orgData: state => state.user.orgData,
   userName: state => state.user.userName,
@@ -22,6 +23,7 @@ const getters = {
   orgId: state => state.user.orgId,
   orgCode: state => state.user.orgCode,
   orgName: state => state.user.orgName,
-  userInfo: state => state.user.userInfo
+  userInfo: state => state.user.userInfo,
+  countotal: state => state.user.countotal
 }
 export default getters
