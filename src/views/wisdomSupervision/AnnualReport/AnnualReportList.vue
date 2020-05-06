@@ -124,11 +124,16 @@ export default {
     //     })
     // },
     findReportById(row){
+      // console.log(row)
       const _this = this
       getReportById(
         Object.assign(
           {
             id: row.id,
+            // idNumber: row.idNumber,
+            // reportTime: row.specificYear
+            idNumber: '1245652255426',
+            reportTime: '2019'
           }
         )
       ).then(res => {

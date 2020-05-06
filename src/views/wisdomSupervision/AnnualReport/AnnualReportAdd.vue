@@ -12,6 +12,9 @@
           <el-form-item label="报告人" prop="rapporteur">
             <el-input v-model="ruleForm.rapporteur"></el-input>
           </el-form-item>
+          <el-form-item label="报告人身份证号" prop="idNumber">
+            <el-input v-model="ruleForm.idNumber"></el-input>
+          </el-form-item>
           <el-form-item label="所属单位名称" prop="company">
             <el-input v-model="ruleForm.company"></el-input>
           </el-form-item>
@@ -56,11 +59,10 @@
   </div>
 </template>
 <script>
+import { format } from 'date-fns';
 import { saveAnnualReport } from '@/api/report.js';
 import { getUserList } from '@/api/user-server.js';
-
 import getFlowNode from '../../../mixin/getFlowNode.js';
-
 import { mapGetters } from 'vuex';
 
 export default {
@@ -69,6 +71,7 @@ export default {
     return {
       ruleForm: {
         rapporteur: '',
+        idNumber: '',
         company: '',
         reportTime: '',
         comment: '',
@@ -77,6 +80,9 @@ export default {
       },
       rules: {
         rapporteur: [
+          { required: true, message: '请输入', trigger: 'blur' },
+        ],
+        idNumber: [
           { required: true, message: '请输入', trigger: 'blur' },
         ],
         company: [
@@ -136,6 +142,7 @@ export default {
           // let flowNode = this.flowNodeList.shift();
           const annualReportInformation = {
             rapporteur: this.ruleForm.rapporteur,
+            idNumber: this.ruleForm.idNumber,
             company: this.ruleForm.company,
             reportTime: this.ruleForm.reportTime,
             // rapporteurId: this.userId,
@@ -144,6 +151,7 @@ export default {
             department: this.ruleForm.department,
             approvalId: this.ruleForm.approvalId,
             // approvalId: '123456001',
+            specificYear: format(new Date(), 'yyyy') - 1, // 年报 (格式 yyyy )
           }
           saveAnnualReport(annualReportInformation).then(res => {
             // console.log(res);

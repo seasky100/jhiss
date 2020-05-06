@@ -216,17 +216,11 @@ export default {
           }
         })
         this.reportList3.forEach((item,index) => {
-          if(item.code == key){
-            // if(tableData2[index].headerTab == 2){
-            //   let formData = reportInfo[key].map(item => {
-            //     return JSON.parse(item.formData)
-            //   })
-            //   tableData2[index].headerParam = Object.assign(...formData)
-            // }else{
-            //   tableData2[index].data = reportInfo[key].map(item => {
-            //     return JSON.parse(item.formData)
-            //   })
-            // }
+          // 奖金，津贴
+          if(key == 312){
+            let obj = reportInfo[key]
+            tableData2[index].data = [obj]
+          }else if(item.code == key){
             tableData2[index].data = reportInfo[key].map(item => {
               return JSON.parse(item.formData)
             })

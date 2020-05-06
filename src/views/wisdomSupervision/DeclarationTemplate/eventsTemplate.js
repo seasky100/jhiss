@@ -227,10 +227,10 @@ let columns11 = [
 
 // 本人的工资及各类奖金、津贴、补贴等 （万元/全年）
 let columns21 = [
-    { prop: 'name', label: '工资（含津贴、补贴）', align: 'left' },
-    { prop: 'date', label: '奖金', align: 'left' },
-    { prop: 'address', label: '其他', align: 'left' },
-    { prop: 'zip', label: '合计', align: 'left' },
+    { prop: 'pay', label: '工资（含津贴、补贴）', align: 'left' },
+    { prop: 'bonus', label: '奖金', align: 'left' },
+    { prop: 'other', label: '其他', align: 'left' },
+    { prop: 'total', label: '合计', align: 'left' },
 ]
 
 // 本人从事讲学、写作、咨询、审稿、书画等劳务所得  （万元/全年）

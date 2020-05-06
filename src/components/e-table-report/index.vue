@@ -3,7 +3,7 @@
     <h2 class="title" ref="title">
       {{title.label}}  
       <!-- v-if="headerTab == 1" -->
-      <template>
+      <template v-if="saveEvent.code != 312">
         <span class="imgAdd" @click="addTabData"></span>
         <span class="saveImg" @click="saveBtnClick"></span>
         <!-- <span style="color:red;margin-left:10px;">
