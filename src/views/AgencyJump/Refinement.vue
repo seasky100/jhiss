@@ -75,85 +75,13 @@
               <el-tab-pane label="谈心谈话" name="five">谈心谈话</el-tab-pane>
               <el-tab-pane label="上门家访" name="six">上门家访</el-tab-pane>
             </el-tabs>
+            <el-button type="small" class='r_ask'>加班申请</el-button>
           </div>
-          <div class='r_ask'>加班申请</div>
           <div class='rc_tap'>
             <el-tabs v-model="activeName1" @tab-click="handleClick1">
               <el-tab-pane label="中层日志" name="1">
                 <div class='r_log'>
-                        <div class='c_scont'>
-                          <div class='c_top'>
-                            <div>
-                              <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
-                            </div>
-                            <div class='ctitle'>张松</div>
-                            <div class='e_date'>4天前</div>
-                          </div>
-                          <div class='e_center'>
-                            <div>
-                              <!-- <div class='c_cetitle'>最新回答</div> -->
-                              <div class='c_introduce'>简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class='c_scont'>
-                          <div class='c_top'>
-                            <div>
-                              <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
-                            </div>
-                            <div class='ctitle'>张松</div>
-                            <div class='e_date'>4天前</div>
-                          </div>
-                          <div class='e_center'>
-                            <div>
-                              <!-- <div class='c_cetitle'>最新回答</div> -->
-                              <div class='c_introduce'>简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class='c_scont'>
-                          <div class='c_top'>
-                            <div>
-                              <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
-                            </div>
-                            <div class='ctitle'>张松</div>
-                            <div class='e_date'>4天前</div>
-                          </div>
-                          <div class='e_center'>
-                            <div>
-                              <!-- <div class='c_cetitle'>最新回答</div> -->
-                              <div class='c_introduce'>简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class='c_scont'>
-                          <div class='c_top'>
-                            <div>
-                              <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
-                            </div>
-                            <div class='ctitle'>张松</div>
-                            <div class='e_date'>4天前</div>
-                          </div>
-                          <div class='e_center'>
-                            <div>
-                              <!-- <div class='c_cetitle'>最新回答</div> -->
-                              <div class='c_introduce'>简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class='c_scont'>
+                        <div class='c_scont' v-for="(item,index) of 3" :key="index">
                           <div class='c_top'>
                             <div>
                               <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
@@ -187,8 +115,8 @@
               <el-tab-pane label="直接下属" name="5">直接下属</el-tab-pane>
               <el-tab-pane label="领导互评" name="6">领导互评</el-tab-pane>
             </el-tabs>
+            <el-button type="small" class='r_ask'>批量操作</el-button>
           </div>
-          <div class='r_ask'>批量操作</div>
         </div>
         <div class='rc_right'>
           <div class='r_date'>
@@ -266,25 +194,25 @@
           </ele-calendar> -->
         </div>
         <div>
-          <div style="display: flex;text-align: center;">
+          <div style="display: flex;text-align: center;margin: 0 10px;">
             <div style="width:25%;cursor: pointer;">
-              <img class="photo_img" style="width: 30px;height: 37px;" src="@/assets/images/menu/daiban.png" />
+              <img class="photo_img" style="width: 20px;height: 25px;" src="@/assets/images/menu/daiban.png" />
               <div class='r_list'>代办(1)</div>
             </div>
             <div style="width:25%;cursor: pointer;">
-              <img class="photo_img" style="width: 30px;height: 37px;" src="@/assets/images/menu/rizhi.png" />
+              <img class="photo_img" style="width: 20px;height: 25px;" src="@/assets/images/menu/rizhi.png" />
               <div class='r_list'>日志(1)</div>
             </div>
             <div style="width:25%;cursor: pointer;">
-              <img class="photo_img" style="width: 30px;height: 37px;" src="@/assets/images/menu/jixiao.png" />
+              <img class="photo_img" style="width: 20px;height: 25px;" src="@/assets/images/menu/jixiao.png" />
               <div class='r_list'>绩效(1)</div>
             </div>
             <div style="width:25%;cursor: pointer;">
-              <img class="photo_img" style="width: 30px;height: 37px;" src="@/assets/images/menu/shenpi.png" />
+              <img class="photo_img" style="width: 20px;height: 25px;" src="@/assets/images/menu/shenpi.png" />
               <div class='r_list'>审批(1)</div>
             </div>
             <div style="width:25%;cursor: pointer;">
-              <img class="photo_img" style="width: 30px;height: 37px;" src="@/assets/images/menu/huiyi.png" />
+              <img class="photo_img" style="width: 20px;height: 25px;" src="@/assets/images/menu/huiyi.png" />
               <div class='r_list'>会议(1)</div>
             </div>
           </div>
@@ -329,10 +257,10 @@
     </div>
   </div>
   </div>
-  </template>
-  <script>
+</template>
+<script>
     export default {
-      name: 'NavMenu',
+      name: 'Refinement',
       props: {
         navMenus: {}
       },
@@ -563,6 +491,13 @@
     overflow: hidden;
     /* display: flex; */
   }
+  .r_content >>> .el-tabs__content{
+    max-height: 535px;
+    overflow: auto;
+  }
+  .r_list{
+    font-size: 12px;
+  }
   .r_left{
     width: 15%;
   }
@@ -572,10 +507,10 @@
   }
   .r_top{
     height: 10%;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
   }
   .rc_content{
-    height: 90%;
+    height: calc(90% - 10px);
     display: flex;
   }
   .rc_left{
@@ -636,14 +571,13 @@
       width: 80%;
     }
     .rc_tap{
-      height: 15%;
+      position:relative;
+      height: auto;
       background-color: #fff;
-      /* padding: 10px; */
-      padding-top: 10px;
-      width: 87%;
+      padding: 10px;
+      width: calc(100% - 20px);
       margin-bottom: 10px;
       float: left;
-  
     }
     .r_send{
       margin-right: 30px;
@@ -658,13 +592,9 @@
       margin-top: 15px;
     }
     .r_ask{
-      width: 13%;
-      height: 15%;
-      /* padding: 10px; */
-      padding-top: 10px;
-      background-color: #fff;
-      float: right;
-      color: blue;
+      position: absolute;
+      top: 15px;
+      right: 15px;
     }
     .c_top{
       height: 10%;
@@ -736,9 +666,8 @@
       background-color: #fff;
     }
     .r_log{
-      height: 600px;
-      /* overflow: scroll; */
-      overflow: auto;
+      /* overflow: scroll; 
+      overflow: auto; */
     }
     .c_type{
       width: 100%;
