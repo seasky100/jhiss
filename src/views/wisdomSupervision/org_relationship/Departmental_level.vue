@@ -7,46 +7,68 @@
     </div>
     <div class="individual_title"></div>
     <div class="dep_list" style="width:100%;text-align:center;">
-      <div @mousedown="changeScroll('left')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+      <div
+        @mousedown="changeScroll('left')"
+        @mouseup="stopScroll"
+        style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;"
+      >
         <img style="width:30px;" src="@/assets/images/bg/dir_left.png" />
       </div>
       <div ref="dep_list" class="dep_Con">
-        <div class="entrance" @click="handleClickDep(item)" :style="[
+        <div
+          class="entrance"
+          @click="handleClickDep(item)"
+          :style="[
             { border: active == item.id ? '3px solid #bf1730' : 'none' },
-          ]" v-for="(item, index) of entranceList" :key="index" ref="dep_box">
-          <img style="height:40px;margin:8px 0;" :src="require('../../../assets/images/bg/dep_bg.png')" />
+          ]"
+          v-for="(item, index) of entranceList"
+          :key="index"
+          ref="dep_box"
+        >
+          <img
+            style="height:40px;margin:8px 0;"
+            :src="require('../../../assets/images/bg/dep_bg.png')"
+          />
           <div class="panel_info">
             <span style="display:block;">{{ item.name }}</span>
-         
+
             <span style="font-weight:normal;color:#ccc;">{{item.userNames}}</span>
           </div>
         </div>
       </div>
-      <div @mousedown="changeScroll('right')" @mouseup="stopScroll" style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;">
+      <div
+        @mousedown="changeScroll('right')"
+        @mouseup="stopScroll"
+        style="display:inline-block;position: relative;bottom: 65px;cursor:pointer;"
+      >
         <img style="width:30px;" src="@/assets/images/bg/dir_right.png" />
       </div>
     </div>
     <div class="post_status">
-      <div style='margin-bottom:20px'>
+      <div style="margin-bottom:20px">
         排列方式：
-        <input type="checkbox" v-model="horizontal">水平排列
+        <input type="checkbox" v-model="horizontal" />水平排列
       </div>
       <span>岗位状态颜色说明：</span>
       <li style="color:#1ACE80;">正常</li>
       <li style="color:#DABC85;">关注</li>
       <li style="color:#AB2C31;">预警</li>
-
     </div>
     <div class="relationship">
-      <org-tree :data="tree_data" :path_url="path_url" :collapsable="true" :horizontal="horizontal" :model="model">
-      </org-tree>
+      <org-tree
+        :data="tree_data"
+        :path_url="path_url"
+        :collapsable="true"
+        :horizontal="horizontal"
+        :model="model"
+      ></org-tree>
     </div>
   </div>
 </template>
 <script>
-import { treeAndUser } from '@/api/report.js';
+import { treeAndUser } from "@/api/report.js";
 export default {
-  name: 'Departmental_level', //部门层级关系图
+  name: "Departmental_level", //部门层级关系图
   data() {
     return {
       active: 0,
@@ -54,19 +76,19 @@ export default {
       tree_data: {},
       horizontal: false,
       // 人员关系跳转地址
-      path_url: 'Personnel_relation',
-      model: 'dep',
+      path_url: "Personnel_relation",
+      model: "dep",
       timer: null
       //
     };
   },
   mounted() {
     this.init();
-    // this.getData();
+    this.getData();
   },
   methods: {
     returnClick() {
-      this.$router.push({ path: '/Org_relationship' });
+      this.$router.push({ path: "/Org_relationship" });
     },
     init() {
       let query = this.$route.query;
@@ -87,7 +109,7 @@ export default {
         $(this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
       });
     },
-    getChildren(node, newchildren, t = 2) {
+    getChildren(node, newchildren, t = 1) {
       let childrens = node.childrens || []; //当前岗位下的子节点
       let userList = node.userList; //当前岗位的用户节点
       //把当前岗位的节点当作子节点
@@ -96,15 +118,20 @@ export default {
         // userList[i].children = [];
         // userList[i].level = t;
         // userList[i].index = i;
-        const child = {
+
+        let child = {
           userPid: node.userPid,
           id: userList[i].id,
           children: [],
           level: t,
           index: i,
+          expand: false,
           realName: userList[i].realName,
           userInfo: userList[i].userInfo
         };
+        if (t < 3) {
+          child.expand = true;
+        }
         newchildren.push(child);
       }
       t++;
@@ -116,11 +143,11 @@ export default {
         }
       }
     },
-    changeScroll(direction = 'right') {
+    changeScroll(direction = "right") {
       let scroll = this.$refs.dep_list.scrollLeft;
       let width = this.$refs.dep_list.scrollWidth;
       let n = 0;
-      if (direction == 'left') {
+      if (direction == "left") {
         // $(this.$refs.dep_list).animate({scrollLeft: scroll - 300 },1000)
         this.timer = setInterval(() => {
           if (n > scroll) {
@@ -145,21 +172,33 @@ export default {
       this.timer = null;
     },
     getTreeData(value) {
-      console.log(value)
       this.active = value.id;
       let tree_data = {
         children: [],
-        realName: value.userPname,
-        expand:true,
+        realName: value.userList[0].realName,
+        expand: true,
         level: 1,
-        userInfo: {}
+        userInfo: value.userList[0].userInfo
       };
       this.getChildren(value, tree_data.children);
-      this.tree_data = tree_data;
+      if (tree_data.children.length > 1) {
+        tree_data.children[1].level = 2;
+        tree_data.children[1].children.forEach(element => {
+          element.level = 3;
+           element.expand = false;
+        });
+        tree_data.children[0].children.push(tree_data.children[1]);
+      }
+      // this.getChildren(value, tree_data.children);
+      // if(tree_data.children.length==1){
+      //   tree_data=tree_data.children[0]
+      //   tree_data.level=1
+      // }
+      this.tree_data = tree_data.children[0];
     },
     handleClickDep(value) {
       this.$router.push({
-        path: '/Departmental_level',
+        path: "/Departmental_level",
         query: { id: value.id }
       });
       this.getTreeData(value);
@@ -172,7 +211,7 @@ export default {
       } else {
         treeAndUser(
           Object.assign({
-            currentId: '' // 当前区域id
+            currentId: "" // 当前区域id
           })
         ).then(res => {
           let tree_data = res.data[0];

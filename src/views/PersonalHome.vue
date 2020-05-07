@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 <template>
     <div class='person_home'>
       <div class='person_body'>
@@ -55,7 +56,7 @@
             <div class='person_left'>
                 <div class="person_title">
                     <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                    风险提醒
+                    风险预警
                   </div>
                   <div class="fengxian_body radar" id="radar"></div>
                   <div class='p_warn'>
@@ -75,7 +76,7 @@
                           <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/cry.png' />当前<span class='ptotal' >{{countotal}}</span>项风险内容，请谨慎！！！</div>
                       </div>
                       <div v-else>
-                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/smile.png' />当前<span class='ntotal' >{{countotal}}</span>项风险内容，请保持！！！</div>
+                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/smile.png' />当前<span class='ntotal' >{{countotal}}</span>项风险内容，请注意！！！</div>
                       </div>
                       
                     </div>
@@ -87,18 +88,17 @@
               <div class='p_top'>
                   <div class="person_title">
                       <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                      考勤情况
+                      考勤分析
                     </div>
                   <div id='kao' class='p_attendance'></div>
               </div>
               <div class='p_foot'>
                   <div class="person_title">
                       <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                      层级评价
+                      绩效评价
                     </div>
                     <div class='p_evaluate' style="float : left;height: calc(100% - 70px);width: 45%;border-right: 1px solid rgb(228, 233, 243);">
                       <div style="height: 10%;">
-                        <!-- <div class='p_change'>切换</div> -->
                         <select class='p_select' v-model='value' >
                           <option
                           v-for='item in options2'
@@ -132,8 +132,8 @@
                         <el-progress style="width: 70%;" :color="customColor4" :stroke-width="10" :percentage="70" ></el-progress>
                       </div>
                     </div>
-                    <div v-show='!change' style="height:90%; margin-top: 2em;">
-                        <svg ref="element" width="150" height="150" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
+                    <div v-show='!change'>
+                        <svg ref="element" width="250" height="130" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
                       </div> 
                     </div>
                   </div>
@@ -150,10 +150,10 @@
                     <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">协作提效</span>
                     <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #E8EFFF">
                       <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #235FF6"> 
-                        <Link class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        <div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                           style="width: 4em; height: 4em; background: #235FF6" title='待办箱'>
                           <span style="font-size: 1.5em">{{xztxNum}}</span>
-                        </Link>
+                        </div>
                       </div>
                     </div> 
                     <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
@@ -163,10 +163,10 @@
                     <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">队伍精细化</span>
                     <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
                       <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #8674f6">
-                        <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                           style="width: '4em'; height: 4em; background: #8674f6" title='待办箱'>
                           <span style="font-size: 1.5em">1</span>
-                        </Link>
+                        </div>
                       </div>
                     </div>
                     <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
@@ -176,10 +176,10 @@
                     <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
                     <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
                       <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #F09B38">
-                        <Link  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                           style="width: '4em'; height: 4em; background: #F09B38" title='待办箱'>
                           <span style="font-size: 1.5em">{{countotal}}</span>
-                        </Link>
+                        </div>
                       </div>
                     </div>
                     <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
@@ -247,11 +247,10 @@
     </div>
   </template>
   <script>
-    import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil,indexCalendar } from '@/api/warn.js';
-    import { getPoliceCareer,getUserListByUserId } from '@/api/user-server.js';
-    import { findWorknotePage,countWorkNote } from '@/api/report.js';
-    // import { subDays,format } from 'date-fns';
-    import { mapGetters } from 'vuex';
+import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil,indexCalendar } from '@/api/warn.js';
+import { getPoliceCareer,getUserListByUserId } from '@/api/user-server.js';
+import { findWorknotePage,countWorkNote } from '@/api/report.js';
+import { mapGetters } from 'vuex';
   export default {
     name: "PersonalHome",
     computed: {
@@ -294,7 +293,6 @@
         infoData:[],       
         // userId:'',
         userInfo:[],
-        value: new Date(),
         timer:'',
         timer2:'',
         year:'',
@@ -311,7 +309,7 @@
         value:"2020",
         warnList:[
         { name:'遵章守纪',type: '13',num:0},
-        { name:'违规查询',type: '4',num:0},
+        { name:'异常查询',type: '4',num:0},
         { name:'涉嫌违法',type: '6',num:0},
         { name:'护照保管',type: '8',num:0},
         { name:'日志业绩',type: '5',num:0},
@@ -393,36 +391,25 @@
     },
     initCircle() {
       const data = [
-        { name: "", count: 1 },
-        { name: "", count: 2 },
-        { name: "争优", count: 10 }, 
-        { name: "业绩", count: 7 },
-        { name: "", count: 1 },
-        { name: "", count: 2 },
-        { name: "考勤", count: 8 },
-        { name: "重点", count: 9 },
-        { name: "业绩", count: 7 },
-        { name: "", count: 1 },
-        { name: "", count: 2 },
-        { name: "", count: 3 },
-        { name: "", count: 1 },
-        { name: "共性", count: 8 }
+        { name: "争优", count: 5 }, 
+        { name: "出勤", count: 10 },
+        { name: "日志", count: 10 },
+        { name: "重点", count: 20 },
+        { name: "共性", count: 20 },
+        { name: "业绩", count: 40 },
       ]      
       d3.select("svg").selectAll("g").remove();//清空作图区域
       const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
       const format = d3.format(",d");
-
-      //       var color = d3.scaleOrdinal(d3.schemeCategory20c);
+      // var color = d3.scaleOrdinal(d3.schemeCategory20c);
       const color = ["#FF9700", "#416DF6","#63C073", "#8B6FFE", "#8B6FFE", "#FF9700", "#416DF6","#63C073", "#8B6FFE", "#8B6FFE", "#F34252"];//自定义颜色
-      const pack = d3.pack()
-        .size([width, height])
-        .padding(1.5);
+      const pack = d3.pack().size([width, height]).padding(1.5);
       var num, pid;
       const root = d3.hierarchy({ children: data })
         .sum((d) => { return d.count; })
         .each((d) => {
           if (d.parent == null) { num = d.value }
-          if (id = d.data.name) {
+          if (id == d.data.name) {
             var id
             d.id = id;
             d.class = id;
@@ -463,7 +450,7 @@
       node.append("title")
         .text((d) => { return d.id + "\n" + format(d.value); });
       node.on("click", (d) => {
-        clickBubble(d.id);//自定义点击事件
+       // clickBubble(d.id);//自定义点击事件
       })
     },
     changeScroll(direction = 'right'){
@@ -571,13 +558,13 @@
                       showMinLabel: true   , //显示最小数字，即中心点显示0
                   },
               },
-              { name: '违规查询', max: this.maxValue},
+              { name: '异常查询', max: this.maxValue},
               { name: '涉嫌违法', max: this.maxValue},
               { name: '护照保管', max: this.maxValue},
               { name: '日志业绩', max: this.maxValue},
               { name: '效能提醒', max: this.maxValue},
               { name: '违规用车', max: this.maxValue},
-              // { name: '违规查询', max: 30},
+              // { name: '异常查询', max: 30},
               // { name: '差旅管理', max: 30},
                      
               { name: '考勤预警', max: this.maxValue},
@@ -614,7 +601,7 @@
               data: [
                   {
                     value: this.warnData,
-                    name: ['遵章守纪','违规查询 ','涉嫌违法','护照保管','日志业绩','效能提醒','违规用车','考勤预警'],
+                    name: ['遵章守纪','异常查询 ','涉嫌违法','护照保管','日志业绩','效能提醒','违规用车','考勤预警'],
                     // 设置区域边框和区域的颜色
                     itemStyle: {
                       normal: {
@@ -915,7 +902,7 @@
             if (tdata) {
               const array = [
                 { name: '遵章守纪', type: '13', value: 30 },
-                { name: '违规查询', type: '4', value: 30 },
+                { name: '异常查询', type: '4', value: 30 },
                 { name: '涉嫌违法', type: '6', value: 30 },
                 { name: '护照保管', type: '8', value: 30 },
                 { name: '日志业绩', type: '5', value: 30 },
@@ -946,7 +933,6 @@
               _this.warnData = array.map((value) => {
                 return value.value;
               })
-            }else{
             }
             _this.init();
           }
@@ -1321,7 +1307,7 @@
     background: white;
     height: 40% !important;
   } */
-  /*  */
+
   .el-col {
       border-radius: 4px;
     }
@@ -1526,9 +1512,5 @@
     #calendar .el-button-group>.el-button:not(:first-child):not(:last-child):after{
         content: '当月';
     }
-    /* .left-score-image {
-          width: 100% !important;
-          height: 100% !important;
-      } */
   </style>
   

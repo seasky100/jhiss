@@ -243,37 +243,37 @@
     margin-left: 15px;
   }
   .c_top{
-	  /* height: 10%; */
-	  padding-top: 22px;
-	  padding-left: 15px;
-	  display: flex;
+    /* height: 10%; */
+    padding-top: 22px;
+    padding-left: 15px;
+    display: flex;
   }
   .ctitle{
-	  width: 80%;
-	  font-size: 16px;
-	  font-family: Microsoft YaHei;
-	  font-weight: bold;
-	  color: rgba(51,51,51,1);
+    width: 80%;
+    font-size: 16px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: rgba(51,51,51,1);
   }
   .c_cetitle{
-	  width: 30%;
-	  padding-left: 24px;
-	  /* color: #ff0e02; */
-	  margin-top: 20px;
-	  font-size: 14px;
-	  font-weight: bolder;
+    width: 30%;
+    padding-left: 24px;
+    /* color: #ff0e02; */
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: bolder;
   }
   .c_introduce{
-	  font-size: 14px;
-	  font-family: Microsoft YaHei;
-	  font-weight: 400;
-	  color: #515a6e;
-	  margin-top: 5px;
-	  margin-right: 10px;
-	  /* margin-left: 28px; */
-	  text-indent: 24px;
-	  line-height: 22px;
-	  letter-spacing: 1px;
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #515a6e;
+    margin-top: 5px;
+    margin-right: 10px;
+    /* margin-left: 28px; */
+    text-indent: 24px;
+    line-height: 22px;
+    letter-spacing: 1px;
   }
   .mnode{
     height: 20%;
