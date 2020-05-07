@@ -293,7 +293,7 @@ export default {
             nSize: 10,
             userId: $this.userId + ','+ $this.userIds,
             approvalId: '',
-            reportType: '1'
+            reportType:   $this.searchData.code||'1'
           },
           $this.searchData
         )

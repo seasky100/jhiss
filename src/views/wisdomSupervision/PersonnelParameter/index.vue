@@ -36,12 +36,12 @@
 import {
     getUserList
 } from '@/api/user-server.js';
-import parameterDetail from './modal/parameterDetail'
+// import parameterDetail from './modal/parameterDetail'
 // import { getUserList } from '@/api/wisdom-reminder/personnel-parameter.js'
 
 export default {
     components: {
-        parameterDetail
+        // parameterDetail
     },
     data() {
         return {
