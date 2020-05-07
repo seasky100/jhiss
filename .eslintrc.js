@@ -4,7 +4,8 @@ module.exports = {
   //   "jquery": true // 解决$报错
   // },
   env: {
-    node: true
+    node: true,
+    jquery: true 
   },
   'extends': [
     'plugin:vue/essential',
