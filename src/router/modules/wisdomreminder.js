@@ -143,14 +143,20 @@ const wisdomReminderRouter = [
         component: { render: (h) => h('router-view'), },
         children: [
           {
-            title: '建设中',
+            title: '警务监督',
             icon: 'el-icon-menu',
             img: 'float_attendance@2x.png',
-            name: 'build',
-            path: '/build',
-            component: {
-              render: (h) => h('router-view'),
-            },
+            name: 'jingwujiandu',
+            path: '/unbuild',
+            component: () => import('@/views/unbuild'),
+          },
+          {
+            title: '法制监督',
+            icon: 'el-icon-menu',
+            img: 'float_attendance@2x.png',
+            name: 'fazhijiandu',
+            path: '/unbuild1',
+            component: () => import('@/views/unbuild'),
           },
         ],
       },

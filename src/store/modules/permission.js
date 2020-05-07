@@ -32,13 +32,11 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
         // 记录有权限时菜单的个数
         let i = 1
         res.push(tmp)
-        // console.log(tmp)
         if (tmp.children) {
             tmp.children.forEach(item => {
                 // console.log(item)
                 // 如果路由配置里面有 permValue 字段
-                if (item.meta.permValue) {
-                    console.log('权限22',item.meta.permValue)
+                if (item.meta&&item.meta.permValue) {
                     // 如果该字段存在返回的菜单权限数组
                     if (permValueArr.includes(item.meta.permValue)) {
                         i++
@@ -49,8 +47,8 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
                     }
                 } else {
                     if (!item.hidden) {
-                		// hideMenuArr.push(item)
-                		// item.hidden = true
+                    // hideMenuArr.push(item)
+                    // item.hidden = true
                     }
                 }
             })

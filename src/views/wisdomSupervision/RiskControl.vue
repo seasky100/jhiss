@@ -32,15 +32,11 @@
 </template>
 
 <script>
-import HistogramChart from "@/components/histogram-chart";
-import LineChart from '@/components/line-chart';
 import { getRepastSiteWarnStatistics, getRepastWarnTimesStatistics, getFindMealCardPage } from '@/api/wisdom-reminder/perceptual-wisdom.js'
 import earlyWarningDetail from './modal/earlyWarningDetail'
 
 export default {
   components: {
-    HistogramChart,
-    LineChart,
     earlyWarningDetail
   },
   data() {

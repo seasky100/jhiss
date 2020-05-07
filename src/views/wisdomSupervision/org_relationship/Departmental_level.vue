@@ -286,6 +286,7 @@ export default {
   position: fixed;
   width: 200px;
   margin: 20px 40px;
+  z-index: 3;
 
   span {
     display: block;
