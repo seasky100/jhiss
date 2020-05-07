@@ -391,13 +391,13 @@ export default {
       ],
       // 是否选项
       whetherList: [
-        {name: '是', value:'1'},
-        {name: '否', value:'2'},
+        {name: '是', value:1},
+        {name: '否', value:2},
       ],
       // 是否担任高级职务
       isDutyList: [
-        {name: '是', value:'0'},
-        {name: '否', value:'1'},
+        {name: '是', value:0},
+        {name: '否', value:1},
       ],
     }
   },
