@@ -101,7 +101,7 @@
                         </div>
                       </div>
                       <div class='e_center' v-if="item2.noteScore == null">
-                        <div style="margin-left:30px;">
+                        <div style="margin-left:30px;display:none;">
                           <el-input style="border: 1px solid #ccc;width: 80% !important;"
                             type="textarea"
                             :autosize="{ minRows: 2, maxRows: 4}"
@@ -114,7 +114,7 @@
                         <div>
                           <div class='c_introduce'>
                             {{item2.comment}} 
-                            <span style="display:block;">审阅日期：{{item2.remarkTime2}}</span>
+                            <span>审阅日期：{{item2.remarkTime2}}</span>
                           </div>
                         </div>
                       </div>
