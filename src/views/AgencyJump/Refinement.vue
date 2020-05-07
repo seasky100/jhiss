@@ -54,7 +54,7 @@
     </div>
     <div class='r_right'>
       <div class='r_top'>
-        <img class="photo_img"  style="width: 99%;" src="@/assets/images/jxbj.png" />
+        <img class="photo_img"  style="width: 99%;height:100%;" src="@/assets/images/banner.png" />
       </div>
       <div class='rc_content'>
         <div class='rc_left'>
@@ -79,41 +79,49 @@
           </div>
           <div class='rc_tap'>
             <el-tabs v-model="activeName1" @tab-click="handleClick1">
-              <el-tab-pane label="中层日志" name="1">
-                <div class='r_log'>
-                        <div class='c_scont' v-for="(item,index) of 3" :key="index">
-                          <div class='c_top'>
-                            <div>
-                              <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
-                            </div>
-                            <div class='ctitle'>张松</div>
-                            <div class='e_date'>4天前</div>
-                          </div>
-                          <div class='e_center'>
-                            <div>
-                              <!-- <div class='c_cetitle'>最新回答</div> -->
-                              <div class='c_introduce'>简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-                                口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是</div>
-                            </div>
+              <template v-for="(item,index) of tabList">
+                <el-tab-pane :key="index+'_tabs'" lazy :label="item.label" :name="index+'_tabs'">
+                  <div v-if="recordsList.length == 0" class='r_log'>无数据</div>
+                  <div v-else class='r_log'>
+                    <div class='c_scont' v-for="(item2,index2) of recordsList" :key="index2+'_pane'">
+                      <div class='c_top'>
+                        <div>
+                          <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
+                        </div>
+                        <div class='ctitle'>
+                          <span>{{item2.userName}}</span>
+                          <span class="depName">{{item2.deptName}}</span>
+                        </div>
+                        <div class='e_date'>{{item2.noteDate2}}</div>
+                      </div>
+                      <div class='e_center e_center_content'>
+                        <div>
+                          <div v-if="item2.content != null" class='c_introduce'>{{item2.content}}</div>
+                          <div v-else class='c_introduce'>无内容</div>
+                        </div>
+                      </div>
+                      <div class='e_center' v-if="item2.noteScore == null">
+                        <div style="margin-left:30px;">
+                          <el-input style="border: 1px solid #ccc;width: 80% !important;"
+                            type="textarea"
+                            :autosize="{ minRows: 2, maxRows: 4}"
+                            placeholder="请输入内容"
+                            v-model="item2.comment">
+                          </el-input>
+                        </div>
+                      </div>
+                      <div class='e_center' v-else>
+                        <div>
+                          <div class='c_introduce'>
+                            {{item2.comment}} 
+                            <span style="display:block;">审阅日期：{{item2.remarkTime2}}</span>
                           </div>
                         </div>
                       </div>
-                <!-- <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 1, maxRows: 2}"
-                  placeholder="发布一条日志"
-                  v-model="textarea1">
-                </el-input>
-                <div class='r_send'>发布</div> -->
-              </el-tab-pane>
-              <!-- <el-tab-pane label="中层日志" name="second">中层日志</el-tab-pane> -->
-              <el-tab-pane label="我的" name="2">我的</el-tab-pane>
-              <el-tab-pane label="所有民警" name="3">所有民警</el-tab-pane>
-              <el-tab-pane label="带批阅（10）" name="4">带批阅（10）</el-tab-pane>
-              <el-tab-pane label="直接下属" name="5">直接下属</el-tab-pane>
-              <el-tab-pane label="领导互评" name="6">领导互评</el-tab-pane>
+                    </div>
+                  </div>
+                </el-tab-pane>
+              </template>
             </el-tabs>
             <el-button type="small" class='r_ask'>批量操作</el-button>
           </div>
@@ -123,76 +131,9 @@
             <div class='' style="height: 15%;">
               <div style="margin-top: 15px;margin-left: 15px;font-weight: 600;">工作日历</div>
             </div>
-            <div class='p_hevaluate' style="float : left; height: 56%;">
-          <div class='flex flex-justify-between' style="padding: 9px 0.5em">
-            <div class='flex flex-align-center'>
-              <button class='r-half' style="width: 2.2em; height: 2.2em; background: #8593A7 url(../../utils/img/home_calendar_arrow_left.svg) no-repeat center/70%"
-                @click="prevMonth" title='上一月'></button>
-              <span class='font14 txt-bold mx4' >{{monthMap[ydata.month+1]}}</span>
-              <button class='r-half' style="width: 2.2em; height: 2.2em; background: #8593A7 url(/../../utils/img/home_calendar_arrow_right.svg) no-repeat center/70%"
-              @click="nextMonth" title='下一月'></button>
+            <div class='p_hevaluate' style="float : left; height: 245px;">
+              <el-calendar v-model="value"></el-calendar>
             </div>
-            <button class='flex flex-align-center' @click="backToday">
-              <img src='../../utils/img/home_calendar_back_today@2x.png' style="height: 1.2em" />
-              <span class='pl4' style="color: #235FF6" :title="'今天是'+ nyear+'年' + nmonth+'月'+ ndate+'日'" >回到今天</span>
-            </button>
-          </div>
-          <div class='flex flex-align-center flex-justify-between' style="margin-top: 0.5em">
-            <div v-for="(item,index) in weekMap" :key="index">                            
-              <div :key="index" class='flex-inline flex-grow flex-align-center flex-justify-center'
-                style="flex-basis: 14.28%">{{item.name}}</div>
-            </div>
-          </div>
-          <div class='flex flex-align-center flex-column mt8'>
-              <div style="width: 100%;" v-for="(weekItem,index) in rData" :key="index">
-                <div :key="index" class='w-full flex flex-align-center flex-justify-between py4'>
-                  <div  v-for="(dayItem,index1) in weekItem" :key="index1">
-                    <div v-if='dayItem.month() == ydata.month && isMarked(scoreItemOf(dayItem)) '>
-                      <router-link  :key="index" to='/HierEvaluation'  class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="flex-basis: 14.28%; color: #121518" :title="titleOf(dayItem)" >
-                       
-                           <div class='flex flex-align-center flex-justify-center w16 h16 r-half' style=" background: #235FF5; border: 2px solid #235FF520; color: #121518;  ">
-                            {{dayItem.date()}}
-                          </div>
-                          <div class='r-half' style="width: 4px; height: 4px; background: colorOf(scoreOf(dayItem))"></div>
-                        </router-link>
-                    </div>
-                    <div v-else>
-                      <div :key="index1" class='flex-inline flex-column flex-grow flex-align-center'>
-                        <span style="color: #8593A7">{{dayItem.date()}}</span>
-                        <div class='r-half bg-transparent' style="width: '4px'; height: 4px" >
-                      </div>
-                    </div>
-                    </div>
-                  <!-- {
-                    weekItem.map((dayItem, index) =>
-                      dayItem.month() === this.state.month && this.isMarked(this.scoreItemOf(dayItem))
-                      ? <Link key={index} to={location => ({pathname: '/home/log', state: this.scoreItemOf(dayItem)})} 
-                          class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none'
-                          style={{flexBasis: '14.28%', color: '#121518'}} title={this.titleOf(dayItem)}
-                       
-                           <div class='flex flex-align-center flex-justify-center w16 h16 r-half' 
-                            style={dayItem.date() === this.today.date() ? {background: '#235FF5', border: '2px solid #235FF520', color: '#121518'} : {}}>
-                            {dayItem.date()}
-                          </div>
-                          <div class='r-half' style={{width: '4px', height: '4px', background: this.colorOf(this.scoreOf(dayItem))}} />
-                        </Link>
-                      :  -->
-              
-                    </div>
-                  </div>
-                    <!-- )
-                  } -->
-          </div>
-          </div>
-          <!-- <ele-calendar 
-            defaultValue="2019-05" 
-            @date-change="change"
-            @pick="pick"
-            :render-content="renderContent" 
-            :data="datedef"
-            :prop="prop">
-          </ele-calendar> -->
-        </div>
         <div>
           <div style="display: flex;text-align: center;margin: 0 10px;">
             <div style="width:25%;cursor: pointer;">
@@ -222,7 +163,7 @@
             <div class='' style="height: 15%;">
               <div style="margin-top: 15px;margin-left: 10px;font-weight: 600;padding-top: 10px;">个人考勤情况</div>
             </div>
-            <div style="display: flex; margin-top: 20px;text-align: center;">
+            <div style="display: flex;margin:0 15px; margin-top: 20px;text-align: center;">
             <div style="width:25%;cursor: pointer;">
               <img class="photo_img" src="@/assets/images/menu/jiaban.png" />
               <div class='k_list'>加班申请</div>
@@ -259,6 +200,8 @@
   </div>
 </template>
 <script>
+import { format } from 'date-fns';
+import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
     export default {
       name: 'Refinement',
       props: {
@@ -266,69 +209,85 @@
       },
       data() {
         return {
+          value: new Date(),
+          textarea2: '',
+          searchData: [
+            {deptId: this.$store.state.user.orgId},
+            {userId: this.$store.state.user.userInfo.info},
+            {},
+            {audited: '2'},
+          ],
+          tabList: [
+            {label: '部门日志', name: '', data: [{name:''}]},
+            {label: '我的', name: '', data: []},
+            {label: '所有民警', name: '', data: []},
+            {label: '待批阅', name: '', data: [{name:''}]},
+            // {label: '直接下属', name: '', data: [{name:''}]},
+            // {label: '领导互评', name: '', data: [{name:''}]},
+          ],
+          recordsList: [],
           textarea: '',
           activeName: 'first',
-          activeName1: '1',
+          activeName1: '0_tabs',
           nyear:'',
           nmonth:'',
           ndate:'',
           rData:[],
-          weekMap : [
-          { name:'日',num:'1'},
-            { name:'一',num:'1'},
-            { name:'二',num:'1'},
-            { name:'三',num:'1'},
-            { name:'四',num:'1'},
-            { name:'五',num:'1'},
-            { name:'六',num:'1'}
-      ], 
-      monthMap : {
-      1: '一月',
-      2: '二月',
-      3: '三月',
-      4: '四月',
-      5: '五月',
-      6: '六月',
-      7: '七月',
-      8: '八月',
-      9: '九月',
-      10: '十月',
-      11: '十一月',
-      12: '十二月'
-    },
-      scores: [
-        6, 6, 7, 6, 8, 7, 8, 8, 8, 8,
-        8, 7, 6, 7, 7, 7, 7, 8, 9, 7,
-        7, 6, 7, 7, 6, 6, 6, 7, 7, 8
-      ],
-      ydata:{
-        year:'',
-        month:'',
-        date: '',
-    },      
-      }
+          scores: [
+            6, 6, 7, 6, 8, 7, 8, 8, 8, 8,
+            8, 7, 6, 7, 7, 7, 7, 8, 9, 7,
+            7, 6, 7, 7, 6, 6, 6, 7, 7, 8
+          ],
+          ydata:{
+            year:'',
+            month:'',
+            date: '',
+          },      
+        }
       },
       mounted() {
         this.getRadar2()
         this.init()
+        this.query()
       },
       methods: {
         init(){
-        this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
-                          index % 7
-                          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-                          : [...prev, [item]]
-                        ), [])
-      },                 
+          this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
+            index % 7
+            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+            : [...prev, [item]]
+          ), [])
+        },                 
       getMonthDays(year, month) {
-      const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
-      const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), 'day');
-      const lastDayOfMonth = firstDayOfMonth.add(1, 'month').subtract(1, 'day');
-      const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), 'day');
-      return new Array(firstDayOfMonth.daysInMonth() + firstDayOfMonth.day() + 6 - lastDayOfMonth.day()).fill(0).map((item, index) =>
-        from.add(index, 'day')
-      );
-    },
+        const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
+        const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), 'day');
+        const lastDayOfMonth = firstDayOfMonth.add(1, 'month').subtract(1, 'day');
+        const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), 'day');
+        return new Array(firstDayOfMonth.daysInMonth() + firstDayOfMonth.day() + 6 - lastDayOfMonth.day()).fill(0).map((item, index) =>
+          from.add(index, 'day')
+        );
+      },
+      // 查询列表
+      query(nCurrent = 1,index = 0) {
+        const _this = this;
+        findWorknotePage(
+          Object.assign(
+            {
+              nCurrent: nCurrent,
+              nSize: 20,
+              // staffed: this.userIds,
+              orderByField: 'noteDate',
+              orderFlag: false,
+              // userId: JSON.parse(sessionStorage.userInfo).id
+            },_this.searchData[index])).then(res => {
+              // console.log(res.data.records)
+              _this.recordsList = res.data.records.map(obj => {
+                obj.remarkTime2 = format(new Date(obj.remarkTime), 'yyyy-MM-dd')
+                obj.noteDate2 = format(new Date(obj.noteDate), 'yyyy-MM-dd')
+                return obj
+              })
+        })
+      },
       prevMonth() {
         const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
         this.rData = []
@@ -366,10 +325,10 @@
         ), [])
         // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
     },
-         // 是否已评分
-         isMarked (item){
+      // 是否已评分
+      isMarked (item){
        item && '012345678910'.includes(item.noteScore)
-       },
+      },
       
       scoreItemOf (d){ 
         this.scores.find(item =>
@@ -407,10 +366,11 @@
       }
     },
         handleClick(tab, event) {
-          console.log(tab, event);
+          // console.log(tab, event);
         },
         handleClick1(tab, event) {
-          console.log(tab, event);
+          // console.log(tab.index)
+          this.query(1, tab.index)
         },
         getRadar2() {
         var colors = ['#5793f3', '#d14a61', '#675bba'];
@@ -491,6 +451,12 @@
     overflow: hidden;
     /* display: flex; */
   }
+  .r_content >>> .el-calendar-table .el-calendar-day{
+    text-align: center;
+  }
+  .r_content >>> .el-calendar__header{
+    margin-bottom:5px;
+  }
   .r_content >>> .el-tabs__content{
     max-height: 535px;
     overflow: auto;
@@ -510,8 +476,9 @@
     margin-bottom: 5px;
   }
   .rc_content{
-    height: calc(90% - 10px);
+    height: calc(90% - 20px);
     display: flex;
+    margin-top:10px;
   }
   .rc_left{
     width: 70%;
@@ -696,11 +663,26 @@
   }
   .p_hevaluate{
     float: left;
-      height: 90%;
-      width: 70%;
-      margin-left: 3em;
+    height: 90%;
+    margin-left: 1em;
+    margin-right:2em;
   }
-    
+  .depName {
+    display: block;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 20px;
+  }
+  .e_center{
+    margin:10px;
+  }
+  .e_center_content{
+    padding-bottom:10px;
+    border-bottom:1px solid #ccc;
+  }
+  .e_center >>> .el-textarea__inner{
+    margin:0;
+  }
   </style> 
   
   
