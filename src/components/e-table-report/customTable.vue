@@ -112,8 +112,8 @@
           <tr>
             <td rowspan="4">
               <el-radio-group :disabled="!item.edit" v-model="item.relation">
-                <template v-for="(item,index) of relationship2">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                <template v-for="(item2,index) of relationship2">
+                  <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
@@ -127,8 +127,8 @@
             </td>
             <td rowspan="2">
               <el-radio-group :disabled="!item.edit" v-model="item.isLife">
-                <template v-for="(item,index) of whetherList">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                <template v-for="(item2,index) of whetherList">
+                  <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
@@ -149,9 +149,9 @@
               </template>
             </td>
             <td colspan="2">
-              <el-radio-group :disabled="!item.edit" v-model="tabData.nature">
-                <template v-for="(item,index) of unitNature">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+              <el-radio-group :disabled="!item.edit" v-model="item.nature">
+                <template v-for="(item2,index) of unitNature">
+                  <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
@@ -159,24 +159,24 @@
           <tr>
             <td colspan="2">
               <span style="margin-right:10px;">是否在国（境）外</span>
-              <el-radio-group :disabled="!item.edit" v-model="tabData.isAbroad">
-                <template v-for="(item,index) of whetherList">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+              <el-radio-group :disabled="!item.edit" v-model="item.isAbroad">
+                <template v-for="(item2,index) of whetherList">
+                  <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
             <td>
-              <el-radio-group :disabled="!item.edit" v-model="tabData.nature">
-                <template v-for="(item,index) of unitInfoNature">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+              <el-radio-group :disabled="!item.edit" v-model="item.nature">
+                <template v-for="(item2,index) of unitInfoNature">
+                  <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
             <td>
               <span style="margin-right:10px;">是否担任高级职务</span>
-              <el-radio-group :disabled="!item.edit" v-model="tabData.isDuty">
-                <template v-for="(item,index) of isDutyList">
-                  <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+              <el-radio-group :disabled="!item.edit" v-model="item.isDuty">
+                <template v-for="(item2,index) of isDutyList">
+                  <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                 </template>
               </el-radio-group>
             </td>
@@ -240,8 +240,8 @@
               </td>
               <td colspan="2">
                 <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.nature">
-                  <template v-for="(item,index) of unitNature">
-                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  <template v-for="(item2,index) of unitNature">
+                    <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                   </template>
                 </el-radio-group>
               </td>
@@ -250,23 +250,23 @@
               <td colspan="3">
                 <span style="margin-right:10px;">是否在国（境）外</span>
                 <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.isAbroad">
-                  <template v-for="(item,index) of whetherList">
-                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  <template v-for="(item2,index) of whetherList">
+                    <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                   </template>
                 </el-radio-group>
               </td>
               <td>
                 <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.nature">
-                  <template v-for="(item,index) of unitInfoNature">
-                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  <template v-for="(item2,index) of unitInfoNature">
+                    <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                   </template>
                 </el-radio-group>
               </td>
               <td>
                 <span style="margin-right:10px;">是否担任高级职务</span>
                 <el-radio-group :disabled="!item.spouseRelativesWorkDo.edit" v-model="item.spouseRelativesWorkDo.isDuty">
-                  <template v-for="(item,index) of isDutyList">
-                    <el-radio style="margin:2px;" :label="item.value" :key="index">{{item.name}}</el-radio>
+                  <template v-for="(item2,index) of isDutyList">
+                    <el-radio style="margin:2px;" :label="item2.value" :key="index">{{item2.name}}</el-radio>
                   </template>
                 </el-radio-group>
               </td>
@@ -441,12 +441,10 @@ export default {
         }
       }else{
         let childRelativesWorkDo = []
-        if(this.tabData.childRelativesWorkDo == null || (!this.isArray(this.tabData.childRelativesWorkDo))){
-          childRelativesWorkDo.push({name:'',edit:true,spouseRelativesWorkDo:{name:'',edit:true}})
-        }else {
+        if(this.isArray(this.tabData.childRelativesWorkDo) && this.tabData.childRelativesWorkDo.length > 0){
           childRelativesWorkDo = this.tabData.childRelativesWorkDo
-          childRelativesWorkDo.push({name:'',edit:true,spouseRelativesWorkDo:{name:'',edit:true}})
         }
+        childRelativesWorkDo.push({name:'',edit:true,spouseRelativesWorkDo:{name:'',edit:true}})
         this.$set(this.tabData,'childRelativesWorkDo',childRelativesWorkDo)
       }
     },
