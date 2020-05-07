@@ -133,7 +133,7 @@
             >
               <template slot-scope="scope">
                 <span class="operate-group">
-                  <template v-for="(btn, key) in operates.list">
+                  <template v-for="(btn, key) in operates.list.filter((_x) => _x.show === true)">
                     <span
                       class="item"
                       v-if="btn.showCallback && btn.showCallback(scope.row)"
