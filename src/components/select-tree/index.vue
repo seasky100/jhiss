@@ -23,6 +23,7 @@
       ref="input"
       v-model="labelModel"
       clearable
+      @clear="clearEvent"
       :disabled="disabled"
       :style="`width: ${width}px`"
       :class="{ 'rotate': showStatus }"
@@ -153,6 +154,9 @@ export default {
         }
       }
       return "";
+    },
+    clearEvent(e){
+       this.$emit("change", "", "");
     }
   }
 };
