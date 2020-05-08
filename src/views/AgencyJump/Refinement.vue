@@ -100,21 +100,23 @@
                           <div v-else class='c_introduce'>无内容</div>
                         </div>
                       </div>
-                      <div class='e_center' v-if="item2.noteScore == null">
-                        <div style="margin-left:30px;display:none;">
-                          <el-input style="border: 1px solid #ccc;width: 80% !important;"
+                      <!-- 未阅 -->
+                      <div class='e_center' v-if="item2.comment == null || item2.comment == ''">
+                        <div style="margin-left:30px;">
+                          <el-input style="border: 1px solid #ccc;border-radius:5px;width: 98% !important;"
                             type="textarea"
-                            :autosize="{ minRows: 2, maxRows: 4}"
                             placeholder="请输入内容"
-                            v-model="item2.comment">
+                            v-model="item2.comment2">
                           </el-input>
+                          <el-button type="small" class='r_ask2' @click="updateWorkNoteClick(item2)">批阅</el-button>
                         </div>
                       </div>
+                      <!-- 已阅 -->
                       <div class='e_center' v-else>
                         <div>
                           <div class='c_introduce'>
+                            <span style="display:block;">审阅日期：{{item2.remarkTime}}</span>
                             {{item2.comment}} 
-                            <span>审阅日期：{{item2.remarkTime2}}</span>
                           </div>
                         </div>
                       </div>
@@ -201,119 +203,138 @@
 </template>
 <script>
 import { format } from 'date-fns';
-import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
-    export default {
-      name: 'Refinement',
-      props: {
-        navMenus: {}
-      },
-      data() {
-        return {
-          value: new Date(),
-          textarea2: '',
-          searchData: [
-            {deptId: this.$store.state.user.orgId},
-            {userId: this.$store.state.user.userInfo.info},
-            {},
-            {audited: '2'},
-          ],
-          tabList: [
-            {label: '部门日志', name: '', data: [{name:''}]},
-            {label: '我的', name: '', data: []},
-            {label: '所有民警', name: '', data: []},
-            {label: '待批阅', name: '', data: [{name:''}]},
-            // {label: '直接下属', name: '', data: [{name:''}]},
-            // {label: '领导互评', name: '', data: [{name:''}]},
-          ],
-          recordsList: [],
-          textarea: '',
-          activeName: 'first',
-          activeName1: '0_tabs',
-          nyear:'',
-          nmonth:'',
-          ndate:'',
-          rData:[],
-          scores: [
-            6, 6, 7, 6, 8, 7, 8, 8, 8, 8,
-            8, 7, 6, 7, 7, 7, 7, 8, 9, 7,
-            7, 6, 7, 7, 6, 6, 6, 7, 7, 8
-          ],
-          ydata:{
-            year:'',
-            month:'',
-            date: '',
-          },      
+import { findWorknotePage, updateWorkNote, noteAduit, countWorkNote } from '@/api/report.js';
+export default {
+  name: 'Refinement',
+  props: {
+    navMenus: {}
+  },
+  data() {
+    return {
+      value: new Date(),
+      textarea2: '',
+      searchData: [
+        {deptId: this.$store.state.user.orgId},
+        {userId: this.$store.state.user.userInfo.info},
+        {},
+        {audited: '2'},
+      ],
+      tabList: [
+        {label: '部门日志', name: '', data: [{name:''}]},
+        {label: '我的', name: '', data: []},
+        {label: '所有民警', name: '', data: []},
+        {label: '待批阅', name: '', data: [{name:''}]},
+        // {label: '直接下属', name: '', data: [{name:''}]},
+        // {label: '领导互评', name: '', data: [{name:''}]},
+      ],
+      recordsList: [],
+      textarea: '',
+      activeName: 'first',
+      activeName1: '0_tabs',
+      nyear:'',
+      nmonth:'',
+      ndate:'',
+      rData:[],
+      scores: [
+        6, 6, 7, 6, 8, 7, 8, 8, 8, 8,
+        8, 7, 6, 7, 7, 7, 7, 8, 9, 7,
+        7, 6, 7, 7, 6, 6, 6, 7, 7, 8
+      ],
+      ydata:{
+        year:'',
+        month:'',
+        date: '',
+      },      
+    }
+  },
+  mounted() {
+    this.getRadar2()
+    this.init()
+    this.query()
+  },
+  methods: {
+    init(){
+      this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
+        index % 7
+        ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+        : [...prev, [item]]
+      ), [])
+    },   
+    updateWorkNoteClick(data){
+      const _this = this
+      updateWorkNote(
+        Object.assign(
+          {
+            id: data.id,
+            comment: `审阅人：${this.$store.state.user.realName}    审阅内容：${data.comment2}`,
+            remarkTime: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+            userModified: this.$store.state.user.userInfo.info,
+            leaderId: this.$store.state.user.userInfo.info,
+          }
+        )
+      ).then(res => {
+        if(res.success){
+          data.comment = res.data.comment
+          data.remarkTime = res.data.remarkTime
         }
-      },
-      mounted() {
-        this.getRadar2()
-        this.init()
-        this.query()
-      },
-      methods: {
-        init(){
-          this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
-            index % 7
-            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-            : [...prev, [item]]
-          ), [])
-        },                 
-      getMonthDays(year, month) {
-        const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
-        const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), 'day');
-        const lastDayOfMonth = firstDayOfMonth.add(1, 'month').subtract(1, 'day');
-        const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), 'day');
-        return new Array(firstDayOfMonth.daysInMonth() + firstDayOfMonth.day() + 6 - lastDayOfMonth.day()).fill(0).map((item, index) =>
-          from.add(index, 'day')
-        );
-      },
-      // 查询列表
-      query(nCurrent = 1,index = 0) {
-        const _this = this;
-        findWorknotePage(
-          Object.assign(
-            {
-              nCurrent: nCurrent,
-              nSize: 20,
-              // staffed: this.userIds,
-              orderByField: 'noteDate',
-              orderFlag: false,
-              // userId: JSON.parse(sessionStorage.userInfo).id
-            },_this.searchData[index])).then(res => {
-              // console.log(res.data.records)
-              _this.recordsList = res.data.records.map(obj => {
-                obj.remarkTime2 = format(new Date(obj.remarkTime), 'yyyy-MM-dd')
-                obj.noteDate2 = format(new Date(obj.noteDate), 'yyyy-MM-dd')
-                return obj
-              })
-        })
-      },
-      prevMonth() {
-        const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
-        this.rData = []
-        this.ydata.year = d.year()
-        this.ydata.month = d.month()
-        this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
-          index % 7
-            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-            : [...prev, [item]]
-        ), [])
-        // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
-  
-      },
-      nextMonth(){
-        const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).add(1, 'month');
-        this.rData = []
-        this.ydata.year = d.year()
-        this.ydata.month = d.month()
-        this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
-          index % 7
-            ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
-            : [...prev, [item]]
-        ), [])
-        // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
-      },
-      backToday(){
+      })
+    },              
+    getMonthDays(year, month) {
+      const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
+      const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), 'day');
+      const lastDayOfMonth = firstDayOfMonth.add(1, 'month').subtract(1, 'day');
+      const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), 'day');
+      return new Array(firstDayOfMonth.daysInMonth() + firstDayOfMonth.day() + 6 - lastDayOfMonth.day()).fill(0).map((item, index) =>
+        from.add(index, 'day')
+      );
+    },
+    // 查询列表
+    query(nCurrent = 1,index = 0) {
+      const _this = this;
+      findWorknotePage(
+        Object.assign(
+          {
+            nCurrent: nCurrent,
+            nSize: 20,
+            // staffed: this.userIds,
+            orderByField: 'noteDate',
+            orderFlag: false,
+            // userId: JSON.parse(sessionStorage.userInfo).id
+          },_this.searchData[index])).then(res => {
+            // console.log(res.data.records)
+            _this.recordsList = res.data.records.map(obj => {
+              obj.remarkTime2 = format(new Date(obj.remarkTime), 'yyyy-MM-dd HH:mm:ss')
+              obj.noteDate2 = format(new Date(obj.noteDate), 'yyyy-MM-dd')
+              return obj
+            })
+      })
+    },
+    prevMonth() {
+      const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).subtract(1, 'month');
+      this.rData = []
+      this.ydata.year = d.year()
+      this.ydata.month = d.month()
+      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+        index % 7
+          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+          : [...prev, [item]]
+      ), [])
+      // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
+
+    },
+    nextMonth(){
+      const d = this.$dayjs(new Date(this.ydata.year, this.ydata.month, this.ydata.date)).add(1, 'month');
+      this.rData = []
+      this.ydata.year = d.year()
+      this.ydata.month = d.month()
+      this.rData = this.getMonthDays(d.year(), d.month()).reduce(((prev, item, index) =>
+        index % 7
+          ? [...prev.slice(0, -1), prev.slice(-1)[0].concat(item)]
+          : [...prev, [item]]
+      ), [])
+      // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
+    },
+    backToday(){
       const d = this.$dayjs(new Date());
       this.rData = []
         this.ydata.year = d.year()
@@ -325,36 +346,31 @@ import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
         ), [])
         // this.commitQuery(d.year(), d.month(), this.props.userInfo.userInfo.info);
     },
-      // 是否已评分
-      isMarked (item){
-       item && '012345678910'.includes(item.noteScore)
-      },
-      
-      scoreItemOf (d){ 
-        this.scores.find(item =>
-        new Date(item.noteDate).getDate() === d.date()
-        )
-      },
-    
-      scoreOf (d){
-        (this.scoreItemOf(d) || {}).noteScore
-      },
-      
-      colorOf (score)  {
-        if(score >= 9){
-          '#73CD6C'
+    // 是否已评分
+    isMarked (item){
+      item && '012345678910'.includes(item.noteScore)
+    },
+    scoreItemOf (d){ 
+      this.scores.find(item =>
+      new Date(item.noteDate).getDate() === d.date()
+      )
+    },
+    scoreOf (d){
+      (this.scoreItemOf(d) || {}).noteScore
+    },
+    colorOf (score)  {
+      if(score >= 9){
+        '#73CD6C'
+      }
+      if(score >= 7){
+        '#235FF6'
+      }else {
+        if('0123456'.includes(score)){
+          '#DB0F2C'
         }
-        if(score >= 7){
-          '#235FF6'
-        }else {
-          if('0123456'.includes(score)){
-            '#DB0F2C'
-          }
-          
-        }
-      },
-  
-    
+        
+      }
+    },
     titleOf (d)  {
       const scoreItem = this.scores.find(item =>
         new Date(item.noteDate).getDate() === d.date()
@@ -365,84 +381,84 @@ import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
         return d.format('YYYY/MM/DD') + ' 未评分';
       }
     },
-        handleClick(tab, event) {
-          // console.log(tab, event);
-        },
-        handleClick1(tab, event) {
-          // console.log(tab.index)
-          this.query(1, tab.index)
-        },
-        getRadar2() {
-        var colors = ['#5793f3', '#d14a61', '#675bba'];
-    
-        let radarDom2 = this.$echarts.init(document.getElementById('hline'))
-        let option = {
-          color: colors,
-    
-          tooltip: {
-            trigger: 'none',
-            axisPointer: {
-              type: 'cross'
-            }
-          },
-          //   legend: {
-          // 	  data: ['2016 降水量']
-          //   },
-          grid: {
-            left: '2%',
-            right: '4%',
-            top: '3%',
-            bottom: '44%',
-            // containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              axisTick: {
-                alignWithLabel: true
-              },
-              axisLine: {
-            lineStyle: {
-              color: 'gray',
-              type: 'dashed'
-            },
-          },
-              axisPointer: {
-                label: {
-                  formatter: function (params) {
-                    return '占比' + params.value
-                      + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                  }
-                }
-              },
-              data: ['01', '02', '03', '04', '05', '06', '07',]
-            },
-          ],
-          yAxis: [
-            {
-              show:false,
-              type: 'value'
-            }
-          ],
-          series: [
-            {
-              name: '2016 降水量',
-              type: 'line',
-              smooth: true,
-              data: [31.9, 52.9, 111.1, 118.7, 48.3, 69.2, 231.6, 46.6]
-            }
-          ]
+    handleClick(tab, event) {
+      // console.log(tab, event);
+    },
+    handleClick1(tab, event) {
+      // console.log(tab.index)
+      this.query(1, tab.index)
+    },
+    getRadar2() {
+    var colors = ['#5793f3', '#d14a61', '#675bba'];
+
+    let radarDom2 = this.$echarts.init(document.getElementById('hline'))
+    let option = {
+      color: colors,
+
+      tooltip: {
+        trigger: 'none',
+        axisPointer: {
+          type: 'cross'
         }
-        radarDom2.setOption(option)
-        //多图表自适应
-              //折线图宽高自适应
-        window.onresize = function () {
-          radarDom2.resize();
+      },
+      //   legend: {
+      // 	  data: ['2016 降水量']
+      //   },
+      grid: {
+        left: '2%',
+        right: '4%',
+        top: '3%',
+        bottom: '44%',
+        // containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          axisTick: {
+            alignWithLabel: true
+          },
+          axisLine: {
+        lineStyle: {
+          color: 'gray',
+          type: 'dashed'
+        },
+      },
+          axisPointer: {
+            label: {
+              formatter: function (params) {
+                return '占比' + params.value
+                  + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
+              }
+            }
+          },
+          data: ['01', '02', '03', '04', '05', '06', '07',]
+        },
+      ],
+      yAxis: [
+        {
+          show:false,
+          type: 'value'
         }
-      }
-      }
-    };
-    </script>
+      ],
+      series: [
+        {
+          name: '2016 降水量',
+          type: 'line',
+          smooth: true,
+          data: [31.9, 52.9, 111.1, 118.7, 48.3, 69.2, 231.6, 46.6]
+        }
+      ]
+    }
+    radarDom2.setOption(option)
+    //多图表自适应
+          //折线图宽高自适应
+    window.onresize = function () {
+      radarDom2.resize();
+    }
+  }
+  }
+};
+</script>
   <style lang="stylus" scoped>
     @import url('../css/commom.css');
   .r_content{
@@ -563,6 +579,12 @@ import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
       top: 15px;
       right: 15px;
     }
+    .r_ask2{
+      float: right;
+      position: relative;
+      margin-top: -47px;
+      margin-right: 30px;
+    }
     .c_top{
       height: 10%;
       padding-top: 22px;
@@ -602,7 +624,7 @@ import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
       margin-top: 5px;
       margin-right: 10px;
       margin-left: 28px;
-      text-indent: 24px;
+      text-indent: 0px;
       line-height: 22px;
       letter-spacing: 1px;
     }
@@ -682,6 +704,7 @@ import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
   }
   .e_center >>> .el-textarea__inner{
     margin:0;
+    padding: 7px 90px 0px 8px;
   }
   </style> 
   

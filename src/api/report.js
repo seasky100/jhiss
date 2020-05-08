@@ -86,6 +86,15 @@ export function noteAduit (params) {
   })
 }
 
+// 工作日志修改
+export function updateWorkNote (params) {
+  return request({
+    url: DEFAULT_URL.post.updateWorkNote,
+    method: 'post',
+    data: params
+  })
+}
+
 // 个人廉政风险岗位预警 GET /risk/getRiskByUserId
 export function getRiskByUserId (params) {
   return request({

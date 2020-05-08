@@ -149,6 +149,7 @@ const DEFAULT_URL = {
       findWorkEvaluatePage: `${GAISMSERVER}workNote/findWorkEvaluatePage`, // 查看评价分析数据
       workEvaluateStatistics: `${GAISMSERVER}workNote/workEvaluateStatistics`, // 工作评价按部门统计
       countWorkNoteByDay: `${GAISMSERVER}workNote/countWorkNoteByDay`, // 工作评价按月统计
+      updateWorkNote: `${GAISMSERVER}workNote/updateWorkNote`, // 工作评价按月统计
     },
     exposure: {
       findExposurePage: `${GAISMSERVER}exposure/findExposurePage`,

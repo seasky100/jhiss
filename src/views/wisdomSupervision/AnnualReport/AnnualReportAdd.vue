@@ -10,16 +10,16 @@
       <div class="form-content">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="top">
           <el-form-item label="报告人" prop="rapporteur">
-            <el-input v-model="ruleForm.rapporteur"></el-input>
+            <el-input disabled v-model="ruleForm.rapporteur"></el-input>
           </el-form-item>
           <el-form-item label="报告人身份证号" prop="idNumber">
-            <el-input v-model="ruleForm.idNumber"></el-input>
+            <el-input disabled v-model="ruleForm.idNumber"></el-input>
           </el-form-item>
           <el-form-item label="所属单位名称" prop="company">
-            <el-input v-model="ruleForm.company"></el-input>
+            <el-input disabled v-model="ruleForm.company"></el-input>
           </el-form-item>
           <el-form-item label="报告日期" prop="reportTime">
-            <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.reportTime" style="width: 100%;"></el-date-picker>
+            <el-date-picker disabled type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.reportTime" style="width: 100%;"></el-date-picker>
           </el-form-item>
           <el-form-item label="审批内容" prop="comment">
             <el-input v-model="ruleForm.comment"></el-input>
@@ -69,6 +69,7 @@ export default {
   mixins: [getFlowNode],
   data() {
     return {
+      userObj: null,
       ruleForm: {
         rapporteur: '',
         idNumber: '',
@@ -118,6 +119,26 @@ export default {
     ...mapGetters([
       'orgData'
     ])
+  },
+  mounted() {
+    // ruleForm: {
+    //     rapporteur: '',
+    //     idNumber: '',
+    //     company: '',
+    //     reportTime: '',
+    //     comment: '',
+    //     department: '',
+    //     approvalId: ''
+    //   },
+    this.userObj = this.$store.state.user
+    console.log(this.userObj)
+    this.ruleForm = {
+      rapporteur: this.userObj.realName,
+      idNumber: this.userObj.userInfo.cardNum,
+      company: this.userObj.orgName,
+      reportTime: format(new Date(), 'yyyy-MM-dd'),
+    }
+    // this.getData('201')
   },
   methods: {
     // 机构人员 下拉change事件
@@ -183,9 +204,6 @@ export default {
       })
       this.approvalList = result;
     }
-  },
-  mounted() {
-    this.getData('201')
   }
 }
 </script>
