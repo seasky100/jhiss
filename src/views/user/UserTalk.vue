@@ -34,7 +34,6 @@ export default {
     return {
       userId: "",
       orgName: "",
-      addForm: "/TalkAdd",
       btnsConfig: {
         showAdd: true
       },

@@ -112,6 +112,52 @@ export function getRiskPage (params) {
   })
 }
 
+// 获取个人风险分页列表
+export const getUserRisk = (params) =>
+  request({
+    url: DEFAULT_URL.userRisk.getUserRisk,
+    method: 'get',
+    params
+  });
+// 获取个人风险详情
+export const getDetail = (params) =>
+  request({
+    url: DEFAULT_URL.userRisk.getDetail,
+    method: 'get',
+    params
+  });
+// 删除个人风险
+export const deleteUserRisk = (params) =>
+  request({
+    url: DEFAULT_URL.userRisk.deleteUserRisk,
+    method: 'get',
+    params
+  });
+
+// 保存个人风险
+export const saveUserRisk = (params) =>
+  request({
+    url: DEFAULT_URL.userRisk.saveUserRisk,
+    method: 'post',
+    data: params
+  });
+// 获取用户层级领导及负责人
+export const getUserDetail = (params) =>
+  request({
+    url: DEFAULT_URL.userRisk.getUserDetail,
+    method: 'get',
+    params
+  });
+// 更新
+export const updateUserRisk = (params) =>
+  request({
+    url: DEFAULT_URL.userRisk.updateUserRisk,
+    method: 'post',
+    data: params
+  });
+
+
+
 // 年度报告
 export function getUserList (params) {
   return request({

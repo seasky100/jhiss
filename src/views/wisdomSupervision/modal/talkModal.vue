@@ -11,7 +11,7 @@
           placeholder="请选择部门" />
       </el-form-item>
       <el-form-item label="被谈话人" prop="userId">
-        <el-select v-model="form.userId" placeholder="请选择" @change="selectChange" :disabled="disabled">
+        <el-select v-model="form.userId" placeholder="被谈话人" @change="selectChange" :disabled="disabled">
           <el-option
             v-for="item in interviewMans"
             :key="item.id"
@@ -47,17 +47,19 @@
          <el-input :disabled="disabled" v-model="form.interviewMan"></el-input>
       </el-form-item>
       <el-form-item label="谈话类容" prop="content">
-        <el-input :disabled="disabled" type="textarea" rows='4' v-model="form.content"></el-input>
+        <el-input :disabled="disabled" type="textarea"  v-model="form.content"></el-input>
       </el-form-item>
-      <el-form-item label="附件">
+      <el-form-item label="附件"  v-if="opeart === 'add'">
         <e-upload @changeHandler="changeHandler" />
       </el-form-item>
+      <el-form-item>
       <div style="text-align: center;">
         <el-button v-if="opeart === 'view'" type="primary" @click="visible = false;" size="small">确认</el-button>
         <el-button v-if="opeart === 'add'" type="primary" @click="onSubmit('add')" size="small">保存</el-button>
         <el-button v-if="opeart === 'update'" type="primary" @click="onSubmit('update')" size="small">保存</el-button>
         <el-button @click="visible = false;" size="small">取消</el-button>
       </div>
+      </el-form-item>
     </el-form>
   </el-dialog>
 </template>

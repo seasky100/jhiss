@@ -212,17 +212,6 @@ export default [
         name: "organizationRequestDetail",
         component: () => import('@/views/wisdomSupervision/organizationRequestDetail')
       },
-      {
-        title: '新增谈话谈心',
-        meta: {
-          permValue: 'ZHKQ',
-        },
-        hidden: true,
-        icon: 'el-icon-menu',
-        path: "/TalkAdd",
-        name: "TalkAdd",
-        component: () => import('@/views/wisdomSupervision/TalkAdd')
-      },
       // 个人即报类型申请
       {
         title: '因私出境',

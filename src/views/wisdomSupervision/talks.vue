@@ -39,12 +39,10 @@ export default {
   components: {
     TalkModal
   },
-
   data() {
     return {
       userId: "",
       orgName: "",
-      addForm: "/TalkAdd",
       btnsConfig: {
         showAdd: true
       },

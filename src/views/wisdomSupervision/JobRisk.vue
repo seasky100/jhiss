@@ -71,7 +71,6 @@ export default {
     return {
       userId: "",
       orgName: "",
-      addForm: "/JobriskAdd",
       btnsConfig: {
         showAdd: true
       },
@@ -79,7 +78,7 @@ export default {
       warningInfo: null,
       searchData: {
         userName: "",
-        orgId: "",
+        orgId: sessionStorage.orgId,
         startTime: "",
         endTime: "",
         policeCode: ""

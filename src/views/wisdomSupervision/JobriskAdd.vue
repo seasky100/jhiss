@@ -2,137 +2,140 @@
   <el-dialog
     :title="title"
     :visible.sync="visible"
-    width="600px; height: 660px;"
+    width="600px;" height="660px;"
     @close="colseHandle"
   >
-    <el-form ref="form" :model="form" label-width="80px" size="small">
-      <el-form-item label="部门" prop="deptId">
-        <select-tree
-          :disabled="disabled"
-          v-model="form.deptId"
-          :props="config"
-          :treeData="arryData"
-          @change="orgChange"
-          placeholder="请选择部门"
-        />
+    <el-form ref="form" :model="formData">
+      <el-form-item label="所属部门：">
+        <org-select v-model="formData.orgId" @change="change" :orgLabel.sync="formData.orgName"></org-select>
       </el-form-item>
-      <el-form-item label="预警内容" prop="userId">
-        <el-select
-          v-model="form.userId"
-          placeholder="请选择"
-          @change="selectChange"
-          :disabled="disabled"
-        >
+      <el-form-item label="姓名：">
+        <el-select v-model="formData.userId" @change="userChange" filterable clearable>
           <el-option
-            v-for="item in interviewMans"
-            :key="item.id"
-            :label="item.realName"
-            :value="item.id"
+            v-for="user in userList"
+            :key="user.id"
+            :label="user.realName"
+            :value="user.id"
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="谈话类型" prop="type">
-        <el-select v-model="form.type" placeholder="请选择" :disabled="disabled">
+      <el-form-item label="风险内容：">
+        <el-table :data="formData.riskContent">
+          <el-table-column label="工作事项" prop="workMatters">
+            <template slot-scope="scope">
+              <el-input type="textarea" v-model="scope.row.workMatters" rows="4"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="岗位廉政风险" prop="riskContent">
+            <template slot-scope="scope">
+              <el-input type="textarea" v-model="scope.row.riskContent" rows="4"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="防控措施" prop="riskMesure">
+            <template slot-scope="scope">
+              <el-input type="textarea" v-model="scope.row.riskMesure" rows="4"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column align="right">
+            <template slot="header" slot-scope="scope">
+              <el-button size="mini" type="primary" @click="addRiskContent">添加</el-button>
+            </template>
+            <template slot-scope="scope">
+              <el-button
+                :disabled="deleteDisable"
+                size="mini"
+                type="danger"
+                @click="deleteRiskContent(scope.row)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form-item>
+      <el-form-item label="层级领导：">
+        <el-select clearable filterable v-model="formData.leaderId" @change="leaderChange">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="post in postList"
+            :key="post.id"
+            :value="post.userPid"
+            :label="post.userPname"
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="谈话时间" prop="time">
-        <el-date-picker
-          :disabled="disabled"
-          type="datetime"
-          value-format="yyyy-MM-dd hh:mm:ss"
-          placeholder="选择日期"
-          v-model="form.time"
-          style="width: 100%;"
-        ></el-date-picker>
+      <el-form-item label="部门负责人：">
+        <el-input readonly v-model="formData.orgLeaderName"></el-input>
       </el-form-item>
-      <el-form-item label="访谈人" prop="interviewMan">
-        <el-input :disabled="disabled" v-model="form.interviewMan"></el-input>
+      <el-form-item label="备注：">
+        <el-input type="textarea" v-model="formData.remark"></el-input>
       </el-form-item>
-      <el-form-item label="谈话类容" prop="content">
-        <el-input :disabled="disabled" type="textarea" rows="4" v-model="form.content"></el-input>
+      <el-form-item label="附件" v-if="opeart === 'add'">
+        <e-upload @changeHandler="handleChange" />
       </el-form-item>
-      <el-form-item label="附件">
-        <e-upload @changeHandler="changeHandler" />
-      </el-form-item>
-      <div style="text-align: center;">
-        <el-button v-if="opeart === 'view'" type="primary" @click="visible = false;" size="small">确认</el-button>
-        <el-button v-if="opeart === 'add'" type="primary" @click="onSubmit('add')" size="small">保存</el-button>
-        <el-button
-          v-if="opeart === 'update'"
-          type="primary"
-          @click="onSubmit('update')"
-          size="small"
-        >保存</el-button>
-        <el-button @click="visible = false;" size="small">取消</el-button>
-      </div>
     </el-form>
+    <el-footer class="center">
+      <div>
+        <el-button @click="back">取消</el-button>
+        <el-button type="primary" @click="submit">保存</el-button>
+      </div>
+    </el-footer>
   </el-dialog>
 </template>
-      
-      <script>
+
+<script>
+import orgSelect from '@/components/orgSelect';
 import {
-  saveInterView,
-  getInterViewById,
-  updateInterView
-} from "@/api/report.js";
-import { getUserList, getList } from "@/api/user-server.js";
-import { mapGetters } from "vuex";
+  getUserDetail,
+  saveUserRisk,
+  getDetail,
+  updateUserRisk
+} from "@/api/report";
+import { getUserList } from "@/api/user-server.js";
 export default {
+  name: "addOrUpdata",
+   components: {
+    orgSelect
+  },
   data() {
     return {
-      title: "新增岗位风险",
-      disabled: false,
-      opeart: "",
-      arryData: [],
-      listData: [],
+      id: "",
+      title:'新增',
+      opeart:'add',
+      postList: [],
+      deleteDisable: true,
       visible: false,
-      form: {
-        deptId: "",
-        userId: "",
-        type: "",
-        time: "",
-        interviewMan: "",
-        content: ""
+      formData: {
+        riskContent: [
+          {
+            workMatters: "",
+            riskContent: "",
+            riskMesure: ""
+          }
+        ]
       },
-      config: {
-        value: "id",
-        label: "name",
-        children: "childrens",
-        disabled: true
-      },
-      options: [],
-      interviewMans: [],
-      files: [],
-      orgName: "",
-      realName: ""
+      userList: []
     };
   },
   computed: {
-    ...mapGetters(["orgData"])
+    riskContenLength() {
+      return this.formData.riskContent ? this.formData.riskContent.length : 0;
+    }
   },
-  mounted() {
-    this.init();
-    this.getList();
+  watch: {
+    riskContenLength(val) {
+      this.deleteDisable = val === 1 ? true : false;
+    }
+  },
+  created() {
+    const {
+      query: { id }
+    } = this.$route;
+    this.id = id;
+    if (id) {
+      this.getDetail(id);
+    }
   },
   methods: {
-    init() {
-      const data = this.orgData[0].childrens;
-      const arryData = [];
-      const orgId = sessionStorage.orgId;
-      this.form.interviewMan = sessionStorage.realName;
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === orgId) {
-          this.arryData.push(data[i]);
-        }
-      }
-    },
     open(opeart, option) {
+      console.log(this.visible);
       this.opeart = opeart;
       this.visible = true;
       if (opeart === "view") {
@@ -140,7 +143,7 @@ export default {
         this.disabled = true;
         this.getDetail(option);
       } else if (opeart === "add") {
-        this.title = "新增谈话";
+        this.title = "新增风险";
         this.disabled = false;
       } else if (opeart === "update") {
         this.title = "修改";
@@ -148,177 +151,140 @@ export default {
         this.getDetail(option);
       }
     },
-    // 谈话谈心字典值
-    getList() {
-      getList(
-        Object.assign({
-          appId: "c62d6b0a56b045b597b2069cd9b9e6b9",
-          type: "谈话谈心"
-        })
-      ).then(res => {
-        if (res.success) {
-          const dicData = res.data;
-          for (let i = 0; i < dicData.length; i++) {
-            const list = {
-              label: dicData[i].label,
-              value: dicData[i].value
-            };
-            this.listData.push(list);
-          }
-          // const aa = dicData.map(inventor => `label:${inventor.label},value:${inventor.value}`)
-          // console.log(aa)
-          this.options = this.listData;
-        }
-      });
-    },
     colseHandle() {
       this.$refs["form"].resetFields();
     },
-    // 查详情
-    getDetail(option) {
-      const params = {
-        id: option.id
-      };
-      getInterViewById(params).then(res => {
-        if (res.success) {
-          this.form.deptId = res.data.deptId;
-          this.form.userId = res.data.userId;
-          this.form.type = res.data.interviewType;
-          this.form.time = res.data.interviewTime;
-          this.form.interviewMan = res.data.interviewMan;
-          this.form.content = res.data.interviewContent;
-        }
-      });
-    },
-    // 人员下拉
-    selectChange(val) {
-      this.interviewMans.map(item => {
-        if (item.id === val) {
-          this.realName = item.realName;
-        }
-      });
-    },
-    // 机构人员 下拉change事件
-    orgChange(orgId) {
-      const item = this.deepQuery(orgId);
-      this.orgName = item.name;
-      this.getUserListData(orgId);
-    },
-    // 根据id找名字
-    deepQuery(id) {
-      const tree = this.orgData;
-      var stark = [];
-      stark = stark.concat(tree);
-
-      while (stark.length) {
-        var temp = stark.shift();
-        if (temp.childrens) {
-          stark = temp.childrens.concat(stark);
-        }
-        if (id === temp.id) {
-          return temp;
-        }
-      }
-    },
-    // 获取机构对应的人员
-    getUserListData(id) {
-      const params = {
-        orgId: id
-      };
-      getUserList(params).then(res => {
-        if (res.success && res.data && res.data.length > 0) {
-          this.interviewMans = res.data;
-        }
-      });
-    },
-    // 文件
-    changeHandler(fileList) {
-      this.files = fileList;
-    },
-    // 保存
-    onSubmit(type) {
-      let msg = "";
-      if (type === "add") {
-        msg = "添加";
-      } else {
-        msg = "修改";
-      }
-      let filesParam = new FormData();
-      filesParam.append("userId", this.form.userId);
-      filesParam.append("userName", this.realName);
-      filesParam.append("departId", this.form.deptId);
-      filesParam.append("deptName", this.orgName);
-      filesParam.append("type", this.form.type);
-      filesParam.append("interviewMan", this.form.interviewMan);
-      filesParam.append("time", this.form.time);
-      filesParam.append("content", this.form.content);
-      this.files.forEach(item => {
-        filesParam.append("file", item.raw);
-      });
-      saveInterView(filesParam).then(res => {
-        if (res.success) {
-          this.$message({
-            type: "success",
-            message: `${msg}成功`
-          });
-          this.$emit("query");
-          this.visible = false;
+    // 获取详情
+    getDetail(id) {
+      getDetail({ id }).then(res => {
+        if (res && res.success === true) {
+          const { data } = res;
+          const key = [
+            "id",
+            "userId",
+            "orgId",
+            "policeCode",
+            "leaderId",
+            "orgLeaderId",
+            "remark"
+          ];
+          for (const item of key) {
+            this.$set(this.formData, item, data[item]);
+          }
+          this.userChange();
+          this.leaderChange();
+          this.$set(
+            this.formData,
+            "riskContent",
+            data.riskContentList.map(item => ({
+              workMatters: item.workMatters,
+              riskContent: item.riskContent,
+              riskMesure: item.riskMesure
+            }))
+          );
+          console.log(this.formData.riskContent);
         } else {
           this.$message({
-            type: "warning",
-            message: `${msg}失败`
+            type: "error",
+            message: res.message
           });
-          this.visible = false;
         }
       });
+    },
+    change() {
+      // this.formData.userId = '';
+      const orgId = this.formData.orgId;
+      getUserList({ orgId }).then(res => {
+        if (res && res.success === true) {
+          const { data } = res;
+          this.userList = data;
+        } else {
+          this.$message({
+            type: "error",
+            message: res.message
+          });
+        }
+      });
+    },
+    userChange() {
+      this.$forceUpdate();
+      if (!this.formData.userId) return;
+      const userId = this.formData.userId;
+      console.log(getUserDetail)
+      getUserDetail({ userId }).then(res => {
+        if (res && res.success === true) {
+          const { data } = res;
+          const { organizations } = data;
+          const nowOrg = organizations.find(
+            item => item.id === this.formData.orgId
+          );
+          this.$set(this.formData, "orgLeaderName", nowOrg.principal);
+          this.postList = data.posts;
+        } else {
+          this.$message({
+            type: "error",
+            message: res.message
+          });
+        }
+      });
+    },
+    leaderChange() {
+      const post = this.postList.find(
+        item => item.userPid === this.formData.leaderId
+      );
+      if (post) {
+        this.formData.leaderName = post.userPname;
+        this.formData.postName = post.name;
+        this.formData.postId = post.id;
+      }
+    },
+    addRiskContent() {
+      this.formData.riskContent.push({
+        workMatters: "",
+        riskContent: "",
+        riskMesure: ""
+      });
+    },
+    deleteRiskContent(content) {
+      const index = this.formData.riskContent.indexOf(content);
+      this.formData.riskContent.splice(index, 1);
+    },
+    handleChange(file) {
+      this.formData.file = file.raw;
+    },
+    back() {
+      this.$router.push("userRisk-manage");
+    },
+    async submit() {
+      if (this.id) {
+        this.formData.id = this.id;
+      }
+      const user = this.userList.find(item => item.id === this.formData.userId);
+      this.formData.policeCode = user.userInfo.policeCode;
+      this.formData.userName = user.realName;
+      this.formData.riskContent = JSON.stringify(this.formData.riskContent);
+      let res = null;
+      if (this.formData.id) {
+        res = await updateUserRisk(this.formData);
+      } else {
+        res = await saveUserRisk(this.formData);
+      }
+
+      if (res && res.success === true) {
+        this.$message({
+          type: "success",
+          message: "保存成功"
+        });
+        this.back();
+      } else {
+        this.$message({
+          type: "error",
+          message: res.message
+        });
+      }
     }
-    // 修改
-    // updateHandler() {
-    //   let filesParam = new FormData();
-    //   filesParam.append('userId', this.form.userId);
-    //   filesParam.append('userName', this.realName);
-    //   filesParam.append('deptId', this.form.deptId);
-    //   filesParam.append('deptName', this.orgName);
-    //   filesParam.append('type', this.form.type);
-    //   filesParam.append('interviewMan', this.form.interviewMan);
-    //   filesParam.append('time', this.form.time);
-    //   filesParam.append('content', this.form.content);
-    //   this.files.forEach(item => {
-    //     filesParam.append('file', item.raw);
-    //   })
-    //   updateInterView(filesParam).then(res => {
-    //     if(res.success) {
-    //       this.$message({
-    //         type: 'success',
-    //         message: '修改成功'
-    //       })
-    //       this.$emit('query');
-    //       this.visible = false;
-    //     }else {
-    //       this.$message({
-    //         type: 'warning',
-    //         message: '修改失败'
-    //       })
-    //       this.visible = false;
-    //     }
-    //   })
-    // }
   }
 };
 </script>
-      
-      <style lang="stylus" scoped>
-      /deep/ .el-textarea {
-        width: 100%;
-        height: auto;
 
-        .el-textarea__inner {
-          margin-left: 0;
-        }
-      }
-
-      /deep/ .el-select {
-        width: 100%;
-      }
-</style>
-      
+<style lang="stylus" scoped></style>

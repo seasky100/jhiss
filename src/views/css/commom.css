@@ -1,19 +1,5 @@
-.el-textarea {
-    height: 60px!important;
-    width: 40% !important;
-}
-.el-textarea__inner {
-    border: 0px solid #DCDFE6 !important;
 
-}
-/* .el-tabs__content{
-    width: 115% !important;
-    height: 600px !important;
-} */
 .el-textarea__inner {
     min-height: 44px !important;
     margin-left: 7px;
 }
-/* .el-tab-pane{
-    display: flex;
-} */

@@ -54,7 +54,7 @@ export default {
           isAsc: false,
       },
       searchForm: [
-            { label: '姓名：', type: 'input', prop: 'userName', width: '120px', placeholder: '' },
+            { label: '', type: 'input', prop: 'userName', width: '120px', placeholder: '姓名' },
             // {label:'警号：',type: 'input', prop: 'policeCode', width: '120px', placeholder: ''},
             {
                 // label: '所属部门',
@@ -127,7 +127,7 @@ export default {
             },
             {
                 prop: 'comment',
-                label: '备注',
+                label: '预警内容',
                 align: 'left',
             }
         ],

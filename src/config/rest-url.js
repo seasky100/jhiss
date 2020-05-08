@@ -151,6 +151,15 @@ const DEFAULT_URL = {
       countWorkNoteByDay: `${GAISMSERVER}workNote/countWorkNoteByDay`, // 工作评价按月统计
       updateWorkNote: `${GAISMSERVER}workNote/updateWorkNote`, // 工作评价按月统计
     },
+     // 个人风险管理
+  userRisk: {
+    getUserRisk: `${UUMSSERVER}risk/page`, // 获取个人风险列表
+    deleteUserRisk: `${UUMSSERVER}risk/delete`, // 删除个人风险
+    saveUserRisk: `${UUMSSERVER}risk/save`, // 保存个人风险
+    getUserDetail: `${UUMSSERVER}user/get`, // 获取用户层级领导及负责人
+    getDetail: `${UUMSSERVER}risk/get`, // 获取个人风险详情
+    updateUserRisk: `${UUMSSERVER}risk/update` // 更新
+  },
     exposure: {
       findExposurePage: `${GAISMSERVER}exposure/findExposurePage`,
       queryPeriodStudy: `${GAISMSERVER}exposureBrowse/queryPeriodStudy`,
