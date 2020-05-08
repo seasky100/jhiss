@@ -7,7 +7,9 @@ export default [
       permValue: 'ZHKQ',
     },
     path: "/PersonalHome2",
-    component: () => import('@/views/OrganizeManage'),
+    component: {
+      render: (h) => h('router-view'),
+    },
     children: [
       // 层级关系
       {
@@ -52,7 +54,9 @@ export default [
           permValue: 'ZHKQ',
         },
         path: "",
-        component: () => import('@/views/OrganizeManage'),
+        component: {
+          render: (h) => h('router-view'),
+        },
         children: [
           // {
           //     title: '层级评价',
@@ -120,7 +124,9 @@ export default [
         img: 'left_menu_sub_year.png',
         name: '',
         path: "",
-        component: () => import('@/views/OrganizeManage'),
+        component: {
+          render: (h) => h('router-view'),
+        },
         children: [
           // 个人即报
           {
