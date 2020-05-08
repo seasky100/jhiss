@@ -70,6 +70,7 @@ export default {
   },
   methods: {
     renderContent(h, data) {
+      //个人工作台界面
       if (this.model == 'person_info') {
         return (
           <div
@@ -83,7 +84,11 @@ export default {
           </div>
         );
       }
-
+        let handleEvent = '';
+          if (data.id == JSON.parse(sessionStorage.userInfo).id) {
+               handleEvent = () => this.nodePanelClick(data, '', 'person_info');
+          }
+      //部门和全局
       if (data.level == 1) {
         let img = this.getPersonImg(data.userInfo.userInfo);
         return (
@@ -95,7 +100,7 @@ export default {
                 {data.realName || data.userInfo.realName}
               </span>
               <span class="post">
-                {data.name},{data.orgName}
+                {data.name,data.orgName||data.userInfo.job}
               </span>
             </div>
           </div>
@@ -106,14 +111,13 @@ export default {
           (data.index % 11) +
           '.png');
         return (
-          <div
+          <div onclick={handleEvent ? handleEvent : ''}
             style={'background:url(' + img_bg + ') no-repeat'}
-            class="user_panel level_two"
-          >
+            class="user_panel level_two">
             <div class="part_icon" />
             {img}
             <div class="panel_info">
-              <span style="line-height:20px;font-size: 15px;">
+              <span style="line-height:20px;font-size: 15px;"   class={handleEvent ? 'current_user' : ''}>
                 {data.realName}
               </span>
               <span class="post">{data.userInfo.job}</span>
@@ -144,21 +148,16 @@ export default {
           );
         } else {
           let img = this.getPersonImg(data.userInfo);
-          let routeUrl = '';
-          if (data.id == JSON.parse(sessionStorage.userInfo).id) {
-            routeUrl = 'person_info';
-          }
-          let handleEvent = () => this.nodePanelClick(data, '', routeUrl);
           return (
             <div
               class="user_panel_dep"
-              onclick={routeUrl ? handleEvent : () => {}}
+              onclick={handleEvent ? handleEvent : ''}
             >
               <div style="right:10px;top:30px" class="part_icon" />
               {img}
               <div
                 style="margin-top:5px;text-align: center;"
-                class={routeUrl ? 'current_user' : ''}
+                class={handleEvent ? 'current_user' : ''}
               >
                 {data.realName}
               </div>
@@ -382,7 +381,7 @@ export default {
   top: 5px;
 }
 .com.com.org_tree .current_user {
-  color: #320dac;
+  color: #1cc541;
   cursor: pointer;
 }
 .com.com.org_tree .current_user_bg {

@@ -197,7 +197,6 @@
         var routes = {
           children: this.$router.options.routes
         };
-        console.log(routes)
         var routesArr = routes.children[0].children
         // this.activeMenu = routes.routes[0].path
         return routesArr
