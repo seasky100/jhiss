@@ -94,7 +94,7 @@
 import { getUserInfo } from '../../api/user-server.js';
 import { myPhotoSrc } from '../../utils/common.js'
     export default {
-        name: 'MenuPage',
+        name: 'UserInfo',
         props: {
             id: String
         },
@@ -116,7 +116,7 @@ import { myPhotoSrc } from '../../utils/common.js'
             // this.src = myPhotoSrc(this.userInfo)
         },
         methods: {
-                // 获取用户信息
+            // 获取用户信息
             getInfo() {
                 getUserInfo({ userId: this.id }).then(res => {
                     this.name = res.data.realName
@@ -164,8 +164,9 @@ import { myPhotoSrc } from '../../utils/common.js'
 }
 .m_xin{
     width: 35%;
-    margin-left: 30px;
+    padding-left: 30px;
     float: left;
     line-height: 50px;
+    border:1px solid #cccccc;
 }
 </style>

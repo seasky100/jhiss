@@ -2,16 +2,14 @@
   <div class="report-container">
 		<div class="report-title">
       <span>个人有关事项报告</span>
-      <!-- <span style="color:red;" @click="headerParamClick">
-        注：点击此处可获取对象数据参数
-      </span> -->
     </div>
 		<div class="report-body">
-      <div class="list report_list" style="width:400px;border-right:1px solid #a5a2a2;">
+      <div class="list report_list" style="width:350px;border-right:1px solid #a5a2a2;">
         <div style="border-bottom:1px solid #a5a2a2;padding-bottom:5px;">
           <el-button v-for="(item,index) of menuBtn" :key="index"
             :class="['menuBtn',index == menu_active? 'menuBtnselect':'']"
             autofocus
+            size="small"
             @click="BtnClick(index)"
             :type="item.type"
             plain>
@@ -233,9 +231,6 @@ export default {
     PrintRow(index, row){
       this.$print(this.$refs.printCon)
     },
-    // headerParamClick(){
-    //   console.log('表头表格信息',this.headerParam)
-    // },
     BtnClick(index){
       this.menu_active = index
       this.list_active = -1
@@ -660,7 +655,7 @@ export default {
         border-radius: 5px;
         background: #005BFF;
   .report-body
-    width: calc(100% - 40px);
+    width: calc(100% - 25px);
     height calc(100% - 55px)
     padding 10px 0
     margin: 5px 20px;
@@ -692,7 +687,7 @@ export default {
       text-align: center;
     .list
       float left
-      width calc(100% - 441px)
+      width calc(100% - 391px)
       padding 5px 10px
       height calc(100% - 20px)
       .menuBtn:focus-within
@@ -705,10 +700,10 @@ export default {
       margin: 5px
       overflow-y auto
       .list_son
-        padding 15px 10px
-        font-size 16px
+        padding 10px
+        font-size 15px
         font-weight bold
-        line-height 24px
+        line-height 22px
       .list_son:hover,.selectClass
         background #409EFF 
         color #ffffff

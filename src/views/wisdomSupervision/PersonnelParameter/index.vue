@@ -122,7 +122,7 @@ export default {
                         disabled: false,
                         method: (key, row) => {
                             console.log(111,row)
-                            this.$router.push({path: '/parameterDetail', query:{ id: row.id }})
+                            this.$router.push({path: '/parameterDetail', query:{ id: row.id, infoId: row.userInfo.info }})
                         },
                         showCallback: () => {
                             return true;

@@ -5,17 +5,15 @@
         </div> -->
             <div style="margin:0 10px;">
                 <div class="content">
-                        
-                                <e-table
-                                ref="recordTableRef"
-                                :tableList="tableList"
-                                :options="options"
-                                :columns="columns"
-                                :operates="operates"
-                                @afterCurrentPageClick="afterCurrentPageClickHandle"
-                            />
-                     
-                    </div>
+                    <e-table
+                    ref="recordTableRef"
+                    :tableList="tableList"
+                    :options="options"
+                    :columns="columns"
+                    :operates="operates"
+                    @afterCurrentPageClick="afterCurrentPageClickHandle"
+                />
+                </div>
         </div>
             <!-- 评分 -->
             <el-dialog class="dialog_info" v-if="infoObj != null"
@@ -67,17 +65,17 @@
                 </span>
             </el-dialog>
     </div>
-    </template>
-    <script>
-    import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
-    import { getUserListByUserId } from '@/api/user-server.js';
-    import { getUserInfo } from '@/api/user-server.js';
-    import { mapGetters } from 'vuex';
-    export default {
-    name: "HierEvaluation",
+</template>
+<script>
+import { findWorknotePage, noteAduit, countWorkNote } from '@/api/report.js';
+import { getUserListByUserId } from '@/api/user-server.js';
+import { getUserInfo } from '@/api/user-server.js';
+import { mapGetters } from 'vuex';
+export default {
+    name: "UserLog",
     props: {
-            id: String
-        },
+        id: String
+    },
     data() {
         return {
                 userId: this.$store.state.user.userId,
@@ -213,22 +211,21 @@
                 icon: '<i class="el-icon-view"></i>',
                 disabled: false,
                 method: (key, row) => {
-                                console.log('row', row);
-                                this.dialogVisible = true
-                                this.infoObj = row
-                                this.disabled = false
-                                this.leaderContent = this.infoObj.comment
+                    // console.log('row', row);
+                    this.dialogVisible = true
+                    this.infoObj = row
+                    this.disabled = false
+                    this.leaderContent = this.infoObj.comment
                 },
                 showCallback: (row) => {
-                                // console.log(row)
-                                if(row.noteScore == null){
-                                    return false
-                                }else {
-                                    return true
-                                }
+                    // console.log(row)
+                    if(row.noteScore == null){
+                        return false
+                    }else {
+                        return true
+                    }
                 }
-                        },
-                        {
+            },{
                 id: '2',
                 label: '评阅',
                 show: true,
@@ -236,54 +233,52 @@
                 icon: '<i class="el-icon-edit"></i>',
                 disabled: false,
                 method: (key, row) => {
-                                console.log('row', row);
-                                this.dialogVisible = true
-                                this.infoObj = row
-                                this.leaderContent = ''
-                                this.disabled = true
-                                this.pushyn = false
+                    console.log('row', row);
+                    this.dialogVisible = true
+                    this.infoObj = row
+                    this.leaderContent = ''
+                    this.disabled = true
+                    this.pushyn = false
                 },
                 showCallback: (row) => {
-                                // console.log(row)
-                if(row.noteScore == null){
-                                    return true
-                                }else {
-                                    return false
-                                }
+                    // console.log(row)
+                    if(row.noteScore == null){
+                        return true
+                    }else {
+                        return false
+                    }
                 }
-            }
-            ]
-                },
-                disabled: true,
-                activeScore: -1,
-                pushyn: false
+                }]
+            },
+            disabled: true,
+            activeScore: -1,
+            pushyn: false
         }
     },
     watch: {
-            infoObj(){
-                this.noteScore = this.infoObj.noteScore
-                this.leaderContent = this.infoObj.comment
-                this.activeScore = this.noteScore - 1
-            },
-            dialogVisible(){
-                if(!this.dialogVisible){
-                    this.noteScore = 0
-                    this.leaderContent = ''
-                }
-            }
+        infoObj(){
+            this.noteScore = this.infoObj.noteScore
+            this.leaderContent = this.infoObj.comment
+            this.activeScore = this.noteScore - 1
         },
-        computed: {
+        dialogVisible(){
+            if(!this.dialogVisible){
+                this.noteScore = 0
+                this.leaderContent = ''
+            }
+        }
+    },
+    computed: {
         ...mapGetters([
         'orgData'
         ])
     },
     created() {
         this.init();
-
     },
     mounted() {
-            this.searchForm[1].options = this.orgData
-            this.getUserListByUserId()
+        this.searchForm[1].options = this.orgData
+        this.getUserListByUserId()
         // this.init()
     },
     methods: {
@@ -301,23 +296,23 @@
             })
             // this.countWorkNote()
         },
-            // 查询
-            handleSearch(params) {
-                Object.assign(this.searchData, params);
-                this.query();
-            },
+        // 查询
+        handleSearch(params) {
+            Object.assign(this.searchData, params);
+            this.query();
+        },
         noteDate_format(row, column, prop){
-        return new Date(prop).toLocaleDateString()
-            },
-            noteScore_format(row, column, prop){
-                // console.log(prop)
-                if(prop == null){
-                    return `<span style="color:#ff9700;">待评阅</span>`
-                }else {
-                    return `<span style="color:#00c538;">已评阅</span>` // （${prop}）
-                }
-            },
-            // 分页点击事件
+            return new Date(prop).toLocaleDateString()
+        },
+        noteScore_format(row, column, prop){
+            // console.log(prop)
+            if(prop == null){
+                return `<span style="color:#ff9700;">待评阅</span>`
+            }else {
+                return `<span style="color:#00c538;">已评阅</span>` // （${prop}）
+            }
+        },
+        // 分页点击事件
         afterCurrentPageClickHandle(val, next) {
             this.query(val);
             // console.log(val)
@@ -345,7 +340,7 @@
         },
             // 查询列表
         query(nCurrent = 1) {
-            console.log('query',this.name)
+            // console.log('query',this.name)
             const _this = this;
             findWorknotePage(
                 Object.assign(
@@ -355,11 +350,10 @@
                         staffed: this.userIds,
                         userName: this.name,
                         orderByField: 'noteDate',
-                        orderFlag: false
-                        // userId: _this.userId
+                        orderFlag: false,
+                        userId: _this.id
                     }, _this.searchData)).then(res => {
-
-                        console.log('实施',res)
+                        // console.log('实施',res)
                         this.$refs.recordTableRef.setPageInfo(
                             nCurrent,
                             res.data.size,
@@ -368,107 +362,107 @@
                         );
                     })
         },
-            // 根据用户ID查询所有下属用户
-            getUserListByUserId() {
+        // 根据用户ID查询所有下属用户
+        getUserListByUserId() {
             const _this = this;
             const params = {
             userId: _this.userId 
             }
             getUserListByUserId(params).then(res => {
             if (res.success) {
-                            _this.userIds = res.data.map(item => item.userInfo.info).join()
-                            _this.query();
-                            _this.countWorkNote();
+                _this.userIds = res.data.map(item => item.userInfo.info).join()
+                _this.query();
+                _this.countWorkNote();
             }
             })
         },
-            handleScoring(noteId) {
-                const _this = this
-                noteAduit(
+        handleScoring(noteId) {
+            const _this = this
+            noteAduit(
             Object.assign(
             {
-                            noteId: noteId,
-                            userId: _this.userId,
-                            score: 0,
-                            leaderContent: _this.leaderContent,
-                            pushyn: _this.pushyn
+                noteId: noteId,
+                userId: _this.userId,
+                score: 0,
+                leaderContent: _this.leaderContent,
+                pushyn: _this.pushyn
             },
             )
-        ).then(res => {
-                    // console.log(res)
-                    if(res.success){
-                        _this.$message.success('评阅成功！')
-                        _this.infoObj.noteScore = _this.noteScore
-                        _this.infoObj.comment = _this.leaderContent
-                        _this.dialogVisible = false
-                    }
-                })
-            },
-            scoreClick(index){
-                if(!this.disabled){
-                    return
+            ).then(res => {
+                // console.log(res)
+                if(res.success){
+                    _this.$message.success('评阅成功！')
+                    _this.infoObj.noteScore = _this.noteScore
+                    _this.infoObj.comment = _this.leaderContent
+                    _this.dialogVisible = false
                 }
-                this.activeScore = index
-                this.noteScore = index + 1
+            })
+        },
+        scoreClick(index){
+            if(!this.disabled){
+                return
             }
-    }
-    }
-    </script>
-    <style lang="stylus" scoped>
-        @import "../../styles/common.styl";
-        .search-wrap .search-form{
-            padding: 15px 2px 0;
+            this.activeScore = index
+            this.noteScore = index + 1
         }
-    .individual_title
-        height:40px;
-        line-height:40px;
-        background:#fff;
-        padding:0 10px;
-        font-size 16px
-        font-weight bold
-    .label_con
+    }
+}
+</script>
+<style lang="stylus" scoped>
+    @import "../../styles/common.styl";
+    .search-wrap .search-form{
+        padding: 15px 2px 0;
+    }
+.individual_title
+    height:40px;
+    line-height:40px;
+    background:#fff;
+    padding:0 10px;
+    font-size 16px
+    font-weight bold
+.label_con
+    display inline-block
+    width calc(33.3% - 2px)
+    text-align center
+    height 100px
+    line-height 100px
+    margin 10px 0
+    border 1px solid #cccccc
+    img
+        vertical-align middle
+    .label_count
         display inline-block
-        width calc(33.3% - 2px)
-        text-align center
-        height 100px
-        line-height 100px
-        margin 10px 0
+        position relative
+        top 15px
+        left 10px
+        span 
+            display block
+            line-height 25px
+            color #8893a5
+        .eva_count
+            font-size 20px
+            font-weight bold
+            color #333333
+.dialog_info
+    >>> .el-dialog__header
         border 1px solid #cccccc
-        img
-            vertical-align middle
-        .label_count
-            display inline-block
-            position relative
-            top 15px
-            left 10px
-            span 
-                display block
-                line-height 25px
-                color #8893a5
-            .eva_count
-                font-size 20px
-                font-weight bold
-                color #333333
-    .dialog_info
-        >>> .el-dialog__header
+    .dialog_content
+        span 
+            display block
+            line-height 25px
+        .score_con
+            display inline
+            font-size 24px
+            font-weight bold
+            color #af4a4a
+        .score_span
             border 1px solid #cccccc
-        .dialog_content
-            span 
-                display block
-                line-height 25px
-            .score_con
-                display inline
-                font-size 24px
-                font-weight bold
-                color #af4a4a
-            .score_span
-                border 1px solid #cccccc
-                display inline
-                padding 8px
-                span
-                    display inline-block
-                    margin 5px
-                    padding 0 15px
-                    border-radius 25px
-    </style>
+            display inline
+            padding 8px
+            span
+                display inline-block
+                margin 5px
+                padding 0 15px
+                border-radius 25px
+</style>
     

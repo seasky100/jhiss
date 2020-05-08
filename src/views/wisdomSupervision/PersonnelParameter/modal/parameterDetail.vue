@@ -5,19 +5,19 @@
             <Userinfo :id='userId'/>
         </el-tab-pane>
         <el-tab-pane label="我的日志信息" name="second">
-                <UserLog :id='userId'/>
+                <UserLog :id='infoId'/>
         </el-tab-pane>
         <el-tab-pane label="我的即报 " name="third">
                 <UserReport :id='userId'/>
         </el-tab-pane>
         <el-tab-pane label="我的加班信息" name="fourth">
-                <UserOvertime :id='userId'/>
+                <UserOvertime :id='infoId'/>
         </el-tab-pane>
         <el-tab-pane label="我的请假申请" name="five">
-                <UserLeave :Id='userId'/>
+                <UserLeave :Id='infoId'/>
         </el-tab-pane>
         <el-tab-pane label="我的出国申请" name="six">
-                <UserAbroad :Id='userId'/>
+                <UserAbroad :Id='infoId'/>
         </el-tab-pane>
         <el-tab-pane label="谈心谈话信息" name="seven">
                 <UserTalk :id='userId'/>
@@ -52,6 +52,7 @@ export default {
     data() {
         return {
             userId:'',
+            infoId: '',
             activeName: 'first',
         };
     },
@@ -62,6 +63,7 @@ export default {
     },
     created(){
         this.userId = this.$route.query.id
+        this.infoId = this.$route.query.infoId
     }
 };
 </script>
