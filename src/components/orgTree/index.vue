@@ -4,14 +4,24 @@
       <div class="col-md-10 col-md-offset-1">
         <div class="text-center">
           <!-- :label-class-name="labelClassName" -->
-          <vue2-org-tree style="background:none;" name="test" :data="data" :horizontal="horizontal" :collapsable="collapsable" :render-content="renderContent" :label-class-name="labelClassName" @on-expand="onExpand" @on-node-click="onNodeClick" />
+          <vue2-org-tree
+            style="background:none;"
+            name="test"
+            :data="data"
+            :horizontal="horizontal"
+            :collapsable="collapsable"
+            :render-content="renderContent"
+            :label-class-name="labelClassName"
+            @on-expand="onExpand"
+            @on-node-click="onNodeClick"
+          />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { myPhotoSrc } from '@/utils/common.js';
+import { myPhotoSrc } from "@/utils/common.js";
 export default {
   props: {
     data: {
@@ -39,7 +49,7 @@ export default {
     },
     model: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   watch: {
@@ -49,21 +59,21 @@ export default {
   },
   data() {
     return {
-      labelClassName: '',
+      labelClassName: "",
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
         delivery: false,
         type: [],
-        resource: '',
-        desc: ''
+        resource: "",
+        desc: ""
       },
-      formLabelWidth: '120px',
+      formLabelWidth: "120px",
       defaultProps: {
-        children: 'childrens',
-        label: 'name'
+        children: "childrens",
+        label: "name"
       },
       isGotoPerson_info: false
     };
@@ -71,53 +81,58 @@ export default {
   methods: {
     renderContent(h, data) {
       //个人工作台界面
-      if (this.model == 'person_info') {
+      if (this.model == "person_info") {
         return (
           <div
             class={
               data.id == JSON.parse(sessionStorage.userInfo).id
-                ? 'user_panel_others current_user_bg'
-                : 'user_panel_others'
+                ? "user_panel_others current_user_bg"
+                : "user_panel_others"
             }
           >
             <span>{data.realName}</span>
           </div>
         );
       }
-        let handleEvent = '';
-          if (data.id == JSON.parse(sessionStorage.userInfo).id) {
-               handleEvent = () => this.nodePanelClick(data, '', 'person_info');
-          }
+      let handleEvent = "";
+      if (data.id == JSON.parse(sessionStorage.userInfo).id) {
+        handleEvent = () => this.nodePanelClick(data, "", "person_info");
+      }
       //部门和全局
       if (data.level == 1) {
         let img = this.getPersonImg(data.userInfo.userInfo);
         return (
           <div class="user_panel level_one leaderCon">
-            <div style="right:100px" class="part_icon" />
             {img}
             <div class="panel_info">
               <span style="line-height:20px;font-size:15px">
+                <img src={require("../../assets/images/dangyuan.png")} />
                 {data.realName || data.userInfo.realName}
               </span>
-              <span class="post">
-                {data.name,data.orgName||data.userInfo.job}
+              <span class="post" style="position: relative;">
+                {data.userInfo.job || data.userInfo.userInfo.job}
               </span>
             </div>
           </div>
         );
       } else if (data.level == 2) {
         let img = this.getPersonImg(data.userInfo);
-        let img_bg = require('../../assets/images/bg/person_bg' +
+        let img_bg = require("../../assets/images/bg/person_bg" +
           (data.index % 11) +
-          '.png');
+          ".png");
         return (
-          <div onclick={handleEvent ? handleEvent : ''}
-            style={'background:url(' + img_bg + ') no-repeat'}
-            class="user_panel level_two">
-            <div class="part_icon" />
+          <div
+            onclick={handleEvent ? handleEvent : ""}
+            style={"background:url(" + img_bg + ") no-repeat"}
+            class="user_panel level_two"
+          >
             {img}
             <div class="panel_info">
-              <span style="line-height:20px;font-size: 15px;"   class={handleEvent ? 'current_user' : ''}>
+              <img src={require("../../assets/images/dangyuan.png")} />
+              <span
+                style="line-height:20px;font-size: 15px;"
+                class={handleEvent ? "current_user" : ""}
+              >
                 {data.realName}
               </span>
               <span class="post">{data.userInfo.job}</span>
@@ -134,12 +149,12 @@ export default {
               data.dep &&
                 data.dep.map((item, index) => (
                   <div
-                    onclick={() => this.nodePanelClick(data, item, 'dep')}
+                    onclick={() => this.nodePanelClick(data, item, "dep")}
                     class="user_panel level_three three_hover"
                   >
                     <img
                       class="dep_img"
-                      src={require('../../assets/images/bg/dep_bg.png')}
+                      src={require("../../assets/images/bg/dep_bg.png")}
                     />
                     <div class="depCon_info">{item.name}</div>
                   </div>
@@ -151,14 +166,14 @@ export default {
           return (
             <div
               class="user_panel_dep"
-              onclick={handleEvent ? handleEvent : ''}
+              onclick={handleEvent ? handleEvent : ""}
             >
-              <div style="right:10px;top:30px" class="part_icon" />
               {img}
               <div
                 style="margin-top:5px;text-align: center;"
-                class={handleEvent ? 'current_user' : ''}
+                class={handleEvent ? "current_user" : ""}
               >
+                <img src={require("../../assets/images/dangyuan.png")} />
                 {data.realName}
               </div>
             </div>
@@ -180,7 +195,7 @@ export default {
             <el-image
               fit="fill"
               style="width:40px;height:40px;"
-              src={require('../../assets/images/bg/person.png')}
+              src={require("../../assets/images/bg/person.png")}
             ></el-image>
           </div>
         </el-image>
@@ -190,7 +205,7 @@ export default {
     onExpand(e, data) {
       // this.$set(data, "expand", true);
       //收起
-      if ('expand' in data) {
+      if ("expand" in data) {
         data.expand = !data.expand;
         // this.$set(data, "expand", !data.expand);
         if (!data.expand && data.children) {
@@ -198,7 +213,7 @@ export default {
         }
       } else {
         //打开
-        this.$set(data, 'expand', true);
+        this.$set(data, "expand", true);
       }
     },
     //点击选项执行的方法，可以用于跳转到其他链接，注意一定要写协议头
@@ -209,11 +224,11 @@ export default {
     nodePanelClick(data, valueObj, model) {
       console.log(data, valueObj, model);
       // 无权限
-      if (model == '' || this.path_url == null || this.path_url == '') {
+      if (model == "" || this.path_url == null || this.path_url == "") {
         return;
       }
       let query = {};
-      if (valueObj == '') {
+      if (valueObj == "") {
         // 跳转层级人员
         query.value = data;
       } else {
@@ -240,13 +255,13 @@ export default {
       var _this = this;
       if (Array.isArray(data)) {
         data.forEach(function(item) {
-          _this.$set(item, 'expand', val);
+          _this.$set(item, "expand", val);
           if (item.children) {
             _this.toggleExpand(item.children, val);
           }
         });
       } else {
-        this.$set(data, 'expand', val);
+        this.$set(data, "expand", val);
         if (data.children) {
           _this.toggleExpand(data.children, val);
         }
@@ -307,14 +322,14 @@ export default {
 .com.com.org_tree .level_two {
   padding-top: 16px;
   height: 126px;
-  background: url('../../assets/images/bg/preson_bg.png') no-repeat;
+  background: url("../../assets/images/bg/preson_bg.png") no-repeat;
   background-size: 100% 100%;
   position: relative;
 }
 .com.com.org_tree .leaderCon {
   width: 256px;
   height: 144px;
-  background: url('../../assets/images/bg/person_leader.png') no-repeat;
+  background: url("../../assets/images/bg/person_leader.png") no-repeat;
   background-size: 100% 100%;
 }
 .com.com.org_tree .level_three {
@@ -360,9 +375,9 @@ export default {
   position: absolute;
   right: 34px;
   z-index: 2;
-  top: 42px;
+  top: 67px;
   background-size: 100% 100%;
-  background: url('../../assets/images/dangyuan.png') no-repeat;
+  background: url("../../assets/images/dangyuan.png") no-repeat;
 }
 .com.com.org_tree .user_panel_dep {
   width: 78px;

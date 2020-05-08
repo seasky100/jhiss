@@ -84,7 +84,6 @@ export default {
   },
   mounted() {
     this.init();
-    this.getData();
   },
   methods: {
     returnClick() {
@@ -93,22 +92,29 @@ export default {
     init() {
       let query = this.$route.query;
       this.active = (query && query.id) || sessionStorage.orgId;
-      this.entranceList = JSON.parse(window.localStorage.dep_list);
-      let n = 0;
-      for (let i = 0; i < this.entranceList.length; i++) {
-        let obj = this.entranceList[i];
-        if (obj.id == this.active || obj.orgId == this.active) {
-          n = i;
-          this.getTreeData(obj);
-          break;
+
+      if (window.sessionStorage.dep_list) {
+        this.entranceList = JSON.parse(window.sessionStorage.dep_list);
+        let n = 0;
+        for (let i = 0; i < this.entranceList.length; i++) {
+          let obj = this.entranceList[i];
+          if (obj.id == this.active || obj.orgId == this.active) {
+            n = i;
+            this.getTreeData(obj);
+            break;
+          }
         }
+        this.$nextTick(() => {
+          let scroll = this.$refs.dep_box[n].offsetLeft - 400;
+          $(this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
+        });
+      } else {
+        this.getData();
       }
+
       // let width = this.$refs.dep_list.offsetWidth
-      this.$nextTick(() => {
-        let scroll = this.$refs.dep_box[n].offsetLeft - 400;
-        $(this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
-      });
     },
+    //子节点
     getChildren(node, newchildren, t = 1) {
       let childrens = node.childrens || []; //当前岗位下的子节点
       let userList = node.userList; //当前岗位的用户节点
@@ -185,15 +191,11 @@ export default {
         tree_data.children[1].level = 2;
         tree_data.children[1].children.forEach(element => {
           element.level = 3;
-           element.expand = false;
+          element.expand = false;
         });
         tree_data.children[0].children.push(tree_data.children[1]);
       }
-      // this.getChildren(value, tree_data.children);
-      // if(tree_data.children.length==1){
-      //   tree_data=tree_data.children[0]
-      //   tree_data.level=1
-      // }
+
       this.tree_data = tree_data.children[0];
     },
     handleClickDep(value) {
@@ -205,27 +207,17 @@ export default {
     },
     //
     getData() {
-      if (window.localStorage.tree_data) {
-        this.getDeptChidren();
-        // this.dep_list = JSON.parse(window.localStorage.dep_list)
-      } else {
-        treeAndUser(
-          Object.assign({
-            currentId: "" // 当前区域id
-          })
-        ).then(res => {
-          let tree_data = res.data[0];
-          tree_data.children = tree_data.childrens[0].userList;
-          tree_data.level = 1;
-          tree_data.expand = true;
-          window.localStorage.tree_data = JSON.stringify(tree_data);
-          this.getDeptChidren();
-        });
-      }
+      treeAndUser().then(res => {
+        let tree_data = res.data[0];
+        tree_data.children = tree_data.childrens[0].userList;
+        tree_data.level = 1;
+        tree_data.expand = true;
+        window.sessionStorage.tree_data = JSON.stringify(tree_data);
+        this.getDeptChidren(tree_data);
+      });
     },
     //处理第三层部门的数据
-    getDeptChidren() {
-      let data = JSON.parse(window.localStorage.tree_data);
+    getDeptChidren(data) {
       data.userInfo = data.userList[0];
       let arr1 = data.children; //第二层的人员
       let arr2 = data.childrens[0].childrens; //第三次的人员
@@ -250,9 +242,22 @@ export default {
         if (children.length > 0) {
           obj.children = [dep];
         }
-      }
-      if (!window.localStorage.dep_list) {
-        window.localStorage.dep_list = JSON.stringify(arr2);
+        window.sessionStorage.dep_list = JSON.stringify(arr2);
+        
+        this.entranceList = arr2;
+        let n = 0;
+        for (let i = 0; i < this.entranceList.length; i++) {
+          let obj = this.entranceList[i];
+          if (obj.id == this.active || obj.orgId == this.active) {
+            n = i;
+            this.getTreeData(obj);
+            break;
+          }
+        }
+        this.$nextTick(() => {
+          let scroll = this.$refs.dep_box[n].offsetLeft - 400;
+          $(this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
+        });
       }
     }
   }

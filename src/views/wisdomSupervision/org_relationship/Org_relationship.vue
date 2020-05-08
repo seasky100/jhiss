@@ -41,7 +41,7 @@ export default {
       this.getData();
     },
     getData() {
-      if (window.localStorage.tree_data) {
+      if (window.sessionStorage.tree_data) {
         this.collectData();
       } else {
         treeAndUser(
@@ -51,13 +51,13 @@ export default {
         ).then((res) => {
           let tree_data = res.data[0];
           tree_data.children = tree_data.childrens[0].userList;
-          window.localStorage.tree_data = JSON.stringify(tree_data);
+          window.sessionStorage.tree_data = JSON.stringify(tree_data);
           this.collectData();
         });
       }
     },
     collectData(data) {
-      let tree_data = JSON.parse(window.localStorage.tree_data);
+      let tree_data = JSON.parse(window.sessionStorage.tree_data);
       tree_data.userInfo = tree_data.userList[0];
       tree_data.level = 1;
       tree_data.expand = true;
@@ -91,22 +91,11 @@ export default {
           obj.children = [dep];
         }
       }
-      if(!window.localStorage.dep_list){
-        window.localStorage.dep_list = JSON.stringify(arr2);
+      if(!window.sessionStorage.dep_list){
+        window.sessionStorage.dep_list = JSON.stringify(arr2);
       }
       return {data,arr2}
     },
-    // 转化获取列属性对象
-    flatten(arr) {
-      return [].concat(
-        ...arr.map((x) =>
-          Array.isArray(x.childrens) ? this.flatten(x.childrens) : x.userList
-        )
-      );
-    },
-
-
-    //
   },
 };
 </script>

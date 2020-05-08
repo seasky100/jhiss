@@ -11,7 +11,7 @@ export default [
     children: [
       // 层级关系
       {
-        title: '层级关系',
+        title: '层级体系',
         hidden: true,
         meta: {
           permValue: 'ZHKQ',
@@ -22,7 +22,7 @@ export default [
         component: () => import('@/views/wisdomSupervision/org_relationship/Org_relationship')
       },
       {
-        title: '层级关系',
+        title: '层级体系',
         hidden: false,
         meta: {
           permValue: 'ZHKQ',

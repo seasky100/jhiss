@@ -26,6 +26,24 @@
         />
       </div>
     </div>
+     <!-- 岗位预警 -->
+    <el-dialog v-if="warningInfo != null" class="dialog_info" title="人员信息" :visible.sync="dialogVisible">
+      <div>
+        <img style="float:left;" class="photo_img" src="@/assets/images/bg/person.png" />
+        <div style="float:left;padding:15px;line-height:25px;">
+          <span class="dialogName">{{warningInfo.userName}}</span>
+          <span style="color:#ccc;margin-left:10px;">警号：</span>{{warningInfo.policeCode}}
+          <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.orgName}}
+          <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.postName}}
+          <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}}
+        </div>
+      </div>
+      <el-table :data="warningInfo.riskContentList" class="diaTab">
+        <el-table-column property="workMatters" label="工作事项"></el-table-column>
+        <el-table-column property="riskContent" label="岗位廉政风险"></el-table-column>
+        <el-table-column property="riskMesure" label="防控措施"></el-table-column>
+      </el-table>
+    </el-dialog>
     <!-- 新增谈话类容 -->
     <JobriskAdd ref="JobriskAdd" @query="query" />
   </div>
@@ -48,6 +66,8 @@ export default {
       btnsConfig: {
         showAdd: true
       },
+      dialogVisible:false,
+      warningInfo: null,
       searchData: {
         userName: "",
         department: "",
@@ -139,7 +159,8 @@ export default {
             icon: '<i class="el-icon-view"></i>',
             disabled: false,
             method: (key, row) => {
-              this.$refs.JobriskAdd.open("view", row);
+              this.getRiskByUserData(row.userId)
+              
             },
             showCallback: () => {
               return true;
@@ -256,6 +277,21 @@ export default {
     // 新增
     addClickHandle() {
       this.$refs.JobriskAdd.open("add");
+    },
+       // 个人岗位预警
+    getRiskByUserData(userId){
+      const _this = this
+      getRiskByUserId({userId}
+      
+      ).then(res => {
+				// console.log(res)
+				if (res.success == true) {
+          this.warningInfo = res.data[0]
+          _this.dialogVisible = true
+        } else {
+          console.log(res.message)
+        }
+			})
     }
   }
 };
