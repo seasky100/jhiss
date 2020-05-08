@@ -11,13 +11,13 @@
             />
         </div>
     </div>
-    </template>
-    <script>
-    import { getUserListByUserId,getUserInfo } from '@/api/user-server.js';
-    import { findReportPage } from '@/api/report.js';
-    import { mapGetters } from 'vuex';
-    export default {
-    name: "IndividualReport",
+</template>
+<script>
+import { getUserListByUserId,getUserInfo } from '@/api/user-server.js';
+import { findReportPage } from '@/api/report.js';
+import { mapGetters } from 'vuex';
+export default {
+    name: "UserReport",
     props: {
             id: String
         },
@@ -234,56 +234,58 @@
             })
         },
         approval_format(row, column, prop) {
-        return column.options[prop]
+            return column.options[prop]
         },
         reportType_format(row, column, prop){
-        // console.log(column.options)
-        return column.options[prop]
+            // console.log(column.options)
+            return column.options[prop]
         },
             // 查询
         handleSearch(params) {
-        Object.assign(this.searchData, params);
-        this.query();
-            },
-            // 分页点击事件
+            Object.assign(this.searchData, params);
+            this.query();
+        },
+        // 分页点击事件
         afterCurrentPageClickHandle(val, next) {
-                this.query(val);
-        next();
-            },
-            ApplyReport(value){
-                this.$router.push({ path: value.path });
-            },
-            // 查询列表
+            debugger
+            this.query(val);
+            next();
+        },
+        ApplyReport(value){
+            this.$router.push({ path: value.path });
+        },
+        // 查询列表
         query(nCurrent = 1) {
-        const $this = this;
-        findReportPage(
-            Object.assign(
-            {
-                nCurrent: nCurrent,
-                nSize: 10,
-                userName: this.name,
-                userId: $this.userId + ','+ $this.userIds,
-                approvalId: '',
-                reportType: '1'
-            },
-            $this.searchData
-            )
-        ).then(res => {
-            this.$refs.recordSpTableRef.setPageInfo(
-            nCurrent,
-            res.data.size,
-            res.data.total,
-            res.data.records
-            );
-        })
+            const $this = this;
+            findReportPage(
+                Object.assign(
+                {
+                    nCurrent: nCurrent,
+                    nSize: 10,
+                    userName: this.name,
+                    // userId: $this.userId + ','+ $this.userIds,
+                    userId: $this.id,
+                    approvalId: '',
+                    reportType: '1'
+                },
+                $this.searchData
+                )
+            ).then(res => {
+                this.$refs.recordSpTableRef.setPageInfo(
+                nCurrent,
+                res.data.size,
+                res.data.total,
+                res.data.records
+                );
+            })
         },
     }
-    }
-    </script>
-    <style lang="stylus" scoped>
-    @import "../../styles/common.styl";
-    /* @import "../../styles/report.css"; */
-    .Individual_type{
+}
+</script>
+<style lang="stylus" scoped>
+@import "../../styles/common.styl";
+/* @import "../../styles/report.css"; */
+.Individual_type{
     padding: 10px 10px 0;
     cursor: pointer;
     span{
@@ -301,7 +303,6 @@
         box-sizing: border-box;
         vertical-align: top;
     }
-    }
-    
-    </style>
+}
+</style>
     
