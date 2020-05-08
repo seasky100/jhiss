@@ -47,7 +47,7 @@ export default {
       // 表格
       searchData: {
           userName: '',
-          dept_id: '',
+          dept_id: sessionStorage.orgId,
           startTime: '',
           endTime: '',
           orderByField: 'warnTime',
@@ -163,7 +163,6 @@ export default {
     this.searchForm[1].options = this.orgData;
     this.userId = sessionStorage.userId;
     this.orgName = sessionStorage.orgName;
-    this.init();
   },
   methods: {
       // 分页点击事件

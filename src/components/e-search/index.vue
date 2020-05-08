@@ -272,13 +272,10 @@ export default {
     });
   },
   mounted(){
-    // this.getOrgData()
-    console.log(this.searchData)
   },
   methods: {
     // 单击节点
     onTreeSelect(prop,value) {
-      console.log(prop,value)
       this.searchData[prop]=value
     },
     // 提交

@@ -26,16 +26,25 @@
         />
       </div>
     </div>
-     <!-- 岗位预警 -->
-    <el-dialog v-if="warningInfo != null" class="dialog_info" title="人员信息" :visible.sync="dialogVisible">
+    <!-- 岗位预警 -->
+    <el-dialog
+      v-if="warningInfo != null"
+      class="dialog_info"
+      title="人员信息"
+      :visible.sync="dialogVisible"
+    >
       <div>
         <img style="float:left;" class="photo_img" src="@/assets/images/bg/person.png" />
         <div style="float:left;padding:15px;line-height:25px;">
           <span class="dialogName">{{warningInfo.userName}}</span>
-          <span style="color:#ccc;margin-left:10px;">警号：</span>{{warningInfo.policeCode}}
-          <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.orgName}}
-          <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.postName}}
-          <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}}
+          <span style="color:#ccc;margin-left:10px;">警号：</span>
+          {{warningInfo.policeCode}}
+          <span style="color:#ccc;margin-left:10px;">职务：</span>
+          {{warningInfo.orgName}}
+          <span style="color:#ccc;margin-left:10px;">部门：</span>
+          {{warningInfo.postName}}
+          <span style="color:#ccc;margin-left:10px;">职级：</span>
+          {{warningInfo.orgName}}
         </div>
       </div>
       <el-table :data="warningInfo.riskContentList" class="diaTab">
@@ -62,15 +71,15 @@ export default {
     return {
       userId: "",
       orgName: "",
-      addForm: "/TalkAdd",
+      addForm: "/JobriskAdd",
       btnsConfig: {
         showAdd: true
       },
-      dialogVisible:false,
+      dialogVisible: false,
       warningInfo: null,
       searchData: {
         userName: "",
-        department: "",
+        orgId: "",
         startTime: "",
         endTime: "",
         policeCode: ""
@@ -85,7 +94,7 @@ export default {
         {
           // label: '所属部门',
           type: "select_tree",
-          prop: "department",
+          prop: "orgId",
           options: this.orgData,
           config: {
             value: "id",
@@ -136,7 +145,7 @@ export default {
           label: "所属部门",
           align: "left"
         },
-          {
+        {
           prop: "postName",
           label: "岗位",
           align: "left"
@@ -159,8 +168,7 @@ export default {
             icon: '<i class="el-icon-view"></i>',
             disabled: false,
             method: (key, row) => {
-              this.getRiskByUserData(row.userId)
-              
+              this.getRiskByUserData(row.userId);
             },
             showCallback: () => {
               return true;
@@ -237,8 +245,6 @@ export default {
       this.query();
     },
     interviewType_formatter(row, column, prop) {
-      // console.log(row)
-      // console.log(prop)
       return column.options[prop];
     },
     // 查询
@@ -249,23 +255,21 @@ export default {
     // 分页点击事件
     afterCurrentPageClickHandle(val, next) {
       this.query(val);
-      // console.log(val)
       next();
     },
     // 查询列表
     query(nCurrent = 1) {
-      // console.log(nCurrent)
       const _this = this;
       getRiskPage(
         Object.assign(
           {
             nCurrent: nCurrent,
-            nSize: 10
+            nSize: 10,
+            orgId: sessionStorage.orgId
           },
           _this.searchData
         )
       ).then(res => {
-        // console.log(res)
         this.$refs.recordTalksTableRef.setPageInfo(
           nCurrent,
           res.data.size,
@@ -278,20 +282,17 @@ export default {
     addClickHandle() {
       this.$refs.JobriskAdd.open("add");
     },
-       // 个人岗位预警
-    getRiskByUserData(userId){
-      const _this = this
-      getRiskByUserId({userId}
-      
-      ).then(res => {
-				// console.log(res)
-				if (res.success == true) {
-          this.warningInfo = res.data[0]
-          _this.dialogVisible = true
+    // 个人岗位预警
+    getRiskByUserData(userId) {
+      const _this = this;
+      getRiskByUserId({ userId }).then(res => {
+        if (res.success == true) {
+          this.warningInfo = res.data[0];
+          _this.dialogVisible = true;
         } else {
-          console.log(res.message)
+          console.log(res.message);
         }
-			})
+      });
     }
   }
 };
