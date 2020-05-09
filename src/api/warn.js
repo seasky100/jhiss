@@ -307,6 +307,14 @@ export function saveExposureNote (params) {
     data: params
   })
 }
+// 查看层级下用户学习的曝光栏记录
+export function findExposureStudyRecord (params) {
+  return request({
+    url: DEFAULT_URL.exposure.findExposureStudyRecord,
+    method: 'get',
+    params
+  })
+}
 // 查看相关案例评论
 export function queryExposureNote (params) {
   return request({

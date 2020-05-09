@@ -110,7 +110,7 @@ export default [
             img: 'left_menu_sub_talk.png',
             path: "/LearnEducation",
             name: "LearnEducation",
-            component: () => import('@/views/wisdomSupervision/LearnEducation')
+            component: () => import('@/views/wisdomSupervision/Education/LearnEducation')
           },
        
         ]

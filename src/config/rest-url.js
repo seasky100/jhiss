@@ -169,6 +169,7 @@ const DEFAULT_URL = {
       saveExposureNote: `${GAISMSERVER}exposureNote/saveExposureNote`, // 曝光栏内容评价新增
       queryExposureNote: `${GAISMSERVER}exposureNote/queryExposureNote`, // 查看案例相关评论
       updateLike: `${GAISMSERVER}exposureNote/updateLike`, // 添加点赞
+      findExposureStudyRecord: `${GAISMSERVER}exposureAssociation/findExposureStudyRecord`, // 查看层级下用户学习的曝光栏记录
     },
   // 【智慧考勤分析】
   clockingIn: {

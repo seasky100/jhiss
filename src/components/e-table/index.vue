@@ -82,7 +82,7 @@
                   </template>
 
                   <template v-else>
-                    <span>{{ scope.row[column.prop] }}</span>
+                    <span v-html="scope.row[column.prop]"></span>
                   </template>
                 </template>
 

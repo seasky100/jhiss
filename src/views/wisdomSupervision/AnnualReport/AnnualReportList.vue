@@ -66,11 +66,6 @@ export default {
         height:'680'
 			},
 			columns: [
-        // {
-        //   prop: 'comment',
-        //   label: '标题',
-        //   align: 'left'
-        // },
         {
           prop: 'rapporteur',
           label: '填报人',
