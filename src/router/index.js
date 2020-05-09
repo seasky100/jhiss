@@ -71,10 +71,9 @@ export  const constantRoutes = [
         component: Cooperation
       },
       {
-        title: '精细管理',
+        title: '云上政工',
         img: 'left_ledger@2x.png',
         icon: 'el-icon-s-home',
-        // icon: 'el-icon-location', left_organization@2x.png
         path: "/Refinement",
         meta:{
           permValue:'ZHKQ',

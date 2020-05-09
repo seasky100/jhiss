@@ -5,33 +5,34 @@
     placement="bottom-start"
     trigger="click"
     @show="onShowPopover"
-    @hide="onHidePopover">
+    @hide="onHidePopover"
+  >
     <el-tree
-        ref="tree"
-        class="select-tree"
-        :style="`min-width: ${treeWidth}`"
-        :data="treeData"
-        :expand-on-click-node="false"
-        :filter-node-method="filterNode"
-        :default-expand-all="false"
-        highlight-current
-        @node-click="onClickNode"
-        :props="props"
+      ref="tree"
+      class="select-tree"
+      :style="`min-width: ${treeWidth}`"
+      :data="treeData"
+      :expand-on-click-node="false"
+      :filter-node-method="filterNode"
+      :default-expand-all="false"
+      highlight-current
+      @node-click="onClickNode"
+      :props="props"
     ></el-tree>
     <el-input
+      :disabled="disabled"
       slot="reference"
       ref="input"
       v-model="labelModel"
       clearable
-      @clear="clearEvent"
-      :disabled="disabled"
       :style="`width: ${width}px`"
       :class="{ 'rotate': showStatus }"
       suffix-icon="el-icon-arrow-down"
-      :placeholder="placeholder">
-    </el-input>
+      :placeholder="placeholder"
+    ></el-input>
   </el-popover>
 </template>
+
 <script>
 /*
  * config 基本配置
@@ -43,12 +44,15 @@
  * binddata 选中的值
  */
 export default {
+  name: 'gmTreeSelect',
   model: {
-    prop: "value",
-    event: "selected"
+    // 使用model， 这儿2个属性，prop属性说，我要将value作为该组件被使用时（此处为aa组件被父组件调用）v-model能取到的值，event说，我emit ‘selected’ 的时候，参数的值就是父组件v-model收到的值。
+    prop: 'value',
+    event: 'selected'
   },
   props: {
     // 接收父级参数
+    disabled: Boolean,
     // 接收绑定参数
     value: String,
     // 输入框宽度
@@ -62,21 +66,17 @@ export default {
     placeholder: {
       type: String,
       required: false,
-      default: "请选择"
+      default: '请选择'
     },
     // 树节点配置选项
     props: {
       type: Object,
       required: false,
       default: () => ({
-        value: "value",
-        label: "label",
-        children: "children"
+        value: 'value',
+        label: 'label',
+        children: 'children'
       })
-    },
-    disabled: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -84,28 +84,36 @@ export default {
       // 树状菜单显示状态
       showStatus: false,
       // 菜单宽度
-      treeWidth: "auto",
+      treeWidth: 'auto',
       // 输入框显示值
-      labelModel: "",
+      labelModel: '',
       // 实际请求传值
-      valueModel: ""
+      valueModel: ''
     };
   },
   watch: {
     labelModel(val) {
       if (!val) {
-        this.valueModel = "";
+        this.valueModel = '';
       }
       this.$refs.tree.filter(val);
+      this.$emit('update:name', val);
     },
     value(val) {
       this.labelModel = this.queryTree(this.treeData, val);
+    },
+    treeData(val) {
+      this.labelModel = this.queryTree(val, this.value);
     }
+  },
+  updated() {
+    this.$emit('update:name', this.labelModel);
   },
   created() {
     // 检测输入框原有值并显示对应 label
     if (this.value) {
       this.labelModel = this.queryTree(this.treeData, this.value);
+      this.$emit('update:name', this.labelModel);
     }
     // 获取输入框宽度同步至树状菜单宽度
     this.$nextTick(() => {
@@ -118,7 +126,6 @@ export default {
     onClickNode(node) {
       this.labelModel = node[this.props.label];
       this.valueModel = node[this.props.value];
-      this.$emit("change", this.valueModel, this.labelModel);
       this.onCloseTree();
     },
     // 隐藏树状菜单
@@ -133,7 +140,7 @@ export default {
     // 隐藏时触发
     onHidePopover() {
       this.showStatus = false;
-      this.$emit("selected", this.valueModel);
+      this.$emit('selected', this.valueModel);
     },
     // 树节点过滤方法
     filterNode(query, data) {
@@ -153,16 +160,13 @@ export default {
           return temp[this.props.label];
         }
       }
-      return "";
-    },
-    clearEvent(e){
-       this.$emit("change", "", "");
+      return '';
     }
   }
 };
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
 .el-input.el-input--suffix {
   cursor: pointer;
   overflow: hidden;

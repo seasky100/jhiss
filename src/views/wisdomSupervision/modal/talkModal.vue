@@ -11,7 +11,7 @@
           placeholder="请选择部门" />
       </el-form-item>
       <el-form-item label="被谈话人" prop="userId">
-        <el-select v-model="form.userId" placeholder="请选择" @change="selectChange" :disabled="disabled">
+        <el-select v-model="form.userId" placeholder="被谈话人" @change="selectChange" :disabled="disabled">
           <el-option
             v-for="item in interviewMans"
             :key="item.id"
@@ -47,17 +47,19 @@
          <el-input :disabled="disabled" v-model="form.interviewMan"></el-input>
       </el-form-item>
       <el-form-item label="谈话类容" prop="content">
-        <el-input :disabled="disabled" type="textarea" rows='4' v-model="form.content"></el-input>
+        <el-input :disabled="disabled" type="textarea"  v-model="form.content"></el-input>
       </el-form-item>
-      <el-form-item label="附件">
+      <el-form-item label="附件"  v-if="opeart === 'add'">
         <e-upload @changeHandler="changeHandler" />
       </el-form-item>
+      <el-form-item>
       <div style="text-align: center;">
         <el-button v-if="opeart === 'view'" type="primary" @click="visible = false;" size="small">确认</el-button>
         <el-button v-if="opeart === 'add'" type="primary" @click="onSubmit('add')" size="small">保存</el-button>
         <el-button v-if="opeart === 'update'" type="primary" @click="onSubmit('update')" size="small">保存</el-button>
         <el-button @click="visible = false;" size="small">取消</el-button>
       </div>
+      </el-form-item>
     </el-form>
   </el-dialog>
 </template>
@@ -112,12 +114,12 @@ export default {
       const data = this.orgData[0].childrens
       const arryData = []
       const orgId = sessionStorage.orgId
-      this.form.interviewMan = sessionStorage.realName
       for (let i = 0; i < data.length; i++) {
         if (data[i].id === orgId) {
           this.arryData.push(data[i])
         }
       }
+      this.form.interviewMan = sessionStorage.realName
     },
     open(opeart, option) {
       this.opeart = opeart;
@@ -157,6 +159,13 @@ export default {
           // const aa = dicData.map(inventor => `label:${inventor.label},value:${inventor.value}`)
           // console.log(aa)
           this.options = this.listData
+          this.options=   [{
+            label: "谈话谈心",value:1},
+            {label: "家庭走访",value:2},
+            {label: "约谈提醒",value:3},
+            {label: "帮助教育",value:4},
+            {label: "其他",value:5}
+          ]
         }
       })
     },
@@ -170,8 +179,9 @@ export default {
       }
       getInterViewById(params).then(res => {
         if(res.success) {
-          this.form.deptId = res.data.deptId;
+          this.form.deptId = res.data.deptId+'';
           this.form.userId = res.data.userId;
+           this.interviewMans=[{id:res.data.userId,realName:res.data.userName}]
           this.form.type = res.data.interviewType;
           this.form.time = res.data.interviewTime;
           this.form.interviewMan = res.data.interviewMan;
@@ -201,7 +211,7 @@ export default {
         )
       ).then(res => {
         console.log(res)
-        if (res.success == true) {
+        if (res.success == true&&res.data.length>0) {
           const arry = res.data[0].riskContentList
           const dataArry = [];
           for (let i = 0; i < arry.length; i++) {
@@ -257,11 +267,7 @@ export default {
     // 保存
     onSubmit(type) {
       let msg = '';
-      if(type === 'add') {
-        msg = '添加';
-      }else{
-        msg = '修改';
-      }
+     
       let filesParam = new FormData();
       filesParam.append('userId', this.form.userId);
       filesParam.append('id', this.form.id);
@@ -275,7 +281,9 @@ export default {
       this.files.forEach(item => {
         filesParam.append('file', item.raw);
       })
-      saveInterView(filesParam).then(res => {
+       if(type === 'add') {
+        msg = '添加';
+         saveInterView(filesParam).then(res => {
         if(res.success) {
           this.$message({
             type: 'success',
@@ -291,6 +299,26 @@ export default {
           this.visible = false;
         }
       })
+      }else{
+        msg = '修改';
+         updateInterView(filesParam).then(res => {
+        if(res.success) {
+          this.$message({
+            type: 'success',
+            message: `${msg}成功`
+          })
+          this.$emit('query');
+          this.visible = false;
+        }else {
+          this.$message({
+            type: 'warning',
+            message: `${msg}失败`
+          })
+          this.visible = false;
+        }
+      })
+      }
+  
       this.riskData = []
     },
     // 修改

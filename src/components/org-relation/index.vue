@@ -3,7 +3,6 @@
     <div class="personCon"
       v-for="(item,index) of data" :key="index">
       <div class="photo_img_con">
-        <!-- <img class="photo_img" src="../../assets/images/bg/person.png" /> -->
         <el-image class="photo_img"
           :src="$parent.getPhotoPath(item.userInfo)" fit="fill" lazy>
           <div slot="error" class="image-slot">

@@ -73,10 +73,10 @@
                     </div>
                     <div class='pfoot'>
                       <div v-if='countotal>=1'>
-                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/cry.png' />当前<span class='ptotal' >{{countotal}}</span>项风险内容，请谨慎！！！</div>
+                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/cry.png' />当前<span class='ptotal' >{{countotal}}</span>项风险内容，请注意！！！</div>
                       </div>
                       <div v-else>
-                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/smile.png' />当前<span class='ntotal' >{{countotal}}</span>项风险内容，请注意！！！</div>
+                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/smile.png' />当前<span class='ntotal' >{{countotal}}</span>项风险内容，请保持！！！</div>
                       </div>
                       
                     </div>

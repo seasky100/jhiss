@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="page-title">
-            <span>风险管控</span>
+            <span>预警管控</span>
             </div>
         <div class="content">
             <div class="search-wrap">
@@ -34,29 +34,32 @@
 <script>
 import { getRepastSiteWarnStatistics, getRepastWarnTimesStatistics, getFindMealCardPage } from '@/api/wisdom-reminder/perceptual-wisdom.js'
 import earlyWarningDetail from './modal/earlyWarningDetail'
-
+import { mapGetters } from "vuex";
 export default {
   components: {
     earlyWarningDetail
+  },
+   computed: {
+    ...mapGetters(["orgData"])
   },
   data() {
     return {
       // 表格
       searchData: {
           userName: '',
-          department: '',
+          dept_id: sessionStorage.orgId,
           startTime: '',
           endTime: '',
           orderByField: 'warnTime',
           isAsc: false,
       },
       searchForm: [
-            { label: '姓名：', type: 'input', prop: 'userName', width: '120px', placeholder: '' },
+            { label: '', type: 'input', prop: 'userName', width: '120px', placeholder: '姓名' },
             // {label:'警号：',type: 'input', prop: 'policeCode', width: '120px', placeholder: ''},
             {
                 // label: '所属部门',
                 type: 'select_tree',
-                prop: 'department',
+                prop: 'dept_id',
                 options: this.orgData,
                 config: {
                     value: 'id',
@@ -124,7 +127,7 @@ export default {
             },
             {
                 prop: 'comment',
-                label: '备注',
+                label: '预警内容',
                 align: 'left',
             }
         ],
@@ -155,6 +158,11 @@ export default {
           role: '11'
       }
     }
+  },
+   mounted() {
+    this.searchForm[1].options = this.orgData;
+    this.userId = sessionStorage.userId;
+    this.orgName = sessionStorage.orgName;
   },
   methods: {
       // 分页点击事件

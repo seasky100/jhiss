@@ -7,11 +7,13 @@ export default [
       permValue: 'ZHKQ',
     },
     path: "/PersonalHome2",
-    component: () => import('@/views/OrganizeManage'),
+    component: {
+      render: (h) => h('router-view'),
+    },
     children: [
       // 层级关系
       {
-        title: '层级关系',
+        title: '层级体系',
         hidden: true,
         meta: {
           permValue: 'ZHKQ',
@@ -22,7 +24,7 @@ export default [
         component: () => import('@/views/wisdomSupervision/org_relationship/Org_relationship')
       },
       {
-        title: '层级关系',
+        title: '层级体系',
         hidden: false,
         meta: {
           permValue: 'ZHKQ',
@@ -52,7 +54,9 @@ export default [
           permValue: 'ZHKQ',
         },
         path: "",
-        component: () => import('@/views/OrganizeManage'),
+        component: {
+          render: (h) => h('router-view'),
+        },
         children: [
           // {
           //     title: '层级评价',
@@ -120,7 +124,9 @@ export default [
         img: 'left_menu_sub_year.png',
         name: '',
         path: "",
-        component: () => import('@/views/OrganizeManage'),
+        component: {
+          render: (h) => h('router-view'),
+        },
         children: [
           // 个人即报
           {
@@ -205,17 +211,6 @@ export default [
         path: "/organizationRequestDetail",
         name: "organizationRequestDetail",
         component: () => import('@/views/wisdomSupervision/organizationRequestDetail')
-      },
-      {
-        title: '新增谈话谈心',
-        meta: {
-          permValue: 'ZHKQ',
-        },
-        hidden: true,
-        icon: 'el-icon-menu',
-        path: "/TalkAdd",
-        name: "TalkAdd",
-        component: () => import('@/views/wisdomSupervision/TalkAdd')
       },
       // 个人即报类型申请
       {
