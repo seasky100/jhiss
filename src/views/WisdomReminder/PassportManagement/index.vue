@@ -40,17 +40,17 @@
           :searchData="searchData"
           :searchForm="searchForm" />
           <div style="display:inline-block;position:relative;top:8px;left:-15px;">
-            <el-button type="small" class="addBtn" @click="addFormClick">
+            <el-button size="small" type="default" class="addBtn" @click="addFormClick">
               新增
             </el-button>
-            <el-button type="small" class="addBtn" @click="export2Excel">
+            <el-button size="small" type="default" class="addBtn" @click="export2Excel">
               导出excel
             </el-button>
             <e-upload class="addBtn" :limit="1"
               titleLabel="上传模板数据"
               style="display:inline-block"
               @changeHandler="addExcelClick" />
-            <el-link style="margin-left:15px;" type="primary" :href="path+'护照导入模板.xlsx'">
+            <el-link style="margin-left:15px;" type="default" :href="path+'护照导入模板.xlsx'">
               下载模板 <i class="el-icon-download"></i>
             </el-link>
           </div>

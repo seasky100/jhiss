@@ -1,75 +1,93 @@
 <template>
-  <div class="report-container">
-		<div class="report-title">
-      <span>新增年度报告</span>
-    </div>
-		<div class="report-content">
-			<div class="tip">
-        本表须由党员干部本人亲笔填写
-			</div>
-      <div class="form-content">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="top">
-          <el-form-item label="报告人" prop="rapporteur">
-            <el-input disabled v-model="ruleForm.rapporteur"></el-input>
-          </el-form-item>
-          <el-form-item label="报告人身份证号" prop="idNumber">
-            <el-input disabled v-model="ruleForm.idNumber"></el-input>
-          </el-form-item>
-          <el-form-item label="所属单位名称" prop="company">
-            <el-input disabled v-model="ruleForm.company"></el-input>
-          </el-form-item>
-          <el-form-item label="报告日期" prop="reportTime">
-            <el-date-picker disabled type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.reportTime" style="width: 100%;"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="审批内容" prop="comment">
-            <el-input v-model="ruleForm.comment"></el-input>
-          </el-form-item>
-          <el-form-item label="审批人" required>
-            <el-col :span="11">
-              <el-form-item prop="department">
-                <select-tree 
-                  v-model="ruleForm.department"
-                  :props="config"
-                  :treeData="orgData"
-                  @change="orgChange"
-                  placeholder="请选择部门" />
-              </el-form-item>
-            </el-col>
-            <el-col class="line" :span="2">-</el-col>
-            <el-col :span="11">
-              <el-form-item prop="approvalId">
-                <el-select v-model="ruleForm.approvalId" placeholder="请选择" @change="selectChange">
-                  <el-option
-                    v-for="item in approvalArr"
-                    :key="item.id"
-                    :label="item.realName"
-                    :value="item.id">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-form-item>
-          <el-form-item style="text-align: center;">
-            <el-button type="primary" @click="submit">提交</el-button>
-            <el-button>取消</el-button>
-          </el-form-item>
-        </el-form>
+  <div>
+    <el-dialog :title="title" :visible.sync="visible" width="700px">
+      <div class="detail-wrapper">
+        <el-scrollbar style="height: 100%;">
+          <div class="detail-info">
+            <div class="report-content">
+              <div class="tip">
+                本表须由党员干部本人亲笔填写
+              </div>
+              <div class="form-content">
+                <el-form label-width="135px" :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="right">
+                  <el-form-item label="报告人" prop="rapporteur">
+                    <el-input v-model="ruleForm.rapporteur"></el-input>
+                  </el-form-item>
+                  <el-form-item label="报告人身份证号" prop="idNumber">
+                    <el-input v-model="ruleForm.idNumber"></el-input>
+                  </el-form-item>
+                  <el-form-item label="所属单位名称" prop="company">
+                    <el-input v-model="ruleForm.company"></el-input>
+                  </el-form-item>
+                  <el-form-item label="报告日期" prop="reportTime">
+                    <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="ruleForm.reportTime" style="width: 100%;"></el-date-picker>
+                  </el-form-item>
+                  <!-- <el-form-item label="审批内容" prop="comment">
+                    <el-input v-model="ruleForm.comment"></el-input>
+                  </el-form-item> -->
+                  <el-form-item v-if="dialogType != 1" label="审批人" required>
+                    <el-col :span="11">
+                      <el-form-item prop="department">
+                        <select-tree 
+                          v-model="ruleForm.department"
+                          :props="config"
+                          :treeData="orgData"
+                          @change="orgChange"
+                          placeholder="请选择部门" />
+                      </el-form-item>
+                    </el-col>
+                    <el-col class="line" :span="2">-</el-col>
+                    <el-col :span="11">
+                      <el-form-item prop="approvalId">
+                        <el-select v-model="ruleForm.approvalId" placeholder="请选择" @change="selectChange">
+                          <el-option
+                            v-for="item in approvalArr"
+                            :key="item.id"
+                            :label="item.realName"
+                            :value="item.id">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-form-item>
+                  <el-form-item class="optionsCon" style="text-align: center;">
+                    <el-button type="primary" @click="submit">提交</el-button>
+                    <el-button @click="visible = false">取消</el-button>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+          </div>
+        </el-scrollbar>
       </div>
-		</div>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { format } from 'date-fns';
-import { saveAnnualReport } from '@/api/report.js';
+import { saveAnnualReport, updateReportApproval } from '@/api/report.js';
 import { getUserList } from '@/api/user-server.js';
 import getFlowNode from '../../../mixin/getFlowNode.js';
 import { mapGetters } from 'vuex';
 
 export default {
+  props: {
+    title: {
+      type: String,
+      default: '新增年报'
+    },
+    dialogType: {
+      type: Number,
+      default:() => {
+        return 1
+      }
+    }
+  },
   mixins: [getFlowNode],
   data() {
     return {
       userObj: null,
+      visible: false,
       ruleForm: {
         rapporteur: '',
         idNumber: '',
@@ -92,9 +110,9 @@ export default {
         reportTime: [
           { required: true, message: '请选择日期', trigger: 'change' }
         ],
-        comment: [
-          { required: true, message: '请输入', trigger: 'blur' },
-        ],
+        // comment: [
+        //   { required: true, message: '请输入', trigger: 'blur' },
+        // ],
         department: [
           { required: true, message: '请选择', trigger: 'change' }
         ],
@@ -121,26 +139,28 @@ export default {
     ])
   },
   mounted() {
-    // ruleForm: {
-    //     rapporteur: '',
-    //     idNumber: '',
-    //     company: '',
-    //     reportTime: '',
-    //     comment: '',
-    //     department: '',
-    //     approvalId: ''
-    //   },
-    this.userObj = this.$store.state.user
-    console.log(this.userObj)
-    this.ruleForm = {
-      rapporteur: this.userObj.realName,
-      idNumber: this.userObj.userInfo.cardNum,
-      company: this.userObj.orgName,
-      reportTime: format(new Date(), 'yyyy-MM-dd'),
-    }
     // this.getData('201')
   },
   methods: {
+    open(option = null) {
+      // console.log(this.dialogType)
+      this.visible = true
+      if(option == null){
+        this.infoFlag = false
+        this.ruleForm = {
+          rapporteur: this.$store.state.user.realName,
+          idNumber: this.$store.state.user.userInfo.cardNum,
+          company: this.$store.state.user.orgName,
+          reportTime: format(new Date(), 'yyyy-MM-dd'),
+          comment: '',
+          department: '',
+          approvalId: ''
+        }
+      }else{
+        this.ruleForm = option
+      }
+      // this.getPassportById(option);
+    },
     // 机构人员 下拉change事件
     orgChange(orgId) {
       this.getUserListData(orgId);
@@ -174,21 +194,45 @@ export default {
             // approvalId: '123456001',
             specificYear: format(new Date(), 'yyyy') - 1, // 年报 (格式 yyyy )
           }
-          saveAnnualReport(annualReportInformation).then(res => {
-            // console.log(res);
-            if(res.success) {
-              this.$message({
-                type: 'success',
-                message: '提交成功'
-              })
-              this.$router.push('/AnnualReportList')
-            }else {
-              this.$message({
-                type: 'error',
-                message: '提交失败'
-              })
-            }
-          })
+          if(this.dialogType == 1){
+            saveAnnualReport(annualReportInformation).then(res => {
+              // console.log(res);
+              if(res.success) {
+                this.$message({
+                  type: 'success',
+                  message: '提交成功'
+                })
+                this.visible = false
+                // this.$router.push('/AnnualReportList')
+                this.$parent.query()
+              }else {
+                this.$message({
+                  type: 'error',
+                  message: '提交失败'
+                })
+              }
+            })
+          }else{
+            annualReportInformation.id = this.ruleForm.id
+            updateReportApproval(annualReportInformation).then(res => {
+              // console.log(res);
+              if(res.success) {
+                this.$message({
+                  type: 'success',
+                  message: '提交成功'
+                })
+                this.visible = false
+                // this.$router.push('/AnnualReportList')
+                this.$parent.query()
+              }else {
+                this.$message({
+                  type: 'error',
+                  message: '提交失败'
+                })
+              }
+            })
+          }
+          
         } else {
           this.$message({
             type: 'warning',
@@ -227,20 +271,45 @@ export default {
         height: 100%;
         border-radius: 5px;
         background: #005BFF;
-  .report-content
-    width: 600px;
-    padding: 20px 0 0 40px;
-    box-sizing: border-box;
-    .tip
-      padding: 10px;
-      color: rgb(230, 160, 97);
-      background: rgb(249, 242, 236);
-      user-select: text;
-      margin-bottom: 10px;
-    .line
-      text-align: center;
+.report-content
+  width: 600px;
+  box-sizing: border-box;
+  .tip
+    padding: 10px;
+    color: rgb(230, 160, 97);
+    background: rgb(249, 242, 236);
+    user-select: text;
+    margin-bottom: 25px;
 /deep/ .el-select
   width: 100%;
 /deep/ .el-form--label-top .el-form-item__label
   padding: 0;
+.detail-wrapper
+  max-height: 55vh;
+  .detail-info
+    padding: 5px 20px;
+    color: #606266;
+    .user-info
+      span
+        margin-right: 10px;
+    .advice
+      p
+        margin-bottom: 10px;
+  .line
+    text-align: center;
+.dic-select
+  width: 100%;
+.mb-ten
+  margin-bottom: 10px;
+/deep/ .el-textarea{
+  width: 100%;
+  height: auto;
+  .el-textarea__inner{
+    margin-left: 0;
+  }
+}
+/deep/ .el-scrollbar__wrap
+  overflow-x: hidden;
+.optionsCon >>> .el-form-item__content
+  margin-left auto !important
 </style>

@@ -7,12 +7,16 @@
     <div class="content">
       <div class="search-wrap" style="min-width:800px;">
         <!-- <p>查询条件</p> -->
-        <e-search
+        <e-search style="display:inline-block;"
           class="search-form"
           @handleSearch="handleSearch"
           :searchData="searchData"
-          :searchForm="searchForm"
-          :addForm="addForm" />
+          :searchForm="searchForm" />
+        <div style="display:inline-block;position:relative;top:8px;left:-15px;">
+          <el-button size="small" type="default" class="addBtn" @click="addFormClick">
+            新增
+          </el-button>
+        </div>
       </div>
       <div class="search-wrap" style="height:760px;">
         <e-table
@@ -25,18 +29,23 @@
         />
       </div>
     </div>
-		
+    <!-- 弹出框 -->
+		<report-info :title="reportTitle" :dialogType="dialogType" ref="reportInfo" />
   </div>
 </template>
 <script>
 import { getUserList, findAnnualReportPage, getReportById } from '@/api/report.js';
+import reportInfo from './AnnualReportAdd';
 export default {
   name: "AnnualReportList",
+  components: {
+    reportInfo
+  },
   data() {
     return {
-			// userId: '5ba98b66cd3549b9b92ea8723e89207e',
-			userId: '2020',
-      addForm: 'AnnualReportAdd', // 新增路由地址
+      userId: '2020',
+      dialogType: 1, // 1.新增年报 2.修改年报
+      reportTitle: '审批内容',
 			searchData: {
 				policeCode: '',
 				policeName: ''
@@ -54,14 +63,14 @@ export default {
         currentPage: 1,
         loading: true,
         maxHeight: null,
-        height:'740'
+        height:'680'
 			},
 			columns: [
-        {
-          prop: 'comment',
-          label: '标题',
-          align: 'left'
-        },
+        // {
+        //   prop: 'comment',
+        //   label: '标题',
+        //   align: 'left'
+        // },
         {
           prop: 'rapporteur',
           label: '填报人',
@@ -80,7 +89,7 @@ export default {
 				}
       ],
       operates: {
-        width: 150,
+        width: 200,
         fixed: 'right',
         list: [
           {
@@ -93,10 +102,49 @@ export default {
             method: (key, row) => {
               // console.log('row', row)
               this.findReportById(row)
-              // this.$router.push({path: '/AnnualReportSet', query: {row}})
             },
             showCallback: () => {
               return true;
+            }
+          },
+          {
+            id: '2',
+            label: '提交审批',
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-edit-outline"></i>',
+            disabled: false,
+            method: (key, row) => {
+              this.reportTitle = '提交审批'
+              this.dialogType = 2
+              this.$nextTick(() => {
+                this.$refs.reportInfo.open(row);
+              })
+            },
+            showCallback: (row) => {
+              if(row.approvalId == null || row.approvalId == ''){
+                return true
+              }else{
+                return false
+              }
+            }
+          },
+          {
+            id: '3',
+            label: '查看进度',
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-view"></i>',
+            disabled: false,
+            method: (key, row) => {
+              console.log('查看进度', row)
+            },
+            showCallback: (row) => {
+              if(row.approvalId == null || row.approvalId == ''){
+                return false
+              }else{
+                return true
+              }
             }
           }
         ]
@@ -113,16 +161,15 @@ export default {
   watch: {},
   mounted() {
     this.init()
-    // this.test()
   },
   methods: {
-    // test(){
-    //   this.$request.get('/getJson/singer', {}).then(res => {
-    //       console.log(res)
-    //     }).catch(error => {
-    //       console.log(error)
-    //     })
-    // },
+    addFormClick(){
+      this.reportTitle = '新增年报'
+      this.dialogType = 1
+      this.$nextTick(() => {
+        this.$refs.reportInfo.open()
+      })
+    },
     findReportById(row){
       // console.log(row)
       const _this = this

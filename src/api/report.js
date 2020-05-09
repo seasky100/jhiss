@@ -423,6 +423,15 @@ export function getReportById (params) {
   })
 }
 
+// 年度报告修改
+export function updateReportApproval (params) {
+  return request({
+    url: DEFAULT_URL.annualReport.updateReportApproval,
+    method: 'post',
+    data: params
+  })
+}
+
 // 10. 亲属从业信息 
 export function saveRelativesWorkAnnual (params) {
   return request({
