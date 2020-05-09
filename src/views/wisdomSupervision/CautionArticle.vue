@@ -1,6 +1,9 @@
 <template>
     <div class='c_body'>
-        <div style="text-align: center;font-size: -webkit-xxx-large; color: red;">曝光警示通报</div>
+        <div style="text-align: center;font-size: -webkit-xxx-large; color: #dc4444;letter-spacing:15px">警示曝光通报</div>
+         <!-- <div style='text-align:center;color:#dc4444'>{{listData.issue}}</div> -->
+         <el-divider></el-divider>
+        <!-- <div style='text-align:center;'>{{listData.title}}</div> -->
         <div class='' style="font-size: 16px;padding-right: 114px;padding-left: 114px;line-height: 30px;" v-html = 'listData.content' ></div>
         <div style="margin-left: 10px;font-weight: bold;">评论区</div>
         <div class='hotnode' v-for="(item,index) in nodeData" :key="index">
@@ -45,6 +48,8 @@
     import { getExposureById ,saveExposureNote,queryExposureNote,updateLike } from '@/api/warn.js';
     import { mapGetters } from 'vuex';
     import { myPhotoSrc } from '../../utils/common.js';
+    // import{__waterDocument} from '../../utils/watermark.js'
+    import '../../utils/date'
     export default {
       name: 'MenuPage',
             computed: {
@@ -80,6 +85,8 @@
   
       },
       mounted() {
+
+        //   __waterDocument({container:document.querySelector('.c_body'),content:'禁止传播复制'+(new Date()).Format()})
           this.userInfo = JSON.parse(sessionStorage.userInfo)
           this.id = this.$route.query.id;
           this.userId = this.$route.query.userId;
@@ -127,7 +134,7 @@
         updateLike(data) {
             const _this = this;
             const params = {
-                version: data.version,
+                version: data.version|0,
                 praiseCount:data.praiseCount,
                 id: data.id,
             }
@@ -195,9 +202,15 @@
 </script>
 <style lang="stylus" scoped>
      @import '../css/pseudo_classes.css';
+    .el-divider--horizontal {
+        height:3px !important;
+    }
+    .el-divider{
+        background-color:red
+    }     
     .c_body{
       height: 100%;
-      width: 100%;
+      padding:20px 60px 0;
     }
     .c_title{
       height: 10%;

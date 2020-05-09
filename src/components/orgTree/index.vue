@@ -100,7 +100,7 @@ export default {
       }
       //部门和全局
       if (data.level == 1) {
-        let img = this.getPersonImg(data.userInfo.userInfo);
+        let img = this.getPersonImg(data.userInfo.userInfo||data.userInfo);
         return (
           <div class="user_panel level_one leaderCon">
             {img}
