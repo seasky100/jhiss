@@ -61,80 +61,85 @@
         <!-- 左侧 -->
         <div class='rc_left'>
           <!-- 新增日志 -->
-          <vue-drag-resize style="position:relative;top:0;left:0;" 
+          <!-- @activated="onActivated" -->
+          <vue-drag-resize style="position:relative;max-height:400px;top:0;left:0;" 
             :min-width="700" 
             :w="vw" :h="vh" 
             @resizing="onResize">
-            <div class='rc_tap' :style="{width: + vw+ 'px',height:+vh+'px'}">
-              <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="日志考核" name="first">
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 1, maxRows: 2}"
-                    placeholder="发布一条日志"
-                    v-model="textarea">
-                  </el-input>
-                  <div class='r_send'>发布</div>
-                </el-tab-pane>
-                <el-tab-pane label="审批审核" name="second">审批审核</el-tab-pane>
-                <el-tab-pane label="会议记录" name="third">会议记录</el-tab-pane>
-                <el-tab-pane label="党建工作" name="fourth">党建工作</el-tab-pane>
-                <el-tab-pane label="谈心谈话" name="five">谈心谈话</el-tab-pane>
-                <el-tab-pane label="上门家访" name="six">上门家访</el-tab-pane>
-              </el-tabs>
-              <el-button type="small" class='r_ask'>加班申请</el-button>
+            <div class='rc_tap' @click="onActivated" :style="{width: + vw+ 'px',height:+vh+'px'}">
+              <div style="margin:10px;">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                  <el-tab-pane label="日志考核" name="first">
+                    <el-input ref="textarea"
+                      type="textarea"
+                      :autosize="{ minRows: 1, maxRows: 2}"
+                      placeholder="发布一条日志"
+                      v-model="textarea">
+                    </el-input>
+                    <el-button type="small" class='r_send' @click="saveWorkNoteClick">发布</el-button>
+                  </el-tab-pane>
+                  <el-tab-pane label="审批审核" name="second">审批审核</el-tab-pane>
+                  <el-tab-pane label="会议记录" name="third">会议记录</el-tab-pane>
+                  <el-tab-pane label="党建工作" name="fourth">党建工作</el-tab-pane>
+                  <el-tab-pane label="谈心谈话" name="five">谈心谈话</el-tab-pane>
+                  <el-tab-pane label="上门家访" name="six">上门家访</el-tab-pane>
+                </el-tabs>
+                <el-button type="small" class='r_ask'>加班申请</el-button>
+              </div>
             </div>
           </vue-drag-resize>
           <!-- 日志内容 -->
           <div class='rc_tap' :style="{width: + vw+ 'px',height:+vh2+'px'}">
-            <el-tabs v-model="activeName1" @tab-click="handleClick1">
-              <template v-for="(item,index) of tabList">
-                <el-tab-pane :key="index+'_tabs'" lazy :label="item.label" :name="index+'_tabs'">
-                  <div v-if="recordsList.length == 0" class='r_log'>无数据</div>
-                  <div v-else class='r_log'>
-                    <div class='c_scont' v-for="(item2,index2) of recordsList" :key="index2+'_pane'">
-                      <div class='c_top'>
-                        <div>
-                          <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
+            <div style="margin:10px;">
+              <el-tabs v-model="activeName1" @tab-click="handleClick1">
+                <template v-for="(item,index) of tabList">
+                  <el-tab-pane :key="index+'_tabs'" lazy :label="item.label" :name="index+'_tabs'">
+                    <div v-if="recordsList.length == 0" class='r_log'>无数据</div>
+                    <div v-else class='r_log'>
+                      <div class='c_scont' v-for="(item2,index2) of recordsList" :key="index2+'_pane'">
+                        <div class='c_top'>
+                          <div>
+                            <img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
+                          </div>
+                          <div class='ctitle'>
+                            <span>{{item2.userName}}</span>
+                            <span class="depName">{{item2.deptName}}</span>
+                          </div>
+                          <div class='e_date'>{{item2.noteDate2}}</div>
                         </div>
-                        <div class='ctitle'>
-                          <span>{{item2.userName}}</span>
-                          <span class="depName">{{item2.deptName}}</span>
+                        <div class='e_center e_center_content'>
+                          <div>
+                            <div v-if="item2.content != null" class='c_introduce'>{{item2.content}}</div>
+                            <div v-else class='c_introduce'>无内容</div>
+                          </div>
                         </div>
-                        <div class='e_date'>{{item2.noteDate2}}</div>
-                      </div>
-                      <div class='e_center e_center_content'>
-                        <div>
-                          <div v-if="item2.content != null" class='c_introduce'>{{item2.content}}</div>
-                          <div v-else class='c_introduce'>无内容</div>
+                        <!-- 未阅 -->
+                        <div class='e_center' v-if="item2.comment == null || item2.comment == ''">
+                          <div style="margin-left:30px;">
+                            <el-input style="border: 1px solid #ccc;border-radius:5px;width: 98% !important;"
+                              type="textarea"
+                              placeholder="请输入内容"
+                              v-model="item2.comment2">
+                            </el-input>
+                            <el-button type="small" class='r_ask2' @click="updateWorkNoteClick(item2)">批阅</el-button>
+                          </div>
                         </div>
-                      </div>
-                      <!-- 未阅 -->
-                      <div class='e_center' v-if="item2.comment == null || item2.comment == ''">
-                        <div style="margin-left:30px;">
-                          <el-input style="border: 1px solid #ccc;border-radius:5px;width: 98% !important;"
-                            type="textarea"
-                            placeholder="请输入内容"
-                            v-model="item2.comment2">
-                          </el-input>
-                          <el-button type="small" class='r_ask2' @click="updateWorkNoteClick(item2)">批阅</el-button>
-                        </div>
-                      </div>
-                      <!-- 已阅 -->
-                      <div class='e_center' v-else>
-                        <div>
-                          <div class='c_introduce'>
-                            <span style="display:block;">审阅日期：{{item2.remarkTime}}</span>
-                            {{item2.comment}} 
+                        <!-- 已阅 -->
+                        <div class='e_center' v-else>
+                          <div>
+                            <div class='c_introduce'>
+                              <span style="display:block;">审阅日期：{{item2.remarkTime}}</span>
+                              {{item2.comment}} 
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </el-tab-pane>
-              </template>
-            </el-tabs>
-            <el-button type="small" class='r_ask'>批量操作</el-button>
+                  </el-tab-pane>
+                </template>
+              </el-tabs>
+              <el-button type="small" class='r_ask'>批量操作</el-button>
+            </div>
           </div>
         </div>
         <!-- 右侧 -->
@@ -215,7 +220,7 @@
 import VueDragResize from 'vue-drag-resize' //缩放、拖拽
 import elementResizeDetectorMaker from 'element-resize-detector'
 import { format } from 'date-fns';
-import { findWorknotePage, updateWorkNote, noteAduit, countWorkNote } from '@/api/report.js';
+import { findWorknotePage, updateWorkNote, saveWorkNote, noteAduit, countWorkNote } from '@/api/report.js';
 export default {
   name: 'Refinement',
   components: {
@@ -276,36 +281,33 @@ export default {
   methods: {
     listenCon(){
       const _this = this
-      this.vw = this.$refs.rc_content.offsetWidth*0.7 - 20
-      this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 20
+      this.vw = this.$refs.rc_content.offsetWidth*0.7
+      this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 10
       const erd = elementResizeDetectorMaker()
       erd.listenTo(this.$refs.rc_content,(element)=>{
         _this.$nextTick(()=>{
-          _this.vw = element.offsetWidth*0.7 - 20
-          _this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 50
+          _this.vw = element.offsetWidth*0.7 
+          _this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 10
           let dom = $('.r_content .el-tabs__content')
-          dom[0].style.height = (this.vh - 50) + 'px'
-          dom[1].style.height = (this.vh2 - 50) + 'px'
+          dom[0].style.height = (this.vh - 70) + 'px'
+          dom[1].style.height = (this.vh2 - 70) + 'px'
         })
       })
     },
-    onResize(newRect) {
-      this.vw = this.$refs.rc_content.offsetWidth*0.7 - 20
-      this.vh = newRect.height;
-      this.vh2 = this.$refs.rc_content.offsetHeight - this.vh - 50
-      let dom = $('.r_content .el-tabs__content')
-      dom[0].style.height = (this.vh - 50) + 'px'
-      dom[1].style.height = (this.vh2 - 50) + 'px'
-      this.x = 0;
-      this.y = 0;
+    onActivated(){
+      this.$refs.textarea.focus();
     },
-    onResize2(newRect){
-      this.vw = this.$refs.rc_content.offsetWidth*0.7 - 20
-      this.vh2 = newRect.height;
-      this.vh = this.$refs.rc_content.offsetHeight - this.vh2 - 50
+    onResize(newRect) {
+      this.vw = this.$refs.rc_content.offsetWidth*0.7 
+      if(newRect.height > 400){
+        this.vh = 400
+      }else{
+        this.vh = newRect.height;
+      }
+      this.vh2 = this.$refs.rc_content.offsetHeight - this.vh - 10
       let dom = $('.r_content .el-tabs__content')
-      dom[0].style.height = (this.vh - 50) + 'px'
-      dom[1].style.height = (this.vh2 - 50) + 'px'
+      dom[0].style.height = (this.vh - 70) + 'px'
+      dom[1].style.height = (this.vh2 - 70) + 'px'
       this.x = 0;
       this.y = 0;
     },
@@ -316,6 +318,11 @@ export default {
         : [...prev, [item]]
       ), [])
     },   
+    saveWorkNoteClick(){
+      const _this = this
+      console.log('添加', this.textarea)
+      // saveWorkNote
+    },
     updateWorkNoteClick(data){
       const _this = this
       updateWorkNote(
@@ -351,7 +358,7 @@ export default {
         Object.assign(
           {
             nCurrent: nCurrent,
-            nSize: 20,
+            nSize: 50,
             // staffed: this.userIds,
             orderByField: 'noteDate',
             orderFlag: false,
@@ -612,7 +619,6 @@ export default {
       position:relative;
       height: auto;
       background-color: #fff;
-      padding: 10px;
       width: calc(100% - 20px);
       margin-bottom: 10px;
       float: left;
@@ -620,14 +626,6 @@ export default {
     .r_send{
       margin-right: 30px;
       float: right;
-      cursor: pointer;
-      width: 63px;
-      height: 28px;
-      /* background-color: #faebd7; */
-      text-align: center;
-      /* margin: 0 auto; */
-      border: 1px solid #EEEEEE;
-      margin-top: 15px;
     }
     .r_ask{
       position: absolute;
