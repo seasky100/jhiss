@@ -539,6 +539,29 @@ export default {
   .r_content >>> .el-tabs__content{
     overflow: auto;
   }
+  .r_content >>> .vdr-stick{
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+  .r_content >>> .vdr-stick-tm{
+    width: 100% !important;
+    top: 0 !important;
+    height: 0 !important;
+    margin-left: 0 !important;
+    position: absolute;
+    left: 0;
+    border: 0.5px solid red;
+  }
+  .r_content >>> .vdr-stick-bm{
+    width: 100% !important;
+    bottom: 0 !important;
+    height: 0 !important;
+    margin-left: 0 !important;
+    position: absolute;
+    left: 0;
+    border: 0.5px solid red;
+  }
   .r_list{
     font-size: 12px;
   }
