@@ -114,7 +114,7 @@
                           </div>
                         </div>
                         <!-- 未阅 -->
-                        <div class='e_center' v-if="item2.comment == null || item2.comment == ''">
+                        <div class='e_center' v-if="(item2.comment == null || item2.comment == '') && index != 2">
                           <div style="margin-left:30px;">
                             <el-input style="border: 1px solid #ccc;border-radius:5px;width: 98% !important;"
                               type="textarea"
@@ -325,6 +325,16 @@ export default {
     },
     updateWorkNoteClick(data){
       const _this = this
+      const date1 = new Date(data.noteDate)
+      const date2 = new Date()
+      let iDays = parseInt(Math.abs(date1 - date2 ) / 1000 / 60 / 60 /24)
+      if(iDays > 15){
+        this.$message({
+          type: 'warning',
+          message: '已经超过15天'
+        })
+        return
+      }
       updateWorkNote(
         Object.assign(
           {
