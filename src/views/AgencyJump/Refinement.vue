@@ -498,6 +498,7 @@ export default {
   }
   .rc_left{
     width: 70%;
+    min-width: 700px;
     /* display: flex; */
   }
   .rc_right{

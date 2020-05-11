@@ -199,7 +199,8 @@ export default {
       getUserListByUserId(
         Object.assign(
           {
-            userId: _this.$store.state.user.userInfo.id,
+            // userId: _this.$store.state.user.userInfo.id,
+            userId: _this.userId,
             nCurrent: nCurrent,
             nSize: 30
           },

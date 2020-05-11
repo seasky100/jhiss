@@ -138,7 +138,8 @@ export default {
               if(row.approvalId == null || row.approvalId == ''){
                 return false
               }else{
-                return true
+                // return true
+                return false
               }
             }
           }

@@ -1,252 +1,254 @@
 /* eslint-disable no-undef */
 <template>
-    <div class='person_home'>
-      <div class='person_body'>
-        <div class='person_head police_career'>
-          <div class="person_title p_clear">
-            <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-            从警生涯
+  <div class='person_home'>
+    <div class='person_body'>
+      <div class='person_head police_career'>
+        <div class="person_title p_clear">
+          <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+          从警生涯
+        </div>
+        <!-- <div >aa</div> -->
+        <div @mousedown="changeScroll('left')" @mouseup="stopScroll" class='p_nvleft'>
+          <img style="width:30px;margin-left: 10px;" src="@/assets/images/bg/dir_left.png" />
+        </div>
+        <div class='person_career' ref='career_list'>   
+        <div class='p_career' v-for="(item,index) in careerData" :key="index" >
+        <div v-for="(item1,index1) in item.marks" :key="index1"  @click="agency(item1,index1)" >     
+        <div class='p_card' >
+          <div v-if='item1.career_type == "1" && item1.career_desc == "优秀"'>
+            <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num2.png' /> <img v-if='showSearch' src='../utils/img/num2-gray.png' /> </el-divider>
+            <div class='p_year'>{{item1.happen_time}}</div>
+            <div class='p_name'>{{item1.career_title}}<span style="color: rgb(15, 170, 22);font-weight: bolder;margin-left: 5px;">优秀</span></div>
           </div>
-          <!-- <div >aa</div> -->
-          <div @mousedown="changeScroll('left')" @mouseup="stopScroll" class='p_nvleft'>
-            <img style="width:30px;margin-left: 10px;" src="@/assets/images/bg/dir_left.png" />
+          <div v-else-if='item1.career_type == "2"'>
+            <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num1.png' /> <img v-if='showSearch' src='../utils/img/num1-gray.png' /> </el-divider>
+            <div class='p_year'>{{item1.happen_time}}</div>
+            <div class='p_name'>{{item1.career_title}}</div>
+          </div> 
+          <div v-else-if='item1.career_type == "3"'>
+            <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num3.png' />  <img v-if='showSearch' src='../utils/img/num3-gray.png' /> </el-divider>
+            <div class='p_year'>{{item1.happen_time}}</div>
+            <div class='p_name'>{{item1.career_title}}</div>
           </div>
-          <div class='person_career' ref='career_list'>   
-          <div class='p_career' v-for="(item,index) in careerData" :key="index" >
-          <div v-for="(item1,index1) in item.marks" :key="index1"  @click="agency(item1,index1)" >     
-          <div class='p_card' >
-            <div v-if='item1.career_type == "1" && item1.career_desc == "优秀"'>
-              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num2.png' /> <img v-if='showSearch' src='../utils/img/num2-gray.png' /> </el-divider>
-              <div class='p_year'>{{item1.happen_time}}</div>
-              <div class='p_name'>{{item1.career_title}}<span style="color: rgb(15, 170, 22);font-weight: bolder;margin-left: 5px;">优秀</span></div>
-            </div>
-            <div v-else-if='item1.career_type == "2"'>
-              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num1.png' /> <img v-if='showSearch' src='../utils/img/num1-gray.png' /> </el-divider>
-              <div class='p_year'>{{item1.happen_time}}</div>
-              <div class='p_name'>{{item1.career_title}}</div>
-            </div> 
-            <div v-else-if='item1.career_type == "3"'>
-              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num3.png' />  <img v-if='showSearch' src='../utils/img/num3-gray.png' /> </el-divider>
-              <div class='p_year'>{{item1.happen_time}}</div>
-              <div class='p_name'>{{item1.career_title}}</div>
-            </div>
-            <div v-else-if='item1.career_type == "4"'>
-              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num4.png' /><img v-if='showSearch' src='../utils/img/num4-gray.png' /> </el-divider>
-              <div class='p_year'>{{item1.happen_time}}</div>
-              <div class='p_name'>{{item1.career_title}}</div>
-            </div>
-            <div v-else-if='item1.career_type == "履历"'>
-              <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num4.png' /><img v-if='showSearch' src='../utils/img/num4-gray.png' /> </el-divider>
-              <div class='p_year'>{{item1.happen_time}}</div>
-              <div class='p_name'>{{item1.career_title}}</div>
-            </div>
+          <div v-else-if='item1.career_type == "4"'>
+            <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num4.png' /><img v-if='showSearch' src='../utils/img/num4-gray.png' /> </el-divider>
+            <div class='p_year'>{{item1.happen_time}}</div>
+            <div class='p_name'>{{item1.career_title}}</div>
+          </div>
+          <div v-else-if='item1.career_type == "履历"'>
+            <el-divider content-position="left"><img v-if='!showSearch' src='../utils/img/num4.png' /><img v-if='showSearch' src='../utils/img/num4-gray.png' /> </el-divider>
+            <div class='p_year'>{{item1.happen_time}}</div>
+            <div class='p_name'>{{item1.career_title}}</div>
           </div>
         </div>
-          <div class='p_node'>
-            <el-divider content-position="left"><div style=" margin-left: -9px; color: blue;">{{item.endtime}}</div><img src='../utils/img/stage.png' /> </el-divider>
-          </div>
+      </div>
+        <div class='p_node'>
+          <el-divider content-position="left"><div style=" margin-left: -9px; color: blue;">{{item.endtime}}</div><img src='../utils/img/stage.png' /> </el-divider>
         </div>
-          </div>
-          <div @mousedown="changeScroll('right')" @mouseup="stopScroll" class='p_nvright'>
-            <img style="width:30px;margin-left: 10px;" src="@/assets/images/bg/dir_right.png" />
-          </div>
+      </div>
         </div>
-        <el-row class='content' :gutter="10">
-          <el-col :xs="12" :sm="8" :md="8" :lg="6.5" :xl="6.5">
-            <div class='person_left'>
-                <div class="person_title">
-                    <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                    风险预警
-                  </div>
-                  <div class="fengxian_body radar" id="radar"></div>
-                  <div class='p_warn'>
-                    <div class='ptop'>
-                      <div class='pli' v-for="(item,index) in warnList" @click='warncon' :key="index">
-                        <div v-if='item.num == 0'>
-                            <div class='h32 warn'><span class='wnum'>{{item.num}}</span></div>
-                        </div>
-                        <div v-else>
-                            <div class='h32 warn'><span class='pnum'>{{item.num}}</span></div>
-                        </div>
-                        <div class='h32 warn'><span class='pname'>{{item.name}}</span></div>
-                      </div>  
-                    </div>
-                    <div class='pfoot'>
-                      <div v-if='countotal>=1'>
-                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/cry.png' />当前<span class='ptotal' >{{countotal}}</span>项风险内容，请注意！！！</div>
+        <div @mousedown="changeScroll('right')" @mouseup="stopScroll" class='p_nvright'>
+          <img style="width:30px;margin-left: 10px;" src="@/assets/images/bg/dir_right.png" />
+        </div>
+      </div>
+      <el-row class='content' :gutter="10">
+        <el-col :xs="12" :sm="8" :md="8" :lg="6.5" :xl="6.5">
+          <div class='person_left'>
+              <div class="person_title">
+                  <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                  风险预警
+                </div>
+                <div class="fengxian_body radar" id="radar"></div>
+                <div class='p_warn'>
+                  <div class='ptop'>
+                    <div class='pli' v-for="(item,index) in warnList" @click='warncon' :key="index">
+                      <div v-if='item.num == 0'>
+                          <div class='h32 warn'><span class='wnum'>{{item.num}}</span></div>
                       </div>
                       <div v-else>
-                          <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/smile.png' />当前<span class='ntotal' >{{countotal}}</span>项风险内容，请保持！！！</div>
+                          <div class='h32 warn'><span class='pnum'>{{item.num}}</span></div>
                       </div>
-                      
-                    </div>
+                      <div class='h32 warn'><span class='pname'>{{item.name}}</span></div>
+                    </div>  
                   </div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="8" :md="8" :lg="11" :xl="11">
-            <div class='person_center'>
-              <div class='p_top'>
-                  <div class="person_title">
-                      <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                      考勤分析
+                  <div class='pfoot'>
+                    <div v-if='countotal>=1'>
+                        <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/cry.png' />当前<span class='ptotal' >{{countotal}}</span>项风险内容，请注意！！！</div>
                     </div>
-                  <div id='kao' class='p_attendance'></div>
-              </div>
-              <div class='p_foot'>
-                  <div class="person_title">
-                      <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                      绩效评价
+                    <div v-else>
+                        <div class='pft'><img style='margin-right: 10px;height: 19px;' src='../utils/img/smile.png' />当前<span class='ntotal' >{{countotal}}</span>项风险内容，请保持！！！</div>
                     </div>
-                    <div class='p_evaluate' style="float : left;height: calc(100% - 70px);width: 45%;border-right: 1px solid rgb(228, 233, 243);">
-                      <div style="height: 10%;">
-                        <select class='p_select' v-model='value' >
-                          <option
-                          v-for='item in options2'
-                          :key='item.value'
-                          :label='item.label'
-                          :value='item.value'>
-                        </option>
-                        </select>
-                      </div>
-                      <div id='gauge'  class='p_gauge' ></div>
-                    </div>
-                    <div class='p_heright'>
-                      <div style="height:10%;">
-                        <div class='p_change' @click='pchange' >切换</div>
-                      </div>
-                      <div v-show='change' style="height:90%; margin-top: 2em;">
-                      <div style="height:22%;display:flex">
-                        <div class='p_list'>层级履职清单：</div>
-                        <el-progress style="width: 70%" :color="customColor1"  :stroke-width="10" :percentage="70">正面评价清单</el-progress>
-                      </div>
-                      <div style="height:22%;display:flex">
-                        <div class='p_list'>正面争优清单：</div>
-                        <el-progress style="width: 70%" :color="customColor2" :stroke-width="10" :percentage="90" ></el-progress>
-                      </div>
-                      <div style="height:22%;display:flex">
-                        <div class='p_list'>负面扣分清单：</div>
-                        <el-progress style="width: 70%" :color="customColor3" :stroke-width="10" :percentage="80" ></el-progress>
-                      </div>
-                      <div style="height:22%;display:flex">
-                        <div class='p_list'>季度评价清单：</div>
-                        <el-progress style="width: 70%;" :color="customColor4" :stroke-width="10" :percentage="70" ></el-progress>
-                      </div>
-                    </div>
-                    <div v-show='!change'>
-                        <svg ref="element" width="250" height="130" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
-                      </div> 
-                    </div>
+                    
                   </div>
-            </div>
-          </el-col>
-          <el-col :xs="24" :sm="8" :md="8" :lg="6.5" :xl="6.5">
-            <div class='person_right'>
-              <div class='p_top'>
+                </div>
+          </div>
+        </el-col>
+        <el-col :xs="12" :sm="8" :md="8" :lg="11" :xl="11">
+          <div class='person_center'>
+            <div class='p_top'>
                 <div class="person_title">
-                  <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                  <span class='pl8 txt-bold' style="">待办事项</span>         
-                <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 1em;">
-                  <div @click='xztxt' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
-                    <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">协作提效</span>
-                    <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #E8EFFF">
-                      <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #235FF6"> 
-                        <div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
-                          style="width: 4em; height: 4em; background: #235FF6" title='待办箱'>
-                          <span style="font-size: 1.5em">{{xztxNum}}</span>
-                        </div>
-                      </div>
-                    </div> 
-                    <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                    <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                    考勤分析
                   </div>
-                  <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
-                  <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
-                    <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">队伍精细化</span>
-                    <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
-                      <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #8674f6">
-                        <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
-                          style="width: '4em'; height: 4em; background: #8674f6" title='待办箱'>
-                          <span style="font-size: 1.5em">1</span>
-                        </div>
-                      </div>
+                <div id='kao' class='p_attendance'></div>
+            </div>
+            <div class='p_foot'>
+                <div class="person_title">
+                    <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                    绩效评价
+                  </div>
+                  <div class='p_evaluate' style="float : left;height: calc(100% - 70px);width: 45%;border-right: 1px solid rgb(228, 233, 243);">
+                    <div style="height: 10%;">
+                      <select class='p_select' v-model='value' >
+                        <option
+                        v-for='item in options2'
+                        :key='item.value'
+                        :label='item.label'
+                        :value='item.value'>
+                      </option>
+                      </select>
                     </div>
-                    <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                    <div id='gauge'  class='p_gauge' ></div>
                   </div>
-                  <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
-                  <div @click='warncon' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
-                    <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
-                    <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
-                      <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #F09B38">
-                        <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
-                          style="width: '4em'; height: 4em; background: #F09B38" title='待办箱'>
-                          <span style="font-size: 1.5em">{{countotal}}</span>
-                        </div>
-                      </div>
+                  <div class='p_heright'>
+                    <div style="height:10%;">
+                      <div class='p_change' @click='pchange' >切换</div>
                     </div>
-                    <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                    <div v-show='change' style="height:90%; margin-top: 2em;">
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>层级履职清单：</div>
+                      <el-progress style="width: 70%" :color="customColor1"  :stroke-width="10" :percentage="70">正面评价清单</el-progress>
+                    </div>
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>正面争优清单：</div>
+                      <el-progress style="width: 70%" :color="customColor2" :stroke-width="10" :percentage="90" ></el-progress>
+                    </div>
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>负面扣分清单：</div>
+                      <el-progress style="width: 70%" :color="customColor3" :stroke-width="10" :percentage="80" ></el-progress>
+                    </div>
+                    <div style="height:22%;display:flex">
+                      <div class='p_list'>季度评价清单：</div>
+                      <el-progress style="width: 70%;" :color="customColor4" :stroke-width="10" :percentage="70" ></el-progress>
+                    </div>
                   </div>
-                  <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>               
+                  <keep-alive>
+                    <div v-show='!change' ref="elementDiv" style="width:100%;height:calc(100% - 20px);">
+                      <svg ref="element" :width="svgWidth" :height="svgHeight" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
+                    </div>
+                  </keep-alive>
+                </div>
               </div>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="8" :md="8" :lg="6.5" :xl="6.5">
+          <div class='person_right'>
+            <div class='p_top'>
+              <div class="person_title">
+                <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                <span class='pl8 txt-bold' style="">待办事项</span>         
+              <div class='flex flex-align-center flex-justify-center flex-grow' style="margin-top: 1em;">
+                <div @click='xztxt' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">协作提效</span>
+                  <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #E8EFFF">
+                    <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #235FF6"> 
+                      <div class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        style="width: 4em; height: 4em; background: #235FF6" title='待办箱'>
+                        <span style="font-size: 1.5em">{{xztxNum}}</span>
+                      </div>
+                    </div>
+                  </div> 
+                  <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                </div>
+                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+                <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">队伍精细化</span>
+                  <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
+                    <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #8674f6">
+                      <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        style="width: '4em'; height: 4em; background: #8674f6" title='待办箱'>
+                        <span style="font-size: 1.5em">1</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                </div>
+                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
+                <div @click='warncon' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
+                  <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
+                    <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #F09B38">
+                      <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
+                        style="width: '4em'; height: 4em; background: #F09B38" title='待办箱'>
+                        <span style="font-size: 1.5em">{{countotal}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span style="color: #8092A8; font-size: 14px; font-weight: 400">待办</span>
+                </div>
+                <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>               
             </div>
           </div>
-              <div class='p_foot'>
-                <div class="person_title">
-                  <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
-                  快速入口
-                </div>
-                <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em;margin-left: 2em;">
-                  <div class='flex flex-column flex-grow' style="padding: 0.5em">
-                    <div class='flex flex-grow w-full'>
-                      <router-link to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
-                         <img style=" width: 26px; height: 26px;" class='cursor-pointer'  src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
-                        <span class='cursor-pointer p_inter'>层级评价</span>
-                      </router-link>
-                      <router-link to='/talks' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
-                        <img class='cursor-pointer'  src='../utils/img/home_entrance_overtime_request@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
-                       <span class='cursor-pointer p_inter'>谈心谈话</span>
-                     </router-link>
-                      <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
-                        <img class='cursor-pointer'  src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
-                        <span class='cursor-pointer p_inter'>事项申报</span>
-                      </router-link>            
-                    </div>
-                    <div class='flex flex-grow w-full'>                    
-                      <router-link to='/IndividualReport' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
-                        <img class='cursor-pointer'  src='../utils/img/home_entrance_items_report@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
-                        <span class='cursor-pointer p_inter'>事项即报</span>
-                      </router-link>
-                      <router-link to='/DocumentLiu' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
-                        <img class='cursor-pointer'  src='../utils/img/home_entrance_document_flow@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
-                        <span class='cursor-pointer p_inter'>公文流转</span>
-                      </router-link>
-                      <router-link to='/ApprovalMatters' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
-                        <img class='cursor-pointer' src='../utils/img/home_entrance_approval_items@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
-                        <span class='cursor-pointer p_inter'>审批事项</span>
-                      </router-link>         
-                    </div>
-                    <div class='flex flex-grow w-full'>
-                      <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
-                        <img class='cursor-pointer'  src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
-                        <span class='cursor-pointer p_inter'>差旅申请</span>
-                      </router-link>
-                      <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
-                        <img class='cursor-pointer'  src='../utils/img/home_entrance_expense_request@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
-                        <span class='cursor-pointer p_inter'>用车申请</span>
-                      </router-link>
-                      <router-link to='/Caution' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
-                        <img class='cursor-pointer'  src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
-                        <span class='cursor-pointer p_inter'>警示教育</span>
-                      </router-link>        
-                    </div>
-                </div>
-              </div>  
+        </div>
+            <div class='p_foot'>
+              <div class="person_title">
+                <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
+                快速入口
               </div>
+              <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em;margin-left: 2em;">
+                <div class='flex flex-column flex-grow' style="padding: 0.5em">
+                  <div class='flex flex-grow w-full'>
+                    <router-link to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                        <img style=" width: 26px; height: 26px;" class='cursor-pointer'  src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                      <span class='cursor-pointer p_inter'>层级评价</span>
+                    </router-link>
+                    <router-link to='/talks' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                      <img class='cursor-pointer'  src='../utils/img/home_entrance_overtime_request@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
+                      <span class='cursor-pointer p_inter'>谈心谈话</span>
+                    </router-link>
+                    <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
+                      <img class='cursor-pointer'  src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
+                      <span class='cursor-pointer p_inter'>事项申报</span>
+                    </router-link>            
+                  </div>
+                  <div class='flex flex-grow w-full'>                    
+                    <router-link to='/IndividualReport' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                      <img class='cursor-pointer'  src='../utils/img/home_entrance_items_report@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>事项即报</span>
+                    </router-link>
+                    <router-link to='/DocumentLiu' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer'  src='../utils/img/home_entrance_document_flow@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
+                      <span class='cursor-pointer p_inter'>公文流转</span>
+                    </router-link>
+                    <router-link to='/ApprovalMatters' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer' src='../utils/img/home_entrance_approval_items@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>审批事项</span>
+                    </router-link>         
+                  </div>
+                  <div class='flex flex-grow w-full'>
+                    <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 0">
+                      <img class='cursor-pointer'  src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_document_flow@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>差旅申请</span>
+                    </router-link>
+                    <router-link to='/TravelApplication' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer'  src='../utils/img/home_entrance_expense_request@2x.png' /><!-- src='/images/home_entrance_approval_items@2x.png'--> 
+                      <span class='cursor-pointer p_inter'>用车申请</span>
+                    </router-link>
+                    <router-link to='/Caution' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 1px 1px 0 1px">
+                      <img class='cursor-pointer'  src='../utils/img/home_entrance_travel_application@2x.png' /><!--src='/images/home_entrance_travel_application@2x.png' --> 
+                      <span class='cursor-pointer p_inter'>警示教育</span>
+                    </router-link>        
+                  </div>
+              </div>
+            </div>  
             </div>
-          </el-col>
-        </el-row>
-      </div>
+          </div>
+        </el-col>
+      </el-row>
     </div>
-  </template>
-  <script>
+  </div>
+</template>
+<script>
 import { allWarnByType,indexRecordDeatil,sectorAverageStatistics,indexRecordCountDeatil,indexCalendar } from '@/api/warn.js';
 import { getPoliceCareer,getUserListByUserId } from '@/api/user-server.js';
 import { findWorknotePage,countWorkNote } from '@/api/report.js';
@@ -346,6 +348,8 @@ import { mapGetters } from 'vuex';
           month: '',
           date: '',
         }, 
+        svgWidth: 260,
+        svgHeight: 180,
     }
   },
   // created(){  
@@ -353,24 +357,24 @@ import { mapGetters } from 'vuex';
   beforeDestroy(){
     clearInterval(this.timer2)
   },
-      mounted() {  
-        this.setTimer2(); 
-        this.setTimer(); 
-        if(this.total == 3){
-          clearInterval(this.timer)
-          alert(44444)
-        }
-        this.userInfo = JSON.parse(sessionStorage.userInfo)
-        this.getData();
-        // this.getUserListByUserId();
-        this.allWarnByType();
-        this.sevenday();
-        this.getPoliceCareer();
-        this.indexRecordDeatil();
-        this.sectorAverageStatistics();
-        this.indexCalendar();
-        this.initCircle()
-      },
+    mounted() {  
+      this.setTimer2(); 
+      this.setTimer(); 
+      if(this.total == 3){
+        clearInterval(this.timer)
+        alert(44444)
+      }
+      this.userInfo = JSON.parse(sessionStorage.userInfo)
+      this.getData();
+      // this.getUserListByUserId();
+      this.allWarnByType();
+      this.sevenday();
+      this.getPoliceCareer();
+      this.indexRecordDeatil();
+      this.sectorAverageStatistics();
+      this.indexCalendar();
+      // this.initCircle()
+    },
     // watch: {
     //   'countotal' : (newVal,oldVal) =>{ 
     //     // this.$notify({
@@ -387,9 +391,21 @@ import { mapGetters } from 'vuex';
         this.getRadar3()
       },
     pchange(){
-    this.change = !this.change
+      const width = this.svgWidth
+      const height = this.svgHeight
+      console.log(width, height)
+      this.change = !this.change
+      if(!this.change){
+        this.$nextTick(() => {  
+          this.initCircle(width,height)
+        })
+      }
+      if(this.$refs.elementDiv.offsetWidth != 0){
+        this.svgWidth = this.$refs.elementDiv.offsetWidth
+        this.svgHeight = this.$refs.elementDiv.offsetHeight - 20
+      }
     },
-    initCircle() {
+    initCircle(width,height) {
       const data = [
         { name: "争优", count: 5 }, 
         { name: "出勤", count: 10 },
@@ -399,7 +415,8 @@ import { mapGetters } from 'vuex';
         { name: "业绩", count: 40 },
       ]      
       d3.select("svg").selectAll("g").remove();//清空作图区域
-      const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
+      // const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
+      const svg = d3.select("svg")  
       const format = d3.format(",d");
       // var color = d3.scaleOrdinal(d3.schemeCategory20c);
       const color = ["#FF9700", "#416DF6","#63C073", "#8B6FFE", "#8B6FFE", "#FF9700", "#416DF6","#63C073", "#8B6FFE", "#8B6FFE", "#F34252"];//自定义颜色
@@ -422,10 +439,12 @@ import { mapGetters } from 'vuex';
         .enter().append("g")
         .attr("class", "node")
         .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")"; });
-
       node.append("circle")
         .attr("id", (d) => { return d.id; })
-        .attr("r", (d) => { return d.r; })
+        .attr("r", (d) => { 
+          // console.log(d) 
+          return d.r; 
+        })
         .style("fill", (d) => { return color[Math.round(Math.random()*10)]; });
 
       node.append("clipPath")
