@@ -100,7 +100,8 @@ export default {
       }
       //部门和全局
       if (data.level == 1) {
-        let img = this.getPersonImg(data.userInfo.userInfo||data.userInfo);
+        // let img = this.getPersonImg(data.userInfo.userInfo||data.userInfo);
+        let img = this.getPersonImg(data.userInfo);
         return (
           <div class="user_panel level_one leaderCon">
             {img}
@@ -124,8 +125,7 @@ export default {
           <div
             onclick={handleEvent ? handleEvent : ""}
             style={"background:url(" + img_bg + ") no-repeat"}
-            class="user_panel level_two"
-          >
+            class="user_panel level_two">
             {img}
             <div class="panel_info">
               <img src={require("../../assets/images/dangyuan.png")} />

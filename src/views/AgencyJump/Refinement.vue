@@ -56,28 +56,37 @@
       <div class='r_top'>
         <img class="photo_img"  style="width: 99%;height:100%;" src="@/assets/images/banner.png" />
       </div>
-      <div class='rc_content'>
+      <div class='rc_content' ref="rc_content">
+        <!-- <vue-drag-resize :w="200" :h="200"></vue-drag-resize> -->
+        <!-- 左侧 -->
         <div class='rc_left'>
-          <div class='rc_tap'>
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="日志考核" name="first">
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 1, maxRows: 2}"
-                  placeholder="发布一条日志"
-                  v-model="textarea">
-                </el-input>
-                <div class='r_send'>发布</div>
-              </el-tab-pane>
-              <el-tab-pane label="审批审核" name="second">审批审核</el-tab-pane>
-              <el-tab-pane label="会议记录" name="third">会议记录</el-tab-pane>
-              <el-tab-pane label="党建工作" name="fourth">党建工作</el-tab-pane>
-              <el-tab-pane label="谈心谈话" name="five">谈心谈话</el-tab-pane>
-              <el-tab-pane label="上门家访" name="six">上门家访</el-tab-pane>
-            </el-tabs>
-            <el-button type="small" class='r_ask'>加班申请</el-button>
-          </div>
-          <div class='rc_tap'>
+          <!-- 新增日志 -->
+          <vue-drag-resize style="position:relative;top:0;left:0;" 
+            :min-width="700" 
+            :w="vw" :h="vh" 
+            @resizing="onResize">
+            <div class='rc_tap' :style="{width: + vw+ 'px',height:+vh+'px'}">
+              <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="日志考核" name="first">
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 1, maxRows: 2}"
+                    placeholder="发布一条日志"
+                    v-model="textarea">
+                  </el-input>
+                  <div class='r_send'>发布</div>
+                </el-tab-pane>
+                <el-tab-pane label="审批审核" name="second">审批审核</el-tab-pane>
+                <el-tab-pane label="会议记录" name="third">会议记录</el-tab-pane>
+                <el-tab-pane label="党建工作" name="fourth">党建工作</el-tab-pane>
+                <el-tab-pane label="谈心谈话" name="five">谈心谈话</el-tab-pane>
+                <el-tab-pane label="上门家访" name="six">上门家访</el-tab-pane>
+              </el-tabs>
+              <el-button type="small" class='r_ask'>加班申请</el-button>
+            </div>
+          </vue-drag-resize>
+          <!-- 日志内容 -->
+          <div class='rc_tap' :style="{width: + vw+ 'px',height:+vh2+'px'}">
             <el-tabs v-model="activeName1" @tab-click="handleClick1">
               <template v-for="(item,index) of tabList">
                 <el-tab-pane :key="index+'_tabs'" lazy :label="item.label" :name="index+'_tabs'">
@@ -128,6 +137,7 @@
             <el-button type="small" class='r_ask'>批量操作</el-button>
           </div>
         </div>
+        <!-- 右侧 -->
         <div class='rc_right'>
           <div class='r_date'>
             <div class='' style="height: 15%;">
@@ -202,10 +212,15 @@
   </div>
 </template>
 <script>
+import VueDragResize from 'vue-drag-resize' //缩放、拖拽
+import elementResizeDetectorMaker from 'element-resize-detector'
 import { format } from 'date-fns';
 import { findWorknotePage, updateWorkNote, noteAduit, countWorkNote } from '@/api/report.js';
 export default {
   name: 'Refinement',
+  components: {
+    VueDragResize
+  },
   props: {
     navMenus: {}
   },
@@ -244,15 +259,56 @@ export default {
         year:'',
         month:'',
         date: '',
-      },      
+      },     
+      vw: 200,
+      vh: 200,
+      vh2: 200,
+      top: 0,
+      left:0 
     }
   },
   mounted() {
+    this.listenCon()
     this.getRadar2()
     this.init()
     this.query()
   },
   methods: {
+    listenCon(){
+      const _this = this
+      this.vw = this.$refs.rc_content.offsetWidth*0.7 - 20
+      this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 20
+      const erd = elementResizeDetectorMaker()
+      erd.listenTo(this.$refs.rc_content,(element)=>{
+        _this.$nextTick(()=>{
+          _this.vw = element.offsetWidth*0.7 - 20
+          _this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 50
+          let dom = $('.r_content .el-tabs__content')
+          dom[0].style.height = (this.vh - 50) + 'px'
+          dom[1].style.height = (this.vh2 - 50) + 'px'
+        })
+      })
+    },
+    onResize(newRect) {
+      this.vw = this.$refs.rc_content.offsetWidth*0.7 - 20
+      this.vh = newRect.height;
+      this.vh2 = this.$refs.rc_content.offsetHeight - this.vh - 50
+      let dom = $('.r_content .el-tabs__content')
+      dom[0].style.height = (this.vh - 50) + 'px'
+      dom[1].style.height = (this.vh2 - 50) + 'px'
+      this.x = 0;
+      this.y = 0;
+    },
+    onResize2(newRect){
+      this.vw = this.$refs.rc_content.offsetWidth*0.7 - 20
+      this.vh2 = newRect.height;
+      this.vh = this.$refs.rc_content.offsetHeight - this.vh2 - 50
+      let dom = $('.r_content .el-tabs__content')
+      dom[0].style.height = (this.vh - 50) + 'px'
+      dom[1].style.height = (this.vh2 - 50) + 'px'
+      this.x = 0;
+      this.y = 0;
+    },
     init(){
       this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(((prev, item, index) =>
         index % 7
@@ -474,7 +530,6 @@ export default {
     margin-bottom:5px;
   }
   .r_content >>> .el-tabs__content{
-    max-height: 535px;
     overflow: auto;
   }
   .r_list{
@@ -498,7 +553,6 @@ export default {
   }
   .rc_left{
     width: 70%;
-    min-width: 700px;
     /* display: flex; */
   }
   .rc_right{
