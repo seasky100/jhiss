@@ -14,11 +14,13 @@ import dayjs from 'dayjs';
 // import Print from 'vue-print-nb';
 // Vue.use(Print);
 import Print from './plugs/print'
+import elementResizeDetectorMaker from 'element-resize-detector'
 Vue.use(Print)
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$request = request
 Vue.prototype.$findRouter = findRouter
 Vue.prototype.$dayjs = dayjs;
+Vue.prototype.$elementResizeDetectorMaker = elementResizeDetectorMaker;
 // import '@/utils/permission'
 import { findRouter } from '@/utils/findRouter'
 Vue.config.productionTip = false

@@ -218,7 +218,6 @@
 </template>
 <script>
 import VueDragResize from 'vue-drag-resize' //缩放、拖拽
-import elementResizeDetectorMaker from 'element-resize-detector'
 import { format } from 'date-fns';
 import { findWorknotePage, updateWorkNote, saveWorkNote, noteAduit, countWorkNote } from '@/api/report.js';
 export default {
@@ -283,7 +282,7 @@ export default {
       const _this = this
       this.vw = this.$refs.rc_content.offsetWidth*0.7
       this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 10
-      const erd = elementResizeDetectorMaker()
+      const erd = this.$elementResizeDetectorMaker()
       erd.listenTo(this.$refs.rc_content,(element)=>{
         _this.$nextTick(()=>{
           _this.vw = element.offsetWidth*0.7 
@@ -553,15 +552,6 @@ export default {
     background: none;
     border: none;
     box-shadow: none;
-  }
-  .r_content >>> .vdr-stick-tm{
-    width: 100% !important;
-    top: 0 !important;
-    height: 0 !important;
-    margin-left: 0 !important;
-    position: absolute;
-    left: 0;
-    border: 0.5px solid red;
   }
   .r_content >>> .vdr-stick-bm{
     width: 100% !important;

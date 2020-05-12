@@ -110,7 +110,7 @@
                     </div>
                     <div id='gauge'  class='p_gauge' ></div>
                   </div>
-                  <div class='p_heright'>
+                  <div class='p_heright' ref="elementDiv">
                     <div style="height:10%;">
                       <div class='p_change' @click='pchange' >切换</div>
                     </div>
@@ -133,7 +133,7 @@
                     </div>
                   </div>
                   <keep-alive>
-                    <div v-show='!change' ref="elementDiv" style="width:100%;height:calc(100% - 20px);">
+                    <div v-show='!change' style="width:100%;height:calc(100% - 20px);">
                       <svg ref="element" :width="svgWidth" :height="svgHeight" font-family="sans-serif" font-size="14" text-anchor="middle"></svg>
                     </div>
                   </keep-alive>
@@ -373,6 +373,7 @@ import { mapGetters } from 'vuex';
       this.indexRecordDeatil();
       this.sectorAverageStatistics();
       this.indexCalendar();
+      this.listenCon()
       // this.initCircle()
     },
     // watch: {
@@ -390,20 +391,29 @@ import { mapGetters } from 'vuex';
         this.getRadar2()
         this.getRadar3()
       },
+      
     pchange(){
       const width = this.svgWidth
       const height = this.svgHeight
-      console.log(width, height)
       this.change = !this.change
       if(!this.change){
         this.$nextTick(() => {  
           this.initCircle(width,height)
         })
       }
-      if(this.$refs.elementDiv.offsetWidth != 0){
-        this.svgWidth = this.$refs.elementDiv.offsetWidth
-        this.svgHeight = this.$refs.elementDiv.offsetHeight - 20
-      }
+    },
+    listenCon(){
+      const _this = this
+      _this.svgWidth = this.$refs.elementDiv.offsetWidth
+      _this.svgHeight = this.$refs.elementDiv.offsetHeight - 45
+      const erd = this.$elementResizeDetectorMaker()
+      erd.listenTo(this.$refs.elementDiv,(element)=>{
+        _this.$nextTick(()=>{
+          _this.svgWidth = element.offsetWidth
+          _this.svgHeight = element.offsetHeight  - 45
+          _this.pchange()
+        })
+      })
     },
     initCircle(width,height) {
       const data = [
