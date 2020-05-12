@@ -81,6 +81,10 @@
     <!-- 责任清单 -->
     <el-dialog class="dialog_info" title="责任清单" :visible.sync="dialogVisible2">
       <div>责任清单</div>
+          <editor
+        :binddata.sync="answer"
+        ref="editor" style="height:260px">
+    </editor>
     </el-dialog>
   </div>
 </template>
@@ -89,6 +93,7 @@
 import { getUserInfo } from '@/api/user-server.js';
 import { getRiskByUserId } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
+import editor from "@/components/editor.vue";
 export default {
   name: "Personnel_relation",
   inject: ['MenuPage'],
@@ -96,6 +101,7 @@ export default {
     return {
       personInfo:{},
       active: 1,
+      answer:'',
       labelList: [
         {label: '党员'},
         {label: '在岗'},
@@ -104,7 +110,10 @@ export default {
         {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
         {name: '岗位预警', imgPath: require('@/assets/images/bg/menu2.png')},
         {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
-        {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
+        {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
+        {name: '风险评估', imgPath: require('@/assets/images/bg/menu2.png')},
+        {name: '预警管控', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
+        {name: '学习教育', imgPath: require('@/assets/images/bg/menu4.png')}
       ],
       submenuList: [
         {name:'我的直属领导'},
@@ -125,6 +134,10 @@ export default {
       gridData: [],
     }
   },
+  components: { editor },
+  // components: {
+  //     editor
+  // },
   watch:{
     // person_data: {
     //   immediate: true,
