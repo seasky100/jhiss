@@ -210,7 +210,7 @@ export default {
     },
     // 查询列表
     query(nCurrent = 1) {
-			console.log(sessionStorage.userId)
+			// console.log(sessionStorage.userId)
       const _this = this;
       findAnnualReportPage(
         Object.assign(
