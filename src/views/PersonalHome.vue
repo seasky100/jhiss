@@ -407,7 +407,7 @@ import { mapGetters } from 'vuex';
     },
     initCircle(width,height) {
       const data = [
-        { name: "争优", count: 5 }, 
+        { name: "争优", count: 6 }, 
         { name: "出勤", count: 10 },
         { name: "日志", count: 10 },
         { name: "重点", count: 20 },
