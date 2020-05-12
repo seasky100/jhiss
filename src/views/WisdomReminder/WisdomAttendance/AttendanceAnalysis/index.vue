@@ -292,7 +292,7 @@ export default {
         }
         // 刷卡地点次数统计
         getClockWarnReasonStatistics(data).then((res) => {
-            console.log(1111,res);
+            // console.log(1111,res);
             for (let key in res) {
                 this.checkingInResult.data.rows.push({type: key, num: res[key]})
             }

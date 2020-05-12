@@ -1,138 +1,138 @@
 <template>
-    <div class="MenuPage">
-      <div class="pageTop">
-          <div class='app flex flex-column h-full'>
-            <header  ref='header' class='flex flex-align-center flex-no-shrink border-box' style="height: 100%">
-              <div class='m-left' style="width: 90%">
-                <img src='../utils/img/header_logo2.png' class='h48 m_title m_logal' />
-                <img src='../utils/img/header_title.png' class='h48 m_title' />
-              </div>
-              <!-- v-show='flag' -->
-              <div class='m_right'@mouseenter="enter()" @mouseleave="leave()">
-              <img class='p_img' :src='src' />
-              <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()">{{name}}</div>
-              <!-- <img class='t_img' src='../utils/img/header_alarm@2x.png'/>  -->
-              <div title='退出登录' @click='signOut' ></button>
-                <img className='m_img' style="vertical-align: inherit;margin-left: 10px;" src='../utils/img/header_logout@2x.png' />
-              </div>    
+  <div class="MenuPage">
+    <div class="pageTop">
+        <div class='app flex flex-column h-full'>
+          <header  ref='header' class='flex flex-align-center flex-no-shrink border-box' style="height: 100%">
+            <div class='m-left' style="width: 90%">
+              <img src='../utils/img/header_logo2.png' class='h48 m_title m_logal' />
+              <img src='../utils/img/header_title.png' class='h48 m_title' />
             </div>
             <!-- v-show='flag' -->
-            <div v-show='flag' @mouseenter="enter()" @mouseleave="leave()">
-                <el-card class="box-card m_info">
-                  <div class='m_rybj':style="{backgroundImage:'url('+bg2+')'}" >
-                    <div class="m_perbg">
-                      <el-avatar :src="src"></el-avatar> 
-                      <span v-if='politicalStatus =="中共党员"'>
-                          <img style=" position: absolute; bottom: 116px;right: 84px;height: 16px;" src='@/assets/images/dangyuan.png' class='' />    
-
-                      </span>    
-                    </div>
-                    <!-- politicalStatus 党员    policeRank 警司-->
-                    <div style="margin-bottom: 6px;"><span style="font-size: unset;font-weight: 600">{{name}}<span style="font-size: 12px; color: forestgreen;">({{policeRank}})</span></span></div>
-                    <span style="font-size: 14px;font-weight: 400;color: #A6B1C2;">警号：{{policeCode}}</span>
-                    <div style="margin-top: 5px;"><span style="font-size: 14px;color: #006eFF;font-weight: 400;margin-right: 7px;">{{organizationNames}}</span><img style="margin-top: 6px;width: 3px;height: 20px;" src='../utils/img/home_round_bar@2x.png' /> <span  style="font-size: 14px;color: #006eFF;font-weight: 400;">{{rank}}</span></div>
-                  </div>
-                  <div style="height: 47%; width: 100%"> <div style="height: 12%;width: 100%;"><span style="font-size: 13px;float: left;font-weight: 400;">个人中心</span></div>
-                  <!-- <div v-for="(item,index) of typeList"  :key="index">
-                      <div class='m_quick'>
-                          <span style="margin-left: 10px;"><img class='m_img' :src="item.url"/></span>
-                          <div class='m_font'>{{item.name}}</div>
-                      </div>
-                    </div> -->
-                      <div style="text-align: left; display:flex;">
-                        <div class='m_quick'@click="goTo('/agency')" >
-                            <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/daiban.png'/></span>
-                            <div class='m_font'>个人事项</div>
-                        </div>
-                        <div class='m_quick' @click="goTo('/Salary')">
-                            <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/gongzi.png'/></span>
-                            <div class='m_font'>工资</div>
-                        </div>
-                        <div class='m_quick' @click="goTo('/passport')">
-                            <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/huzhao.png'/></span>
-                            <div class='m_font'>护照</div>
-                        </div>
-                        <div class='m_quick' @click="goTo('/Salary')">
-                            <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/gangwei.png'/></span>
-                            <div class='m_font'>岗位风险</div>
-                        </div>
-                        </div>
-                        <div style="text-align: left; display:flex;">
-                            <!-- <div class='m_quick' @click="goTo('/attendance-analysis')">
-                                <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/kaoqin.png'/></span>
-                                <div class='m_font' @click="goTo('/Salary')">考勤</div>
-                            </div> -->
-                            <div class='m_quick'>
-                                <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/qingjia.png'/></span>
-                                <div class='m_font'@click="goTo('/LeaveSituationAnalysis')">个人荣誉</div>
-                            </div>
-                            <div class='m_quick'>
-                                <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/qingjia.png'/></span>
-                                <div class='m_font'@click="goTo('/LeaveSituationAnalysis')">请假</div>
-                            </div>
-                            <div class='m_quick'>
-                                <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/qingjia.png'/></span>
-                                <div class='m_font'@click="goTo('/LeaveSituationAnalysis')">加班</div>
-                            </div>
-                        </div>
-                  </div>
-                </el-card>
-              </div>
-            </header>
-            <!-- <el-dialog title="" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-              <div class="m_body" v-for="(item,index) in tabelData" :key="index">
-                <div class='m_message'>
-                  <span>{{item.name}}</span>
-                  <span class="m_code">{{item.code}}</span>
-                  <span class="m_code">{{item.dept}}</span>
-                </div>
-                <div class="m_things">
-                  预警时间：{{item.time}}
-                </div>
-                <div class="m_things">
-                  预警原因：{{item.reason}}
-                </div>
-                <div class="m_unusual" v-for="(item1,index2) in item.list" :key="index2">
-                  <div class="m_message">
-                    {{item1.name}}
-                  </div>
-                </div>
-                <div class="m_message renack">
-                  <div class="m_message">本人反馈</div>
-                  <div class="m_message m_center">
-                    <div class="m_message m_time">
-                      2020年2月22日 11:35:23
-                    </div>
-                    <div class="m_message m_content">小孩突然发高烧，事关紧急未及时汇报</div>
-                  </div>
-                </div>
-                <div class="m_message m_textarea">层级领导反馈</div>
-                <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
-                </el-input>
-                <div class="m_message m_textarea">职能部门反馈</div>
-                <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
-                </el-input>
-              </div>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-              </span>
-            </el-dialog> -->
-            <!-- 代办箱 -->
-           <!-- <agencyBox ref="agencyBox" /> -->
+            <div class='m_right'@mouseenter="enter()" @mouseleave="leave()">
+            <img class='p_img' :src='src' />
+            <div class='px4' style="color: white" @mouseenter="enter()" @mouseleave="leave()">{{name}}</div>
+            <!-- <img class='t_img' src='../utils/img/header_alarm@2x.png'/>  -->
+            <div title='退出登录' @click='signOut' ></button>
+              <img className='m_img' style="vertical-align: inherit;margin-left: 10px;" src='../utils/img/header_logout@2x.png' />
+            </div>    
           </div>
+          <!-- v-show='flag' -->
+          <div v-show='flag' @mouseenter="enter()" @mouseleave="leave()">
+              <el-card class="box-card m_info">
+                <div class='m_rybj':style="{backgroundImage:'url('+bg2+')'}" >
+                  <div class="m_perbg">
+                    <el-avatar :src="src"></el-avatar> 
+                    <span v-if='politicalStatus =="中共党员"'>
+                        <img style=" position: absolute; bottom: 116px;right: 84px;height: 16px;" src='@/assets/images/dangyuan.png' class='' />    
+
+                    </span>    
+                  </div>
+                  <!-- politicalStatus 党员    policeRank 警司-->
+                  <div style="margin-bottom: 6px;"><span style="font-size: unset;font-weight: 600">{{name}}<span style="font-size: 12px; color: forestgreen;">({{policeRank}})</span></span></div>
+                  <span style="font-size: 14px;font-weight: 400;color: #A6B1C2;">警号：{{policeCode}}</span>
+                  <div style="margin-top: 5px;"><span style="font-size: 14px;color: #006eFF;font-weight: 400;margin-right: 7px;">{{organizationNames}}</span><img style="margin-top: 6px;width: 3px;height: 20px;" src='../utils/img/home_round_bar@2x.png' /> <span  style="font-size: 14px;color: #006eFF;font-weight: 400;">{{rank}}</span></div>
+                </div>
+                <div style="height: 47%; width: 100%"> <div style="height: 12%;width: 100%;"><span style="font-size: 13px;float: left;font-weight: 400;">个人中心</span></div>
+                <!-- <div v-for="(item,index) of typeList"  :key="index">
+                    <div class='m_quick'>
+                        <span style="margin-left: 10px;"><img class='m_img' :src="item.url"/></span>
+                        <div class='m_font'>{{item.name}}</div>
+                    </div>
+                  </div> -->
+                    <div style="text-align: left; display:flex;">
+                      <div class='m_quick'@click="goTo('/agency')" >
+                          <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/daiban.png'/></span>
+                          <div class='m_font'>个人事项</div>
+                      </div>
+                      <div class='m_quick' @click="goTo('/Salary')">
+                          <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/gongzi.png'/></span>
+                          <div class='m_font'>工资</div>
+                      </div>
+                      <div class='m_quick' @click="goTo('/passport')">
+                          <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/huzhao.png'/></span>
+                          <div class='m_font'>护照</div>
+                      </div>
+                      <div class='m_quick' @click="goTo('/Salary')">
+                          <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/gangwei.png'/></span>
+                          <div class='m_font'>岗位风险</div>
+                      </div>
+                      </div>
+                      <div style="text-align: left; display:flex;">
+                          <!-- <div class='m_quick' @click="goTo('/attendance-analysis')">
+                              <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/kaoqin.png'/></span>
+                              <div class='m_font' @click="goTo('/Salary')">考勤</div>
+                          </div> -->
+                          <div class='m_quick'>
+                              <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/qingjia.png'/></span>
+                              <div class='m_font'@click="goTo('/LeaveSituationAnalysis')">个人荣誉</div>
+                          </div>
+                          <div class='m_quick'>
+                              <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/qingjia.png'/></span>
+                              <div class='m_font'@click="goTo('/LeaveSituationAnalysis')">请假</div>
+                          </div>
+                          <div class='m_quick'>
+                              <span style="margin-left: 10px;"><img class='m_img' src='../utils/img/qingjia.png'/></span>
+                              <div class='m_font'@click="goTo('/LeaveSituationAnalysis')">加班</div>
+                          </div>
+                      </div>
+                </div>
+              </el-card>
+            </div>
+          </header>
+          <!-- <el-dialog title="" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <div class="m_body" v-for="(item,index) in tabelData" :key="index">
+              <div class='m_message'>
+                <span>{{item.name}}</span>
+                <span class="m_code">{{item.code}}</span>
+                <span class="m_code">{{item.dept}}</span>
+              </div>
+              <div class="m_things">
+                预警时间：{{item.time}}
+              </div>
+              <div class="m_things">
+                预警原因：{{item.reason}}
+              </div>
+              <div class="m_unusual" v-for="(item1,index2) in item.list" :key="index2">
+                <div class="m_message">
+                  {{item1.name}}
+                </div>
+              </div>
+              <div class="m_message renack">
+                <div class="m_message">本人反馈</div>
+                <div class="m_message m_center">
+                  <div class="m_message m_time">
+                    2020年2月22日 11:35:23
+                  </div>
+                  <div class="m_message m_content">小孩突然发高烧，事关紧急未及时汇报</div>
+                </div>
+              </div>
+              <div class="m_message m_textarea">层级领导反馈</div>
+              <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
+              </el-input>
+              <div class="m_message m_textarea">职能部门反馈</div>
+              <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea">
+              </el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+          </el-dialog> -->
+          <!-- 代办箱 -->
+          <!-- <agencyBox ref="agencyBox" /> -->
+        </div>
+    </div>
+    <div class="page_body">
+      <div class="m_left">
+          <nav-menu :navMenus="routes"></nav-menu>
       </div>
-      <div class="page_body">
-        <div class="m_left">
-            <nav-menu :navMenus="routes"></nav-menu>
-        </div>
-        <div class="bodyContent" > <!-- :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 150px)'}]" -->
-          <router-view/>
-        </div>
+      <div class="bodyContent" > <!-- :style="[{width:isCollapse?'calc(100% - 70px)':'calc(100% - 150px)'}]" -->
+        <router-view/>
       </div>
     </div>
-  </template>
-  <script>
+  </div>
+</template>
+<script>
   import NavMenu from "@/components/NavMenu.vue";
   import { myPhotoSrc } from '../utils/common.js'
   import { mapActions } from 'vuex'
@@ -465,9 +465,7 @@
   }
   .m_right{
     width: 10%;
-    height: 100%;
     display: flex;
-    margin-top: 4%;
     margin-right: 10px;
   }
   .m_rybj{

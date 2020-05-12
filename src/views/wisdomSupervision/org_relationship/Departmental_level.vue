@@ -302,6 +302,7 @@ export default {
   width: calc(100% - 80px);
   overflow: hidden;
   white-space: nowrap;
+  border-radius: 40px;
 }
 
 .Org_relationship {

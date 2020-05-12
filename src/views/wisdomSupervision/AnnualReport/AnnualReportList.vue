@@ -138,8 +138,8 @@ export default {
               if(row.approvalId == null || row.approvalId == ''){
                 return false
               }else{
-                // return true
-                return false
+                return true
+                // return false
               }
             }
           }
@@ -210,15 +210,15 @@ export default {
     },
     // 查询列表
     query(nCurrent = 1) {
-			// console.log(nCurrent)
+			// console.log(sessionStorage.userId)
       const _this = this;
       findAnnualReportPage(
         Object.assign(
           {
             nCurrent: nCurrent,
             nSize: 10,
-            // userId: _this.userId,
-            userId: '1008611',
+            userId: sessionStorage.userId,
+            // userId: '1008611',
             // approvalId: '123456001'
           },
           _this.searchData
