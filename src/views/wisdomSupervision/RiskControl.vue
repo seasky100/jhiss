@@ -68,6 +68,27 @@ export default {
                     disabled: true
                 },
             },
+            {
+                type: 'select1',
+                prop: 'warnType',
+                width: '150px',
+                options: [
+                    {label:'考勤预警', value:'1'},
+                    {label:'请假预警', value:'2'},
+                    {label:'事项申报预警', value:'3'},
+                    {label:'违规查询预警', value:'4'},
+                    {label:'日志预警', value:'5'},
+                    {label:'涉嫌违法预警', value:'6'},
+                    {label:'用车预警', value:'7'},
+                    {label:'出国预警', value:'8'},
+                    {label:'差旅预警', value:'9'},
+                    {label:'刷卡预警', value:'10'},
+                    {label:'就餐预警', value:'11'},
+                    {label:'审批预警', value:'12'},
+                ],
+                change: row => console.log(row),
+                placeholder: '--预警类别--'
+            },
             // {
             // label:'筛选时间：',
             // type: 'daterange',
@@ -113,9 +134,29 @@ export default {
                 label: '部门',
                 align: 'left'
             },
-            {
-                prop: 'warnReason',
-                label: '预警原因',
+            // {
+            //     prop: 'warnReason',
+            //     label: '预警原因',
+            //     align: 'left'
+			// },
+			{
+				prop: 'warnType',
+				formatter: 'warnType_format',
+				options: {
+					1: '考勤预警',
+					2: '请假预警',
+					3: '事项申报预警',
+					4: '违规查询预警',
+					5: '日志预警',
+					6: '涉嫌违法预警',
+					7: '用车预警',
+					8: '出国预警',
+					9: '差旅预警',
+					10: '刷卡预警',
+					11: '就餐预警',
+					12: '审批预警',
+				},
+                label: '预警类别',
                 align: 'left'
             },
             {
@@ -165,6 +206,9 @@ export default {
     this.orgName = sessionStorage.orgName;
   },
   methods: {
+		warnType_format(row, column, prop){
+			return column.options[prop]
+		},
       // 分页点击事件
       afterCurrentPageClickHandle(val, next) {
           this.query(val);
@@ -184,7 +228,7 @@ export default {
               nSize: 10,
               orderByField: ''
           }, $this.searchData)).then((res) => {
-              console.log(res.data);
+              console.log(res.data)
               this.$refs.recordSpTableRef.setPageInfo(
                   nCurrent,
                   res.size,

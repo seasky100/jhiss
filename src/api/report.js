@@ -94,6 +94,14 @@ export function updateWorkNote (params) {
     data: params
   })
 }
+// 工作日志添加
+export function saveWorkNote (params) {
+  return request({
+    url: DEFAULT_URL.post.saveWorkNote,
+    method: 'post',
+    data: params
+  })
+}
 
 // 个人廉政风险岗位预警 GET /risk/getRiskByUserId
 export function getRiskByUserId (params) {

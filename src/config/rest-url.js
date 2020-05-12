@@ -150,6 +150,7 @@ const DEFAULT_URL = {
       workEvaluateStatistics: `${GAISMSERVER}workNote/workEvaluateStatistics`, // 工作评价按部门统计
       countWorkNoteByDay: `${GAISMSERVER}workNote/countWorkNoteByDay`, // 工作评价按月统计
       updateWorkNote: `${GAISMSERVER}workNote/updateWorkNote`, // 工作评价按月统计
+      saveWorkNote: `${GAISMSERVER}workNote/saveWorkNote`, // 工作日志添加
     },
      // 个人风险管理
   userRisk: {

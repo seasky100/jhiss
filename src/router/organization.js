@@ -53,7 +53,7 @@ export default [
         meta: {
           permValue: 'ZHKQ',
         },
-        path: "",
+        path: "/JobRisk",
         component: {
           render: (h) => h('router-view'),
         },
@@ -123,7 +123,7 @@ export default [
         },
         img: 'left_menu_sub_year.png',
         name: '',
-        path: "",
+        path: "/IndividualReport",
         component: {
           render: (h) => h('router-view'),
         },

@@ -61,7 +61,7 @@ const wisdomReminderRouter = [
       {
         title: '纪检监督',
         img: 'left_absence@2x.png',
-        path: '',
+        path: '/suspected',
         component: {
           render: (h) => h('router-view'),
         },
@@ -168,7 +168,7 @@ const wisdomReminderRouter = [
         title: '政务监督',
         icon: 'el-icon-menu',
         img: 'left_sensing@2x.png',
-        path: '',
+        path: '/gognwenliuzhuan',
         component: {
           render: (h) => h('router-view'),
         },
@@ -232,7 +232,7 @@ const wisdomReminderRouter = [
         title: '警保监督',
         icon: 'el-icon-menu',
         img: 'left_travel@2x.png',
-        path: '',
+        path: '/organization-car',
         component: {
           render: (h) => h('router-view'),
         },
@@ -278,7 +278,7 @@ const wisdomReminderRouter = [
         title: '部门共享',
         icon: 'el-icon-menu',
         img: 'float_attendance@2x.png',
-        path: '',
+        path: '/unbuild',
         component: () => import('@/views/unbuild'),
       },
     ],
