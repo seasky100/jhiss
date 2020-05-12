@@ -313,13 +313,13 @@ export default {
         if(res.success) {
           this.$message({
             type: 'success',
-            message: '提交成功'
+            message: '保存成功'
           })
           this.$set(this.editTotal,'edit',false)
         }else {
           this.$message({
             type: 'error',
-            message: '提交失败'
+            message: '保存失败'
           })
         }
       })
