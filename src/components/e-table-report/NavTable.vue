@@ -43,7 +43,8 @@
               </div>
             </template>
             <template v-else-if="item.type == 'date'">
-              <el-input @change="verificationDate" v-model="scope.row[item.prop]"></el-input>
+              <!-- <el-input @change="verificationDate" v-model="scope.row[item.prop]"></el-input> -->
+              <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="scope.row[item.prop]" style="width: 100%;"></el-date-picker>
             </template>
           </span>
           <span v-else-if="(!item.formatter) && (!scope.row.summaryfunc)">
@@ -83,7 +84,8 @@
                   {{headerParam[item.prop2]}}
                 </template>
                 <template v-else-if="headerParam.edit">
-                  <el-input @change="verificationDate" v-model="headerParam[item.prop2]"></el-input>
+                  <!-- <el-input @change="verificationDate" v-model="headerParam[item.prop2]"></el-input> -->
+                  <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="headerParam[item.prop]" style="width: 100%;"></el-date-picker>
                 </template>
                 <template v-else>
                   {{headerParam[item.prop2] != null ? formatterDate(headerParam[item.prop2]) : ''}}
@@ -123,7 +125,8 @@
                   {{headerParam[item.prop]}}
                 </template>
                 <template v-if="headerParam.edit">
-                  <el-input @change="verificationDate" v-model="headerParam[item.prop]"></el-input>
+                  <!-- <el-input @change="verificationDate" v-model="headerParam[item.prop]"></el-input> -->
+                  <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="headerParam[item.prop]" style="width: 100%;"></el-date-picker>
                 </template>
                 <template v-else>
                   {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
@@ -157,7 +160,8 @@
           </span>
           <span v-else-if="item.type == 'date'">
             <template v-if="headerParam.edit">
-              <el-input @change="verificationDate" v-model="headerParam[item.prop]"></el-input>
+              <!-- <el-input @change="verificationDate" v-model="headerParam[item.prop]"></el-input> -->
+              <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="headerParam[item.prop]" style="width: 100%;"></el-date-picker>
             </template>
             <template v-else>
               {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
@@ -234,7 +238,11 @@ export default {
   },
   methods: {
     formatterDate(dataString){
-      return format(new Date(dataString), 'yyyy-MM-dd')
+      if(dataString == null){
+        return ''
+      }else{
+        return format(new Date(dataString), 'yyyy-MM-dd')
+      }
     },
 		renderContent(h, { column, $index }){
       // console.log(column)
