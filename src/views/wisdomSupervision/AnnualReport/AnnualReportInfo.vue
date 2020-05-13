@@ -3,11 +3,10 @@
 		<h2 class="individual_title">
       {{title.label}}
       <template>
-        <!-- @click="addFormData" @click="saveFormData" -->
-        <span class="imgAdd" @click="addFormData" ></span>
-        <!-- <span class="imgAdd" @click="adduserRelationVoList" ></span>
-        <span class="imgAdd" @click="addsocialRelationship" ></span> -->
-        <span class="saveImg" @click="saveFormData" ></span>
+        <!-- <span class="imgAdd" title="编辑信息" @click="addFormData" ></span>
+        <span class="saveImg" title="保存" @click="saveFormData" ></span> -->
+        <el-button size="mini" type="primary" icon="el-icon-edit" circle @click="addFormData"></el-button>
+        <el-button size="mini" type="success" icon="el-icon-check" circle @click="saveFormData"></el-button>
       </template>
     </h2>
     <span class="explain">
@@ -118,7 +117,7 @@
       <tr>
         <td :rowspan="formObj.userRelationVoList.length + 1">
           家庭主要成员
-          <span class="imgAdd" @click="adduserRelationVoList" ></span>
+          <span class="imgAdd img_person" title="添加成员" @click="adduserRelationVoList" ></span>
         </td>
         <td>称谓</td>
         <td>姓名</td>
@@ -175,7 +174,7 @@
       <tr>
         <td :rowspan="formObj.socialRelationship.length + 1">
           主要社会关系
-          <span class="imgAdd" @click="addsocialRelationship" ></span>
+          <span class="imgAdd img_person" title="添加成员" @click="addsocialRelationship" ></span>
         </td>
         <td>称谓</td>
         <td>姓名</td>
@@ -370,12 +369,9 @@ export default {
   position relative
   top 5px
   left 3px
-  width 25px
-  height 25px
+  width 20px
+  height 20px
   background url('../../../assets/images/add.png') no-repeat
-  background-size 100% 100%
-.imgAdd:active
-  background url('../../../assets/images/addDown.png') no-repeat
   background-size 100% 100%
 	table
 		background #ffffff
@@ -386,4 +382,8 @@ export default {
 			color #606266
 			font-size 14px
 			border 1px solid #EBEEF5
+.img_person
+  background url('../../../assets/images/add_person.png') no-repeat
+  background-size 100% 100%
+  cursor pointer
 </style>

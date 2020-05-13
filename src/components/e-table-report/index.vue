@@ -4,15 +4,27 @@
       {{title.label}}  
       <!-- v-if="headerTab == 1" -->
       <template v-if="saveEvent.code != 312">
-        <span class="imgAdd" @click="addTabData"></span>
-        <span class="saveImg" @click="saveBtnClick"></span>
+        <!-- <span class="imgAdd" @click="addTabData"></span>
+        <span class="saveImg" @click="saveBtnClick"></span> -->
+        <el-button size="mini" 
+          type="primary" 
+          :icon="headerTab == 2 ? 'el-icon-edit' : 'el-icon-plus'" 
+          circle 
+          @click="addTabData"></el-button>
+        <el-button size="mini" type="success" icon="el-icon-check" circle @click="saveBtnClick"></el-button>
         <!-- <span style="color:red;margin-left:10px;">
           注：保存按钮可获取新增数组数据
         </span> -->
       </template>
       <template v-if="headerTab == 5">
-        <span style="margin-left:20px;" class="imgAdd" @click="addTabData2"></span>
-        <span class="saveImg" @click="saveBtnClick2"></span>
+        <!-- <span style="margin-left:20px;" class="imgAdd" @click="addTabData2"></span>
+        <span class="saveImg" @click="saveBtnClick2"></span> -->
+        <span style="margin-left:20px;" class="gupiao" @click="addTabData2">
+          修改总资产
+        </span>
+        <span class="gupiao" @click="saveBtnClick2">
+          保存总资产数据
+        </span>
       </template>
     </h2>
     <span class="explain">
@@ -475,4 +487,16 @@ export default {
   background #ffffff
   padding 20px
   text-align center
+.gupiao
+  font-weight normal
+  font-size 12px
+  color #409eff
+  cursor pointer
+  margin-left 10px
+  text-decoration underline
+.gupiao:active:focus, .gupiao:active:hover {
+  color: #333;
+  background-color:lightseagreen;
+  border-color: #8c8c8c;
+}
 </style>

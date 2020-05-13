@@ -3,13 +3,14 @@
 		<div class="report-title">
       <span>个人有关事项报告</span>
     </div>
-		<div class="report-body">
-      <div class="list report_list" style="width:350px;border-right:1px solid #a5a2a2;">
+		<div class="report-body" ref="report_body">
+      <div class="list report_list" ref="report_list" @click="onActivated"
+        :style="{width: + vw + 'px',height:+vh+'px','border-right':'1px solid #a5a2a2'}">
         <div style="border-bottom:1px solid #a5a2a2;padding-bottom:5px;">
           <el-button v-for="(item,index) of menuBtn" :key="index"
             :class="['menuBtn',index == menu_active? 'menuBtnselect':'']"
             autofocus
-            size="small"
+            size="mini"
             @click="BtnClick(index)"
             :type="item.type"
             plain>
@@ -75,9 +76,13 @@ import { saveMarrageAnnual, saveDeclareExitAnnual,
 import AnnualReportInfo from './AnnualReportInfo'
 import tableData from '../DeclarationTemplate/eventsTemplate.js'
 let { tableData1, tableData2 } = tableData
+import VueDragResize from 'vue-drag-resize' //缩放、拖拽
 export default {
   name: 'AnnualReportSet',
-  components: { AnnualReportInfo },
+  components: { 
+    VueDragResize,
+    AnnualReportInfo 
+  },
   provide () {
     return {
       orgAdd: this
@@ -150,6 +155,8 @@ export default {
       disabledOthers: true,
       reportInfoData: null, // 本人基本情况信息
       othersReport: '', // 个人认为需要报告的其他事项
+      vw: 350,
+      vh: 800,
       // 11111
     }
   },
@@ -161,6 +168,12 @@ export default {
     this.reportTitle = this.reportList[0]
   },
   methods: {
+    onResize(){
+
+    },
+    onActivated(){
+      this.$refs.report_list.focus();
+    },
     collectionData(reportInfo){
       const _this = this
       tableData1 = tableData1.map(item => {
@@ -392,7 +405,9 @@ export default {
         // console.log(tableData2[3])
         let countSum = 0
         tableData2[3].data.forEach(obj => {
-          countSum = countSum + obj.total
+          if(obj.total != null && obj.total != 0 ){
+            countSum = parseFloat(countSum) + parseFloat(obj.total)
+          }
         })
         // return row[columns.prop]
         return countSum
