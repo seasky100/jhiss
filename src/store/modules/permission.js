@@ -40,10 +40,10 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
                     // 如果该字段存在返回的菜单权限数组
                     if (permValueArr.includes(item.meta.permValue)) {
                         i++
-                        item.hidden = false
+                        // item.hidden = false
                     } else {
                         hideMenuArr.push(item)
-                        item.hidden = true 
+                        // item.hidden = true 
                     }
                 } else {
                     if (!item.hidden) {

@@ -310,14 +310,14 @@ import { mapGetters } from 'vuex';
         options2:[{value:'2020',label:'2020年'},{value:'2019',label:'2019年'}],
         value:"2020",
         warnList:[
-        { name:'遵章守纪',type: '13',num:0},
-        { name:'异常查询',type: '4',num:0},
-        { name:'涉嫌违法',type: '6',num:0},
-        { name:'护照保管',type: '8',num:0},
-        { name:'日志业绩',type: '5',num:0},
-        { name:'效能提醒',type: '3',num:0},
-        { name:'违规用车',type: '7',num:0},
-        { name:'考勤预警',type: '1',num:0}
+          { name:'遵章守纪',type: '13',num:0},
+          { name:'异常查询',type: '4',num:0},
+          { name:'涉嫌违法',type: '6',num:0},
+          { name:'护照保管',type: '8',num:0},
+          { name:'日志业绩',type: '5',num:0},
+          { name:'效能提醒',type: '3',num:0},
+          { name:'违规用车',type: '7',num:0},
+          { name:'考勤预警',type: '1',num:0}
         ], 
         weekMap: [
           { name: '日', num: '1' },

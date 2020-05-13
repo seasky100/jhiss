@@ -278,7 +278,7 @@ const wisdomReminderRouter = [
         title: '部门共享',
         icon: 'el-icon-menu',
         img: 'float_attendance@2x.png',
-        path: '/unbuild',
+        path: '/unbuild2',
         component: () => import('@/views/unbuild'),
       },
     ],
