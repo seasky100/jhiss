@@ -511,3 +511,19 @@ export function saveBasicAnnual (params) {
     data: params
   })
 }
+// 新增电子责任书 
+export function saveElectronicResponsibility (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.saveElectronicResponsibility,
+    method: 'post',
+    data: params
+  })
+}
+// 查询电子责任书 
+export function getElectronicResponsibilityById (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.getElectronicResponsibilityById,
+    method: 'get',
+    params
+  })
+}

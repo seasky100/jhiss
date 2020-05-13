@@ -142,7 +142,6 @@ export default {
       } else if (data.level > 2) {
         // if(userInfo != null && userInfo.id != null && userInfo.id != ''){
         //   userId = JSON.parse(userInfo).id
-        // console.log(data)
         if (data.dep) {
           return (
             <div class="user_panel depCon">

@@ -8,10 +8,10 @@
     <div class="individual_title"></div>
     <div class="police_career" style="background:none;">
       <div class="fengxian" style="width:430px;">
-        <div class="relationTitle">我的工作台</div>
+        <div class="relationTitle">层级履职</div>
         <!-- <img style="margin: 15px 3%;width:94%;" src="../../../assets/images/bg/ship_bg.png" /> -->
         <div class="con photoImg">
-          <div class="photo_img_con" style="border:3px solid #afafaf;">
+          <div class="photo_img_con" style="border:0px solid #afafaf;">
             <!-- <img class="photo_img" src="@/assets/images/bg/person.png" /> -->
             <el-image class="photo_img"
               :src="getPhotoPath(personInfo.userInfo)" fit="fill" lazy>
@@ -20,7 +20,7 @@
               </div>
             </el-image>
           </div>
-          <div class="img_name">{{personInfo.realName}}</div>
+          <div class="img_name"> <img src="../../../assets/images/dangyuan.png"/>{{personInfo.realName}}</div>
         </div>
         <div class="con labelCon">
           <!-- <span class="top_title">标签</span> -->
@@ -29,8 +29,11 @@
             v-for="(item,index) of labelList" :key="index">
             {{item.label}}
           </span>
+          <span :style="[{background:color_arr[1].bg,color:color_arr[1].color}]"
+          class="label_body" @click="responsibility">电子责任书
+        </span>
         </div>  
-        <div class="con projectCon" style="height:110px;">
+        <div class="con projectCon" style="height:128px;">
           <span class="project_li" @click="handleClick(item)"
             v-for="(item,index) of projectList" :key="index">
             <img class="menuImg" :src="item.imgPath" />
@@ -38,7 +41,7 @@
           </span>
         </div>
         <div class="con orgTreeCon">
-          <span class="top_title">级别关系</span>
+          <span class="top_title">层级关系</span>
           <org-tree :data="tree_data" 
             :collapsable="false" 
             :model="model"
@@ -73,25 +76,69 @@
         </div>
       </div>
       <el-table :data="warningInfo.riskContentList" class="diaTab">
-        <el-table-column property="workMatters" label="工作事项"></el-table-column>
-        <el-table-column property="riskContent" label="岗位廉政风险"></el-table-column>
+        <el-table-column property="workMatters" label="岗位职责"></el-table-column>
+        <el-table-column property="riskContent" label="廉政风险"></el-table-column>
         <el-table-column property="riskMesure" label="防控措施"></el-table-column>
       </el-table>
     </el-dialog>
     <!-- 责任清单 -->
     <el-dialog class="dialog_info" title="责任清单" :visible.sync="dialogVisible2">
       <div>责任清单</div>
-          <editor
-        :binddata.sync="answer"
-        ref="editor" style="height:260px">
-    </editor>
+    </el-dialog>
+    <!-- 责任书 -->
+    <el-dialog class="dialog_response" style=" width: 88%;text-align: center;border: 0px solid #ccc;padding: 4px 35px;" title=""
+      :visible.sync="dialogVisible3">
+      <div v-show='dialogVisible4'>
+        <div class='p_title'>
+          金华市公安局党员领导干部
+        </div>
+        <div class='title'>
+          党风廉政建设责任书
+        </div>
+        <div class='title'>
+          <div class='level'>层级:</div>
+          <el-input v-model="ruleForm.title"></el-input>
+        </div>
+        <div class='level'>内容：</div>
+        <editor :binddata.sync="ruleForm.content " ref="editor" style="height:260px">
+        </editor>
+        <div class='response'>
+          <span class='leader'>主管领导：{{leaderName}}</span>
+          <span class='person'>责任人：楼华安</span>
+        </div>
+        <!-- <el-form-item label="申报结束时间" prop="applyEnd">
+                  <el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
+                </el-form-item> -->
+        <el-button type="primary" @click="submit">提交</el-button>
+        <el-button @click="goBack">取消</el-button>
+      </div>
+    <div v-show='!dialogVisible4'>
+      <div class='p_title'>
+        金华市公安局党员领导干部
+      </div>
+      <div class='p_response'>
+        党风廉政建设责任书
+      </div>
+      <div class='title'>
+        <div class='' style="font-size: 14px; margin-bottom: 10px;">
+          ({{responseData.title}})
+        </div>
+        <div class='' v-html='responseData.content'></div>
+        <div class='response'>
+          <span class='leader'>主管领导：{{leaderName}}</span>
+          <span class='person'>责任人：</span>
+          <button>获取电子签名</button>
+        </div>
+        <el-button type="primary" @click="edit">编辑</el-button>
+      </div>
+    </div>
     </el-dialog>
   </div>
 </template>
 <script>
 // import treeData from './treeData.js';
 import { getUserInfo } from '@/api/user-server.js';
-import { getRiskByUserId } from '@/api/report.js';
+import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
 import editor from "@/components/editor.vue";
 export default {
@@ -101,19 +148,26 @@ export default {
     return {
       personInfo:{},
       active: 1,
-      answer:'',
+      responseData:{},
+      leaderName:'',
       labelList: [
         {label: '党员'},
-        {label: '在岗'},
+        // {label: '在岗'},
       ],
+      ruleForm: {
+        title: '',
+        userId: '', //父id
+        content : ''
+      },
       projectList: [
-        {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
-        {name: '岗位预警', imgPath: require('@/assets/images/bg/menu2.png')},
+        {name: '工作日志', path: '/Refinement', imgPath: require('@/assets/images/bg/menu1.png')},
+        {name: '岗位风险', imgPath: require('@/assets/images/bg/menu2.png')},
         {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
         {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
-        {name: '风险评估', imgPath: require('@/assets/images/bg/menu2.png')},
-        {name: '预警管控', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
-        {name: '学习教育', imgPath: require('@/assets/images/bg/menu4.png')}
+        {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/menu1.png')},
+        {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/menu2.png')},
+        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/menu3.png')},
+        // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
       ],
       submenuList: [
         {name:'我的直属领导'},
@@ -130,14 +184,13 @@ export default {
       level: 2, // 1: 只有上级；2：上下级都有；3：只有下级
       dialogVisible: false, // 岗位预警
       dialogVisible2: false, // 责任清单
+      dialogVisible3: false, // 责任书
+      dialogVisible4: true,
       warningInfo: null,
       gridData: [],
     }
   },
   components: { editor },
-  // components: {
-  //     editor
-  // },
   watch:{
     // person_data: {
     //   immediate: true,
@@ -182,7 +235,6 @@ export default {
     },
     getData(query){
       this.tree_data = query.value
-      
       if(this.tree_data.children == null){
         // this.submenuList = this.submenuList.splice(0,1)
         this.submenuList = [{name:'我的直属领导'}]
@@ -203,6 +255,7 @@ export default {
         if (res.success == true) {
           let post = res.data.posts
           let data=res.data
+          this.leaderName = data.realName
           // console.log(post)
           if(post.length > 0 && post[0].userPname != null){
             let  
@@ -239,12 +292,11 @@ export default {
     },
     handleClick(value){
       if(value.path == null){
-        if(value.name=='岗位预警') {
+        if(value.name=='岗位风险') {
           // let userId = this.personInfo.id
           let userId = this.personInfo.userInfo.id
           this.getRiskByUserData(userId)
         }else{
-          // console.log('责任清单')
           console.log('人员ID：',this.personInfo.userInfo.id)
           this.dialogVisible2 = true
         }
@@ -252,6 +304,28 @@ export default {
         this.MenuPage.activeMenu = value.path
         this.$router.push({path: value.path})
       }
+    },
+    responsibility(){
+      this.dialogVisible3 = true
+      const _this = this
+      getElectronicResponsibilityById(
+        Object.assign(
+          {
+            userId: this.$route.query.value.userPid
+          },
+        )
+      ).then(res => {
+				if (res.success == true) {
+          if(res.data){
+            _this.responseData = res.data
+            _this.dialogVisible4 = false
+            _this.ruleForm.title = res.data.title
+            _this.ruleForm.content = res.data.content
+          }
+        } else {
+          console.log(res.message)
+        }
+			})
     },
     // 个人岗位预警
     getRiskByUserData(userId){
@@ -271,8 +345,33 @@ export default {
           console.log(res.message)
         }
 			})
+    },
+    submit(){
+      const params = {
+            title: this.ruleForm.title,
+            userId: this.$route.query.value.id,
+            content: this.ruleForm.content
+          }
+          saveElectronicResponsibility(params).then(res => {
+            if(res.success) {
+              this.$message({
+                type: 'success',
+                message: '提交成功'
+              })
+            }else {
+              this.$message({
+                type: 'error',
+                message: '提交失败'
+              })
+            }
+          })
+    },
+    edit(){
+      this.dialogVisible4 = true
+    },
+    goBack(){
+      this.dialogVisible3= false
     }
-    // 
   }
 }
 </script>
@@ -280,6 +379,10 @@ export default {
 .person_home{
   width: 100%;
   height: 100%;
+}
+.level{
+  margin-left: -478px;
+  margin-bottom: 10px;
 }
 .individual_title{
   height:70px;
@@ -345,9 +448,9 @@ export default {
   border-radius: 45px;
 }
 .photoImg .photo_img{
-  height: 98%;
+  /* height: 98%; */
   width: 79%;
-  border-radius: 45px;
+  /* border-radius: 45px; */
 }
 .img_name{
   margin: 10px 0;
@@ -363,15 +466,31 @@ export default {
   background: url('../../../assets/images/bg/top_bg.png');
   background-size: 100% 100%;
 }
+.response{
+  margin-top: 21px;
+  margin-bottom: 30px;
+}
+.leader{
+  margin-left: -187px;
+  margin-right: 81px;
+}
+.p_title{
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.p_response{
+  font-size: 17px;
+  margin-bottom: 10px;
+}
 .con
-  margin 0px 25px
+  margin 5px 25px
   margin-bottom 30px
   line-height 20px
   font-size 14px
   text-align center
   .top_title 
     display block
-    margin-bottom 10px
+    /* margin-bottom 10px */
     text-align left 
     margin-left 30px
     font-weight bold
@@ -381,22 +500,23 @@ export default {
     background #ccc
     border-radius 5px
     maegin: 5px
+    cursor: pointer
     margin-right 10px
   .project_li
     width 25%
-    margin 30px 0 5px 0
+    margin 6px 0 5px 0
     float left
     color #AB2C31
     font-size 16px
     cursor pointer
     text-align center
     .menuImg
-      width 45px
-      height 45px
+      width 35px
+      height 35px
       border-radius 40px
     span 
       font-size 13px
-      margin-top 5px
+      margin-top 2px
       display block
       color #333
       &:hover
@@ -425,6 +545,8 @@ export default {
   >>> .el-dialog__body
     padding 30px 35px
 	>>> .el-dialog__header
-		border 1px solid #cccccc
+		border 0px solid #cccccc
+  >>> .el-dialog
+    width 88%
   
 </style>

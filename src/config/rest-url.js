@@ -273,6 +273,11 @@ const DEFAULT_URL = {
   upload: {
     uploadMultiple: `${GAISMSERVER}image/uploadMultiple`,
   },
+  //电子责任书
+  Responsibility:{
+    saveElectronicResponsibility: `${GAISMSERVER}electronicResponsibility/saveElectronicResponsibility`, //新增电子责任书
+    getElectronicResponsibilityById: `${GAISMSERVER}electronicResponsibility/getElectronicResponsibilityById`, //查询电子责任书 传父id
+  }
 }
 
 
