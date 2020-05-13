@@ -302,7 +302,7 @@ export default {
         if(res.success){
           this.$message({
             type: 'success',
-            message: '提交成功'
+            message: '保存成功'
           })
           this.loading = false
           // 页面操作
@@ -318,9 +318,10 @@ export default {
           this.$set(this.formObj,'userRelationVoList',userRelationVoList)
           this.$set(this.formObj,'socialRelationship',socialRelationship)
         }else{
+          this.loading = false
           this.$message({
             type: 'error',
-            message: '提交失败'
+            message: '保存失败'
           })
         }
       })

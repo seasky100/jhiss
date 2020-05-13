@@ -480,6 +480,7 @@ export default {
             return item
           })
         }else{
+          this.$parent.loading = false
           this.$message({
             type: 'error',
             message: '保存失败'

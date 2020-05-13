@@ -605,7 +605,6 @@ export default {
         }else{
           this.$refs.table_box_component[index].loading = false
         }
-
         if(index < 0){
           this.disabledOthers = true
           return 
@@ -636,6 +635,11 @@ export default {
         }
         
       }else {
+        if(index == -1){
+          this.loading = false
+        }else{
+          this.$refs.table_box_component[index].loading = false
+        }
         this.$message({
           type: 'error',
           message: '保存失败'
