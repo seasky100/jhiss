@@ -5,8 +5,8 @@
       <template>
         <!-- @click="addFormData" @click="saveFormData" -->
         <span class="imgAdd" @click="addFormData" ></span>
-        <span class="imgAdd" @click="adduserRelationVoList" ></span>
-        <span class="imgAdd" @click="addsocialRelationship" ></span>
+        <!-- <span class="imgAdd" @click="adduserRelationVoList" ></span>
+        <span class="imgAdd" @click="addsocialRelationship" ></span> -->
         <span class="saveImg" @click="saveFormData" ></span>
       </template>
     </h2>
@@ -116,7 +116,10 @@
       </tr>
       <!-- 家庭主要成员 -->
       <tr>
-        <td :rowspan="formObj.userRelationVoList.length + 1">家庭主要成员</td>
+        <td :rowspan="formObj.userRelationVoList.length + 1">
+          家庭主要成员
+          <span class="imgAdd" @click="adduserRelationVoList" ></span>
+        </td>
         <td>称谓</td>
         <td>姓名</td>
         <td>政治面貌</td>
@@ -170,7 +173,10 @@
       </template>
       <!-- 主要社会关系 -->
       <tr>
-        <td :rowspan="formObj.socialRelationship.length + 1">主要社会关系</td>
+        <td :rowspan="formObj.socialRelationship.length + 1">
+          主要社会关系
+          <span class="imgAdd" @click="addsocialRelationship" ></span>
+        </td>
         <td>称谓</td>
         <td>姓名</td>
         <td>政治面貌</td>
@@ -355,22 +361,22 @@ export default {
     font-weight bold
     font-size 18px
     margin-bottom 5px
-    .imgAdd,.saveImg
-      display inline-block
-      position relative
-      top 5px
-      left 3px
-      width 25px
-      height 25px
-      background url('../../../assets/images/add.png') no-repeat
-      background-size 100% 100%
-    .imgAdd:active
-      background url('../../../assets/images/addDown.png') no-repeat
-      background-size 100% 100%
     .saveImg
       left 10px
       background url('../../../assets/images/save.png') no-repeat
       background-size 100% 100%
+.imgAdd,.saveImg
+  display inline-block
+  position relative
+  top 5px
+  left 3px
+  width 25px
+  height 25px
+  background url('../../../assets/images/add.png') no-repeat
+  background-size 100% 100%
+.imgAdd:active
+  background url('../../../assets/images/addDown.png') no-repeat
+  background-size 100% 100%
 	table
 		background #ffffff
 		tr td

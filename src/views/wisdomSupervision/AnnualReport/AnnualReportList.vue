@@ -89,7 +89,7 @@ export default {
         list: [
           {
             id: '1',
-            label: '详情',
+            label: '详情录入',
             show: true,
             underline: false,
             icon: '<i class="el-icon-view"></i>',
@@ -138,8 +138,8 @@ export default {
               if(row.approvalId == null || row.approvalId == ''){
                 return false
               }else{
-                return true
-                // return false
+                // return true
+                return false
               }
             }
           }
