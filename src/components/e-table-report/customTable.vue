@@ -449,6 +449,7 @@ export default {
       }
     },
     saveCustomData(){
+      this.$parent.loading = true
       const flowProcess = {
         id: '',
         reportId: this.$parent.$parent.reportObj.id,
@@ -466,6 +467,7 @@ export default {
             type: 'success',
             message: '保存成功'
           })
+          this.$parent.loading = false
           let data = this.tabData
           data.edit = false
           let childRelativesWorkDo = data.childRelativesWorkDo.map(item => {

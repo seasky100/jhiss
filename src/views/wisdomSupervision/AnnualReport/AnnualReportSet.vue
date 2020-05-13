@@ -4,8 +4,8 @@
       <span>个人有关事项报告</span>
     </div>
 		<div class="report-body" ref="report_body">
-      <div class="list report_list" ref="report_list" @click="onActivated"
-        :style="{width: + vw + 'px',height:+vh+'px','border-right':'1px solid #a5a2a2'}">
+      <!-- border-right:1px solid #a5a2a2; -->
+      <div class="list report_list" ref="report_list" style="width:340px;margin-right:10px;" >
         <div style="border-bottom:1px solid #a5a2a2;padding-bottom:5px;">
           <el-button v-for="(item,index) of menuBtn" :key="index"
             :class="['menuBtn',index == menu_active? 'menuBtnselect':'']"
@@ -13,6 +13,7 @@
             size="mini"
             @click="BtnClick(index)"
             :type="item.type"
+            round
             plain>
               {{item.label}}
           </el-button>
@@ -29,7 +30,7 @@
         <div class="reportTable" ref="printCon" id="printCon" :key="menuKey">
           <AnnualReportInfo :reportInfoData="reportInfoData" :key="list_active"></AnnualReportInfo>
           <div v-for="(item,index) of tableDataList" :key="index+'_tableCon'" ref="table_box">
-            <e-table-report
+            <e-table-report ref="table_box_component"
               :annualTotal="annualTotal"
               :title="index < 11 ? reportList2[index]: reportList3[index - 11]" 
               :index="index"
@@ -47,10 +48,13 @@
           <div class="othersEvent" ref="others">
             <h2 style="font-weight:bold;font-size 18px;margin-bottom:5px;">
               个人认为需要报告的其他事项
-              <span class="imgAdd" @click="disabledOthers = false"></span>
-              <span class="saveImg" @click="saveOthersBtnClick"></span>
+              <!-- <span class="imgAdd" @click="disabledOthers = false"></span>
+              <span class="saveImg" @click="saveOthersBtnClick"></span> -->
+              <el-button size="mini" type="primary" icon="el-icon-edit" circle @click="disabledOthers = false"></el-button>
+              <el-button size="mini" type="success" icon="el-icon-check" circle @click="saveOthersBtnClick"></el-button>
             </h2>
             <el-input type="textarea" :disabled="disabledOthers"
+              v-loading="loading"
               style="width:99% !important;"
               :autosize="{ minRows: 4}"
               placeholder="请输入个人认为需要报告的其他事项" 
@@ -76,11 +80,9 @@ import { saveMarrageAnnual, saveDeclareExitAnnual,
 import AnnualReportInfo from './AnnualReportInfo'
 import tableData from '../DeclarationTemplate/eventsTemplate.js'
 let { tableData1, tableData2 } = tableData
-import VueDragResize from 'vue-drag-resize' //缩放、拖拽
 export default {
   name: 'AnnualReportSet',
   components: { 
-    VueDragResize,
     AnnualReportInfo 
   },
   provide () {
@@ -155,8 +157,7 @@ export default {
       disabledOthers: true,
       reportInfoData: null, // 本人基本情况信息
       othersReport: '', // 个人认为需要报告的其他事项
-      vw: 350,
-      vh: 800,
+      loading: false,
       // 11111
     }
   },
@@ -168,12 +169,6 @@ export default {
     this.reportTitle = this.reportList[0]
   },
   methods: {
-    onResize(){
-
-    },
-    onActivated(){
-      this.$refs.report_list.focus();
-    },
     collectionData(reportInfo){
       const _this = this
       tableData1 = tableData1.map(item => {
@@ -581,6 +576,7 @@ export default {
     // 其他事项报告
     saveOthersBtnClick(){
       console.log('其他事项报告')
+      this.loading = true
       const flowProcess = {
         // id: this.reportObj.id,
         // reportId: this.reportObj.rapporteurId,
@@ -604,6 +600,12 @@ export default {
           type: 'success',
           message: '保存成功'
         })
+        if(index == -1){
+          this.loading = false
+        }else{
+          this.$refs.table_box_component[index].loading = false
+        }
+        
         if(index < 0){
           this.disabledOthers = true
           return 
@@ -653,6 +655,7 @@ export default {
   height 100%
   .report-title
     padding: 8px 16px;
+    background: #ffffff;
     span
       font-size: 16px;
       color: #121518;
@@ -671,9 +674,9 @@ export default {
         background: #005BFF;
   .report-body
     width: calc(100% - 25px);
-    height calc(100% - 55px)
+    height calc(100% - 40px)
     padding 10px 0
-    margin: 5px 20px;
+    margin: 0px 15px;
     background #e8ebef
     box-sizing: border-box;
     .imgAdd,.saveImg
@@ -702,9 +705,10 @@ export default {
       text-align: center;
     .list
       float left
-      width calc(100% - 391px)
-      padding 5px 10px
-      height calc(100% - 20px)
+      width calc(100% - 410px)
+      padding 15px
+      height calc(100% - 30px)
+      border-radius 8px
       .menuBtn:focus-within
         background #409EFF 
       .menuBtnselect
@@ -719,6 +723,7 @@ export default {
         font-size 15px
         font-weight bold
         line-height 22px
+        border-bottom 1px solid rgba(227,233,244,1)
       .list_son:hover,.selectClass
         background #409EFF 
         color #ffffff
@@ -737,4 +742,8 @@ export default {
   padding: 0;
 /deep/ .el-textarea
   width: 100%;
+.report_list,.report_content
+  background #ffffff
+.report_list >>> .el-button--mini, .el-button--mini.is-round
+  padding 7px 10px !important
 </style>

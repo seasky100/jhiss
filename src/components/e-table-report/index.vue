@@ -27,7 +27,7 @@
         </span>
       </template>
     </h2>
-    <span class="explain">
+    <span class="explain tip">
       {{title.explain?title.explain:''}}
     </span>
     <!-- <div class="changeBtn">
@@ -38,6 +38,7 @@
     </div> -->
     <!-- 普通表格 -->
     <el-table class="generalTab" v-if="headerTab == 1 || headerTab == 5"
+      v-loading="loading"
       @cell-dblclick="cellHandleDbClick"
       :span-method="arraySpanMethod" border
       :data="tableData2" 
@@ -88,6 +89,7 @@
     </el-table>
     <!-- 表头表格 -->
     <el-table v-if="headerTab == 2"
+        v-loading="loading"
         :class="['headerTab']"
         :span-method="arraySpanMethod" border
         :data="[]" 
@@ -99,6 +101,7 @@
         <div class="customSty">暂无数据</div>
       </template>
       <el-table v-for="(item,index) of tableData2" :key="index"
+        v-loading="loading"
         :class="['headerTab']" 
         :span-method="arraySpanMethod" border
         :data="[]" 
@@ -138,7 +141,7 @@
     </template>
     <!-- 自定义表格 -->
     <template v-if="headerTab == 3">
-      <customTable :customType="customType" :addCoutusIndex="addCoutusIndex" :customData="tableData" :headerParam="headerParam"></customTable>
+      <customTable v-loading="loading" :customType="customType" :addCoutusIndex="addCoutusIndex" :customData="tableData" :headerParam="headerParam"></customTable>
     </template>
   </div>
 </template>
@@ -239,6 +242,8 @@ export default {
         total: 0,
         comment: ''
       },
+      addFlag: false,
+      loading: false,
     }
   },
   watch: {
@@ -267,6 +272,15 @@ export default {
     },
     // 添加数据
     addTabData(){
+      if(!this.addFlag){
+        this.addFlag = true
+      }else{
+        this.$message({
+          type: 'warning',
+          message: '请保存当前编辑数据'
+        })
+        return
+      }
       if(this.saveEvent.code == 310){
         this.customType = ''
         this.addCoutusIndex++
@@ -342,6 +356,7 @@ export default {
     },
     // 修改后获取新增数据保存
     saveBtnClick(){
+      this.addFlag = false
       if(this.saveEvent.code == 310){
         this.customType = 'add'
         return
@@ -368,6 +383,7 @@ export default {
         paramData = this.headerParam
       }
       // console.log('编辑信息：', paramData)
+      this.loading = true
       this.$emit('editData', this.index, paramData, this.saveEvent)
     },
     // 修改table header的背景色
@@ -439,7 +455,6 @@ export default {
     display inline-block
     font-size 14px
     line-height 20px
-    color #409eff
     margin-bottom 10px
   .title
     font-weight bold
@@ -499,4 +514,10 @@ export default {
   background-color:lightseagreen;
   border-color: #8c8c8c;
 }
+.tip
+  padding: 10px;
+  color: rgb(230, 160, 97);
+  background: rgb(249, 242, 236);
+  user-select: text;
+  margin-bottom: 25px;
 </style>

@@ -9,11 +9,11 @@
         <el-button size="mini" type="success" icon="el-icon-check" circle @click="saveFormData"></el-button>
       </template>
     </h2>
-    <span class="explain">
+    <span class="explain tip">
       {{title.explain?title.explain:''}}
     </span>
     <!-- 夫妻关系 -->
-    <table>
+    <table v-loading="loading">
       <tr>
         <td style="width:10%;">姓名</td>
         <td style="width:10%;">
@@ -266,6 +266,7 @@ export default {
         {name: '现职', value:'1'},
         {name: '退出现职尚未办理退休手续', value:'2'},
       ],
+      loading: false,
       // 
     }
   },
@@ -287,6 +288,7 @@ export default {
       this.$set(this.formObj,'edit',true)
     }, 
     saveFormData(){
+      this.loading = true
       const flowProcess = {
         id: '',
         reportId: this.$parent.reportObj.id,
@@ -302,6 +304,7 @@ export default {
             type: 'success',
             message: '提交成功'
           })
+          this.loading = false
           // 页面操作
           this.$set(this.formObj,'edit',false)
           let userRelationVoList = this.formObj.userRelationVoList.map(obj => {
@@ -354,7 +357,6 @@ export default {
     display inline-block
     font-size 14px
     line-height 20px
-    color #409eff
     margin-bottom 10px
   .individual_title
     font-weight bold
@@ -386,4 +388,10 @@ export default {
   background url('../../../assets/images/add_person.png') no-repeat
   background-size 100% 100%
   cursor pointer
+.tip
+  padding: 10px;
+  color: rgb(230, 160, 97);
+  background: rgb(249, 242, 236);
+  user-select: text;
+  margin-bottom: 25px;
 </style>
