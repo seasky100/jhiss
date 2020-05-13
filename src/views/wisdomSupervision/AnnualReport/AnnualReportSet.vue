@@ -50,8 +50,8 @@
               个人认为需要报告的其他事项
               <!-- <span class="imgAdd" @click="disabledOthers = false"></span>
               <span class="saveImg" @click="saveOthersBtnClick"></span> -->
-              <el-button size="mini" type="primary" icon="el-icon-edit" circle @click="disabledOthers = false"></el-button>
-              <el-button size="mini" type="success" icon="el-icon-check" circle @click="saveOthersBtnClick"></el-button>
+              <el-button class="opertion" size="mini" type="primary" icon="el-icon-edit" circle @click="disabledOthers = false"></el-button>
+              <el-button class="opertion" size="mini" type="success" icon="el-icon-check" circle @click="saveOthersBtnClick"></el-button>
             </h2>
             <el-input type="textarea" :disabled="disabledOthers"
               v-loading="loading"
@@ -605,7 +605,7 @@ export default {
         }else{
           this.$refs.table_box_component[index].loading = false
         }
-        
+
         if(index < 0){
           this.disabledOthers = true
           return 

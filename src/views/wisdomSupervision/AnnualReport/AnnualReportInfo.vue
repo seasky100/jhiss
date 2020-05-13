@@ -5,8 +5,8 @@
       <template>
         <!-- <span class="imgAdd" title="编辑信息" @click="addFormData" ></span>
         <span class="saveImg" title="保存" @click="saveFormData" ></span> -->
-        <el-button size="mini" type="primary" icon="el-icon-edit" circle @click="addFormData"></el-button>
-        <el-button size="mini" type="success" icon="el-icon-check" circle @click="saveFormData"></el-button>
+        <el-button class="opertion" size="mini" type="primary" icon="el-icon-edit" circle @click="addFormData"></el-button>
+        <el-button class="opertion" size="mini" type="success" icon="el-icon-check" circle @click="saveFormData"></el-button>
       </template>
     </h2>
     <span class="explain tip">
@@ -117,7 +117,7 @@
       <tr>
         <td :rowspan="formObj.userRelationVoList.length + 1">
           家庭主要成员
-          <span class="imgAdd img_person" title="添加成员" @click="adduserRelationVoList" ></span>
+          <span class="imgAdd img_person opertion" title="添加成员" @click="adduserRelationVoList" ></span>
         </td>
         <td>称谓</td>
         <td>姓名</td>
@@ -174,7 +174,7 @@
       <tr>
         <td :rowspan="formObj.socialRelationship.length + 1">
           主要社会关系
-          <span class="imgAdd img_person" title="添加成员" @click="addsocialRelationship" ></span>
+          <span class="imgAdd img_person opertion" title="添加成员" @click="addsocialRelationship" ></span>
         </td>
         <td>称谓</td>
         <td>姓名</td>

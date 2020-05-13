@@ -47,6 +47,7 @@ Print.prototype = {
 		str += "<style>" + (this.options.noPrint ? this.options.noPrint : '.no-print') + "{display:none;}</style>";
 		str += "<style>html,body,div{height: auto!important;font-size:14px;}</style>";
 		str += "<style>.printDiv{display: none!important;}</style>";
+		str += "<style>.opertion{display: none!important;}</style>";
 	 
 		return str;
 	 },

@@ -7,11 +7,12 @@
         <!-- <span class="imgAdd" @click="addTabData"></span>
         <span class="saveImg" @click="saveBtnClick"></span> -->
         <el-button size="mini" 
+          class="opertion"
           type="primary" 
           :icon="headerTab == 2 ? 'el-icon-edit' : 'el-icon-plus'" 
           circle 
           @click="addTabData"></el-button>
-        <el-button size="mini" type="success" icon="el-icon-check" circle @click="saveBtnClick"></el-button>
+        <el-button class="opertion" size="mini" type="success" icon="el-icon-check" circle @click="saveBtnClick"></el-button>
         <!-- <span style="color:red;margin-left:10px;">
           注：保存按钮可获取新增数组数据
         </span> -->
@@ -19,10 +20,10 @@
       <template v-if="headerTab == 5">
         <!-- <span style="margin-left:20px;" class="imgAdd" @click="addTabData2"></span>
         <span class="saveImg" @click="saveBtnClick2"></span> -->
-        <span style="margin-left:20px;" class="gupiao" @click="addTabData2">
+        <span style="margin-left:20px;" class="gupiao opertion" @click="addTabData2">
           修改总资产
         </span>
-        <span class="gupiao" @click="saveBtnClick2">
+        <span class="gupiao opertion" @click="saveBtnClick2">
           保存总资产数据
         </span>
       </template>
