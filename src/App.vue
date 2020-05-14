@@ -153,10 +153,11 @@ export default {
         });
         tree_data.children[0].children.push(tree_data.children[1]);
       }
-      let personInfo = this.findPathByLeafId(sessionStorage.userId, [tree_data.children[0]])
-      // console.log(personInfo)
-      window.sessionStorage.personInfo = JSON.stringify(personInfo)
-      this.tree_data = tree_data.children[0];
+      if(sessionStorage.userId != '5ba98b66cd3549b9b92ea8723e89207e'){
+        let personInfo = this.findPathByLeafId(sessionStorage.userId, [tree_data.children[0]])
+        // console.log(personInfo)
+        window.sessionStorage.personInfo = JSON.stringify(personInfo)
+      }
     },
     findPathByLeafId(id, nodes, path) {
       if(path === undefined) {
