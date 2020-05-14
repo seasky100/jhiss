@@ -212,7 +212,13 @@ export default {
     },
     init() {
       let query = this.$route.query
-      this.personInfo = query.value
+      if(Object.prototype.toString.call(query.value) === '[object Object]'){
+        this.personInfo = query.value
+        window.sessionStorage.personInfo = JSON.stringify(query.value)
+      }else{
+        query.value = JSON.parse(window.sessionStorage.personInfo)
+        this.personInfo = query.value
+      }
       // this.labelList = [this.personInfo.orgName,this.personInfo.orgPname]
       this.getData(query)
     },
@@ -258,13 +264,14 @@ export default {
           this.leaderName = data.realName
           // console.log(post)
           if(post.length > 0 && post[0].userPname != null){
-            let  
-            tree_obj={
+            let tree_obj={
+              id: data.id,
+              userInfo: data.userInfo,
               realName:data.realName,
               children:[_this.tree_data]
             }
-            console.log(_this.tree_data)
             _this.tree_data = tree_obj
+            // console.log(_this.tree_data)
           }else{
             // _this.submenuList = _this.submenuList.splice(1,1)
             this.submenuList = [{name:'我的下属同事'}]
