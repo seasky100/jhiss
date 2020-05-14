@@ -109,7 +109,7 @@ export default {
           $(this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
         });
       } else {
-        // this.getData();
+        this.getData();
       }
 
       // let width = this.$refs.dep_list.offsetWidth

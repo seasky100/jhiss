@@ -34,17 +34,17 @@ export default [
         path: "/Departmental_level",
         component: () => import('@/views/wisdomSupervision/org_relationship/Departmental_level')
       },
-      {
-        title: '人员关系',
-        hidden: true,
-        meta: {
-          permValue: 'ZHKQ',
-        },
-        icon: 'el-icon-menu',
-        img: 'left_organization@2x.png',
-        path: "/Personnel_relation",
-        component: () => import('@/views/wisdomSupervision/org_relationship/Personnel_relation')
-      },
+      // {
+      //   title: '人员关系',
+      //   hidden: true,
+      //   meta: {
+      //     permValue: 'ZHKQ',
+      //   },
+      //   icon: 'el-icon-menu',
+      //   img: 'left_organization@2x.png',
+      //   path: "/Personnel_relation",
+      //   component: () => import('@/views/wisdomSupervision/org_relationship/Personnel_relation')
+      // },
       {
         title: '层级履职',
         icon: 'el-icon-menu',
