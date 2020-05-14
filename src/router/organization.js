@@ -53,11 +53,12 @@ export default [
         meta: {
           permValue: 'ZHKQ',
         },
-        path: "/JobRisk",
-        component: {
-          render: (h) => h('router-view'),
-        },
-        children: [
+        path: "/Personnel_relation",
+        component: () => import('@/views/wisdomSupervision/org_relationship/Personnel_relation'),
+        // component: {
+        //   render: (h) => h('router-view'),
+        // },
+        // children: [
           // {
           //     title: '层级评价',
           //     meta:{
@@ -67,53 +68,57 @@ export default [
           //     img: 'left_menu_sub_evaluate.png',
           //     path: "/HierEvaluation",
           //     component: () => import('@/views/wisdomSupervision/HierEvaluation')
-          // },
-          {
-            title: '风险评估',
-            icon: 'el-icon-menu',
-            meta: {
-              permValue: 'ZHKQ',
-            },
-            img: 'left_menu_sub_evaluate.png',
-            path: "/JobRisk",
-            component: () => import('@/views/wisdomSupervision/JobRisk')
-          },
-          {
-            title: '预警管控',
-            icon: 'el-icon-menu',
-            meta: {
-              permValue: 'ZHKQ',
-            },
-            img: 'left_menu_sub_evaluate.png',
-            path: "/RiskControl",
-            component: () => import('@/views/wisdomSupervision/RiskControl')
-          },
-          // 谈话谈心
-          {
-            title: '谈话谈心',
-            icon: 'el-icon-menu',
-            meta: {
-              permValue: 'ZHKQ',
-            },
-            img: 'left_menu_sub_talk.png',
-            path: "/talks",
-            name: "talks",
-            component: () => import('@/views/wisdomSupervision/talks')
-          },
+          // },       
+        // ]
+      },
+      // 层级履职隐藏路由
+      {
+        title: '风险评估',
+        icon: 'el-icon-menu',
+        hidden: true,
+        meta: {
+          permValue: 'ZHKQ',
+        },
+        img: 'left_menu_sub_evaluate.png',
+        path: "/JobRisk",
+        component: () => import('@/views/wisdomSupervision/JobRisk')
+      },
+      {
+        title: '预警管控',
+        icon: 'el-icon-menu',
+        hidden: true,
+        meta: {
+          permValue: 'ZHKQ',
+        },
+        img: 'left_menu_sub_evaluate.png',
+        path: "/RiskControl",
+        component: () => import('@/views/wisdomSupervision/RiskControl')
+      },
+      // 谈话谈心
+      {
+        title: '谈话谈心',
+        icon: 'el-icon-menu',
+        hidden: true,
+        meta: {
+          permValue: 'ZHKQ',
+        },
+        img: 'left_menu_sub_talk.png',
+        path: "/talks",
+        name: "talks",
+        component: () => import('@/views/wisdomSupervision/talks')
+      },
 
-          {
-            title: '学习教育',
-            icon: 'el-icon-menu',
-            meta: {
-              permValue: 'ZHKQ',
-            },
-            img: 'left_menu_sub_talk.png',
-            path: "/LearnEducation",
-            name: "LearnEducation",
-            component: () => import('@/views/wisdomSupervision/Education/LearnEducation')
-          },
-       
-        ]
+      {
+        title: '学习教育',
+        icon: 'el-icon-menu',
+        hidden: true,
+        meta: {
+          permValue: 'ZHKQ',
+        },
+        img: 'left_menu_sub_talk.png',
+        path: "/LearnEducation",
+        name: "LearnEducation",
+        component: () => import('@/views/wisdomSupervision/Education/LearnEducation')
       },
       {
         title: '事项申报',

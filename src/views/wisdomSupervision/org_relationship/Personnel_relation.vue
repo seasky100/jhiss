@@ -212,13 +212,15 @@ export default {
     },
     init() {
       let query = this.$route.query
-      if(Object.prototype.toString.call(query.value) === '[object Object]'){
-        this.personInfo = query.value
-        window.sessionStorage.personInfo = JSON.stringify(query.value)
-      }else{
-        query.value = JSON.parse(window.sessionStorage.personInfo)
-        this.personInfo = query.value
-      }
+      // if(Object.prototype.toString.call(query.value) === '[object Object]'){
+      //   this.personInfo = query.value
+      //   window.sessionStorage.personInfo = JSON.stringify(query.value)
+      // }else{
+      //   query.value = JSON.parse(window.sessionStorage.personInfo)
+      //   this.personInfo = query.value
+      // }
+      query.value = JSON.parse(window.sessionStorage.personInfo)
+      this.personInfo = query.value
       // this.labelList = [this.personInfo.orgName,this.personInfo.orgPname]
       this.getData(query)
     },

@@ -109,7 +109,7 @@ export default {
           $(this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
         });
       } else {
-        this.getData();
+        // this.getData();
       }
 
       // let width = this.$refs.dep_list.offsetWidth
@@ -195,7 +195,7 @@ export default {
         });
         tree_data.children[0].children.push(tree_data.children[1]);
       }
-
+      // console.log(tree_data.children[0])
       this.tree_data = tree_data.children[0];
     },
     handleClickDep(value) {
@@ -205,7 +205,7 @@ export default {
       });
       this.getTreeData(value);
     },
-    //
+    // 查询层级数据
     getData() {
       treeAndUser().then(res => {
         let tree_data = res.data[0];

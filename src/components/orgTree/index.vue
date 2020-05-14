@@ -228,9 +228,6 @@ export default {
         return;
       }
       let query = {};
-      // if(model == 'person_info'){
-      //   query.value = JSON.stringify(data)
-      // }else 
       if (valueObj == "") {
         // 跳转层级人员
         query.value = data;

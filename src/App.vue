@@ -1,13 +1,17 @@
 <template>
-  <div id="app" class="app">
+  <div id="app" class="app" v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
     <router-view/>
         <!-- 封装的loading 组件 -->
     <loading v-if='LOADING'/> 
   </div>
 </template>
 <script>
-  import { mapGetters } from 'vuex';
-  import {mapState} from 'vuex'
+import { treeAndUser } from "@/api/report.js";
+import { mapGetters } from 'vuex';
+import {mapState} from 'vuex'
 export default {
   name: 'App',
   computed: {
@@ -21,10 +25,16 @@ export default {
         'LOADING'
     ])
   },
+  // provide () {
+  //   return {
+  //     AppComponent: this
+  //   }
+  // },
   data () {
     return {
       countotal: 0,
       timer:'',
+      loading: false,
     }
   },
   created() {
@@ -52,6 +62,9 @@ export default {
     }
   },
   mounted() {
+    if(!window.sessionStorage.personInfo){
+      this.getData()
+    }
     this.setTimer();
     // const token = sessionStorage.getItem('token')
     // console.log(window.location.href)   
@@ -70,10 +83,137 @@ export default {
         //  const aa =  $this.$store.getters.countotal
          $this.countotal = localStorage.getItem('countotal')
         }, 3000)
-      },
-      onClick(){
-        this.$router.push('/agency')
+    },
+    onClick(){
+      this.$router.push('/agency')
+    },
+    // 查询层级数据
+    getData() {
+      this.loading = true
+      treeAndUser().then(res => {
+        let tree_data = res.data[0];
+        tree_data.children = tree_data.childrens[0].userList;
+        tree_data.level = 1;
+        tree_data.expand = true;
+        window.sessionStorage.tree_data = JSON.stringify(tree_data);
+        this.getDeptChidren(tree_data);
+        this.loading = false
+      });
+    },
+    //处理第三层部门的数据
+    getDeptChidren(data) {
+      data.userInfo = data.userList[0];
+      let arr1 = data.children; //第二层的人员
+      let arr2 = data.childrens[0].childrens; //第三次的人员
+      for (let i = 0; i < arr1.length; i++) {
+        //遍历第二次人员
+        let obj = arr1[i];
+        obj.index = i;
+        obj.level = 2;
+        obj.expand = true;
+        obj.name = data.childrens[0].name;
+        obj.orgName = data.childrens[0].orgName;
+        let children = [];
+        for (let j = 0; j < arr2.length; j++) {
+          //遍历第三次人员，如果相等则把部门名称加到第二层的children里面
+          let obj2 = arr2[j];
+          if (obj2.userPname.includes(obj.realName)) {
+            children.push(obj2);
+          }
+        }
+        let dep = { dep: children, level: 3 };
+        // obj.children = children
+        if (children.length > 0) {
+          obj.children = [dep];
+        }
+        window.sessionStorage.dep_list = JSON.stringify(arr2);
+        
+        this.entranceList = arr2;
+        for (let i = 0; i < this.entranceList.length; i++) {
+          let obj = this.entranceList[i];
+          if (obj.id == sessionStorage.orgId || obj.orgId == sessionStorage.orgId) {
+            this.getTreeData(obj);
+            break;
+          }
+        }
       }
+    },
+    getTreeData(value) {
+      // this.active = value.id;
+      let tree_data = {
+        children: [],
+        realName: value.userList[0].realName,
+        expand: true,
+        level: 1,
+        userInfo: value.userList[0].userInfo
+      };
+      this.getChildren(value, tree_data.children);
+      if (tree_data.children.length > 1) {
+        tree_data.children[1].level = 2;
+        tree_data.children[1].children.forEach(element => {
+          element.level = 3;
+          element.expand = false;
+        });
+        tree_data.children[0].children.push(tree_data.children[1]);
+      }
+      let personInfo = this.findPathByLeafId(sessionStorage.userId, [tree_data.children[0]])
+      // console.log(personInfo)
+      window.sessionStorage.personInfo = JSON.stringify(personInfo)
+      this.tree_data = tree_data.children[0];
+    },
+    findPathByLeafId(id, nodes, path) {
+      if(path === undefined) {
+        path = [];
+      }
+      for(var i = 0; i < nodes.length; i++) {
+          var tmpPath = path.concat();
+          tmpPath.push(nodes[i]);
+          if(id == nodes[i].id) {
+            return nodes[i];
+          }else if(nodes[i].children) {
+            var resultData = this.findPathByLeafId(id, nodes[i].children, tmpPath);
+            if(resultData) {
+              return resultData;
+            }
+          }
+      }
+    },
+    //子节点
+    getChildren(node, newchildren, t = 1) {
+      let childrens = node.childrens || []; //当前岗位下的子节点
+      let userList = node.userList; //当前岗位的用户节点
+      //把当前岗位的节点当作子节点
+      for (var i = 0; i < userList.length; i++) {
+        // userList[i].userPid = node.userPid;
+        // userList[i].children = [];
+        // userList[i].level = t;
+        // userList[i].index = i;
+
+        let child = {
+          userPid: node.userPid,
+          id: userList[i].id,
+          children: [],
+          level: t,
+          index: i,
+          expand: false,
+          realName: userList[i].realName,
+          userInfo: userList[i].userInfo
+        };
+        if (t < 3) {
+          child.expand = true;
+        }
+        newchildren.push(child);
+      }
+      t++;
+      for (var m = 0; m < childrens.length; m++) {
+        for (var n = 0; n < newchildren.length; n++) {
+          if (childrens[m].userPid == newchildren[n].id) {
+            this.getChildren(childrens[m], newchildren[n].children, t);
+          }
+        }
+      }
+    },
+    // 
   }
 }
 </script>
