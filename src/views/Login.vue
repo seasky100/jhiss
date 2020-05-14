@@ -126,6 +126,7 @@
 import { encryptByDES, getUrl } from "../utils/common.js";
 import { signIn,getUserByCardNum,jhLogin } from "../api/user-server.js";
 export default {
+  inject: ['AppComponent'],
   name: "login",
   data() {
     return {
@@ -225,6 +226,8 @@ export default {
                       // this.loading = false
                       return false;
                     });
+                    // 获取层级数据
+                    _this.AppComponent.getData()
                 } else {
                   // this.loading = false
                   this.$message.error(res.message);

@@ -25,11 +25,11 @@ export default {
         'LOADING'
     ])
   },
-  // provide () {
-  //   return {
-  //     AppComponent: this
-  //   }
-  // },
+  provide () {
+    return {
+      AppComponent: this
+    }
+  },
   data () {
     return {
       countotal: 0,
@@ -62,9 +62,6 @@ export default {
     }
   },
   mounted() {
-    if(!window.sessionStorage.personInfo){
-      this.getData()
-    }
     this.setTimer();
     // const token = sessionStorage.getItem('token')
     // console.log(window.location.href)   
