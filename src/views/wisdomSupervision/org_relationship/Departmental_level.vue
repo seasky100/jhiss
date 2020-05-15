@@ -188,15 +188,19 @@ export default {
       };
       this.getChildren(value, tree_data.children);
       if (tree_data.children.length > 1) {
-        tree_data.children[1].level = 2;
-        tree_data.children[1].children.forEach(element => {
-          element.level = 3;
-          element.expand = false;
-        });
-        tree_data.children[0].children.push(tree_data.children[1]);
+        // console.log(tree_data)
+        // tree_data.children[1].level = 2;
+        // tree_data.children[1].children.forEach(element => {
+        //   element.level = 3;
+        //   element.expand = false;
+        // });
+        // tree_data.children[0].children.push(tree_data.children[1]);
+        tree_data.level = 0
+        this.tree_data = tree_data
+      }else{
+        this.tree_data = tree_data.children[0];
       }
       // console.log(tree_data.children[0])
-      this.tree_data = tree_data.children[0];
     },
     handleClickDep(value) {
       this.$router.push({

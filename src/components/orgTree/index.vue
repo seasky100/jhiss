@@ -4,7 +4,7 @@
       <div class="col-md-10 col-md-offset-1">
         <div class="text-center">
           <!-- :label-class-name="labelClassName" -->
-          <vue2-org-tree
+          <vue2-org-tree :key="tree_key"
             style="background:none;"
             name="test"
             :data="data"
@@ -54,11 +54,25 @@ export default {
   },
   watch: {
     data() {
+      this.tree_key++
       this.isGotoPerson_info = false;
-    }
+      const _this = this
+      this.$nextTick(() => {
+        let domArr = $('.com.com.org_tree .depClass')
+        _this.changeStyle(domArr)
+      });
+    },
+  },
+  mounted(){
+    const _this = this
+    this.$nextTick(() => {
+      let domArr = $('.com.com.org_tree .depClass')
+      _this.changeStyle(domArr)
+    });
   },
   data() {
     return {
+      tree_key: 1,
       labelClassName: "",
       form: {
         name: "",
@@ -75,10 +89,19 @@ export default {
         children: "childrens",
         label: "name"
       },
-      isGotoPerson_info: false
+      isGotoPerson_info: false,
     };
   },
   methods: {
+    changeStyle(domArr){
+      $('.com.com.org_tree .depNaN')[0].parentElement.parentElement.style.setProperty('display', 'none', 'important')
+      // $('.com.com.org_tree .depLeaderCon')[0].parentElement.parentElement.parentElement.parentElement
+      // for(let i = 0; i < domArr.length; i++){
+      //   let dom = domArr[i]
+      //   dom.parentElement.parentElement.nextElementSibling.style.setProperty('min-width', '200px', 'important')
+      //   dom.parentElement.parentElement.parentElement.parentElement.style.setProperty('min-width', '200px', 'important')
+      // }
+    },
     renderContent(h, data) {
       //个人工作台界面
       if (this.model == "person_info") {
@@ -98,12 +121,20 @@ export default {
       if (data.id == JSON.parse(sessionStorage.userInfo).id) {
         handleEvent = () => this.nodePanelClick(data, "", "person_info");
       }
+      if(data.level == 0){
+        return (
+          <div class={'user_panel_others depNaN'}>
+            <span>部门。。。</span>
+          </div>
+        );
+      } else
       //部门和全局
       if (data.level == 1) {
         // let img = this.getPersonImg(data.userInfo.userInfo||data.userInfo);
         let img = this.getPersonImg(data.userInfo);
+        let depLeaderCon = this.model == 'dep' ? 'depLeaderCon' : ''
         return (
-          <div class="user_panel level_one leaderCon">
+          <div class={'user_panel level_one leaderCon ' + depLeaderCon}>
             {img}
             <div class="panel_info">
               <span style="line-height:20px;font-size:15px">
@@ -121,11 +152,12 @@ export default {
         let img_bg = require("../../assets/images/bg/person_bg" +
           (data.index % 11) +
           ".png");
+        let depClass = this.model == 'dep' ? 'depClass' : ''
         return (
-          <div
+          <div 
             onclick={handleEvent ? handleEvent : ""}
             style={"background:url(" + img_bg + ") no-repeat"}
-            class="user_panel level_two">
+            class={'user_panel level_two ' + depClass}>
             {img}
             <div class="panel_info">
               <img src={require("../../assets/images/dangyuan.png")} />
@@ -326,11 +358,15 @@ export default {
   background-size: 100% 100%;
   position: relative;
 }
-.com.com.org_tree .leaderCon {
+
+.com.com.org_tree .leaderCon { 
   width: 256px;
   height: 144px;
   background: url("../../assets/images/bg/person_leader.png") no-repeat;
   background-size: 100% 100%;
+}
+.com.com.org_tree .depLeaderCon{
+  width: 200px;
 }
 .com.com.org_tree .level_three {
   padding: 10px 0px;
