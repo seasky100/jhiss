@@ -527,3 +527,19 @@ export function getElectronicResponsibilityById (params) {
     params
   })
 }
+// 查询电子签名
+export function getSignatureById (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.getSignatureById,
+    method: 'get',
+    params
+  })
+}
+// 修改电子责任书 
+export function updateElectronicResponsibility (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.updateElectronicResponsibility,
+    method: 'post',
+    data: params
+  })
+}

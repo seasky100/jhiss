@@ -29,8 +29,8 @@
             v-for="(item,index) of labelList" :key="index">
             {{item.label}}
           </span>
-          <span :style="[{background:color_arr[1].bg,color:color_arr[1].color}]"
-          class="label_body" @click="responsibility">电子责任书
+          <span :style="[{background:color_arr[0].bg,color:color_arr[0].color}]"
+          class="label_body" @click="responsibility"><img src="../../../assets/images/dzzrs.png"/>责任书
         </span>
         </div>  
         <div class="con projectCon" style="height:128px;">
@@ -64,15 +64,22 @@
       </div>      
     </div>
     <!-- 岗位预警 -->
-    <el-dialog v-if="warningInfo != null" class="dialog_info" title="人员信息" :visible.sync="dialogVisible">
+    <el-dialog  class="dialog_info" title="风险信息" :visible.sync="dialogVisible">
+      <div v-if="warningInfo != null && warningInfo != ''">
+     <div v-show='lslist'>
       <div>
-        <img style="float:left;" class="photo_img" src="@/assets/images/bg/person.png" />
+        <span v-if='warningInfo.fileUrl'>
+            <img style="float:left; width: 55px;" class="photo_img" :src="warningInfo.fileUrl" />
+        </span>
+        <span v-else>
+            <img style="float:left;" class="photo_img" src="@/assets/images/bg/person.png" />
+        </span>
         <div style="float:left;padding:15px;line-height:25px;">
           <span class="dialogName">{{warningInfo.userName}}</span>
           <span style="color:#ccc;">警号：</span>{{warningInfo.policeCode}}
           <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.orgName}}
           <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.postName}}
-          <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}}
+          <!-- <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}} -->
         </div>
       </div>
       <el-table :data="warningInfo.riskContentList" class="diaTab">
@@ -80,11 +87,87 @@
         <el-table-column property="riskContent" label="廉政风险"></el-table-column>
         <el-table-column property="riskMesure" label="防控措施"></el-table-column>
       </el-table>
+      <div v-if="leData != null && leData != ''">
+        <div style="margin-bottom: 17px;margin-top: 15px;font-size: 15px;font-weight: 600;color: #2070c1;">领导评价：</div>
+      <div>
+          <img style="float:left;width: 55px;" class="photo_img" :src="getPhotoPath(personInfo.userInfo)" />
+          <div style="float:left;padding:15px;line-height:25px;">
+            <span class="dialogName">{{leData[0].leaderName}}</span>
+            <span style="color:#ccc;">警号：</span>{{this.leadInfo.policeCode}}
+            <span style="color:#ccc;margin-left:10px;">职务：</span>{{this.leadInfo.rank}}
+            <span style="color:#ccc;margin-left:10px;">部门：</span>{{this.leadInfo.label}}
+            <!-- <span style="color:#ccc;margin-left:10px;">职级：</span>{{this.leadInfo.policeRank}} -->
+          </div>
+        </div>
+        <el-table :data="leData[0].riskContentList" class="diaTab">
+          <el-table-column property="workMatters" label="岗位职责"></el-table-column>
+          <el-table-column property="riskContent" label="廉政风险"></el-table-column>
+          <el-table-column property="riskMesure" label="防控措施"></el-table-column>
+        </el-table>
+      </div>
+    </div>
+    <div v-show='!lslist'>
+      <div class="page-title">
+          <span>风险评估</span>
+        </div>
+        <div class="content">
+          <div>
+            <e-table
+              ref="recordTalksTableRef"
+              :tableList="tableList"
+              :options="options"
+              :columns="columns"
+              :operates="operates"
+              @afterCurrentPageClick="afterCurrentPageClickHandle"
+            />
+          </div>
+        </div>
+    </div>
+      <div v-show='aaa' style="text-align: -webkit-center;margin-top: 50px;">
+          <el-button type="primary" @click="addClickHandle">新增</el-button>
+          <el-button @click="back">取消</el-button>
+          <div style="text-align: -webkit-right;">
+              <el-button type="primary" @click="historylist">历史列表</el-button>
+          </div>
+          
+      </div>
+      <div v-show='!aaa' style="text-align: -webkit-center;margin-top: 20px;">
+        <div  v-if="leData == null || leData == ''">
+          <div style="text-align: -webkit-right;" v-show='Pleader'>
+          <el-button type="primary" @click="leaderClickHandle(add)">领导评价</el-button>
+        </div>
+        </div>
+        <div style="text-align: -webkit-right;" v-else>
+            <el-button type="primary" @click="leaderClickHandle(edit)">编辑</el-button>
+        </div>
+        <div v-show='!Pleader'>
+        <div class='pingjia'  >岗位职责:</div>
+        <el-input v-model="matters" type="textarea"></el-input>            
+        <div class='pingjia'  >廉政风险:</div>
+        <el-input v-model="content" type="textarea"></el-input>
+        <div class='pingjia'  >防控措施:</div>
+        <el-input v-model="mesure" type="textarea"></el-input>
+        <el-button type="primary" @click="leadClickHandle">评价</el-button>
+        <el-button @click="back">取消</el-button>
+      </div>
+      </div>
+    </div>
+    <div style="text-align: -webkit-center;font-size: 16px;font-weight: 800;color: red;" v-else>
+      暂无数据
+    </div>
     </el-dialog>
     <!-- 责任清单 -->
     <el-dialog class="dialog_info" title="责任清单" :visible.sync="dialogVisible2">
       <div>责任清单</div>
     </el-dialog>
+    <!-- 责任书皮 -->
+    <div class="dialog_info" title="" v-show="dialogVisible5">
+        <div style="height: 523px;width: 389px;z-index: 9999999;top: 218px;left: 422px;position: absolute;" class='zrsp'>
+          <div style="width: 100%;height: 20px;text-align: -webkit-center;margin-top: 35%;color: #FFD521;" ><input placeholder="请填层级" style="border: 1px solid rgb(255, 213, 33);color: rgb(255, 213, 33); text-align:center"></input></div>
+          <div style="width: 100%;height: 20px;text-align: -webkit-center;margin-top: 55%;color: #FFD521;font-size: 15px;" ><span>中共金华市公安局委员会</span><div><el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期"  style="width:50%;height:30px;"></el-date-picker>
+          </div></div>
+        </div>
+    </div>
     <!-- 责任书 -->
     <el-dialog class="dialog_response" style=" width: 88%;text-align: center;border: 0px solid #ccc;padding: 4px 35px;" title=""
       :visible.sync="dialogVisible3">
@@ -103,8 +186,9 @@
         <editor :binddata.sync="ruleForm.content " ref="editor" style="height:260px">
         </editor>
         <div class='response'>
-          <span class='leader'>主管领导：{{leaderName}}</span>
-          <span class='person'>责任人：楼华安</span>
+            <span v-show='flagLeader' class='leader'>主管领导：<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureLeader" /></span>          
+            <span  v-show='flagLeader' class='person'>责任人:<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureData" /><button v-show='flag' @click='signature' >获取电子签名</button></span>
+          
         </div>
         <!-- <el-form-item label="申报结束时间" prop="applyEnd">
                   <el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
@@ -124,23 +208,33 @@
           ({{responseData.title}})
         </div>
         <div class='' v-html='responseData.content'></div>
-        <div class='response'>
-          <span class='leader'>主管领导：{{leaderName}}</span>
-          <span class='person'>责任人：</span>
-          <button>获取电子签名</button>
+        <div class='response' style="display:flex">
+          <div class='p_leader'>
+              <span class=''>主管领导：<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureLeader" /></span>
+              <div>日期：{{responseData.gmtCreate}}</div>
+          </div>
+          <div class='per_response' >
+              <span class='person'>责任人:<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureData" /></span>
+              <button v-show='flag' @click='signature' >获取电子签名</button>
+              <div>日期：{{responseData.selfCreate}}</div>
+          </div>
         </div>
-        <el-button type="primary" @click="edit">编辑</el-button>
+        <el-button v-show ='editFlag' type="primary" @click="edit">编辑</el-button>
       </div>
     </div>
     </el-dialog>
+        <!-- 新增风险 -->
+        <JobriskAdd ref="JobriskAdd"/>
   </div>
 </template>
 <script>
 // import treeData from './treeData.js';
 import { getUserInfo } from '@/api/user-server.js';
-import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById } from '@/api/report.js';
+import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
 import editor from "@/components/editor.vue";
+import JobriskAdd from "../JobriskAdd";
+// import Jobrisk from "../JobRisk";
 export default {
   name: "Personnel_relation",
   inject: ['MenuPage'],
@@ -148,8 +242,139 @@ export default {
     return {
       personInfo:{},
       active: 1,
+      mesure:'',
+      content:'',
+      matters:'',
+      leadInfo:{},
+      type:'', // 新增或编辑
+      leData:[], // 领导评价数据
+      id:'',
       responseData:{},
+      formData: {
+        ifMyEntering: 0,
+        riskContent: [
+          {
+            workMatters: "",
+            riskContent: "",
+            riskMesure: ""
+          }
+        ]
+      },
       leaderName:'',
+      signatureData:'',//个人电子签名
+      signatureLeader:'',// 领导电子签名
+      flag:true,
+      flagLeader: true,
+      editFlag: true,
+      aaa:true,
+      Pleader: true,
+      lslist:true,
+      tableList: [],
+      options: {
+        // 每页数据数
+        pageSize: 10,
+        hasIndex: false,
+        // 当前页码
+        currentPage: 1,
+        loading: true,
+        maxHeight: null,
+        height: "377"
+      },
+      columns: [
+        {
+          prop: "userName",
+          label: "姓名",
+          align: "left"
+        },
+
+        {
+          prop: "orgName",
+          label: "所属部门",
+          align: "left"
+        },
+        {
+          prop: "postName",
+          label: "岗位",
+          align: "left"
+        },
+        {
+          prop: "leaderName",
+          label: "责任领导",
+          align: "left"
+        }
+      ],
+      operates: {
+        width: 150,
+        fixed: "right",
+        list: [
+          {
+            id: "1",
+            label: "详情",
+            show: true,
+            underline: false,
+            icon: '<i class="el-icon-view"></i>',
+            disabled: false,
+            method: (key, row) => {
+              this.getRiskData(row.userId);
+            },
+            showCallback: () => {
+              return true;
+            }
+          },
+          {
+            id: "2",
+            label: "修改",
+            show: false,
+            underline: false,
+            icon: '<i class="el-icon-edit-outline"></i>',
+            disabled: false,
+            method: (key, row) => {
+              this.$refs.JobriskAdd.open("update", row);
+            },
+            showCallback: () => {
+              return true;
+            }
+          },
+          {
+            id: "3",
+            label: "删除",
+            show: false,
+            underline: false,
+            icon: '<i class="el-icon-delete"></i>',
+            disabled: false,
+            method: (key, row) => {
+              const $this = this;
+              $this
+                .$confirm("是否删除？", "确认信息", {
+                  distinguishCancelAndClose: true,
+                  confirmButtonText: "删除",
+                  cancelButtonText: "取消"
+                })
+                .then(() => {
+                  deleteInterView({ id: row.id }).then(res => {
+                    try {
+                      if (res.success) {
+                        $this.$message({
+                          type: "success",
+                          message: "删除成功"
+                        });
+                        $this.init();
+                      }
+                    } catch (e) {
+                      console.log("ERROR", e);
+                    }
+                  });
+                })
+                .catch(() => {
+                  return;
+                });
+            },
+            showCallback: () => {
+              return true;
+            }
+          }
+        ]
+      },
       labelList: [
         {label: '党员'},
         // {label: '在岗'},
@@ -157,16 +382,18 @@ export default {
       ruleForm: {
         title: '',
         userId: '', //父id
-        content : ''
+        content : '',
+        leadSignature   :'', //领导电子签名
+        selfSignature: '' // 本人的电子签名
       },
       projectList: [
-        {name: '工作日志', path: '/Refinement', imgPath: require('@/assets/images/bg/menu1.png')},
+        // {name: '工作日志', path: '/Refinement', imgPath: require('@/assets/images/bg/menu1.png')},
         {name: '岗位风险', imgPath: require('@/assets/images/bg/menu2.png')},
         {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
         {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
-        {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/menu1.png')},
-        {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/menu2.png')},
-        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/menu3.png')},
+        {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/fxpg.png')},
+        {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/yjgk.png')},
+        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/xxjy.png')},
         // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
       ],
       submenuList: [
@@ -186,11 +413,12 @@ export default {
       dialogVisible2: false, // 责任清单
       dialogVisible3: false, // 责任书
       dialogVisible4: true,
+      dialogVisible5: false,
       warningInfo: null,
       gridData: [],
     }
   },
-  components: { editor },
+  components: { editor,JobriskAdd},
   watch:{
     // person_data: {
     //   immediate: true,
@@ -200,7 +428,8 @@ export default {
     // }
   },
   mounted() {
-    this.init()
+    this.leadInfo = JSON.parse(sessionStorage.userInfo) 
+    this.init();
   },
   methods: {
     returnClick(){
@@ -288,6 +517,20 @@ export default {
         console.log(error)
       })
     },
+    getRiskData(userId) {
+      debugger
+      const _this = this;
+      getRiskByUserId({ userId }).then(res => {
+        if (res.success == true) {
+          debugger
+          this.warningInfo = res.data[0];
+          // _this.dialogVisible = true;
+          _this.lslist = !_this.lslist;
+        } else {
+          console.log(res.message);
+        }
+      });
+    },
     subMenuClick(index){
       if(this.level != 2){
         return
@@ -314,80 +557,321 @@ export default {
         this.$router.push({path: value.path})
       }
     },
-    responsibility(){
-      this.dialogVisible3 = true
+    responsibility() {
+      this.dialogVisible5 = true
+      // this.dialogVisible3 = true
+      // const _this = this
+      // debugger
+      // getElectronicResponsibilityById(
+      //   Object.assign(
+      //     {
+      //       userId: this.$route.query.value.userPid
+      //     },
+      //   )
+      // ).then(res => {
+      //   if (res.success == true) {
+      //     if(res.data ==null ||res.data.length == 0){
+      //       _this.flagLeader = false   
+      //     }else{
+      //       let userId = JSON.parse(sessionStorage.userInfo).id
+      //       let data = res.data
+      //       for (let i = 0; i < data.length; i++) {
+      //         if(data[i].userCreate == userId ){
+      //           _this.responseData = data[i]
+      //           _this.signatureData = data[i].selfSignature   
+      //           data[i].gmtCreate = new Date(data[i].gmtCreate).toLocaleDateString()
+      //           data[i].selfCreate = new Date(data[i].selfCreate).toLocaleDateString()
+      //           _this.flag = false
+      //         }  
+      //       }
+      //       _this.dialogVisible4 = false
+      //       if(_this.level == 2){
+      //         _this.editFlag = false
+      //       }
+      //       _this.ruleForm.title = res.data[0].title
+      //       _this.ruleForm.content = res.data[0].content
+      //       // _this.ruleForm.leadSignature = res.data.leadSignature 
+      //       _this.signatLeader()
+      //     }
+      //   } else {
+      //     console.log(res.message)
+      //   }
+      // })
+    }, 
+   // 个人岗位预警
+    getRiskByUserData(userId) {
+      console.log('id', userId)
+      this.leData = []
+      const id = JSON.parse(sessionStorage.userInfo).id
+      if (userId != id) {
+        this.aaa = false
+      } else {
+        this.aaa = true
+      }
       const _this = this
-      getElectronicResponsibilityById(
+      getRiskByUserId(
         Object.assign(
           {
-            userId: this.$route.query.value.userPid
+            userId: userId
           },
         )
       ).then(res => {
-				if (res.success == true) {
-          if(res.data){
-            _this.responseData = res.data
-            _this.dialogVisible4 = false
-            _this.ruleForm.title = res.data.title
-            _this.ruleForm.content = res.data.content
+        // console.log(res)
+        if (res.success == true) {
+          _this.dialogVisible = true
+          debugger
+          if (res.data.length > 0) {
+
+            let data = res.data
+            let branchData = []
+            for (let i = 0; i < data.length; i++) {
+              if (data[i].ifMyEntering == 0) {
+                this.leData.push(data[i])
+              } else {
+                branchData.push(data[i])
+              }
+            }
+            if (branchData[0].fileUrl) {
+              branchData[0].fileUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + branchData[0].fileUrl.split('\\').slice(-1)[0]
+            }
+            this.warningInfo = branchData[0]
+            console.log('大大阿达的', this.leData)
+          } else {
+            this.warningInfo = []
           }
         } else {
           console.log(res.message)
         }
-			})
+      })
     },
-    // 个人岗位预警
-    getRiskByUserData(userId){
+    // 个人的电子签名
+    signature() {
       const _this = this
-      getRiskByUserId(
+      getSignatureById(
         Object.assign(
           {
             userId: JSON.parse(sessionStorage.userInfo).id
           },
         )
       ).then(res => {
-				// console.log(res)
-				if (res.success == true) {
-          this.warningInfo = res.data[0]
-          _this.dialogVisible = true
+        // console.log(res)
+        if (res.success == true) {
+          _this.signatureData = res.data
+          _this.flag = false
+          let qmurl = res.data
+          _this.submit1(qmurl)
         } else {
           console.log(res.message)
         }
-			})
+      })
     },
-    submit(){
+    submit1(url) {
+      if (url) {
+        this.ruleForm.selfSignature = url
+      }
       const params = {
-            title: this.ruleForm.title,
-            userId: this.$route.query.value.id,
-            content: this.ruleForm.content
-          }
-          saveElectronicResponsibility(params).then(res => {
-            if(res.success) {
-              this.$message({
-                type: 'success',
-                message: '提交成功'
-              })
-            }else {
-              this.$message({
-                type: 'error',
-                message: '提交失败'
-              })
-            }
+        title: this.ruleForm.title,
+        userId: this.$route.query.value.userPid,
+        userCreate: this.$route.query.value.id,
+        content: this.ruleForm.content,
+        selfSignature: this.ruleForm.selfSignature
+      }
+      saveElectronicResponsibility(params).then(res => {
+        if (res.success) {
+          this.$message({
+            type: 'success',
+            message: '提交成功'
           })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '提交失败'
+          })
+        }
+      })
+    },    
+    submit() {
+      const params = {
+        title: this.ruleForm.title,
+        userId: this.$route.query.value.id,
+        userCreate: this.$route.query.value.id,
+        content: this.ruleForm.content,
+        // selfSignature  :this.ruleForm.selfSignature  
+      }
+      saveElectronicResponsibility(params).then(res => {
+        if (res.success) {
+          this.$message({
+            type: 'success',
+            message: '提交成功'
+          })
+          this.dialogVisible3 = false
+        } else {
+          this.$message({
+            type: 'error',
+            message: '提交失败'
+          })
+        }
+      })
+    },
+    leadClickHandle(){ // 领导评价
+      const _this = this
+      this.formData.riskContent[0].riskContent = _this.content
+      this.formData.riskContent[0].riskMesure = _this.mesure
+      this.formData.riskContent[0].workMatters = _this.matters
+      // const user = this.userList.find(item => item.id === this.formData.userId);
+      // this.formData.policeCode = user.userInfo.policeCode;
+      // this.formData.userName = user.realName;
+      // this.formData.ifMyEntering = this.formData.ifMyEntering;
+      // this.formData.riskContent = JSON.stringify(this.formData.riskContent);
+      let filesParam = new FormData();
+      filesParam.append('orgId', this.warningInfo.orgId);
+      filesParam.append('leaderName', this.warningInfo.leaderName);
+      filesParam.append('userId', this.warningInfo.userId);
+      filesParam.append('ifMyEntering', this.formData.ifMyEntering);
+      filesParam.append('userName', this.warningInfo.userName);
+      filesParam.append('policeCode', this.warningInfo.policeCode);
+      filesParam.append('leaderId', this.warningInfo.leaderId);
+      filesParam.append('riskContent', JSON.stringify(_this.formData.riskContent));
+      let res = null;
+      if (this.id == this.warningInfo.leaderId) {
+        filesParam.append('id', this.id);
+         res =  updateUserRisk(filesParam);
+      } else {
+        res =  saveUserRisk(filesParam); 
+      }
+      debugger
+      if (res && res.success === true) {
+        this.$message({
+          type: "success",
+          message: "评价成功"
+        });
+        // _this.visible = false;
+      } else {
+        // this.$message({
+        //   type: "error",
+        //   message: res.message
+        // });
+      }
+      this.dialogVisible = false
+      this.Pleader = true
+    },
+    // 领导的电子签名
+    signatLeader() {
+      const _this = this
+      getSignatureById(
+        Object.assign(
+          {
+            userId: this.$route.query.value.userPid
+          },
+        )
+      ).then(res => {
+        // console.log(res)
+        if (res.success == true) {
+          _this.signatureLeader = res.data
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
+    // 查询列表
+    QueryData(nCurrent = 1) {
+      debugger
+      const _this = this;
+      getRiskPage(
+        Object.assign(
+          {
+            nCurrent: nCurrent,
+            nSize: 10,
+            orgId: sessionStorage.orgId
+          },
+          // _this.searchData
+        )
+      ).then(res => {
+        this.$refs.recordTalksTableRef.setPageInfo(
+          nCurrent,
+          res.data.size,
+          res.data.total,
+          res.data.records
+        );
+      });
+    },
+        // 分页点击事件
+    afterCurrentPageClickHandle(val, next) {
+      this.QueryData(val);
+      next();
     },
     edit(){
       this.dialogVisible4 = true
     },
     goBack(){
       this.dialogVisible3= false
+    },
+    addClickHandle() {
+      this.$refs.JobriskAdd.open("add");
+    },
+    leaderClickHandle(typeData){
+      debugger
+      if (this.leData.length>0) {
+        const data = this.leData
+        this.leData = []
+        this.mesure = data[0].riskContentList[0].riskMesure
+        this.content = data[0].riskContentList[0].riskContent
+        this.matters = data[0].riskContentList[0].workMatters
+        this.id = data[0].id
+      }
+      this.type = typeData  
+      this.Pleader = false
+    },
+    back(){
+      this.dialogVisible = false
+      this.Pleader = true
+      this.lslist = true
+    },
+    historylist(){
+      this.lslist = !this.lslist
+      this.QueryData();
     }
   }
 }
 </script>
+<style lang="stylus">
+.el-dialog{
+  width: 80% !important;
+  /* height: 78% !important; */
+  margin-left: 26vh;
+}
+input::-webkit-input-placeholder{
+  color: rgb(255, 213, 33);
+  font-size: 10px;
+  padding-left: 10px;
+  font-family: monospace;
+}
+input:-moz-placeholder{
+  color: rgb(255, 213, 33);
+  font-size: 10px;
+  padding-left: 10px;
+  font-family: monospace;
+}
+input:-ms-input-placeholder{
+  color: rgb(255, 213, 33);
+  font-size: 10px;
+  padding-left: 10px;
+  font-family: monospace;
+}
+/* .el-input__inner {
+    color: #606266;
+    background-color: red;
+    height: 26px;
+} */
+</style>
 <style lang="stylus" scoped>
 .person_home{
   width: 100%;
   height: 100%;
+}
+.pingjia{
+  text-align: -webkit-left;
+  margin-bottom: 10px;
 }
 .level{
   margin-left: -478px;
@@ -401,11 +885,11 @@ export default {
 .police_career{
   height:calc(100% - 145px);
   background:#fff;
-  margin 15px;
+  margin: 15px;
 }
 .fengxian{
   float:left;
-  background #fff;
+  background: #fff;
   height:100%;
 }
 .fengxian_left{
@@ -446,7 +930,7 @@ export default {
   text-align: center;
 }
 .photoImg{
-  margin-top:60px !important;
+  margin-top:30px !important;
   margin-bottom: 5px !important;
   text-align: center;
 }
@@ -479,8 +963,15 @@ export default {
   margin-top: 21px;
   margin-bottom: 30px;
 }
+.zrsp{
+  background: url('../../../assets/images/zrsp.png') no-repeat center / cover
+}
 .leader{
   margin-left: -187px;
+  margin-right: 81px;
+}
+.p_leader{
+  /* margin-left: -187px; */
   margin-right: 81px;
 }
 .p_title{
