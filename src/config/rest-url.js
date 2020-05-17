@@ -278,6 +278,7 @@ const DEFAULT_URL = {
   Responsibility:{
     saveElectronicResponsibility: `${GAISMSERVER}electronicResponsibility/saveElectronicResponsibility`, //新增电子责任书
     getElectronicResponsibilityById: `${GAISMSERVER}electronicResponsibility/getElectronicResponsibilityById`, //查询电子责任书 传父id
+    findElectronicResponsibilityPage: `${GAISMSERVER}electronicResponsibility/findElectronicResponsibilityPage`, //根据用户id查询电子责任书   
     getSignatureById: `${GAISMSERVER}electronicResponsibility/getSignatureById`, //查询电子签名
     updateElectronicResponsibility: `${GAISMSERVER}electronicResponsibility/updateElectronicResponsibility`, //修改电子责任书
   }

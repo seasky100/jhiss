@@ -519,10 +519,18 @@ export function saveElectronicResponsibility (params) {
     data: params
   })
 }
-// 查询电子责任书 
+// 根据父级id查询电子责任书 
 export function getElectronicResponsibilityById (params) {
   return request({
     url: DEFAULT_URL.Responsibility.getElectronicResponsibilityById,
+    method: 'get',
+    params
+  })
+}
+// 根据用户id查询电子责任书 
+export function findElectronicResponsibilityPage (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.findElectronicResponsibilityPage,
     method: 'get',
     params
   })
