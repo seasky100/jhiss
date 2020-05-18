@@ -293,7 +293,7 @@
 // import treeData from './treeData.js';
 import { getUserInfo,getUserList,getList,getUserListByUserId  } from '@/api/user-server.js';
 import { findExposureStudyRecord } from "@/api/warn.js";
-import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk } from '@/api/report.js';
+import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk,deleteInterView } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
 import editor from "@/components/editor.vue";
 import JobriskAdd from "../JobriskAdd";
