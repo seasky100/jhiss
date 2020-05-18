@@ -200,7 +200,7 @@ export default {
       }else{
         this.tree_data = tree_data.children[0];
       }
-      // console.log(tree_data.children[0])
+      // console.log(tree_data)
     },
     handleClickDep(value) {
       this.$router.push({
@@ -213,6 +213,7 @@ export default {
     getData() {
       treeAndUser().then(res => {
         let tree_data = res.data[0];
+        console.log(tree_data)
         tree_data.children = tree_data.childrens[0].userList;
         tree_data.level = 1;
         tree_data.expand = true;

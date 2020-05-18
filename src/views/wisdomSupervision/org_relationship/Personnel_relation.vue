@@ -34,7 +34,7 @@
         </span>
         </div>  
         <div class="con projectCon" style="height:128px;">
-          <span class="project_li" @click="handleClick(item)"
+          <span class="project_li" @click="handleClick(item, '')"
             v-for="(item,index) of projectList" :key="index">
             <img class="menuImg" :src="item.imgPath" />
             <span>{{item.name}}</span>
@@ -50,7 +50,7 @@
         </div>
       </div>
 			<!-- 领导属下信息 -->
-      <div class="fengxian" style="width:calc(99% - 460px);margin-left:0.7%;">
+      <div class="fengxian" style="width:calc(99% - 430px);margin-left:0.7%;">
         <div class="person_title">
           <div class="submenu" @click="subMenuClick(index)"
             :style="[{'border-bottom':active==index?'4px solid #235FF6':'none','color':active==index?'#235FF6':'#7F7E84'}]"
@@ -63,27 +63,49 @@
         </div>
       </div>      
     </div>
-    <!-- 岗位预警 -->
-    <el-dialog v-if="warningInfo != null" class="dialog_info" title="人员信息" :visible.sync="dialogVisible">
-      <div>
-        <img style="float:left;" class="photo_img" src="@/assets/images/bg/person.png" />
-        <div style="float:left;padding:15px;line-height:25px;">
-          <span class="dialogName">{{warningInfo.userName}}</span>
-          <span style="color:#ccc;">警号：</span>{{warningInfo.policeCode}}
-          <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.orgName}}
-          <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.postName}}
-          <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}}
+    <!-- 岗位预警 v-if="warningInfo != null" -->
+    <el-dialog class="dialog_info" title="人员信息" :visible.sync="dialogVisible">
+      <template v-if="warningInfo != null">
+        <div>
+          <img style="float:left;" class="photo_img" src="@/assets/images/bg/person.png" />
+          <div style="float:left;padding:15px;line-height:25px;">
+            <span class="dialogName">{{warningInfo.userName}}</span>
+            <span style="color:#ccc;">警号：</span>{{warningInfo.policeCode}}
+            <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.orgName}}
+            <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.postName}}
+            <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}}
+          </div>
         </div>
-      </div>
-      <el-table :data="warningInfo.riskContentList" class="diaTab">
-        <el-table-column property="workMatters" label="岗位职责"></el-table-column>
-        <el-table-column property="riskContent" label="廉政风险"></el-table-column>
-        <el-table-column property="riskMesure" label="防控措施"></el-table-column>
-      </el-table>
+        <el-table :data="warningInfo.riskContentList" class="diaTab">
+          <el-table-column property="workMatters" label="岗位职责"></el-table-column>
+          <el-table-column property="riskContent" label="廉政风险"></el-table-column>
+          <el-table-column property="riskMesure" label="防控措施"></el-table-column>
+        </el-table>
+      </template>
+      <div>未查询到相关信息</div>
     </el-dialog>
     <!-- 责任清单 -->
     <el-dialog class="dialog_info" title="责任清单" :visible.sync="dialogVisible2">
       <div>责任清单</div>
+    </el-dialog>
+    <!-- 学习教育 -->
+    <el-dialog class="dialog_info" title="学习教育" :visible.sync="dialogVisible5">
+      <div>
+        <el-switch style="margin-bottom:10px;"
+          v-model="switch_edu"
+          active-text="已学习"
+          inactive-text="未学习">
+        </el-switch>
+        <div class="search-wrap" style="height:500px;">
+          <e-table style="padding:0;"
+            ref="educationTableRef"
+            :tableList="eduTableList"
+            :options="options"
+            :columns="columns"
+            @afterCurrentPageClick="afterCurrentPageClickHandle"
+          />
+        </div>
+      </div>
     </el-dialog>
     <!-- 责任书 -->
     <el-dialog class="dialog_response" style=" width: 88%;text-align: center;border: 0px solid #ccc;padding: 4px 35px;" title=""
@@ -138,6 +160,7 @@
 <script>
 // import treeData from './treeData.js';
 import { getUserInfo } from '@/api/user-server.js';
+import { findExposureStudyRecord } from "@/api/warn.js";
 import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
 import editor from "@/components/editor.vue";
@@ -166,7 +189,8 @@ export default {
         {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
         {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/menu1.png')},
         {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/menu2.png')},
-        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/menu3.png')},
+        {name: '学习教育', imgPath: require('@/assets/images/bg/menu3.png')},
+        // {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/menu3.png')},
         // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
       ],
       submenuList: [
@@ -186,8 +210,34 @@ export default {
       dialogVisible2: false, // 责任清单
       dialogVisible3: false, // 责任书
       dialogVisible4: true,
+      dialogVisible5: false, // 学习教育
       warningInfo: null,
       gridData: [],
+      personId: '',
+      switch_edu: true,
+      eduTableList:[],
+			options: {
+        // 每页数据数
+        pageSize: 10,
+        hasIndex: false,
+        // 当前页码
+        currentPage: 1,
+        loading: true,
+        maxHeight: null,
+        height:'450'
+			},
+			columns: [
+        {
+          prop: 'title',
+          label: '标题',
+          align: 'left'
+        },
+        {
+          prop: 'content',
+          label: '内容',
+          align: 'left'
+        }
+      ],
     }
   },
   components: { editor },
@@ -198,6 +248,15 @@ export default {
     //     this.person_data=val
     //   }
     // }
+    switch_edu(newVal, oldVal){
+      this.eduTableList = []
+      this.getEduTableData()
+    },
+    dialogVisible5(newVal, oldVal){
+      if(!newVal){
+        this.switch_edu = true
+      }
+    },
   },
   mounted() {
     this.init()
@@ -209,6 +268,30 @@ export default {
     getPhotoPath(userInfo){
       let path = myPhotoSrc(userInfo)
       return path
+    },
+    // 分页点击事件
+    afterCurrentPageClickHandle(val, next) {
+      this.getEduTableData(val);
+      next();
+    },
+    getEduTableData(nCurrent = 1){
+      const _this = this;
+      let status = _this.switch_edu ? 1 : 2
+      const params = {
+        userId: _this.personId,
+        status: status, // 学习情况(1:已学习 2:未学习)
+        nCurrent: nCurrent,
+        nSize: 10
+      }
+      findExposureStudyRecord(params).then(res => {
+        // console.log(res.data) 
+        this.$refs.educationTableRef.setPageInfo(
+          nCurrent,
+          res.data.size,
+          res.data.total,
+          res.data.records
+        );
+      });
     },
     init() {
       let query = this.$route.query
@@ -299,14 +382,25 @@ export default {
         this.person_data = this.tree_data.children[0].children
       }
     },
-    handleClick(value){
+    handleClick(value, personInfo){
+      if(personInfo == ''){
+        personInfo = this.personInfo
+      }
+      // console.log('人员ID：', personInfo.id)
       if(value.path == null){
         if(value.name=='岗位风险') {
           // let userId = this.personInfo.id
-          let userId = this.personInfo.userInfo.id
+          let userId = personInfo.userInfo.id
           this.getRiskByUserData(userId)
+        }else if(value.name=='学习教育'){
+          let userId = personInfo.userInfo.id
+          this.dialogVisible5 = true
+          this.personId = userId
+          // console.log('学习教育', userId)
+          this.eduTableList = []
+          this.getEduTableData()
         }else{
-          console.log('人员ID：',this.personInfo.userInfo.id)
+          // 责任清单
           this.dialogVisible2 = true
         }
       }else {
@@ -342,7 +436,8 @@ export default {
       getRiskByUserId(
         Object.assign(
           {
-            userId: JSON.parse(sessionStorage.userInfo).id
+            // userId: JSON.parse(sessionStorage.userInfo).id
+            userId: userId
           },
         )
       ).then(res => {
@@ -399,9 +494,10 @@ export default {
   background-size: 100% 100%;
 }
 .police_career{
-  height:calc(100% - 145px);
+  height:calc(100% - 135px);
   background:#fff;
-  margin 15px;
+  margin 10px;
+  margin-bottom: 0;
 }
 .fengxian{
   float:left;
@@ -540,7 +636,7 @@ export default {
   width 130px
   margin-right 20px
 .relationBody
-  height calc(100% - 60px)
+  height calc(100% - 75px)
   margin 10px
   overflow-x auto
 .dialog_info

@@ -46,12 +46,12 @@ export default {
     return {
       projectList: [
         {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
-        {name: '岗位预警', imgPath: require('@/assets/images/bg/menu2.png')},
+        {name: '岗位风险', imgPath: require('@/assets/images/bg/menu2.png')},
         {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu3.png')},
         {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
         {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/menu1.png')},
         {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/menu2.png')},
-        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/menu3.png')},
+        {name: '学习教育', imgPath: require('@/assets/images/bg/menu3.png')},
       ],
       labelList: [
         {label: '党员'}
@@ -71,19 +71,20 @@ export default {
   },
   methods: {
     handleClick(value, personInfo){
-      if(value.path == null){
-        if(value.name=='岗位预警') {
-          let userId = personInfo.userPid
-          this.$parent.getRiskByUserData(userId)
-        }else{
-          // console.log('责任清单')
-          console.log('人员ID：',personInfo.userPid)
-          this.$parent.dialogVisible2 = true
-        }
-      }else {
-        this.MenuPage.activeMenu = value.path
-        this.$router.push({path: value.path})
-      }
+      this.$parent.handleClick(value, personInfo)
+      // if(value.path == null){
+      //   if(value.name=='岗位预警') {
+      //     let userId = personInfo.userPid
+      //     this.$parent.getRiskByUserData(userId)
+      //   }else{
+      //     // console.log('责任清单')
+      //     console.log('人员ID：',personInfo.userPid)
+      //     this.$parent.dialogVisible2 = true
+      //   }
+      // }else {
+      //   this.MenuPage.activeMenu = value.path
+      //   this.$router.push({path: value.path})
+      // }
     }
     // 
   }
@@ -121,6 +122,7 @@ export default {
         float left
         color #AB2C31
         font-size 16px
+        margin-bottom 5px
         cursor pointer
         span 
           display block

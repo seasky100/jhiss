@@ -17,6 +17,7 @@ export default [
         hidden: true,
         meta: {
           permValue: 'ZHKQ',
+          userId: '39411b303f3346c69c7a7c507a6d0afd',
         },
         icon: 'left_organization@2x.png',
         img: 'left_organization@2x.png',
@@ -28,6 +29,7 @@ export default [
         hidden: false,
         meta: {
           permValue: 'ZHKQ',
+          userId: 'others'
         },
         icon: 'el-icon-menu',
         img: 'left_organization@2x.png',
