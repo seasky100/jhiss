@@ -18,7 +18,6 @@ export default [
         meta: {
           permValue: 'ZHKQ',
           level: 1,
-          userId: '39411b303f3346c69c7a7c507a6d0afd',
         },
         icon: 'left_organization@2x.png',
         img: 'left_organization@2x.png',
@@ -27,11 +26,10 @@ export default [
       },
       {
         title: '层级体系',
-        hidden: false,
+        hidden: true,
         meta: {
           permValue: 'ZHKQ',
-          level: 0,
-          userId: 'others'
+          level: 2,
         },
         icon: 'el-icon-menu',
         img: 'left_organization@2x.png',

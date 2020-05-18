@@ -19,24 +19,33 @@ import store from '../index.js'
 //     })
 //     return permArr
 // }
-function collectRouters(routers){
+function collectRouters(routers, flag){
     let arr = []
     routers.forEach(route =>{
-        if (route.meta && route.meta.userId) {
-            // console.log(route.meta.userId.includes(sessionStorage.userId))
-            // console.log(route.meta.userId.includes('others'))
-            // route.hidden = true
-            let mateId = route.meta.userId
-            if(mateId.includes(sessionStorage.userId)){
-                route.hidden = false
+        if (route.meta && route.meta.level) {
+            let meta = route.meta
+            if(flag){
+                if(meta.level == 1){
+                    route.hidden = false
+                }
+                if(meta.level == 2){
+                    route.hidden = true
+                }
+            }else{
+                if(meta.level == 1){
+                    route.hidden = true
+                }
+                if(meta.level == 2){
+                    route.hidden = false
+                }
             }
-            // console.log(route)
+            console.log(route)
             arr.push(route)
         } else{
             arr.push(route)
         }
         if(route.children && route.children.length > 0){
-            collectRouters(route.children)
+            collectRouters(route.children, flag)
         }
     })
     return arr
@@ -45,9 +54,6 @@ function collectRouters(routers){
 function filterAsyncRoutes(constantRoutes, permValueArr) {
     // 存放最终菜单的数组
     const res = []
-    // console.log(constantRoutes[0].children)
-    // let arrRouters = collectRouters(constantRoutes)
-    // console.log(arrRouters)
     // 遍历路由配置，设置用户菜单权限
     constantRoutes.forEach(route => {
         const tmp = { ...route }
@@ -90,8 +96,11 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
             }
         }
     })
+    let permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
+    let arrRouters = collectRouters(res, permissionFlag)
+    // console.log(arrRouters)
     // 整合后的
-    return res
+    return arrRouters
 }
 
 // const state = {

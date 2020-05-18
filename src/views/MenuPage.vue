@@ -190,6 +190,9 @@
   },
     components: { NavMenu },
     watch: {
+      routes(newVal,oldVal){
+        console.log(newVal)
+      },
     },
     computed: {
       // 获取当前路由的子路由
