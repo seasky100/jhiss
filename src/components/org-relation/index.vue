@@ -138,6 +138,7 @@ export default {
         float left
         color #AB2C31
         font-size 16px
+        margin-bottom 5px
         span 
           display block
           font-size 13px
