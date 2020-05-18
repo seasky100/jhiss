@@ -1,50 +1,50 @@
 <template>
 	<div class="Caution" style="height:100%;">
-		<div class='c_title'>
-			<img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
-				警示曝光栏
-		</div>
-		<div class='c_head'>
-			<div class='c_left content'>
-				<div class='c_education'>
-					<div class='c_tip'>警示教育</div>
-					<img style="margin-top: 3px;height: 70px;width: 70px;" src='../../utils/img/weducation.png' />
-				</div>
-				<div class='c_tlearn'>
-					<div class='c_tip'>{{totalData.unLearned}}</div>
-					<img style="margin-top: 3px;height: 48px;width: 48px;" src='../../utils/img/tlearn.png' />
-					<div class='c_learn'>待学习</div>
-				</div>
-				<div class='c_tlearn'>
-					<div class='c_tip'>{{totalData.alreadyLearned}}</div>
-					<img style="margin-top: 3px;height: 48px;width: 48px;" src='../../utils/img/alearn.png' />
-					<div class='c_learn'>已学习</div>
-				</div>
-			</div>
-			<div class='c_right'>
-				<div class='c_handle'>
-					<div style="width: 100%;height: 100%;">
-					<div class='' style="height: 15%;">
-						<div style="margin-top: 15px;margin-left: 15px;">处理情况</div>
-					</div>
-						<div id='hbar' class='hbar'></div>
-					</div>
-				</div>
-				<div class='c_type'>
-					<div class='' style="height: 15%;">
-						<div style="margin-top: 15px;margin-left: 15px;">违纪类型统计</div>
-					</div>
-					<div id='hline' class='hline'></div>
-				</div>
-				<div class='c_category'>
-					<div class='' style="height: 15%;">
-						<div style="margin-top: 15px;margin-left: 15px;">违纪警种占比</div>
-					</div>
-					<div id='hbar2' class='hbar'></div>
-				</div>
-			</div>
-		</div>
-		<div class='c_content'>
+	  <div class='c_title'>
+		  <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
+		  警示曝光栏
+	  </div>
+	  <div class='c_head'>
+		  <div class='c_left content'>
+			  <div class='c_education'>
+				  <div class='c_tip'>警示教育</div>
+				  <img style="margin-top: 3px;height: 70px;width: 70px;" src='../../utils/img/weducation.png' />
+			  </div>
+			  <div class='c_tlearn'>
+				  <div class='c_tip'>{{totalData.unLearned}}</div>
+				  <img style="margin-top: 3px;height: 48px;width: 48px;" src='../../utils/img/tlearn.png' />
+				  <div class='c_learn'>待学习</div>
+			  </div>
+			  <div class='c_tlearn'>
+				  <div class='c_tip'>{{totalData.alreadyLearned}}</div>
+				  <img style="margin-top: 3px;height: 48px;width: 48px;" src='../../utils/img/alearn.png' />
+				  <div class='c_learn'>已学习</div>
+			  </div>
+		  </div>
+		  <div class='c_right'>
+			  <div class='c_handle'>
+				  <div style="width: 100%;height: 100%;">
+				  <div class='' style="height: 15%;">
+					  <div style="margin-top: 15px;margin-left: 15px;">处理情况</div>
+				  </div>
+					  <div id='hbar' class='hbar'></div>
+				  </div>
+			  </div>
+			  <div class='c_type'>
+				  <div class='' style="height: 15%;">
+					  <div style="margin-top: 15px;margin-left: 15px;">违纪类型统计</div>
+				  </div>
+				  <div id='hline' class='hline'></div>
+			  </div>
+			  <div class='c_category'>
+				  <div class='' style="height: 15%;">
+					  <div style="margin-top: 15px;margin-left: 15px;">违纪警种占比</div>
+				  </div>
+				  <div id='hbar2' class='hbar'></div>
+			  </div>
+		  </div>
+	  </div>
+	  <div class='c_content'>
 		<div class='c_cleft'>
 			<div class='e_title'>
 				<div class='c_exposure'>
@@ -85,14 +85,14 @@
 				</div>
 			</div>
 		</div>
-		<div class='c_cright'>
-			<div class='e_title'>
-				<div class='c_exposure'>
-					<img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' />
-						学习感悟
-				</div>
-			</div>
-			<div class='e_head'>
+		  <div class='c_cright'>
+			  <div class='e_title'>
+				  <div class='c_exposure'>
+					  <img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' />
+					  学习感悟
+				  </div>
+			  </div>
+			  <div class='e_head'>
 				<el-card class='c_hexposure'>
 					<li class='c_scont'>
 						<div class='c_htop'>
@@ -119,10 +119,10 @@
 					</li>
 				</el-card>
 			</div>
-			<div class='c_sentiment'>
-				<div id="parent" class="parent">
-					<div id="child1" class="child">
-						<li class='c_scont' v-for="(item,index) in nodeData" :key="index">
+			  <div class='c_sentiment'>
+				  <div id="parent" class="parent">
+				  <div id="child1" class="child">
+					<li class='c_scont' v-for="(item,index) in nodeData" :key="index">
 							<div class='c_top'>
 								<div>
 									<img style="margin-top: -9px;width: 30px;" :src='item.headUrl' />
@@ -145,15 +145,19 @@
 								</div>
 							</div>
 						</li>
-					</div>	
-					<div id="child2" class="child"></div>
-				</div>
-			</div>
-			</div>
-		</div>
+
+			
+		
+			  </div>	
+			  <div id="child2" class="child"></div>
+			  </div>
+		  </div>
+		  </div>
+	  </div>
+   
 	</div>
-</template>
-<script>
+  </template>
+  <script>
   import { findExposurePage, findLearningStatus,findPraiseCount,updateLike } from '@/api/warn.js';
   import { mapGetters } from 'vuex';
   export default {
@@ -164,12 +168,12 @@
     ])
   },
 	data() {
-		return {
-			listData:[],
-			totalData:[],
-			nodeData:[],
-			oneData:[],
-		}
+	  return {
+		listData:[],
+		totalData:[],
+		nodeData:[],
+		oneData:[],
+	  }
 	},
 	watch: {},
 	mounted() {
@@ -348,7 +352,7 @@
 			});
 		},
 		getRadar2() {
-			var colors = ['#5793f3', '#d14a61', '#675bba'];
+		  var colors = ['#5793f3', '#d14a61', '#675bba'];
   
 			let radarDom2 = this.$echarts.init(document.getElementById('hline'))
 			let option = {
@@ -360,9 +364,9 @@
 						type: 'cross'
 					}
 				},
-				//   legend: {
-				// 	  data: ['2016 降水量']
-				//   },
+			  //   legend: {
+			  // 	  data: ['2016 降水量']
+			  //   },
 				grid: {
 					left: '2%',
 					right: '4%',
@@ -377,11 +381,11 @@
 							alignWithLabel: true
 						},
 						axisLine: {
-							lineStyle: {
-								color: 'gray',
-								type: 'dashed'
-							},
-						},
+				  lineStyle: {
+					  color: 'gray',
+					  type: 'dashed'
+				  },
+			  },
 						axisPointer: {
 							label: {
 								formatter: function (params) {
@@ -395,7 +399,7 @@
 				],
 				yAxis: [
 					{
-						show:false,
+					  show:false,
 						type: 'value'
 					}
 				],
@@ -410,350 +414,353 @@
 			}
 			radarDom2.setOption(option)
 			//多图表自适应
-			//折线图宽高自适应
+					  //折线图宽高自适应
 			window.onresize = function () {
 				radarDom2.resize();
 			}
 		},
 		getRadar3(){
-			let radarDom3= this.$echarts.init(document.getElementById('hbar2'))
-			let option = {
-				color: ['rgb(204, 0, 255)'],
-				tooltip: {
-					trigger: 'axis',
-					axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-						type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-					}
-				},
-				grid: {
-					left: '1%',
-					right: '4%',
-					top: '5%',
-					bottom: '34%',
-					// containLabel: true
-				},
-				xAxis: [
-					{
-						
-						type: 'category',
-						data: ['违法', '待处', '警告', '开除', '开除党籍', '警告', '提醒','通报','诫勉'],
-						axisTick: {
-							alignWithLabel: true
-						},
-						
-						axisLine: {
-							lineStyle: {
-								color: 'gray',
-								type: 'dashed'
-							},
-						},
-					},
-				],
-				yAxis: [
-					{
-						// min: 0,
-						// max: 60,
-						show:false,
-						type: 'value'
-					}
-				],
-				series: [
-					{
-						name: '处理次数',
-						type: 'bar',
-						barWidth: '20%',
-						//设置柱状图渐变颜色
-						itemStyle: {
-							normal: {
-								color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-									offset: 0,
-									color: "rgb(35, 95, 246)" // 0% 处的颜色
-								}, {
-									offset: 0.6,
-									color: "rgb(29, 76, 195)" // 60% 处的颜色
-								}, {
-									offset: 1,
-									color: "rgb(15, 52, 146)" // 100% 处的颜色
-								}], false)
-							}
-						},
-						data: [18, 5, 2, 4, 9, 3, 2,8,3]
-					}
-				]
-			}
-			radarDom3.setOption(option)
-			//多图表自适应
+		  let radarDom3= this.$echarts.init(document.getElementById('hbar2'))
+		  let option = {
+			  color: ['rgb(204, 0, 255)'],
+	  tooltip: {
+		  trigger: 'axis',
+		  axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+			  type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		  }
+	  },
+	  grid: {
+		  left: '1%',
+		  right: '4%',
+		  top: '5%',
+		  bottom: '34%',
+		  // containLabel: true
+	  },
+	  xAxis: [
+		  {
+			  
+			  type: 'category',
+			  data: ['违法', '待处', '警告', '开除', '开除党籍', '警告', '提醒','通报','诫勉'],
+			  axisTick: {
+				  alignWithLabel: true
+			  },
+			  
+			  axisLine: {
+				  lineStyle: {
+					  color: 'gray',
+					  type: 'dashed'
+				  },
+			  },
+		  },
+	  ],
+	  yAxis: [
+		  {
+			  // min: 0,
+			  // max: 60,
+			  show:false,
+			  type: 'value'
+		  }
+	  ],
+	  series: [
+		  {
+			  name: '处理次数',
+			  type: 'bar',
+			  barWidth: '20%',
+			  //设置柱状图渐变颜色
+			  itemStyle: {
+				  normal: {
+					  color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+						  offset: 0,
+						  color: "rgb(35, 95, 246)" // 0% 处的颜色
+					  }, {
+						  offset: 0.6,
+						  color: "rgb(29, 76, 195)" // 60% 处的颜色
+					  }, {
+						  offset: 1,
+						  color: "rgb(15, 52, 146)" // 100% 处的颜色
+					  }], false)
+				  }
+			  },
+			  data: [18, 5, 2, 4, 9, 3, 2,8,3]
+		  }
+	  ]
+	  }
+		radarDom3.setOption(option)
+		//多图表自适应
 			window.addEventListener("resize", function () {
 				radarDom3.resize();
+  
 			});
-			},
-		}
+	},
+	}
   }
-</script>
-<style lang="stylus" scoped>
-@import '../css/common.css';
-	.child {
-	height: auto;
-}
-.child li {
-	min-height: 100px;
-	margin: 2px 0;
-	/* background: #009678; */
-}
-.parent {
-	width: 100%;
-	height: 460px;
-	margin: 0 auto;
-	/* background: #242424; */
-	overflow-y: scroll;
-}
-.c_head{
-	height: 18%;
-	display: flex;
-	width: 100%;
-}
-.c_left{
-	width:25%;
-}
-.c_right{
-	width: 75%;
-	margin-top: 10px;
-	background-color: #fff;
-	margin-right: 10px;
-	display: flex;
-}
-.content{
-	height: calc(100% - 10px);
-	background-color: #fff;
-	margin: 10px;
-	display: flex;
-}
-.c_title{
-	float: left;
-	width: 100%;
-	height: 4%;
-	/* margin: 10px; */
-	margin-bottom: 0;
-	font-size: 15px;
-	font-weight: bold;
-	line-height: 30px;
-	/* border-left: 5px solid #409eff; */
-	padding-left: 10px;
-	background-color: white;
-	padding-top: 6px;
-}
-.c_exposure{
-	float: left;
-	width: clac(100% - 10px);
-	height: 4%;
-	/* margin: 10px; */
-	margin-bottom: 0;
-	font-size: 15px;
-	font-weight: bold;
-	line-height: 30px;
-	/* border-left: 5px solid #409eff; */
-	padding-left: 10px;
-	background-color: white;
-	padding-top: 6px;
-}
-.c_hexposure{
-	float: left;
-	width: 97%;
-	margin: 10px;
-	margin-bottom: 0;
-	font-size: 15px;
-	font-weight: bold;
-	/* line-height: 30px; */
-	/* border-left: 5px solid #409eff; */
-	/* padding-left: 10px; */
-	/* background-color: floralwhite; */
-	/* padding-top: 6px; */
-}
-.c_content{
-	height: 77%;
-	display: flex;
-	width: 100%;
-}
-.c_cleft{
-	width: 50%;
-	background-color: white;
-	margin: 10px;
-}
-.c_cright{
-	width: calc(50% - 10px);
-	background-color: #fff;
-	/* margin: 10px; */
-	margin-right: 10px;
-	margin-bottom: 10px;
-	margin-top: 10px;
-}
-.c_education{
-	width: 40%;
+  </script>
+  <style lang="stylus" scoped>
+	  @import '../css/common.css';
+		  .child {
+		  height: auto;
+	  }
+	  .child li {
+		  min-height: 100px;
+		  margin: 2px 0;
+		  /* background: #009678; */
+	  }
+	  .parent {
+		  width: 100%;
+		  height: 460px;
+		  margin: 0 auto;
+		  /* background: #242424; */
+		  overflow-y: scroll;
+	  }
+  .c_head{
+	  height: 18%;
+	  display: flex;
+	  width: 100%;
+  }
+  .c_left{
+	  width:25%;
+  }
+  .c_right{
+	  width: 75%;
+	  margin-top: 10px;
+	  background-color: #fff;
+	  margin-right: 10px;
+	  display: flex;
+  }
+  .content{
+	  height: calc(100% - 10px);
+	  background-color: #fff;
+	  margin: 10px;
+	  display: flex;
+  }
+  .c_title{
+	  float: left;
+	  width: 100%;
+	  height: 4%;
+	  /* margin: 10px; */
+	  margin-bottom: 0;
+	  font-size: 15px;
+	  font-weight: bold;
+	  line-height: 30px;
+	  /* border-left: 5px solid #409eff; */
+	  padding-left: 10px;
+	  background-color: white;
+	  padding-top: 6px;
+	}
+	.c_exposure{
+	  float: left;
+	  width: clac(100% - 10px);
+	  height: 4%;
+	  /* margin: 10px; */
+	  margin-bottom: 0;
+	  font-size: 15px;
+	  font-weight: bold;
+	  line-height: 30px;
+	  /* border-left: 5px solid #409eff; */
+	  padding-left: 10px;
+	  background-color: white;
+	  padding-top: 6px;
+	}
+	.c_hexposure{
+		float: left;
+		width: 97%;
+		margin: 10px;
+		margin-bottom: 0;
+		font-size: 15px;
+		font-weight: bold;
+		/* line-height: 30px; */
+		/* border-left: 5px solid #409eff; */
+		/* padding-left: 10px; */
+		/* background-color: floralwhite; */
+		/* padding-top: 6px; */
+	}
+  .c_content{
+	  height: 77%;
+	  display: flex;
+	  width: 100%;
+  }
+  .c_cleft{
+	  width: 50%;
+	  background-color: white;
+	  margin: 10px;
+  }
+  .c_cright{
+	  width: calc(50% - 10px);
+	  background-color: #fff;
+	  /* margin: 10px; */
+	  margin-right: 10px;
+	  margin-bottom: 10px;
+	  margin-top: 10px;
+  }
+  .c_education{
+	  width: 40%;
+	  text-align: center;
+	  margin-top: 9px;
+  }
+  .c_tlearn{
+	  width: 30%;
+	  text-align: center;
+	  margin-top: 9px;
+	  font-size: 14px;
+	  font-weight: 400;
+	  color: rgba(141,154,173,1);
+  }
+  .c_tip{
+	  margin-bottom: 10px;
+	  font-size: 15px;
+	  font-family: Microsoft YaHei;
+	  font-weight: 400;
+	  color: rgba(81,90,110,1);
+  }
+  .c_start{
+	width: 64px;
+    height: 20px;
+    color: white;
+    background-color: #FA7F79;
+    border-radius: 14px;
 	text-align: center;
-	margin-top: 9px;
-}
-.c_tlearn{
-	width: 30%;
+	cursor: pointer;
+  }
+  .c_astart{
+	width: 64px;
+    height: 20px;
+    color: white;
+    background-color: #006EFF;
+    border-radius: 14px;
 	text-align: center;
-	margin-top: 9px;
-	font-size: 14px;
-	font-weight: 400;
-	color: rgba(141,154,173,1);
-}
-.c_tip{
-	margin-bottom: 10px;
-	font-size: 15px;
-	font-family: Microsoft YaHei;
-	font-weight: 400;
-	color: rgba(81,90,110,1);
-}
-.c_start{
-width: 64px;
-	height: 20px;
-	color: white;
-	background-color: #FA7F79;
-	border-radius: 14px;
-text-align: center;
-cursor: pointer;
-}
-.c_astart{
-width: 64px;
-	height: 20px;
-	color: white;
-	background-color: #006EFF;
-	border-radius: 14px;
-text-align: center;
-cursor: pointer;
-}
-.c_learn{
-	margin-top: 10px;
-}
-.c_handle{
-	width: 35%;
-}
-.c_type{
-	width: 35%;
-}
-.hbar{
-	height: 85%;
-	width: 100%;
-}
-.hline{
-	width: 100%;
-	height: 100%;
-}
-.c_category{
-	width: 30%;
-	height: 100%;
-}
-.e_title{
-	height: 5%;
-}
-/* .e_head{
-	height: 18%;
-} */
-.e_cont{
-	border-bottom: 1px solid lightgray;
-	height: 16%;
-	margin-top: 10px;
-	/* background-color: aliceblue; */
-}
-.e_top{
-	height: 25%;
-	padding-top: 15px;
-	padding-left: 15px;
-	display: flex;
-}
-.c_top{
-	height: 10%;
-	padding-top: 22px;
-	padding-left: 15px;
-	display: flex;
-}
-.c_htop{
-	/* height: 10%; */
-	/* padding-top: 22px; */
-	padding-left: 15px;
-	display: flex;
-}
-.cetitle{
-	width: 90%;
-	font-size: 16px;
-	font-family: Microsoft YaHei;
-	font-weight: bold;
-	color: rgba(51,51,51,1);
-}
-.ctitle{
-	width: 74%;
-	font-size: 13px;
-	font-family: Microsoft YaHei;
-	font-weight: bold;
-	color: rgba(51,51,51,1);
-}
-.e_cetitle{
-	width: 10%;
-	padding-left: 24px;
-	color: rgba(255,14,2,1);
-	font-size: 14px;
-	font-weight: bolder;
-
-}
-.e_aetitle{
-	width: 10%;
-	padding-left: 24px;
-	color: #006EFF;
-	font-size: 14px;
-	font-weight: bolder;
-
-}
-.c_cetitle{
-	width: 30%;
-	padding-left: 24px;
-	/* color: #ff0e02; */
-	margin-top: 20px;
-	font-size: 14px;
-	font-weight: bolder;
-}
-.e_learn{
-	display: flex;
-	padding-top: 10px;
-}
-.e_foot{
-	display: flex;
-	padding-top: 10px;
-}
-.e_date{
-	font-size: 14px;
-	font-family: Microsoft YaHei;
-	font-weight: 400;
-	color: rgba(141,154,173,1);
-}
-.h32{
-	font-size: 12px;
-	font-family: Microsoft YaHei;
-	font-weight: 400;
-	color: rgba(141,154,173,1);
-}
-.introduce{
-	font-size: 14px;
-	font-family: Microsoft YaHei;
-	font-weight: 400;
-	color: rgba(81,90,110,1);
-}
-.c_introduce{
-	font-size: 14px;
-	font-family: Microsoft YaHei;
-	font-weight: 400;
-	color: #515a6e;
-	margin-top: 5px;
-	margin-right: 10px;
-	margin-left: 28px;
-	text-indent: 24px;
-	line-height: 22px;
-	letter-spacing: 1px;
-}
-/* @import'../css/assembly.css';
-@import "../css/hover-min.css";
-@import "../css/media.css";*/
-</style>
+	cursor: pointer;
+  }
+  .c_learn{
+	  margin-top: 10px;
+  }
+  .c_handle{
+	  width: 35%;
+  }
+  .c_type{
+	  width: 35%;
+  }
+  .hbar{
+	  height: 85%;
+	  width: 100%;
+  }
+  .hline{
+	  width: 100%;
+	  height: 100%;
+  }
+  .c_category{
+	  width: 30%;
+	  height: 100%;
+  }
+  .e_title{
+	  height: 5%;
+  }
+  /* .e_head{
+	  height: 18%;
+  } */
+  .e_cont{
+	  border-bottom: 1px solid lightgray;
+	  height: 16%;
+	  margin-top: 10px;
+	  /* background-color: aliceblue; */
+  }
+  .e_top{
+	  height: 25%;
+	  padding-top: 15px;
+	  padding-left: 15px;
+	  display: flex;
+  }
+  .c_top{
+	  height: 10%;
+	  padding-top: 22px;
+	  padding-left: 15px;
+	  display: flex;
+  }
+  .c_htop{
+	  /* height: 10%; */
+	  /* padding-top: 22px; */
+	  padding-left: 15px;
+	  display: flex;
+  }
+  .cetitle{
+	  width: 90%;
+	  font-size: 16px;
+	  font-family: Microsoft YaHei;
+	  font-weight: bold;
+	  color: rgba(51,51,51,1);
+  }
+  .ctitle{
+	  width: 74%;
+	  font-size: 13px;
+	  font-family: Microsoft YaHei;
+	  font-weight: bold;
+	  color: rgba(51,51,51,1);
+  }
+  .e_cetitle{
+	  width: 10%;
+	  padding-left: 24px;
+	  color: rgba(255,14,2,1);
+	  font-size: 14px;
+	  font-weight: bolder;
+  
+  }
+  .e_aetitle{
+	  width: 10%;
+	  padding-left: 24px;
+	  color: #006EFF;
+	  font-size: 14px;
+	  font-weight: bolder;
+  
+  }
+  .c_cetitle{
+	  width: 30%;
+	  padding-left: 24px;
+	  /* color: #ff0e02; */
+	  margin-top: 20px;
+	  font-size: 14px;
+	  font-weight: bolder;
+  }
+  .e_learn{
+	  display: flex;
+	  padding-top: 10px;
+  }
+  .e_foot{
+	  display: flex;
+	  padding-top: 10px;
+  }
+  .e_date{
+	  font-size: 14px;
+	  font-family: Microsoft YaHei;
+	  font-weight: 400;
+	  color: rgba(141,154,173,1);
+  }
+  .h32{
+	  font-size: 12px;
+	  font-family: Microsoft YaHei;
+	  font-weight: 400;
+	  color: rgba(141,154,173,1);
+  }
+  .introduce{
+	  font-size: 14px;
+	  font-family: Microsoft YaHei;
+	  font-weight: 400;
+	  color: rgba(81,90,110,1);
+  }
+  .c_introduce{
+	  font-size: 14px;
+	  font-family: Microsoft YaHei;
+	  font-weight: 400;
+	  color: #515a6e;
+	  margin-top: 5px;
+	  margin-right: 10px;
+	  margin-left: 28px;
+	  text-indent: 24px;
+	  line-height: 22px;
+	  letter-spacing: 1px;
+  }
+  /* @import'../css/assembly.css';
+  @import "../css/hover-min.css";
+  @import "../css/media.css";*/
+   
+  
+  </style>
   
