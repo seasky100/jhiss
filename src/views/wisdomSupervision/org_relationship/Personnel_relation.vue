@@ -30,7 +30,7 @@
             {{item.label}}
           </span>
           <span :style="[{background:color_arr[0].bg,color:color_arr[0].color}]"
-          class="label_body" @click="responsibility"><img src="../../../assets/images/dzzrs.png"/>责任书
+          class="label_body" @click="responsibility(personInfo)"><img src="../../../assets/images/dzzrs.png"/>责任书
         </span>
         </div>  
         <div class="con projectCon" style="height:128px;">
@@ -50,7 +50,7 @@
         </div>
       </div>
 			<!-- 领导属下信息 -->
-      <div class="fengxian" style="width:calc(99% - 430px);margin-left:0.7%;">
+      <div class="fengxian" style="width:calc(99% - 460px);margin-left:0.7%;">
         <div class="person_title">
           <div class="submenu" @click="subMenuClick(index)"
             :style="[{'border-bottom':active==index?'4px solid #235FF6':'none','color':active==index?'#235FF6':'#7F7E84'}]"
@@ -93,9 +93,9 @@
           <img style="float:left;width: 55px;" class="photo_img" :src="getPhotoPath(personInfo.userInfo)" />
           <div style="float:left;padding:15px;line-height:25px;">
             <span class="dialogName">{{leData[0].leaderName}}</span>
-            <span style="color:#ccc;">警号：</span>{{this.leadInfo.policeCode}}
-            <span style="color:#ccc;margin-left:10px;">职务：</span>{{this.leadInfo.rank}}
-            <span style="color:#ccc;margin-left:10px;">部门：</span>{{this.leadInfo.label}}
+            <span style="color:#ccc;">警号：</span>{{leData[0].policeCode}}
+            <span style="color:#ccc;margin-left:10px;">职务：</span>{{leData[0].rank}}
+            <span style="color:#ccc;margin-left:10px;">部门：</span>{{leData[0].label}}
             <!-- <span style="color:#ccc;margin-left:10px;">职级：</span>{{this.leadInfo.policeRank}} -->
           </div>
         </div>
@@ -164,34 +164,14 @@
     <div class="dialog_info" title="" v-show="dialogVisible5">
         <div style="height: 523px;width: 389px;z-index: 2000;top: 218px;left: 422px;position: absolute;" class='zrsp'>
           <div style="width: 100%;height: 20px;text-align: -webkit-center;margin-top: 35%;color: #FFD521;" >
-            第（<input v-model="form.lever" placeholder="请填层级" style="border: 0px solid rgb(255, 213, 33); width: 60px;color: rgb(255, 213, 33); text-align:center"></input>）级
+            第（<input v-model="ruleForm.lever"  style="border: 0px solid rgb(255, 213, 33); width: 36px;color: rgb(255, 213, 33); text-align:center"></input>）级
           </div>
-           <div style="width: 100%;height: 20px;text-align: -webkit-center;margin-top: 60%;color: #FFD521;font-size: 15px;" ><span>中共金华市公安局委员会</span><div><!--<el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期"  style="width:50%;height:30px;"></el-date-picker> -->
-           <div><div style="margin-top: 10px;" >部门：<span>{{orgName}}</span></div></div>
-           <button v-show='look' style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 30px; " type="primary" @click="backrespons">查看</button>
-            <button style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 30px; " type="primary" @click="backrespons">取消</button>
-            <button style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 30px; " type="primary" @click="addrespons">创建</button>
-            <!-- <el-form ref="form" :model="form" label-width="80px" size="small"> 
-              <el-form-item label="部门" prop="deptId">
-                <select-tree
-                  :disabled="disabled"
-                  v-model="form.deptId"
-                  :props="config"
-                  :treeData="arryData"
-                  @change="orgChange"
-                  placeholder="请选择部门" />
-              </el-form-item>
-              <el-form-item label="被谈话人" prop="userId">
-                  <el-select v-model="form.userId" multiple placeholder="被谈话人" @change="selectChange" :disabled="disabled">
-                    <el-option
-                      v-for="item in interviewMans"
-                      :key="item.id"
-                      :label="item.realName"
-                      :value="item.id">
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-            </el-form> -->
+           <div style="width: 100%;height: 20px;text-align: -webkit-center;margin-top: 60%;color: #FFD521;font-size: 15px;" ><div><!--<el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期"  style="width:50%;height:30px;"></el-date-picker> -->
+           <div style="margin-top: 10px;" ><span>{{orgName}}</span></div>
+           <div style="margin-top: 10px;" ><span>{{date}}</span></div>
+           <button v-show='look' style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 30px; " type="primary" @click="addrespons">查看</button>
+            <button style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 31px; " type="primary" @click="backrespons">关闭</button>
+            <button v-show='!look' style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 31px; " type="primary" @click="addrespons">创建</button>
           </div></div>
         </div>
     </div>
@@ -205,11 +185,6 @@
         <div class='title'>
           党风廉政建设责任书
         </div>
-        <!-- <div class='title'>
-          <div class='level'>层级:</div>
-          <el-input v-model="ruleForm.title"></el-input>
-        </div> -->
-        <!-- <div class='level'>内容：</div> -->
         <div style="text-align: -webkit-auto;margin-bottom: 12px;margin-left: 10px;">
             <el-switch v-model='value' @change='group' active-text='群发' active-color='#13ce66' inactive-text='私发' inactive-color='#ff4949'>
             </el-switch>
@@ -220,7 +195,7 @@
             />
           </el-form-item>
           <el-form-item v-show="groupsend"  label="责任人:" prop="ids">
-            <el-select v-model="form.ids" multiple placeholder="被谈话人" @change="selectChange" :disabled="disabled">
+            <el-select v-model="form.ids" multiple placeholder="责任人" @change="selectChange" :disabled="disabled">
               <el-option v-for="item in interviewMans" :key="item.id" :label="item.realName" :value="item.id">
               </el-option>
             </el-select>
@@ -229,14 +204,14 @@
         <editor :binddata.sync="ruleForm.content " ref="editor" style="height:260px">
         </editor>
         <div class='response'>
-            <span v-show='flagLeader' class='leader'>主管领导：<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureLeader" /></span>          
-            <span  v-show='flagLeader' class='person'>责任人:<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureData" /><button v-show='flag' @click='signature' >获取电子签名</button></span>
+            <span v-show='flagLeader' class='leader'>主管领导：<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="ruleForm.leadSignature" /></span>          
+            <!-- <span  v-show='flagLeader' class='person'>责任人:<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureData" /><button v-show='flag' @click='signature' >获取电子签名</button></span> -->
           
         </div>
         <!-- <el-form-item label="申报结束时间" prop="applyEnd">
                   <el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
                 </el-form-item> -->
-        <el-button type="primary" @click="submit">提交</el-button>
+        <el-button type="primary" @click="submit">下发</el-button>
         <el-button @click="goBack">取消</el-button>
       </div>
     <div v-show='!dialogVisible4'>
@@ -253,22 +228,26 @@
         <div class='' v-html='responseData.content'></div>
         <div class='response' style="display:flex">
           <div class='p_leader'>
-              <span class=''>主管领导：<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureLeader" /></span>
+              <span class=''>主管领导：<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="ruleForm.leadSignature" /></span>
               <div>日期：{{responseData.gmtCreate}}</div>
           </div>
           <div class='per_response' >
-              <span class='person'>责任人:<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="signatureData" /></span>
+              <span class='person'>责任人:<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="ruleForm.selfSignature" /></span>
               <button v-show='flag' @click='signature' >获取电子签名</button>
               <div>日期：{{responseData.selfCreate}}</div>
           </div>
         </div>
         <el-button v-show ='editFlag' type="primary" @click="edit">编辑</el-button>
+        <div style="text-align: -webkit-right;">
+            <el-button v-show='prev' type="primary" @click="prevPiece">下一篇</el-button>
+            <el-button v-show='next' type="primary" @click="nextPiece">上一篇</el-button>
+          </div>
       </div>
     </div>
     </el-dialog>
-    <!-- 新增风险 -->
-    <JobriskAdd ref="JobriskAdd"/>
-    <!-- 学习教育 -->
+        <!-- 新增风险 -->
+        <JobriskAdd ref="JobriskAdd"/>
+            <!-- 学习教育 -->
     <el-dialog class="dialog_info" title="学习教育" :visible.sync="dialogVisible_edu">
       <div>
         <el-switch style="margin-bottom:10px;"
@@ -293,7 +272,7 @@
 // import treeData from './treeData.js';
 import { getUserInfo,getUserList,getList,getUserListByUserId  } from '@/api/user-server.js';
 import { findExposureStudyRecord } from "@/api/warn.js";
-import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk,deleteInterView } from '@/api/report.js';
+import { getRiskByUserId,saveElectronicResponsibility,updateElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
 import editor from "@/components/editor.vue";
 import JobriskAdd from "../JobriskAdd";
@@ -308,10 +287,15 @@ export default {
       active: 1,
       disabled: false,
       disabled1: false,
+      next: true,
+      prev:true,
       look:false,
       orgName: sessionStorage.orgName,
       value: '',
+      date: new Date().toLocaleDateString(),
       parentId:'',
+      nCurrent: 1,
+      zrsId:'',
       mesure:'',
       content:'',
       realName:"",
@@ -347,7 +331,6 @@ export default {
       },
       leaderName:'',
       signatureData:'',//个人电子签名
-      signatureLeader:'',// 领导电子签名
       flag:true,
       flagLeader: false,
       editFlag: true,
@@ -371,6 +354,7 @@ export default {
           label: "姓名",
           align: "left"
         },
+
         {
           prop: "orgName",
           label: "所属部门",
@@ -465,8 +449,11 @@ export default {
       ],
       ruleForm: {
         title: '',
-        userId: '', //父id
+        userId: '', //用户id
+        leadId: '', // 领导id
+        userCreate:'', // 创建人
         content : '',
+        id: '', // 责任书id
         leadSignature   :'', //领导电子签名
         selfSignature: '' // 本人的电子签名
       },
@@ -500,7 +487,7 @@ export default {
       dialogVisible5: false,
       warningInfo: null,
       gridData: [],
-      dialogVisible_edu: false,
+            dialogVisible_edu: false,
       switch_edu: true,
       eduTableList:[],
 			options_edu: {
@@ -578,6 +565,7 @@ export default {
     },
     // 机构人员 下拉change事件
     orgChange(orgId) {
+      debugger
       const item = this.deepQuery(orgId);
       this.orgName = item.name;
       this.getUserListData(orgId);
@@ -587,6 +575,7 @@ export default {
       const tree = this.orgData;
       var stark = [];
       stark = stark.concat(tree);
+
       while (stark.length) {
         var temp = stark.shift();
         if (temp.childrens) {
@@ -610,6 +599,7 @@ export default {
     //   })
     // },
     getUserListData(id) {
+      debugger
       const params = {
         userId: id
       }
@@ -621,8 +611,6 @@ export default {
             for (let i = 0; i < data.length; i++) {       
               this.form.ids.push(data[i].id)             
             }
-            // this.form.ids = res.data.map(item => item.id).join()
-            console.log('下属ids',this.form.ids)
           }
         })
     },
@@ -786,41 +774,57 @@ export default {
     addrespons(){
       this.dialogVisible5 = false
       this.dialogVisible3 = true
+      this.findElectronic()
+      // this.signatLeader()
     },
-    responsibility() {
-      this.dialogVisible5 = true
+    findElectronic(){
       const _this = this
-      const data = this.orgData[0].childrens
-      const orgId = sessionStorage.orgId
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].id === orgId) {
-          this.arryData.push(data[i])
-        }
-      }
+      _this.responseData = ''
       findElectronicResponsibilityPage(
         Object.assign(
           {
-            userId: sessionStorage.userId,
-            nCurrent:1,
+            userId: _this.zrsId,
+            nCurrent:_this.nCurrent,
+            isAsc:false,
+            orderByField:'gmtCreate',
             nSize:1,
           },
         )
       ).then(res => {
         if (res.success == true) {
-          if(res.data.records ==null ||res.data.records.length == 0){
-            _this.flagLeader = false   
+          debugger
+          if(res.data.records == null ||res.data.records.length == 0){
+            // _this.flagLeader = false 
+            _this.signatLeader()  
             _this.look = false
+            _this.dialogVisible4 = true
           }else{
             _this.look = true
             let userId = JSON.parse(sessionStorage.userInfo).id
             let data = res.data.records
+            if(_this.nCurrent == res.data.pages && _this.nCurrent > 1){
+              this.next = false
+              this.prev = true
+            }else if(_this.nCurrent == 1 && res.data.pages >1){
+              this.next = true
+              this.prev = false
+            }else if(res.data.pages == 1){
+              this.next = false
+              this.prev = false
+            }else{
+              this.next = true
+              this.prev = true
+            }
             for (let i = 0; i < data.length; i++) {
                 _this.responseData = data[i]
-                _this.signatureData = data[i].selfSignature   
+                _this.ruleForm.selfSignature = data[i].selfSignature   
                 data[i].gmtCreate = new Date(data[i].gmtCreate).toLocaleDateString()
                 data[i].selfCreate = new Date(data[i].selfCreate).toLocaleDateString()
-                _this.flag = false
-               
+                if(data[i].selfSignature){
+                     _this.flag = false
+                }else{
+                  _this.flag = true
+                }                             
             }
             _this.dialogVisible4 = false
             if(_this.level == 2){
@@ -828,19 +832,43 @@ export default {
             }
             _this.ruleForm.title = res.data.records[0].title
             _this.ruleForm.content = res.data.records[0].content
-            // _this.ruleForm.leadSignature = res.data.leadSignature 
-            _this.signatLeader()
+            _this.ruleForm.leadId = res.data.records[0].leadId
+            _this.ruleForm.userCreate = res.data.records[0].userCreate
+            _this.ruleForm.id = res.data.records[0].id 
+            _this.ruleForm.leadSignature = res.data.records[0].leadSignature 
+            // _this.signatLeader()
           }
         } else {
           console.log(res.message)
         }
       })
+    },
+    responsibility(value) {
+      this.zrsId = value.id
+      console.log('领导责',this.zrsId)
+      this.dialogVisible5 = true
+      const data = this.orgData[0].childrens
+      const orgId = sessionStorage.orgId
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].id === orgId) {
+          this.arryData.push(data[i])
+        }
+      }
+      this.findElectronic()
       this.parentId = sessionStorage.userId
       this.getUserListData(this.parentId);
     }, 
+    prevPiece(){
+      this.nCurrent = this.nCurrent-1
+      this.findElectronic()
+    },
+    nextPiece(){
+      debugger
+      this.nCurrent = this.nCurrent+1
+      this.findElectronic()
+    },
    // 个人岗位预警
     getRiskByUserData(userId) {
-      console.log('id', userId)
       this.leData = []
       const id = JSON.parse(sessionStorage.userInfo).id
       if (userId != id) {
@@ -859,6 +887,7 @@ export default {
         // console.log(res)
         if (res.success == true) {
           _this.dialogVisible = true
+          debugger
           if (res.data.length > 0) {
             let data = res.data
             let branchData = []
@@ -894,31 +923,32 @@ export default {
       ).then(res => {
         // console.log(res)
         if (res.success == true) {
-          _this.signatureData = res.data
+          _this.ruleForm.selfSignature = res.data
           _this.flag = false
           let qmurl = res.data
-          _this.submit1(qmurl)
+          _this.updateElectronic(qmurl)
         } else {
           console.log(res.message)
         }
       })
     },
-    submit1(url) {
+    updateElectronic(url) {
       if (url) {
         this.ruleForm.selfSignature = url
       }
       const params = {
+        id: this.ruleForm.id,
         title: this.ruleForm.title,
-        userId: this.$route.query.value.userPid,
+        userId: sessionStorage.userId,
         userCreate: this.$route.query.value.id,
         content: this.ruleForm.content,
-        selfSignature: this.ruleForm.selfSignature
+        selfSignature: this.ruleForm.selfSignature,
       }
-      saveElectronicResponsibility(params).then(res => {
+      updateElectronicResponsibility(params).then(res => {
         if (res.success) {
           this.$message({
             type: 'success',
-            message: '提交成功'
+            message: ''
           })
         } else {
           this.$message({
@@ -929,16 +959,13 @@ export default {
       })
     },    
     submit() {
-      this.form.ids
-      // this.form.ids.push(this.$route.query.value.id)
-      // let ids = this.form.ids.to
-      console.log(this.form.ids)
       const params = {
-        title: this.form.lever,
+        title: this.ruleForm.title,
         ids: this.form.ids, 
         leadId :sessionStorage.userId,
         userCreate: sessionStorage.userId,
         content: this.ruleForm.content,
+        leadSignature: this.ruleForm.leadSignature,
         // selfSignature  :this.ruleForm.selfSignature  
       }
       saveElectronicResponsibility(params).then(res => {
@@ -954,7 +981,7 @@ export default {
             message: '提交失败'
           })
         }
-        sessionStorage.orgId,
+        deptId: sessionStorage.orgId,
         this.form.ids = []
         this.form.lever = ''
       })
@@ -964,11 +991,6 @@ export default {
       this.formData.riskContent[0].riskContent = _this.content
       this.formData.riskContent[0].riskMesure = _this.mesure
       this.formData.riskContent[0].workMatters = _this.matters
-      // const user = this.userList.find(item => item.id === this.formData.userId);
-      // this.formData.policeCode = user.userInfo.policeCode;
-      // this.formData.userName = user.realName;
-      // this.formData.ifMyEntering = this.formData.ifMyEntering;
-      // this.formData.riskContent = JSON.stringify(this.formData.riskContent);
       let filesParam = new FormData();
       filesParam.append('orgId', this.warningInfo.orgId);
       filesParam.append('leaderName', this.warningInfo.leaderName);
@@ -985,6 +1007,7 @@ export default {
       } else {
         res =  saveUserRisk(filesParam); 
       }
+      debugger
       if (res && res.success === true) {
         this.$message({
           type: "success",
@@ -1006,13 +1029,13 @@ export default {
       getSignatureById(
         Object.assign(
           {
-            userId: this.$route.query.value.userPid
+            userId: this.$route.query.value.id,
           },
         )
       ).then(res => {
         // console.log(res)
         if (res.success == true) {
-          _this.signatureLeader = res.data
+          _this.ruleForm.leadSignature  = res.data
         } else {
           console.log(res.message)
         }
@@ -1020,12 +1043,14 @@ export default {
     },
     // 查询列表
     QueryData(nCurrent = 1) {
+      debugger
       const _this = this;
       getRiskPage(
         Object.assign(
           {
             nCurrent: nCurrent,
             nSize: 10,
+            policeCode: JSON.parse(sessionStorage.userInfo).policeCode,
             orgId: sessionStorage.orgId
           },
           // _this.searchData
@@ -1039,7 +1064,7 @@ export default {
         );
       });
     },
-    // 分页点击事件
+        // 分页点击事件
     afterCurrentPageClickHandle(val, next) {
       this.QueryData(val);
       next();
@@ -1054,6 +1079,7 @@ export default {
       this.$refs.JobriskAdd.open("add");
     },
     leaderClickHandle(typeData){
+      debugger
       if (this.leData.length>0) {
         const data = this.leData
         this.leData = []
@@ -1075,22 +1101,11 @@ export default {
       this.QueryData();
     },
     group(){
-      if(this.value==true){
+      debugger
+      if(this.value==true){ // 群发
         this.groupsend = false
         this.getUserListData(this.parentId)
-        // // 根据用户ID查询所有下属用户
-        // const _this= this;
-        // const params = {
-        //   userId: sessionStorage.userId
-        // }
-        // getUserListByUserId(params).then(res => {
-        //   if (res.success) {
-        //     _this.form.ids = res.data.map(item => item.id).join()
-        //   }
-        // })
-      
-        // this.value = false
-      }else{
+      }else{ // 私法
         this.groupsend =true
         this.form.ids = []
         // this.value = true
@@ -1111,19 +1126,19 @@ export default {
   position: relative;
 }
 input::-webkit-input-placeholder{
-  color: rgb(255, 213, 33);
+  color: #fdfcf5;
   font-size: 10px;
   padding-left: 5px;
   font-family: monospace;
 }
 input:-moz-placeholder{
-  color: rgb(255, 213, 33);
+  color: #fdfcf5;
   font-size: 10px;
   padding-left: 5px;
   font-family: monospace;
 }
 input:-ms-input-placeholder{
-  color: rgb(255, 213, 33);
+  color: #fdfcf5;
   font-size: 10px;
   padding-left: 5px;
   font-family: monospace;
