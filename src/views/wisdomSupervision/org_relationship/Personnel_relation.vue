@@ -34,7 +34,7 @@
         </span>
         </div>  
         <div class="con projectCon" style="height:128px;">
-          <span class="project_li" @click="handleClick(item)"
+          <span class="project_li" @click="handleClick(item,'')"
             v-for="(item,index) of projectList" :key="index">
             <img class="menuImg" :src="item.imgPath" />
             <span>{{item.name}}</span>
@@ -266,13 +266,33 @@
       </div>
     </div>
     </el-dialog>
-        <!-- 新增风险 -->
-        <JobriskAdd ref="JobriskAdd"/>
+    <!-- 新增风险 -->
+    <JobriskAdd ref="JobriskAdd"/>
+    <!-- 学习教育 -->
+    <el-dialog class="dialog_info" title="学习教育" :visible.sync="dialogVisible_edu">
+      <div>
+        <el-switch style="margin-bottom:10px;"
+          v-model="switch_edu"
+          active-text="已学习"
+          inactive-text="未学习">
+        </el-switch>
+        <div class="search-wrap" style="height:500px;">
+          <e-table style="padding:0;"
+            ref="educationTableRef"
+            :tableList="eduTableList"
+            :options="options_edu"
+            :columns="columns_edu"
+            @afterCurrentPageClick="afterCurrentPageClickHandle_edu"
+          />
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
 // import treeData from './treeData.js';
 import { getUserInfo,getUserList,getList,getUserListByUserId  } from '@/api/user-server.js';
+import { findExposureStudyRecord } from "@/api/warn.js";
 import { getRiskByUserId,saveElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
 import editor from "@/components/editor.vue";
@@ -457,7 +477,7 @@ export default {
         {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
         {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/xxjy.png')},
         {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/yjgk.png')},
-        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/fxpg.png')},
+        {name: '学习教育', imgPath: require('@/assets/images/bg/fxpg.png')},
         // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
       ],
       submenuList: [
@@ -480,6 +500,31 @@ export default {
       dialogVisible5: false,
       warningInfo: null,
       gridData: [],
+      dialogVisible_edu: false,
+      switch_edu: true,
+      eduTableList:[],
+			options_edu: {
+        // 每页数据数
+        pageSize: 10,
+        hasIndex: false,
+        // 当前页码
+        currentPage: 1,
+        loading: true,
+        maxHeight: null,
+        height:'450'
+			},
+			columns_edu: [
+        {
+          prop: 'title',
+          label: '标题',
+          align: 'left'
+        },
+        {
+          prop: 'content',
+          label: '内容',
+          align: 'left'
+        }
+      ],
     }
   },
   components: { editor,JobriskAdd},
@@ -495,6 +540,15 @@ export default {
     //     this.person_data=val
     //   }
     // }
+    switch_edu(newVal, oldVal){
+      this.eduTableList = []
+      this.getEduTableData()
+    },
+    dialogVisible_edu(newVal, oldVal){
+      if(!newVal){
+        this.switch_edu = true
+      }
+    },
   },
   mounted() {
     this.leadInfo = JSON.parse(sessionStorage.userInfo) 
@@ -675,12 +729,22 @@ export default {
         this.person_data = this.tree_data.children[0].children
       }
     },
-    handleClick(value){
+    handleClick(value, personInfo){
+      if(personInfo == ''){
+        personInfo = this.personInfo
+      }
       if(value.path == null){
         if(value.name=='岗位风险') {
           // let userId = this.personInfo.id
-          let userId = this.personInfo.userInfo.id
+          let userId = personInfo.userInfo.id
           this.getRiskByUserData(userId)
+        }else if(value.name=='学习教育'){
+          let userId = personInfo.userInfo.id
+          this.dialogVisible_edu = true
+          this.personId = userId
+          // console.log('学习教育', userId)
+          this.eduTableList = []
+          this.getEduTableData()
         }else{
           console.log('人员ID：',this.personInfo.userInfo.id)
           this.dialogVisible2 = true
@@ -689,6 +753,30 @@ export default {
         this.MenuPage.activeMenu = value.path
         this.$router.push({path: value.path})
       }
+    },
+    // 分页点击事件
+    afterCurrentPageClickHandle_edu(val, next) {
+      this.getEduTableData(val);
+      next();
+    },
+    getEduTableData(nCurrent = 1){
+      const _this = this;
+      let status = _this.switch_edu ? 1 : 2
+      const params = {
+        userId: _this.personId,
+        status: status, // 学习情况(1:已学习 2:未学习)
+        nCurrent: nCurrent,
+        nSize: 10
+      }
+      findExposureStudyRecord(params).then(res => {
+        // console.log(res.data) 
+        this.$refs.educationTableRef.setPageInfo(
+          nCurrent,
+          res.data.size,
+          res.data.total,
+          res.data.records
+        );
+      });
     },
     backrespons(){
       this.dialogVisible5 = false
@@ -955,7 +1043,7 @@ export default {
         );
       });
     },
-        // 分页点击事件
+    // 分页点击事件
     afterCurrentPageClickHandle(val, next) {
       this.QueryData(val);
       next();
