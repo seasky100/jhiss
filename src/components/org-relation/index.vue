@@ -24,6 +24,7 @@
     </span>
       <div class="person_ul">
         <span class="person_li" @click="funcObj(item3, item)"
+          :style="[{'cursor': level == 1 ? 'pointer' : ''}]"
           v-for="(item3,index3) of projectList" :key="index3">
           <img class="menuImg" :title="item3.name" :src="item3.imgPath" />
           <!-- <span>{{item3.name}}</span> -->
@@ -137,7 +138,6 @@ export default {
         float left
         color #AB2C31
         font-size 16px
-        cursor pointer
         span 
           display block
           font-size 13px
