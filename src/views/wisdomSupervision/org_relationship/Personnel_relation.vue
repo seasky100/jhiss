@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="relationBody">
-          <org-relation v-if="person_data.length > 0" :data="person_data"></org-relation>
+          <org-relation v-if="person_data.length > 0" :data="person_data" :level="org_level"></org-relation>
         </div>
       </div>      
     </div>
@@ -578,7 +578,6 @@ export default {
     },
     // 机构人员 下拉change事件
     orgChange(orgId) {
-      debugger
       const item = this.deepQuery(orgId);
       this.orgName = item.name;
       this.getUserListData(orgId);
@@ -611,7 +610,6 @@ export default {
     //   })
     // },
     getUserListData(id) {
-      debugger
       const params = {
         userId: id
       }
@@ -620,7 +618,6 @@ export default {
             this.interviewMans = res.data;
             let data = res.data;
             const ids =[]
-            debugger
             for (let i = 0; i < data.length; i++) {       
               this.form.ids.push(data[i].id)             
             }
@@ -631,7 +628,6 @@ export default {
     },
     // 人员下拉
     selectChange(val) {
-      debugger
       let optionId = val
       this.interviewMans.map(item => {
         if (item.id === val) {
@@ -659,9 +655,10 @@ export default {
     },
     getData(query){
       this.tree_data = query.value
-      if(this.tree_data.children == null){
+      if(this.tree_data.children == null || this.tree_data.children.length == 0){
         // this.submenuList = this.submenuList.splice(0,1)
         this.submenuList = [{name:'我的直属领导'}]
+        this.org_level = 0 // 上级
         this.level = 1
         this.active = 0
       }
@@ -689,11 +686,16 @@ export default {
               children:[_this.tree_data]
             }
             _this.tree_data = tree_obj
+            if(_this.level == 1){
+              _this.org_level = 0 // 上级
+              _this.person_data = [_this.tree_data]
+            }
             // console.log(_this.tree_data)
           }else{
             // _this.submenuList = _this.submenuList.splice(1,1)
             this.submenuList = [{name:'我的下属同事'}]
             _this.level = 3
+            _this.org_level = 1 // 下级
             this.active = 0
           }
         } else {
@@ -705,11 +707,9 @@ export default {
       })
     },
     getRiskData(userId) {
-      debugger
       const _this = this;
       getRiskByUserId({ userId }).then(res => {
         if (res.success == true) {
-          debugger
           this.warningInfo = res.data[0];
           // _this.dialogVisible = true;
           _this.lslist = !_this.lslist;
@@ -725,8 +725,10 @@ export default {
       this.active = index
       if(index == 0){
         this.person_data = [this.tree_data]
+        this.org_level = 0
       }else{
         this.person_data = this.tree_data.children[0].children
+        this.org_level = 1
       }
     },
     handleClick(value, personInfo){
@@ -784,8 +786,6 @@ export default {
     addrespons(){
       this.dialogVisible5 = false
       this.dialogVisible3 = true
-     
-      debugger
     },
     responsibility() {
       this.dialogVisible5 = true
@@ -859,7 +859,6 @@ export default {
         // console.log(res)
         if (res.success == true) {
           _this.dialogVisible = true
-          debugger
           if (res.data.length > 0) {
             let data = res.data
             let branchData = []
@@ -930,7 +929,6 @@ export default {
       })
     },    
     submit() {
-      debugger
       this.form.ids
       // this.form.ids.push(this.$route.query.value.id)
       // let ids = this.form.ids.to
@@ -987,7 +985,6 @@ export default {
       } else {
         res =  saveUserRisk(filesParam); 
       }
-      debugger
       if (res && res.success === true) {
         this.$message({
           type: "success",
@@ -1023,7 +1020,6 @@ export default {
     },
     // 查询列表
     QueryData(nCurrent = 1) {
-      debugger
       const _this = this;
       getRiskPage(
         Object.assign(
@@ -1058,7 +1054,6 @@ export default {
       this.$refs.JobriskAdd.open("add");
     },
     leaderClickHandle(typeData){
-      debugger
       if (this.leData.length>0) {
         const data = this.leData
         this.leData = []
@@ -1080,7 +1075,6 @@ export default {
       this.QueryData();
     },
     group(){
-      debugger
       if(this.value==true){
         this.groupsend = false
         this.getUserListData(this.parentId)
@@ -1091,7 +1085,6 @@ export default {
         // }
         // getUserListByUserId(params).then(res => {
         //   if (res.success) {
-        //     debugger
         //     _this.form.ids = res.data.map(item => item.id).join()
         //   }
         // })

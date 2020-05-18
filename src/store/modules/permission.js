@@ -19,11 +19,35 @@ import store from '../index.js'
 //     })
 //     return permArr
 // }
-
+function collectRouters(routers){
+    let arr = []
+    routers.forEach(route =>{
+        if (route.meta && route.meta.userId) {
+            // console.log(route.meta.userId.includes(sessionStorage.userId))
+            // console.log(route.meta.userId.includes('others'))
+            // route.hidden = true
+            let mateId = route.meta.userId
+            if(mateId.includes(sessionStorage.userId)){
+                route.hidden = false
+            }
+            // console.log(route)
+            arr.push(route)
+        } else{
+            arr.push(route)
+        }
+        if(route.children && route.children.length > 0){
+            collectRouters(route.children)
+        }
+    })
+    return arr
+}
 // 过滤路由
 function filterAsyncRoutes(constantRoutes, permValueArr) {
     // 存放最终菜单的数组
     const res = []
+    // console.log(constantRoutes[0].children)
+    // let arrRouters = collectRouters(constantRoutes)
+    // console.log(arrRouters)
     // 遍历路由配置，设置用户菜单权限
     constantRoutes.forEach(route => {
         const tmp = { ...route }

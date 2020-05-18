@@ -23,7 +23,7 @@
       class="label_body">责任书
     </span>
       <div class="person_ul">
-        <span class="person_li" @click="handleClick(item3, item)"
+        <span class="person_li" @click="funcObj(item3, item)"
           v-for="(item3,index3) of projectList" :key="index3">
           <img class="menuImg" :title="item3.name" :src="item3.imgPath" />
           <!-- <span>{{item3.name}}</span> -->
@@ -40,10 +40,22 @@ export default {
     data: {
       type: Array,
       default: null
-    }
+    },
+    level:{
+      type: Number,
+      default: () => {
+        return 1
+      }
+    },
   },
   data() {
     return {
+      funcObj: (item3, item) => {
+        // console.log(this.level)
+        if(this.level == 1){
+          this.handleClick(item3, item)
+        }
+      },
       projectList: [
         // {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
         {name: '岗位风险', imgPath: require('@/assets/images/bg/menu2.png')},
@@ -67,7 +79,7 @@ export default {
   watch:{
   },
   mounted() {
-    // console.log(this.data)
+    // console.log(this.level)
   },
   methods: {
     handleClick(value, personInfo){
