@@ -186,26 +186,32 @@
           }
         ],
         activeMenu: '',
+        routes: [],
       }
-  },
+    },
     components: { NavMenu },
     watch: {
-      routes(newVal,oldVal){
-        console.log(newVal)
-      },
     },
-    computed: {
-      // 获取当前路由的子路由
-      routes(){
-        var routes = {
-          children: this.$router.options.routes
-        };
-        var routesArr = routes.children[0].children
-        // this.activeMenu = routes.routes[0].path
-        return routesArr
-      }
-    },
+    // computed: {
+    //   // 获取当前路由的子路由
+    //   routes(){
+    //     var routes = {
+    //       children: this.$router.options.routes
+    //     };
+    //     var routesArr = routes.children[0].children
+    //     // this.activeMenu = routes.routes[0].path
+    //     return routesArr
+    //   }
+    // },
     mounted() {
+      const _this = this
+      this.$nextTick(() => {
+        // 获取当前路由的子路由
+        let routes = {
+          children: _this.$router.options.routes
+        };
+        _this.routes = routes.children[0].children
+      });
       // this.$root.eventHub.$on("changeParam", (n)=>{
       //     this.getTraffData()
       // });

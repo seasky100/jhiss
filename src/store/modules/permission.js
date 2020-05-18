@@ -39,7 +39,7 @@ function collectRouters(routers, flag){
                     route.hidden = false
                 }
             }
-            console.log(route)
+            // console.log(route)
             arr.push(route)
         } else{
             arr.push(route)
