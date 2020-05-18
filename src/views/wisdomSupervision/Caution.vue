@@ -122,7 +122,7 @@
 			<div class='c_sentiment'>
 				<div id="parent" class="parent">
 					<div id="child1" class="child">
-					<li class='c_scont' v-for="(item,index) in nodeData" :key="index">
+						<li class='c_scont' v-for="(item,index) in nodeData" :key="index">
 							<div class='c_top'>
 								<div>
 									<img style="margin-top: -9px;width: 30px;" :src='item.headUrl' />
@@ -145,34 +145,10 @@
 								</div>
 							</div>
 						</li>
-				<!-- <li class='c_scont'>
-					<div class='c_top'>
-						<div>
-							<img style="margin-top: -9px;width: 48px;" src='../../utils/img/ren.png' />
-						</div>
-						<div class='ctitle'>【2019 第21期】金华市公安机关内部曝光警示通报</div>
-						<div class='e_date'>4天前</div>
-					</div>
-					<div class='e_center'>
-						<div>
-							<div class='c_cetitle'>最新回答</div>
-							<div class='c_introduce'>简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给 口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给
-								口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是简短的课程介绍d收到了PDF开始了送皮肤靠就是双方都十分哦公对公PDF给 口热裤公平热狗恐怕热施工方将数据发送到上空的飞机喀什四道口附近上空房价多少斯克附近的上课JFK但是</div>
-						</div>
-					</div>
-					<div class='e_foot'>
-						<div class='h32' style="width: 7%;margin-top: 10px;margin-left: 27px;">点赞</div>
-						<div class='h32' style="margin-top: 10px;width: 79%;">评论</div>
-						<div class='h32' style="margin-top: 10px; display: flex;">
-							<img style="margin-left: 30%;margin-top: 18%;width: 15px;height:12px;" src='../../utils/img/zan.png' />
-							<div style="margin-top: 3px;">11</div>
-						</div>
-					</div>
-				</li> -->
-						</div>	
-						<div id="child2" class="child"></div>
-					</div>
+					</div>	
+					<div id="child2" class="child"></div>
 				</div>
+			</div>
 			</div>
 		</div>
 	</div>
