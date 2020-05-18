@@ -50,7 +50,7 @@
         </div>
       </div>
 			<!-- 领导属下信息 -->
-      <div class="fengxian" style="width:calc(99% - 460px);margin-left:0.7%;">
+      <div class="fengxian" style="width:calc(99% - 430px);margin-left:0.7%;">
         <div class="person_title">
           <div class="submenu" @click="subMenuClick(index)"
             :style="[{'border-bottom':active==index?'4px solid #235FF6':'none','color':active==index?'#235FF6':'#7F7E84'}]"
@@ -1160,9 +1160,9 @@ input:-ms-input-placeholder{
   background-size: 100% 100%;
 }
 .police_career{
-  height:calc(100% - 145px);
+  height:calc(100% - 135px);
   background:#fff;
-  margin: 15px;
+  margin: 10px;
 }
 .fengxian{
   float:left;
@@ -1308,7 +1308,7 @@ input:-ms-input-placeholder{
   width 130px
   margin-right 20px
 .relationBody
-  height calc(100% - 60px)
+  height calc(100% - 75px)
   margin 10px
   overflow-x auto
 .dialog_info
