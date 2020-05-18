@@ -6,10 +6,10 @@
     @close="colseHandle"
   >
     <el-form ref="form" :model="formData">
-      <el-form-item label="所属部门：">
+      <!-- <el-form-item label="所属部门：">
         <org-select v-model="formData.orgId" @change="change" :orgLabel.sync="formData.orgName"></org-select>
-      </el-form-item>
-      <el-form-item label="姓名：">
+      </el-form-item> -->
+      <el-form-item label="风险人姓名：">
         <el-select v-model="formData.userId" @change="userChange" filterable clearable>
           <el-option
             v-for="user in userList"
@@ -19,6 +19,16 @@
           ></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="是本人新增：" prop="ifMyEntering">
+          <el-select v-model="formData.ifMyEntering" placeholder="请选择">
+            <el-option
+              v-for="item in certificateOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
       <el-form-item label="风险内容：">
         <el-table :data="formData.riskContent">
           <el-table-column label="工作事项" prop="workMatters">
@@ -51,7 +61,7 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-      <el-form-item label="层级领导：">
+      <!-- <el-form-item label="层级领导：">
         <el-select clearable filterable v-model="formData.leaderId" @change="leaderChange">
           <el-option
             v-for="post in postList"
@@ -60,19 +70,19 @@
             :label="post.userPname"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="部门负责人：">
         <el-input readonly v-model="formData.orgLeaderName"></el-input>
       </el-form-item>
       <el-form-item label="备注：">
         <el-input type="textarea" v-model="formData.remark"></el-input>
       </el-form-item>
-      <el-form-item label="附件" v-if="opeart === 'add'">
+      <!-- <el-form-item label="附件" v-if="opeart === 'add'">
         <e-upload @changeHandler="handleChange" />
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <el-footer class="center">
-      <div>
+      <div style="text-align: -webkit-center;">
         <el-button @click="back">取消</el-button>
         <el-button type="primary" @click="submit">保存</el-button>
       </div>
@@ -103,6 +113,12 @@ export default {
       deleteDisable: true,
       visible: false,
       formData: {
+        orgId:sessionStorage.orgId,
+        leaderName:sessionStorage.realName,
+        leaderId:sessionStorage.userId,
+        fileUrl: '',
+        orgName: '',
+        postName: '',
         riskContent: [
           {
             workMatters: "",
@@ -111,6 +127,10 @@ export default {
           }
         ]
       },
+      certificateOptions: [
+        {label:'是', value:'0'},
+        {label:'否', value:'1'}
+      ],
       userList: []
     };
   },
@@ -193,9 +213,10 @@ export default {
     },
     change() {
       // this.formData.userId = '';
-      const orgId = this.formData.orgId;
+      const orgId = sessionStorage.orgId;
       getUserList({ orgId }).then(res => {
         if (res && res.success === true) {
+          debugger
           const { data } = res;
           this.userList = data;
         } else {
@@ -214,6 +235,9 @@ export default {
       getUserDetail({ userId }).then(res => {
         if (res && res.success === true) {
           const { data } = res;
+          this.formData.fileUrl = res.data.userInfo.fileId
+          this.formData.orgName = res.data.userInfo.label
+          this.formData.postName = res.data.userInfo.rank
           const { organizations } = data;
           const nowOrg = organizations.find(
             item => item.id === this.formData.orgId
@@ -253,21 +277,36 @@ export default {
       this.formData.file = file.raw;
     },
     back() {
-      this.$router.push("userRisk-manage");
+      this.visible = false;
     },
     async submit() {
+     const _this = this
       if (this.id) {
         this.formData.id = this.id;
       }
       const user = this.userList.find(item => item.id === this.formData.userId);
       this.formData.policeCode = user.userInfo.policeCode;
       this.formData.userName = user.realName;
-      this.formData.riskContent = JSON.stringify(this.formData.riskContent);
+      // this.formData.ifMyEntering = this.formData.ifMyEntering;
+      // this.formData.riskContent = JSON.stringify(this.formData.riskContent);
+      let filesParam = new FormData();
+      filesParam.append('orgId', sessionStorage.orgId);
+      filesParam.append('leaderName', sessionStorage.realName);
+      filesParam.append('userId', this.formData.userId);
+      filesParam.append('ifMyEntering', this.formData.ifMyEntering);
+      filesParam.append('userName', this.formData.userName);
+      filesParam.append('policeCode', this.formData.policeCode);
+      filesParam.append('leaderId', sessionStorage.userId);
+      filesParam.append('fileUrl', this.formData.fileUrl);
+      filesParam.append('orgName', this.formData.orgName);
+      filesParam.append('postName', this.formData.postName);
+      filesParam.append('riskContent', JSON.stringify(this.formData.riskContent));
       let res = null;
       if (this.formData.id) {
         res = await updateUserRisk(this.formData);
       } else {
-        res = await saveUserRisk(this.formData);
+        console.log('风险',this.formData)
+        res = await saveUserRisk(filesParam);
       }
 
       if (res && res.success === true) {
@@ -275,7 +314,7 @@ export default {
           type: "success",
           message: "保存成功"
         });
-        this.back();
+        _this.visible = false;
       } else {
         this.$message({
           type: "error",
@@ -283,8 +322,15 @@ export default {
         });
       }
     }
+  },
+  mounted() {
+    this.change();// 默认获取本部门
   }
 };
 </script>
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" >
+  .el-dialog__headerbtn .el-dialog__close {
+    display: none !important;
+}
+</style>

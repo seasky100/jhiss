@@ -519,11 +519,35 @@ export function saveElectronicResponsibility (params) {
     data: params
   })
 }
-// 查询电子责任书 
+// 根据父级id查询电子责任书 
 export function getElectronicResponsibilityById (params) {
   return request({
     url: DEFAULT_URL.Responsibility.getElectronicResponsibilityById,
     method: 'get',
     params
+  })
+}
+// 根据用户id查询电子责任书 
+export function findElectronicResponsibilityPage (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.findElectronicResponsibilityPage,
+    method: 'get',
+    params
+  })
+}
+// 查询电子签名
+export function getSignatureById (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.getSignatureById,
+    method: 'get',
+    params
+  })
+}
+// 修改电子责任书 
+export function updateElectronicResponsibility (params) {
+  return request({
+    url: DEFAULT_URL.Responsibility.updateElectronicResponsibility,
+    method: 'post',
+    data: params
   })
 }

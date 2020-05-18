@@ -464,7 +464,6 @@
     margin-top: 10px;
   }
   .m_right{
-    width: 10%;
     display: flex;
     margin-right: 10px;
   }
