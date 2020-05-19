@@ -67,6 +67,7 @@
 </template>
 <script>
 import { treeAndUser } from "@/api/report.js";
+import { getUserListByUserId } from "@/api/user-server.js";
 export default {
   name: "Departmental_level", //部门层级关系图
   data() {
@@ -82,16 +83,39 @@ export default {
       //
     };
   },
-  beforeCreate(){
-    let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-    if(permissionFlag){
-      this.$router.push({ path: "/Org_relationship" });
+  created(){
+    let permissionFlag = false
+    if(sessionStorage.leaderStr == null){
+      this.getLeaderList()
+    }else{
+      permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
+      if(permissionFlag){
+        this.$router.push({ path: "/Org_relationship" });
+      }
     }
+    
   },
   mounted() {
     this.init();
   },
   methods: {
+    // 局领导级别人员
+    getLeaderList(){
+      getUserListByUserId({
+        userId: '39411b303f3346c69c7a7c507a6d0afd',
+      }).then(res => {
+        let leaderStr = res.data.map(item => {
+          return item.id
+        })
+        leaderStr.unshift('39411b303f3346c69c7a7c507a6d0afd')
+        leaderStr = leaderStr.join(',')
+        window.sessionStorage.leaderStr = leaderStr
+        let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
+        if(permissionFlag){
+          this.$router.push({ path: "/Org_relationship" });
+        }
+      });
+    },
     returnClick() {
       this.$router.push({ path: "/Org_relationship" });
     },
