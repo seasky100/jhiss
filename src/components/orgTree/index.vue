@@ -4,7 +4,7 @@
       <div class="col-md-10 col-md-offset-1">
         <div class="text-center">
           <!-- :label-class-name="labelClassName" -->
-          <vue2-org-tree
+          <vue2-org-tree :key="tree_key"
             style="background:none;"
             name="test"
             :data="data"
@@ -56,6 +56,9 @@ export default {
     data() {
       this.isGotoPerson_info = false;
     },
+    permissionFlag(newVal,oldVal){
+      this.tree_key++
+    },
   },
   mounted(){
     this.permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
@@ -63,6 +66,7 @@ export default {
   data() {
     return {
       permissionFlag: false,
+      tree_key: 1,
       labelClassName: "",
       form: {
         name: "",
@@ -99,7 +103,7 @@ export default {
         );
       }
       let handleEvent = "";
-      if (data.id == JSON.parse(sessionStorage.userInfo).id) {
+      if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag) {
         handleEvent = () => this.nodePanelClick(data, "", "person_info");
       }
       // if(data.level == 0){
@@ -113,13 +117,18 @@ export default {
       if (data.level == 1) {
         // let img = this.getPersonImg(data.userInfo.userInfo||data.userInfo);
         if(this.model == 'dep'){
+          let flag = false
+          if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag) {
+            flag = true
+          }
           return (
             <div style="position:relative;width:120px;height:161px;">
             <div class="depLeader">
             {
               data.userList.map((item, index) => {
                 return(
-                  <div class={'user_panel level_one leaderCon depLeaderCon'}>
+                  <div class={'user_panel level_one leaderCon depLeaderCon'}
+                   onclick={flag ? () => this.nodePanelClick(item, "", "person_info") : ''}>
                     {this.getPersonImg(item.userInfo)}
                     <div class="panel_info">
                       <span style="line-height:20px;font-size:15px">
@@ -160,10 +169,9 @@ export default {
           (data.index % 11) +
           ".png");
         let depClass = this.model == 'dep' ? 'depClass' : ''
-        // console.log(this.permissionFlag)
         return (
           <div 
-            onclick={(handleEvent || this.permissionFlag) && this.model == 'dep' ? handleEvent : ""}
+            onclick={handleEvent && this.model == 'dep' ? handleEvent : ""}
             style={"background:url(" + img_bg + ") no-repeat"}
             class={'user_panel level_two ' + depClass}>
             {img}
@@ -206,7 +214,7 @@ export default {
           return (
             <div
               class="user_panel_dep"
-              onclick={handleEvent || this.permissionFlag ? handleEvent : ""}
+              onclick={handleEvent ? handleEvent : ""}
             >
               {img}
               <div
