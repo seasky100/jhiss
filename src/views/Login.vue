@@ -227,7 +227,7 @@ export default {
                       return false;
                     });
                     // 获取层级数据
-                    _this.AppComponent.getData()
+                    // _this.AppComponent.getData()
                 } else {
                   // this.loading = false
                   this.$message.error(res.message);

@@ -42,7 +42,8 @@
         </div>
         <div class="con orgTreeCon">
           <span class="top_title">层级关系</span>
-          <org-tree :data="tree_data" 
+          <org-tree style="overflow-x:auto;"
+            :data="tree_data" 
             :collapsable="false" 
             :model="model"
             :expandAll="true">
@@ -551,17 +552,84 @@ export default {
     },
     init() {
       let query = this.$route.query
-      // if(Object.prototype.toString.call(query.value) === '[object Object]'){
-      //   this.personInfo = query.value
-      //   window.sessionStorage.personInfo = JSON.stringify(query.value)
-      // }else{
-      //   query.value = JSON.parse(window.sessionStorage.personInfo)
-      //   this.personInfo = query.value
-      // }
-      query.value = JSON.parse(window.sessionStorage.personInfo)
-      this.personInfo = query.value
-      // this.labelList = [this.personInfo.orgName,this.personInfo.orgPname]
-      this.getData(query)
+      // query.value = JSON.parse(window.sessionStorage.personInfo)
+      // this.personInfo = query.value
+      if(Object.prototype.toString.call(query.value) === '[object Object]'){
+        this.personInfo = query.value
+        window.sessionStorage.personInfo = JSON.stringify(query.value)
+        this.getData(query)
+      }else{
+        // query.value = JSON.parse(window.sessionStorage.personInfo)
+        // this.personInfo = query.value
+        // console.log(this.personInfo)
+        this.init2()
+      }
+    },
+    init2(){
+      Promise.all([this.getUserListByUserId(),this.getPostUserInfo()]).then((res) => {
+        console.log(res, 'promise all 方法')
+        let children = res[0]
+        let posts = res[1]
+        let userPid = ''
+        if(posts.length > 0){
+          userPid = posts[0].userPid
+        }
+        let obj = {
+          id: sessionStorage.userId,
+          expand: true,
+          realName: sessionStorage.realName,
+          userInfo: JSON.parse(sessionStorage.userInfo),
+          children: children,
+          userPid: userPid
+        }
+        this.personInfo = obj
+        let query = {
+          value: obj
+        }
+        this.getData(query)
+      })
+    },
+    // 查询上级id getUserInfo(params).then(res => {
+    getPostUserInfo(){
+      return new Promise((resolve, reject) => {
+        getUserInfo({
+          userId: sessionStorage.userId
+        }).then( res => {
+          // console.log(res.data)
+          resolve(res.data.posts)
+        }).catch(err => {
+          reject()
+        });
+      });
+    },
+    // 下属信息
+    getUserListByUserId(){
+      // getUserListByUserId({
+      //   userId: sessionStorage.userId
+      // }).then( res => {
+      //   let obj = {
+      //     id: sessionStorage.userId,
+      //     expand: true,
+      //     realName: sessionStorage.realName,
+      //     userInfo: JSON.parse(sessionStorage.userInfo),
+      //     children: res.data
+      //   }
+      //   console.log(obj)
+      //   let query = {
+      //     value: obj
+      //   }
+      //   this.getData(query)
+      // })
+      return new Promise((resolve, reject) => {
+        getUserListByUserId({
+          userId: sessionStorage.userId
+        }).then( res => {
+          // console.log(res.data)
+          resolve(res.data)
+        }).catch(err => {
+          reject()
+        });
+      });
     },
     // 机构人员 下拉change事件
     orgChange(orgId) {
@@ -599,7 +667,6 @@ export default {
     //   })
     // },
     getUserListData(id) {
-      debugger
       const params = {
         userId: id
       }
@@ -656,6 +723,12 @@ export default {
         item.label = [item.orgName,item.orgPname]
         return item
       })
+      if(query.value.userPid == null || query.value.userPid == ''){
+        this.submenuList = [{name:'我的下属同事'}]
+        this.level = 3
+        this.org_level = 1 // 下级
+        this.active = 0
+      }
       const _this = this
       const params = {
         userId:query.value.userPid
@@ -665,7 +738,7 @@ export default {
           let post = res.data.posts
           let data=res.data
           this.leaderName = data.realName
-          // console.log(post)
+          console.log(data)
           if(post.length > 0 && post[0].userPname != null){
             let tree_obj={
               id: data.id,

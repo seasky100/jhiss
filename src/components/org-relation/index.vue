@@ -23,7 +23,8 @@
       class="label_body"><img  :src=" require('@/assets/images/dzzrs.png')"/>责任书
     </span>
       <div class="person_ul">
-        <span class="person_li" @click="handleClick(item3, item)"
+        <span class="person_li" @click="funcObj(item3, item)"
+          :style="[{'cursor': level == 1 ? 'pointer' : ''}]"
           v-for="(item3,index3) of projectList" :key="index3">
           <img class="menuImg" :title="item3.name" :src="item3.imgPath" />
           <!-- <span>{{item3.name}}</span> -->
@@ -51,7 +52,7 @@ export default {
   },
   data() {
     return {
-            funcObj: (item3, item) => {
+      funcObj: (item3, item) => {
         // console.log(this.level)
         if(this.level == 1){
           this.handleClick(item3, item)
@@ -140,7 +141,6 @@ export default {
         color #AB2C31
         font-size 16px
         margin-bottom 5px
-        cursor pointer
         span 
           display block
           font-size 13px
