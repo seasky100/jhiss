@@ -50,7 +50,7 @@
         </div>
       </div>
 			<!-- 领导属下信息 -->
-      <div class="fengxian" style="width:calc(99% - 460px);margin-left:0.7%;">
+      <div class="fengxian" style="width:calc(99% - 430px);margin-left:0.7%;">
         <div class="person_title">
           <div class="submenu" @click="subMenuClick(index)"
             :style="[{'border-bottom':active==index?'4px solid #235FF6':'none','color':active==index?'#235FF6':'#7F7E84'}]"
@@ -981,7 +981,7 @@ export default {
             message: '提交失败'
           })
         }
-        deptId: sessionStorage.orgId,
+        sessionStorage.orgId,
         this.form.ids = []
         this.form.lever = ''
       })

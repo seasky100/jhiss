@@ -71,10 +71,10 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
                     // 如果该字段存在返回的菜单权限数组
                     if (permValueArr.includes(item.meta.permValue)) {
                         i++
-                        item.hidden = false
+                        // item.hidden = false
                     } else {
                         hideMenuArr.push(item)
-                        item.hidden = true 
+                        // item.hidden = true 
                     }
                 } else {
                     if (!item.hidden) {
@@ -96,8 +96,9 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
                 tmp.hidden = false
             }
         }
-    })    
-    let permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
+    })
+    // console.log(sessionStorage.userId)
+    let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
     let arrRouters = collectRouters(res, permissionFlag)
     // console.log(arrRouters)
     // 整合后的

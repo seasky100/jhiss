@@ -11,6 +11,7 @@
 <script>
 import { treeAndUser } from "@/api/report.js";
 import { warnInfoUserStatistics } from "@/api/warn.js";
+import { getUserListByUserId } from "@/api/user-server.js";
 import { mapGetters } from 'vuex';
 import {mapState} from 'vuex'
 export default {
@@ -64,6 +65,7 @@ export default {
   },
   mounted() {
     // this.warnInfoUserStatistics()
+    this.getLeaderList()
     this.setTimer();
     // const token = sessionStorage.getItem('token')
     // console.log(window.location.href)   
@@ -85,6 +87,19 @@ export default {
     },
     onClick(){
       this.$router.push('/agency')
+    },
+    // 局领导级别人员
+    getLeaderList(){
+      getUserListByUserId({
+        userId: '39411b303f3346c69c7a7c507a6d0afd',
+      }).then(res => {
+        let leaderStr = res.data.map(item => {
+          return item.id
+        })
+        leaderStr.unshift('39411b303f3346c69c7a7c507a6d0afd')
+        leaderStr = leaderStr.join(',')
+        window.sessionStorage.leaderStr = leaderStr
+      });
     },
     // 预警人员数据
     warnInfoUserStatistics(){
