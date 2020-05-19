@@ -10,6 +10,15 @@ export function getHumanStatistics (params) {
   })
 }
 
+// 获取预警人员列表
+export function warnInfoUserStatistics (params) {
+  return request({
+    url: DEFAULT_URL.warn.warnInfoUserStatistics,
+    method: 'get',
+    params
+  })
+}
+
 // 预警处置情况统计x未反馈，已反馈，y轴对应次数
 export function getWarnStatusStatistics (params) {
   return request({

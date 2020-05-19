@@ -51,7 +51,8 @@ const DEFAULT_URL = {
     indexRecordDeatil: GAISMSERVER + 'warn/indexRecordDeatil', //
     //查询上班时间统计数据
     indexRecordCountDeatil: GAISMSERVER + 'warn/indexRecordCountDeatil', //
-    indexCalendar: GAISMSERVER + '/warn/indexCalendar' // 首页个人评分 部门评分
+    indexCalendar: `${GAISMSERVER}/warn/indexCalendar`, // 首页个人评分 部门评分
+    warnInfoUserStatistics: `${GAISMSERVER}/warn/warnInfoUserStatistics`, // 预警人员列表
   },
   // 廉政风险
   vacation: {

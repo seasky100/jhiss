@@ -10,6 +10,7 @@
 </template>
 <script>
 import { treeAndUser } from "@/api/report.js";
+import { warnInfoUserStatistics } from "@/api/warn.js";
 import { mapGetters } from 'vuex';
 import {mapState} from 'vuex'
 export default {
@@ -62,6 +63,7 @@ export default {
     }
   },
   mounted() {
+    // this.warnInfoUserStatistics()
     this.setTimer();
     // const token = sessionStorage.getItem('token')
     // console.log(window.location.href)   
@@ -84,9 +86,16 @@ export default {
     onClick(){
       this.$router.push('/agency')
     },
+    // 预警人员数据
+    warnInfoUserStatistics(){
+      warnInfoUserStatistics().then(res => {
+        console.log('预警列表', res)
+      });
+    },
     // 查询层级数据
     getData() {
       this.loading = true
+      // 层级数据
       treeAndUser().then(res => {
         let tree_data = res.data[0];
         tree_data.children = tree_data.childrens[0].userList;

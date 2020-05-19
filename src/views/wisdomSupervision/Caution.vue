@@ -229,7 +229,7 @@
 				userId: _this.userId
 			}
 			findExposurePage(params).then(res => {
-				console.log(res)
+				// console.log(res)
 				if (res.success) {
 					_this.listData = res.data.records
 				}
@@ -242,7 +242,7 @@
 				userId: _this.userId
 			}
 			findLearningStatus(params).then(res => {
-				console.log(res)
+				// console.log(res)
 				if (res.success) {
 					_this.totalData = res.data
 				}
