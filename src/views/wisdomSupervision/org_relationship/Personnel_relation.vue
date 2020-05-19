@@ -567,7 +567,7 @@ export default {
     },
     init2(){
       Promise.all([this.getUserListByUserId(),this.getPostUserInfo()]).then((res) => {
-        console.log(res, 'promise all 方法')
+        // console.log(res, 'promise all 方法')
         let children = res[0]
         let posts = res[1]
         let userPid = ''
@@ -738,7 +738,7 @@ export default {
           let post = res.data.posts
           let data=res.data
           this.leaderName = data.realName
-          console.log(data)
+          // console.log(data)
           if(post.length > 0 && post[0].userPname != null){
             let tree_obj={
               id: data.id,
