@@ -157,6 +157,14 @@ export default {
     getChildren(node, newchildren, t = 1) {
       let childrens = node.childrens || []; //当前岗位下的子节点
       let userList = node.userList; //当前岗位的用户节点
+      //进行节点数据的过滤，只取存在的人员并进行顺序调整。
+      const userIds=node.userIds;
+      userList.sort((a,b)=>{
+        var order=userIds.split(",");
+        return order.indexOf(a.id)-order.indexOf(b.id)
+      })
+      userList=userList.filter(item=>userIds.includes(item.id));
+      node.userList=userList;
       //把当前岗位的节点当作子节点
       for (var i = 0; i < userList.length; i++) {
         // userList[i].userPid = node.userPid;
