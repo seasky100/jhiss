@@ -158,9 +158,9 @@ export default {
           (data.index % 11) +
           ".png");
         let depClass = this.model == 'dep' ? 'depClass' : ''
+        // onclick={handleEvent ? handleEvent : ""}
         return (
-          <div 
-            onclick={handleEvent ? handleEvent : ""}
+          <div
             style={"background:url(" + img_bg + ") no-repeat"}
             class={'user_panel level_two ' + depClass}>
             {img}

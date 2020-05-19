@@ -50,9 +50,12 @@
         <input type="checkbox" v-model="horizontal" />水平排列
       </div>
       <span>岗位状态颜色说明：</span>
-      <li style="color:#1ACE80;">正常</li>
+      <!-- <li style="color:#1ACE80;">正常</li>
       <li style="color:#DABC85;">关注</li>
-      <li style="color:#AB2C31;">预警</li>
+      <li style="color:#AB2C31;">预警</li> -->
+      <li :style="[{color:item.color}]" v-for="(item,index) of explainList" :key="index+'_explain'">
+        {{item.label}}
+      </li>
     </div>
     <div class="relationship">
       <org-tree
@@ -79,17 +82,23 @@ export default {
       // 人员关系跳转地址
       path_url: "Personnel_relation",
       model: "dep",
-      timer: null
+      timer: null,
+      explainList: [
+        {label: '正常', color: '#A0C5A2', num: 0},
+        {label: '关注', color: '#FFAC42', num: 0},
+        {label: '预警', color: '#E85C43', num: 0},
+      ],
       //
     };
   },
   created(){
     let permissionFlag = false
+    console.log(sessionStorage.leaderStr)
     if(sessionStorage.leaderStr == null){
       this.getLeaderList()
     }else{
       permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-      if(permissionFlag){
+      if(permissionFlag && this.$route.query == null){
         this.$router.push({ path: "/Org_relationship" });
       }
     }
@@ -111,7 +120,7 @@ export default {
         leaderStr = leaderStr.join(',')
         window.sessionStorage.leaderStr = leaderStr
         let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-        if(permissionFlag){
+        if(permissionFlag && this.$route.query == null){
           this.$router.push({ path: "/Org_relationship" });
         }
       });
@@ -385,6 +394,7 @@ export default {
     width: 50px;
     float: left;
     margin-top: 5px;
+    font-weight: bold;
   }
 }
 

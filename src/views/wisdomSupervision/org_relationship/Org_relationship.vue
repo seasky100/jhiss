@@ -2,9 +2,12 @@
   <div class="Org_relationship">
     <div class="individual_title"></div>
     <div class="explain">
-      <li class="explain_li" style="color:#A0C5A2;"><span>正常</span></li>
-      <li class="explain_li" style="color:#FFAC42;"><span>关注</span></li>
-      <li class="explain_li" style="color:#E85C43;"><span>预警</span></li>
+      <li class="explain_li" v-for="(item, index) of explainList" :key="index"
+        :style="[{'color': item.color}]">
+        <span>{{item.label}}</span>
+      </li>
+      <!-- <li class="explain_li" style="color:#FFAC42;"><span>关注</span></li>
+      <li class="explain_li" style="color:#E85C43;"><span>预警</span></li> -->
     </div>
     <div class="relationship">
       <org-tree
@@ -22,6 +25,11 @@ export default {
   data() {
     return {
       tree_data: {},
+      explainList: [
+        {label: '正常', color: '#A0C5A2', num: 0},
+        {label: '关注', color: '#FFAC42', num: 0},
+        {label: '预警', color: '#E85C43', num: 0},
+      ],
       // 部门跳转地址
       path_url: 'Departmental_level',
       dep_list: [],
@@ -59,7 +67,7 @@ export default {
     },
     collectData(data) {
       let tree_data = JSON.parse(window.sessionStorage.tree_data);
-      console.log(tree_data)
+      // console.log(tree_data)
       tree_data.userInfo = tree_data.userList[0];
       tree_data.level = 1;
       tree_data.expand = true;
