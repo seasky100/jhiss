@@ -82,6 +82,12 @@ export default {
       //
     };
   },
+  created(){
+    let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
+    if(permissionFlag){
+      this.returnClick()
+    }
+  },
   mounted() {
     this.init();
   },

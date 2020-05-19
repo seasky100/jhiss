@@ -26,7 +26,7 @@ export default [
       },
       {
         title: '层级体系',
-        hidden: true,
+        hidden: false,
         meta: {
           permValue: 'ZHKQ',
           level: 2,

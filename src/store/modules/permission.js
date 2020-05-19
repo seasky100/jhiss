@@ -98,11 +98,12 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
         }
     })
     // console.log(sessionStorage.userId)
-    let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-    let arrRouters = collectRouters(res, permissionFlag)
+    // let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
+    // console.log(permissionFlag)
+    // let arrRouters = collectRouters(res, permissionFlag)
     // console.log(arrRouters)
     // 整合后的
-    return arrRouters
+    return res
 }
 
 // const state = {

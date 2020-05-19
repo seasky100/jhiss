@@ -728,37 +728,31 @@ export default {
         this.level = 3
         this.org_level = 1 // 下级
         this.active = 0
+        return
       }
       const _this = this
+      // console.log(query)
       const params = {
         userId:query.value.userPid
       }
       getUserInfo(params).then(res => {
         if (res.success == true) {
-          let post = res.data.posts
-          let data=res.data
+          // let post = res.data.posts
+          let data = res.data
           this.leaderName = data.realName
-          // console.log(data)
-          if(post.length > 0 && post[0].userPname != null){
-            let tree_obj={
-              id: data.id,
-              userInfo: data.userInfo,
-              realName:data.realName,
-              children:[_this.tree_data]
-            }
-            _this.tree_data = tree_obj
-            if(_this.level == 1){
-              _this.org_level = 0 // 上级
-              _this.person_data = [_this.tree_data]
-            }
-            // console.log(_this.tree_data)
-          }else{
-            // _this.submenuList = _this.submenuList.splice(1,1)
-            this.submenuList = [{name:'我的下属同事'}]
-            _this.level = 3
-            _this.org_level = 1 // 下级
-            this.active = 0
+          // console.log(post)
+          let tree_obj={
+            id: data.id,
+            userInfo: data.userInfo,
+            realName:data.realName,
+            children:[_this.tree_data]
           }
+          _this.tree_data = tree_obj
+          if(_this.level == 1){
+            _this.org_level = 0 // 上级
+            _this.person_data = [_this.tree_data]
+          }
+          // console.log(_this.tree_data)
         } else {
           console.log(res.message)
         }
@@ -1281,7 +1275,7 @@ input:-ms-input-placeholder{
   padding-left: 5px
 }
 .orgTreeCon{
-  height:200px;
+  height:calc(100% - 435px);
   position: relative;
   left: -10px;
   margin: 0px !important;
