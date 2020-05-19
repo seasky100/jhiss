@@ -94,7 +94,7 @@ export function updateWorkNote (params) {
     data: params
   })
 }
-// 工作日志添加
+// 工作日志新增
 export function saveWorkNote (params) {
   return request({
     url: DEFAULT_URL.post.saveWorkNote,
@@ -547,7 +547,7 @@ export function getSignatureById (params) {
 export function updateElectronicResponsibility (params) {
   return request({
     url: DEFAULT_URL.Responsibility.updateElectronicResponsibility,
-    method: 'post',
+    method: 'put',
     data: params
   })
 }

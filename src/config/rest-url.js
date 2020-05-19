@@ -150,9 +150,9 @@ const DEFAULT_URL = {
       findWorkEvaluatePage: `${GAISMSERVER}workNote/findWorkEvaluatePage`, // 查看评价分析数据
       workEvaluateStatistics: `${GAISMSERVER}workNote/workEvaluateStatistics`, // 工作评价按部门统计
       countWorkNoteByDay: `${GAISMSERVER}workNote/countWorkNoteByDay`, // 工作评价按月统计
-      updateWorkNote: `${GAISMSERVER}workNote/updateWorkNote`, // 工作评价按月统计
-      saveWorkNote: `${GAISMSERVER}workNote/saveWorkNote`, // 工作日志添加
       updateWorkNote: `${GAISMSERVER}workNote/updateWorkNote`, // 修改工作日志
+      saveWorkNote: `${GAISMSERVER}workNote/saveWorkNote`, // 修改工作日志
+      
     },
      // 个人风险管理
   userRisk: {
@@ -279,7 +279,7 @@ const DEFAULT_URL = {
   Responsibility:{
     saveElectronicResponsibility: `${GAISMSERVER}electronicResponsibility/saveElectronicResponsibility`, //新增电子责任书
     getElectronicResponsibilityById: `${GAISMSERVER}electronicResponsibility/getElectronicResponsibilityById`, //查询电子责任书 传父id
-    findElectronicResponsibilityPage: `${GAISMSERVER}electronicResponsibility/findElectronicResponsibilityPage`, //根据用户id查询电子责任书   
+    findElectronicResponsibilityPage: `${GAISMSERVER}electronicResponsibility/findElectronicResponsibilityPage`, //根据用户id查询电子责任书
     getSignatureById: `${GAISMSERVER}electronicResponsibility/getSignatureById`, //查询电子签名
     updateElectronicResponsibility: `${GAISMSERVER}electronicResponsibility/updateElectronicResponsibility`, //修改电子责任书
   }

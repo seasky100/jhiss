@@ -50,6 +50,7 @@ function collectRouters(routers, flag){
     })
     return arr
 }
+
 // 过滤路由
 function filterAsyncRoutes(constantRoutes, permValueArr) {
     // 存放最终菜单的数组
@@ -70,10 +71,10 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
                     // 如果该字段存在返回的菜单权限数组
                     if (permValueArr.includes(item.meta.permValue)) {
                         i++
-                        // item.hidden = false
+                        item.hidden = false
                     } else {
                         hideMenuArr.push(item)
-                        // item.hidden = true 
+                        item.hidden = true 
                     }
                 } else {
                     if (!item.hidden) {
@@ -95,7 +96,7 @@ function filterAsyncRoutes(constantRoutes, permValueArr) {
                 tmp.hidden = false
             }
         }
-    })
+    })    
     let permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
     let arrRouters = collectRouters(res, permissionFlag)
     // console.log(arrRouters)
