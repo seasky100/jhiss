@@ -58,9 +58,11 @@ export default {
     },
   },
   mounted(){
+    this.permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
   },
   data() {
     return {
+      permissionFlag: false,
       labelClassName: "",
       form: {
         name: "",
@@ -158,9 +160,10 @@ export default {
           (data.index % 11) +
           ".png");
         let depClass = this.model == 'dep' ? 'depClass' : ''
-        // onclick={handleEvent ? handleEvent : ""}
+        // console.log(this.permissionFlag)
         return (
-          <div
+          <div 
+            onclick={(handleEvent || this.permissionFlag) && this.model == 'dep' ? handleEvent : ""}
             style={"background:url(" + img_bg + ") no-repeat"}
             class={'user_panel level_two ' + depClass}>
             {img}
@@ -203,7 +206,7 @@ export default {
           return (
             <div
               class="user_panel_dep"
-              onclick={handleEvent ? handleEvent : ""}
+              onclick={handleEvent || this.permissionFlag ? handleEvent : ""}
             >
               {img}
               <div
