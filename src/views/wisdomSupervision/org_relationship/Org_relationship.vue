@@ -50,6 +50,7 @@ export default {
           })
         ).then((res) => {
           let tree_data = res.data[0];
+          console.log(res)
           tree_data.children = tree_data.childrens[0].userList;
           window.sessionStorage.tree_data = JSON.stringify(tree_data);
           this.collectData();
@@ -58,6 +59,7 @@ export default {
     },
     collectData(data) {
       let tree_data = JSON.parse(window.sessionStorage.tree_data);
+      console.log(tree_data)
       tree_data.userInfo = tree_data.userList[0];
       tree_data.level = 1;
       tree_data.expand = true;
@@ -69,6 +71,14 @@ export default {
     getDeptChidren(data) {
       let arr1 = data.children; //第二层的人员
       let arr2 = data.childrens[0].childrens; //第三次的人员
+      //对数据进行排序
+      const userIds=data.childrens[0].userIds;
+      arr1.sort((a,b)=>{
+        var order=userIds.split(",");
+        return order.indexOf(a.id)-order.indexOf(b.id)
+      })
+      arr1=arr1.filter(item=>userIds.includes(item.id));
+      data.children=arr1;
       for (let i = 0; i < arr1.length; i++) {
         //遍历第二次人员
         let obj = arr1[i];
