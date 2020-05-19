@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    this.warnInfoUserStatistics()
+    // this.warnInfoUserStatistics()
     this.getLeaderList()
     this.setTimer();
     // const token = sessionStorage.getItem('token')

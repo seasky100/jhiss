@@ -19,6 +19,15 @@ export function warnInfoUserStatistics (params) {
   })
 }
 
+// 部门预警数量
+export function warnInfoTypeStatisticsByDept (params) {
+  return request({
+    url: DEFAULT_URL.warn.warnInfoTypeStatisticsByDept,
+    method: 'get',
+    params
+  })
+}
+
 // 预警处置情况统计x未反馈，已反馈，y轴对应次数
 export function getWarnStatusStatistics (params) {
   return request({

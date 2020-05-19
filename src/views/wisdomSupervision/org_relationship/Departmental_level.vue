@@ -97,7 +97,7 @@ export default {
       this.getLeaderList()
     }else{
       permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-      if(permissionFlag){
+      if(permissionFlag && this.$route.query.id == null){
         this.$router.push({ path: "/Org_relationship" });
       }
     }
@@ -119,7 +119,7 @@ export default {
         leaderStr = leaderStr.join(',')
         window.sessionStorage.leaderStr = leaderStr
         let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-        if(permissionFlag){
+        if(permissionFlag && this.$route.query.id == null){
           this.$router.push({ path: "/Org_relationship" });
         }
       });
@@ -133,6 +133,7 @@ export default {
 
       if (window.sessionStorage.dep_list) {
         this.entranceList = JSON.parse(window.sessionStorage.dep_list);
+        console.log(this.entranceList)
         let n = 0;
         for (let i = 0; i < this.entranceList.length; i++) {
           let obj = this.entranceList[i];

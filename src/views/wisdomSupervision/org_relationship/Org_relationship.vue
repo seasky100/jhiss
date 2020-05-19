@@ -20,6 +20,7 @@
 </template>
 <script>
 import { treeAndUser } from '@/api/report.js';
+import { warnInfoTypeStatisticsByDept } from '@/api/warn.js'
 export default {
   name: 'Org_relationship',//全局层级关系图
   data() {
@@ -47,6 +48,15 @@ export default {
   methods: {
     init() {
       this.getData();
+      this.getWarmCount()
+    },
+    getWarmCount(){
+      // const param = {
+      //   deptId: ''
+      // }
+      warnInfoTypeStatisticsByDept().then((res) => {
+        console.log(res)
+      })
     },
     getData() {
       if (window.sessionStorage.tree_data) {
