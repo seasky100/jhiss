@@ -90,6 +90,7 @@ export default {
     },
     // 局领导级别人员
     getLeaderList(){
+      this.loading = true
       getUserListByUserId({
         userId: '39411b303f3346c69c7a7c507a6d0afd',
       }).then(res => {
@@ -99,6 +100,8 @@ export default {
         leaderStr.unshift('39411b303f3346c69c7a7c507a6d0afd')
         leaderStr = leaderStr.join(',')
         window.sessionStorage.leaderStr = leaderStr
+        // console.log(window.sessionStorage.leaderStr)
+        this.loading = false
       });
     },
     // 预警人员数据

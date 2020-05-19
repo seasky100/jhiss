@@ -82,10 +82,10 @@ export default {
       //
     };
   },
-  created(){
+  beforeCreate(){
     let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
     if(permissionFlag){
-      this.returnClick()
+      this.$router.push({ path: "/Org_relationship" });
     }
   },
   mounted() {
