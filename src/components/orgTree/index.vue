@@ -112,11 +112,12 @@ export default {
         // let img = this.getPersonImg(data.userInfo.userInfo||data.userInfo);
         if(this.model == 'dep'){
           return (
-            <div>
+            <div style="position:relative;width:120px;height:161px;">
+            <div class="depLeader">
             {
               data.userList.map((item, index) => {
                 return(
-                  <div class={'user_panel level_one leaderCon'}>
+                  <div class={'user_panel level_one leaderCon depLeaderCon'}>
                     {this.getPersonImg(item.userInfo)}
                     <div class="panel_info">
                       <span style="line-height:20px;font-size:15px">
@@ -131,6 +132,7 @@ export default {
                 )
               })
             }
+            </div>
             </div>
           );
         }else{
@@ -367,11 +369,19 @@ export default {
   height: 144px;
   background: url("../../assets/images/bg/person_leader.png") no-repeat;
   background-size: 100% 100%;
-  float: left;
-  margin: 0 5px;
 }
 .com.com.org_tree .depLeaderCon{
   width: 200px;
+  margin: 0 10px;
+}
+.com.com.org_tree .depLeader{
+  position:absolute;
+  /* left: -50%; */
+  left: 60px;
+  transform: translateX(-50%);
+  height:100%;
+  display: flex;
+  justify-content: space-around;
 }
 .com.com.org_tree .level_three {
   padding: 10px 0px;
