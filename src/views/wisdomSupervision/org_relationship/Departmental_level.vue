@@ -93,12 +93,11 @@ export default {
   },
   created(){
     let permissionFlag = false
-    console.log(sessionStorage.leaderStr)
     if(sessionStorage.leaderStr == null){
       this.getLeaderList()
     }else{
       permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-      if(permissionFlag && this.$route.query == null){
+      if(permissionFlag){
         this.$router.push({ path: "/Org_relationship" });
       }
     }
@@ -120,7 +119,7 @@ export default {
         leaderStr = leaderStr.join(',')
         window.sessionStorage.leaderStr = leaderStr
         let permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
-        if(permissionFlag && this.$route.query == null){
+        if(permissionFlag){
           this.$router.push({ path: "/Org_relationship" });
         }
       });
