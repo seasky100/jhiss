@@ -226,8 +226,6 @@ export default {
                       // this.loading = false
                       return false;
                     });
-                    // 获取层级数据
-                    // _this.AppComponent.getData()
                 } else {
                   // this.loading = false
                   this.$message.error(res.message);

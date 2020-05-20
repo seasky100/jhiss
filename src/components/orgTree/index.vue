@@ -27,6 +27,12 @@ export default {
     data: {
       type: Object
     },
+    warnList: {
+      type: Object,
+      default: () => {
+        return null
+      }
+    },
     horizontal: {
       type: Boolean,
       default: false
@@ -198,8 +204,9 @@ export default {
                 data.dep.map((item, index) => (
                   <div
                     onclick={() => this.nodePanelClick(data, item, "dep")}
-                    class="user_panel level_three three_hover"
+                    class={'user_panel level_three three_hover'}
                   >
+                    {this.warnStatusDep(item)}
                     <img
                       class="dep_img"
                       src={require("../../assets/images/bg/dep_bg.png")}
@@ -234,6 +241,19 @@ export default {
           </div>
         );
       }
+    },
+    warnStatusDep(value){
+      let img = ''
+      for(let key in this.warnList){
+        if(key == value.orgId){
+          if(this.warnList[key]['预警'] > 0){
+            img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
+          }else{
+            img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
+          }
+        }
+      }
+      return img
     },
     getPersonImg(userInfo) {
       let imgPath = myPhotoSrc(userInfo);
@@ -396,6 +416,7 @@ export default {
   justify-content: space-around;
 }
 .com.com.org_tree .level_three {
+  position: relative;
   padding: 10px 0px;
   margin-bottom: 10px;
   /* background: url('../../assets/images/bg/dep_bg.png') no-repeat;
@@ -407,6 +428,11 @@ export default {
 }
 .com.com.org_tree .three_hover:hover {
   border: 2px solid #bf1730;
+}
+.com.com.org_tree .warnStatus{
+  position: absolute;
+  top: -7px;
+  right: -7px;
 }
 .com.com.org_tree .user_panel .panel_info {
   color: #fff;

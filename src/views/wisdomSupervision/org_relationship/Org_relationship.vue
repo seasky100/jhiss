@@ -13,6 +13,7 @@
     <div class="relationship">
       <org-tree
         :data="tree_data"
+        :warnList="warnList"
         :path_url="path_url"
         :dep_list="dep_list"
       ></org-tree>
@@ -27,6 +28,7 @@ export default {
   data() {
     return {
       tree_data: {},
+      warnList: null,
       explainList: [
         {label: '正常', color: '#A0C5A2', num: 0},
         {label: '关注', color: '#FFAC42', num: 0},
@@ -48,8 +50,8 @@ export default {
   },
   methods: {
     init() {
-      this.getData();
       this.getWarmCount()
+      this.getData();
     },
     getWarmCount(){
       warnInfoCountByType().then((res) => {
@@ -57,6 +59,7 @@ export default {
         let data = res.data
         let num1 = 0
         let num2 = 0
+        this.warnList = data
         for(let key in data){
           num1 += data[key]['关注']
           num2 += data[key]['预警']
