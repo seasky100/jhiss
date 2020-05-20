@@ -281,7 +281,8 @@ export default {
         query.value = data;
       } else {
         // 跳转层级部门
-        query.id = valueObj.id;
+        // query.id = valueObj.id;
+        query.id = valueObj.orgId;
       }
 
       this.$router.push({ path: this.path_url, query });

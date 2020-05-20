@@ -19,10 +19,10 @@ export function warnInfoUserStatistics (params) {
   })
 }
 
-// 部门预警数量
-export function warnInfoTypeStatisticsByDept (params) {
+// 部门预警数量 GET /warn/warnInfoCountByType
+export function warnInfoCountByType (params) {
   return request({
-    url: DEFAULT_URL.warn.warnInfoTypeStatisticsByDept,
+    url: DEFAULT_URL.warn.warnInfoCountByType,
     method: 'get',
     params
   })

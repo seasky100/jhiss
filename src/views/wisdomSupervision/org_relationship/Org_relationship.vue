@@ -4,7 +4,8 @@
     <div class="explain">
       <li class="explain_li" v-for="(item, index) of explainList" :key="index"
         :style="[{'color': item.color}]">
-        <span>{{item.label}}</span>
+        <span style="margin-right:5px;">{{item.label}}</span>
+        <span v-if="index > 0" style="font-weight:bold;">{{item.num}}</span>
       </li>
       <!-- <li class="explain_li" style="color:#FFAC42;"><span>关注</span></li>
       <li class="explain_li" style="color:#E85C43;"><span>预警</span></li> -->
@@ -20,7 +21,7 @@
 </template>
 <script>
 import { treeAndUser } from '@/api/report.js';
-import { warnInfoTypeStatisticsByDept } from '@/api/warn.js'
+import { warnInfoCountByType } from '@/api/warn.js'
 export default {
   name: 'Org_relationship',//全局层级关系图
   data() {
@@ -51,11 +52,18 @@ export default {
       this.getWarmCount()
     },
     getWarmCount(){
-      // const param = {
-      //   deptId: ''
-      // }
-      warnInfoTypeStatisticsByDept().then((res) => {
-        console.log(res)
+      warnInfoCountByType().then((res) => {
+        // console.log(res.data)
+        let data = res.data
+        let num1 = 0
+        let num2 = 0
+        for(let key in data){
+          num1 += data[key]['关注']
+          num2 += data[key]['预警']
+        }
+        // console.log(num1, num2)
+        this.explainList[1].num = num1
+        this.explainList[2].num = num2
       })
     },
     getData() {
