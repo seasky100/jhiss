@@ -19,7 +19,7 @@
           class="entrance"
           @click="handleClickDep(item)"
           :style="[
-            { border: active == item.id ? '3px solid #bf1730' : 'none' },
+            { border: active == item.orgId ? '3px solid #bf1730' : 'none' },
           ]"
           v-for="(item, index) of entranceList"
           :key="index"
@@ -49,12 +49,13 @@
         排列方式：
         <input type="checkbox" v-model="horizontal" />水平排列
       </div>
-      <span>岗位状态颜色说明：</span>
+      <span style="display:block;">岗位状态颜色说明：</span>
       <!-- <li style="color:#1ACE80;">正常</li>
       <li style="color:#DABC85;">关注</li>
       <li style="color:#AB2C31;">预警</li> -->
       <li :style="[{color:item.color}]" v-for="(item,index) of explainList" :key="index+'_explain'">
-        {{item.label}}
+        <span style="margin-right:5px;">{{item.label}}</span>
+        <span v-if="index > 0" style="font-weight:bold;">{{item.num}}</span>
       </li>
     </div>
     <div class="relationship">
@@ -70,6 +71,7 @@
 </template>
 <script>
 import { treeAndUser } from "@/api/report.js";
+import { warnInfoCountByType } from '@/api/warn.js'
 import { getUserListByUserId } from "@/api/user-server.js";
 export default {
   name: "Departmental_level", //部门层级关系图
@@ -91,6 +93,11 @@ export default {
       //
     };
   },
+  watch: {
+    active(newVal, oldVal){
+      this.getWarmCount()
+    },
+  },
   created(){
     let permissionFlag = false
     if(sessionStorage.leaderStr == null){
@@ -107,6 +114,23 @@ export default {
     this.init();
   },
   methods: {
+    // 查询预警数量
+    getWarmCount(){
+      const param = {
+        deptId: this.active
+      }
+      warnInfoCountByType(param).then((res) => {
+        let data = res.data
+        let num1 = 0
+        let num2 = 0
+        for(let key in data){
+          num1 += data[key]['关注']
+          num2 += data[key]['预警']
+        }
+        this.explainList[1].num = num1
+        this.explainList[2].num = num2
+      })
+    },
     // 局领导级别人员
     getLeaderList(){
       getUserListByUserId({
@@ -129,14 +153,16 @@ export default {
     },
     init() {
       let query = this.$route.query;
-      this.active = (query && query.id) || sessionStorage.orgId;
-
+      this.active = (query && query.id) || sessionStorage.depId;
       if (window.sessionStorage.dep_list) {
         this.entranceList = JSON.parse(window.sessionStorage.dep_list);
-        console.log(this.entranceList)
+        // console.log(this.entranceList)
         let n = 0;
         for (let i = 0; i < this.entranceList.length; i++) {
           let obj = this.entranceList[i];
+          // if(obj.id == '831' || obj.orgId == '831'){
+          //   console.log('存在部门中')
+          // }
           if (obj.id == this.active || obj.orgId == this.active) {
             n = i;
             this.getTreeData(obj);
@@ -225,7 +251,8 @@ export default {
       this.timer = null;
     },
     getTreeData(value) {
-      this.active = value.id;
+      // this.active = value.id;
+      this.active = value.orgId;
       let tree_data = {
         children: [],
         realName: value.userList[0].realName,
@@ -260,6 +287,7 @@ export default {
       // console.log(tree_data)
     },
     handleClickDep(value) {
+      // console.log(value)
       this.$router.push({
         path: "/Departmental_level",
         query: { id: value.id }
@@ -395,11 +423,11 @@ export default {
   z-index: 3;
 
   span {
-    display: block;
+    display: inline-block;
   }
 
   li {
-    width: 50px;
+    width: 100%;
     float: left;
     margin-top: 5px;
     font-weight: bold;

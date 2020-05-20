@@ -190,10 +190,10 @@ export default {
                 const _this = this;
                 // console.log(res)
                 if (res.data && res.success === true) {
-                  _this.$message({
-                    type: "success",
-                    message: "登录成功"
-                  });
+                  // _this.$message({
+                  //   type: "success",
+                  //   message: "登录成功"
+                  // });
                   const parameter = {
                     token: res.data.gmsso_cli_ec_key,
                     appKey: "JHGA"

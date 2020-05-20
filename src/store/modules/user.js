@@ -62,6 +62,10 @@ const mutations = {
     SETORGDATA: (state, data) => {
         state.orgData = data
         sessionStorage.setItem('orgData', JSON.stringify(data))
+    },
+    SETDEPID: (state, data) => {
+        state.depId = data
+        sessionStorage.setItem('depId', data)
     }
 }
 
@@ -92,6 +96,12 @@ const actions = {
                         permValueArr.push(item.permValue)
                     }
                 })
+                let orgTree = JSON.parse(sessionStorage.orgData)[0].childrens
+                let orgId = res.data.organizations[0].id
+                const orgIdData = filterData(orgTree, orgId)
+                if(orgIdData.length > 0){
+                    commit('SETDEPID', orgIdData[0].id)
+                }
                 commit('SET_REALNAME', res.data.realName)
                 commit('SET_LOGINNAME', res.data.loginName)
                 commit('SET_PERMISSIONS', permValueArr)
@@ -118,12 +128,29 @@ const actions = {
         getOrganization().then(res => {
             if (res && res.success) {
                 const { data } = res
+                                // let orgTree = data[0].childrens
+                // let orgId = sessionStorage.orgId
+                // const orgIdData = filterData(orgTree, orgId)
+                // if(orgIdData.length > 0){
+                //     commit('SETDEPID', orgIdData[0].id)
+                // }
                 commit('SETORGDATA', data)
             }
         })
     }
 }
-
+function filterData(treeData, id) {
+    return treeData.filter(item => {
+        // return item.id == id
+        return JSON.stringify(item).includes(id)
+    }).map(item => {
+        item = Object.assign({}, item)
+        if (item.childrens) {
+            item.childrens = filterData(item.childrens, id)
+        }
+        return item
+    })
+}
 export default {
     namespaced: true,
     state,

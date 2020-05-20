@@ -53,7 +53,7 @@ const DEFAULT_URL = {
     indexRecordCountDeatil: GAISMSERVER + 'warn/indexRecordCountDeatil', //
     indexCalendar: `${GAISMSERVER}/warn/indexCalendar`, // 首页个人评分 部门评分
     warnInfoUserStatistics: `${GAISMSERVER}/warn/warnInfoUserStatistics`, // 预警人员列表
-    warnInfoTypeStatisticsByDept: `${GAISMSERVER}/warn/warnInfoTypeStatisticsByDept`, // 预警数量
+    warnInfoCountByType: `${GAISMSERVER}/warn/warnInfoCountByType`, // 预警数量
   },
   // 廉政风险
   vacation: {
