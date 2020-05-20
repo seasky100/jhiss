@@ -63,45 +63,41 @@
           <img class="photo_img" style="width: 99%;height:100%;" src="@/assets/images/banner.png" />
         </div>
         <div class="rc_content" ref="rc_content">
-          <!-- <vue-drag-resize :w="200" :h="200"></vue-drag-resize> -->
           <!-- 左侧 -->
           <div class="rc_left">
             <!-- 新增日志 -->
             <!-- @activated="onActivated" -->
-            <vue-drag-resize
-              style="position:relative;max-height:400px;top:0;left:0;"
-              :min-width="700"
-              :w="vw"
-              :h="vh"
-              @resizing="onResize"
-            >
-              <div class="rc_tap" @click="onActivated" :style="{width: + vw+ 'px',height:+vh+'px'}">
-                <div style="margin:10px;background:#fff;border-radius: 5px;    padding: 0 5px;">
-                  <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="工作日志" name="first">
+            <div class="rc_tap" :style="{width: + vw+ 'px'}">
+              <div style="margin:10px;background:#fff;border-radius: 5px; padding: 0 5px;">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                  <el-tab-pane label="工作日志" name="first">
+                    <div style="margin-top:5px">
                       <el-input
-                        ref="textarea"
                         type="textarea"
-                        :autosize="{ minRows: 2, maxRows: 4}"
+                        minlength="5"
+                        show-word-limit
+                        :autosize="{ minRows: 3}"
                         placeholder="发布一条日志。。。"
-                        v-model="textarea"
+                        v-model="newWContent"
+                        clearable
+                        resize="none"
                       ></el-input>
                       <div style="position:absolute;right:0;top:10px">
                         <el-button type="small" class="r_send" @click="saveWorkNoteClick">发布</el-button>
                       </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="季度业绩" name="second">审批审核</el-tab-pane>
-                    <el-tab-pane label="个人申请" name="third">会议记录</el-tab-pane>
-                    <el-tab-pane label="我的信息" name="fourth">党建工作</el-tab-pane>
-                    <!-- <el-tab-pane label="谈心谈话" name="five">谈心谈话</el-tab-pane> -->
-                    <!-- <el-tab-pane label="上门家访" name="six">上门家访</el-tab-pane> -->
-                  </el-tabs>
-                  <div style="position: absolute;top: 20px;right: 18px;">
-                    <a class="rc_btn">加班申请</a>
-                  </div>
-                </div>
+                    </div>
+                    <div>
+                      <a class="rc_btn">加班申请</a>
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="季度业绩" name="second">季度业绩</el-tab-pane>
+                  <el-tab-pane label="个人申请" name="third">个人申请</el-tab-pane>
+                  <el-tab-pane label="我的信息" name="fourth">我的信息</el-tab-pane>
+                  <!-- <el-tab-pane label="谈心谈话" name="five">谈心谈话</el-tab-pane> -->
+                  <!-- <el-tab-pane label="上门家访" name="six">上门家访</el-tab-pane> -->
+                </el-tabs>
               </div>
-            </vue-drag-resize>
+            </div>
             <!-- 日志内容 -->
             <div class="rc_tap" :style="{width: + vw+ 'px',height:+vh2+'px'}">
               <div style="margin:10px;">
@@ -151,20 +147,7 @@
                               <div v-else class="c_introduce">未填写</div>
                             </div>
                             <!-- 未阅 -->
-                            <div class="e_center" v-if="item2.status == '否'">
-                              <div style="margin-left:20px;position:relative">
-                                <el-input
-                                  type="textarea"
-                                  placeholder="请输入批阅内容"
-                                  v-model="item2.comment2"
-                                ></el-input>
-                                <div style="position:absolute; right: 25px;top: 15px;">
-                                  <a @click="updateWorkNoteClick(item2)" class="rc_btn">审阅</a>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- 已阅 -->
-                            <div class="e_center" v-else>
+                            <div class="e_center" v-if="item2.status == '是'">
                               <div class="c_introduce">
                                 <span style="display:block;">审阅时间：{{item2.remarkTime}}</span>
                                 {{item2.comment}}
@@ -177,6 +160,20 @@
                                     src="@/assets/images/yszg/edit.png"
                                   />
                                 </a>
+                              </div>
+                            </div>
+                            <!-- 已阅 -->
+                            <div class="e_center" v-else>
+                              <div style="margin-left:20px;position:relative">
+                                <el-input
+                                  type="textarea"
+                                  placeholder="请输入批阅内容"
+                                  v-model="item2.comment2"
+                                  resize="none"
+                                ></el-input>
+                                <div style="position:absolute; right: 25px;top: 15px;">
+                                  <a @click="updateWorkNoteClick(item2)" class="rc_btn">审阅</a>
+                                </div>
                               </div>
                             </div>
                           </el-card>
@@ -287,9 +284,7 @@
             </div>
             <div class="overtime">
               <div class="c_type">
-                <div
-                  style="margin-left: 15px;font-weight: 600;padding-top: 5px;"
-                >日常考核</div>
+                <div style="margin-left: 15px;font-weight: 600;padding-top: 5px;">日常考核</div>
                 <div style="height: 150px;width: 100%">
                   <div id="hline" class="hline"></div>
                 </div>
@@ -302,8 +297,7 @@
   </div>
 </template>
 <script>
-import VueDragResize from "vue-drag-resize"; //缩放、拖拽
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import {
   findWorknotePage,
   updateWorkNote,
@@ -314,7 +308,6 @@ import {
 export default {
   name: "Refinement",
   components: {
-    VueDragResize
   },
   props: {
     navMenus: {}
@@ -338,6 +331,7 @@ export default {
         // {label: '领导互评', name: '', data: [{name:''}]},
       ],
       recordsList: [],
+      newWContent: "",
       textarea: "",
       activeName: "first",
       activeName1: "0_tabs",
@@ -375,8 +369,8 @@ export default {
           _this.vw = element.offsetWidth * 0.7;
           _this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 10;
           let dom = $(".r_content .el-tabs__content");
-          dom[0].style.height = this.vh - 70 + "px";
-          dom[1].style.height = this.vh2 - 70 + "px";
+          // dom[0].style.height = this.vh - 70 + "px";
+          // dom[1].style.height = this.vh2 - 70 + "px";
         });
       });
     },
@@ -392,8 +386,8 @@ export default {
       }
       this.vh2 = this.$refs.rc_content.offsetHeight - this.vh - 10;
       let dom = $(".r_content .el-tabs__content");
-      dom[0].style.height = this.vh - 70 + "px";
-      dom[1].style.height = this.vh2 - 70 + "px";
+      // dom[0].style.height = this.vh - 70 + "px";
+      // dom[1].style.height = this.vh2 - 70 + "px";
       this.x = 0;
       this.y = 0;
     },
@@ -407,14 +401,32 @@ export default {
       );
     },
     saveWorkNoteClick() {
-      const _this = this;
-      console.log("添加", this.textarea);
-      // saveWorkNote
+      const userInfo = JSON.parse(window.sessionStorage.userInfo);
+      saveWorkNote(
+        Object.assign({
+          // comment: "string",//批阅
+          content: this.newWContent,
+          deptId: window.sessionStorage.orgId,
+          deptName: window.sessionStorage.orgName,
+          noteDate: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+          noteScore: 10,
+          userCreate: window.sessionStorage.userId, //创建人id
+          userId: userInfo.info, //精细化id
+          userName: window.sessionStorage.realName //用户名中文
+        })
+      ).then(res => {
+        if (res.success) {
+          this.newWContent = "";
+          console.log("发布成功");
+          this.query();
+        }
+      });
     },
     //编辑审阅信息
     updateWorkRemark() {},
     //更新日志
     updateWorkNoteClick(data) {
+      const userInfo = JSON.parse(window.sessionStorage.userInfo);
       const _this = this;
       const date1 = new Date(data.noteDate);
       const date2 = new Date();
@@ -431,8 +443,7 @@ export default {
           id: data.id,
           comment: `审阅人：${this.$store.state.user.realName}    审阅内容：${data.comment2}`,
           remarkTime: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
-          userModified: this.$store.state.user.userInfo.info,
-          leaderId: this.$store.state.user.userInfo.info
+          leaderId: userInfo.info
         })
       ).then(res => {
         if (res.success) {
@@ -466,7 +477,6 @@ export default {
             // staffed: this.userIds,
             orderByField: "noteDate",
             orderFlag: false
-            // userId: JSON.parse(sessionStorage.userInfo).id
           },
           _this.searchData[index]
         )
@@ -568,7 +578,6 @@ export default {
       this.query(1, tab.index);
     },
     getRadar2() {
-      var colors = ["#5793f3", "#d14a61", "#675bba"];
 
       let radarDom2 = this.$echarts.init(document.getElementById("hline"));
       var colors = ["#8ec6ad", "#947DFF", "#386db3"];
@@ -707,7 +716,6 @@ export default {
   .r_content {
     width: 100%;
     height: 100%;
-    overflow: hidden;
     /* display: flex; */
   }
 
@@ -717,26 +725,6 @@ export default {
 
   .r_content >>> .el-calendar__header {
     margin-bottom: 5px;
-  }
-
-  .r_content >>> .el-tabs__content {
-    overflow: auto;
-  }
-
-  .r_content >>> .vdr-stick {
-    background: none;
-    border: none;
-    box-shadow: none;
-  }
-
-  .r_content >>> .vdr-stick-bm {
-    width: 100% !important;
-    bottom: 0 !important;
-    height: 0 !important;
-    margin-left: 0 !important;
-    position: absolute;
-    left: 0;
-    border: 0.5px solid red;
   }
 
   .r_list {
@@ -758,7 +746,6 @@ export default {
   }
 
   .rc_content {
-    height: calc(90% - 20px);
     display: flex;
     margin-top: 10px;
   }
@@ -835,7 +822,6 @@ export default {
     position: relative;
     height: auto;
     width: calc(100% - 20px);
-    margin-bottom: 10px;
     float: left;
   }
 
