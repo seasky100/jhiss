@@ -119,9 +119,7 @@ export default {
       const param = {
         deptId: this.active
       }
-      // console.log(this.active)
       warnInfoCountByType(param).then((res) => {
-        // console.log(res.data)
         let data = res.data
         let num1 = 0
         let num2 = 0
@@ -129,7 +127,6 @@ export default {
           num1 += data[key]['关注']
           num2 += data[key]['预警']
         }
-        // console.log(num1, num2)
         this.explainList[1].num = num1
         this.explainList[2].num = num2
       })
@@ -156,7 +153,7 @@ export default {
     },
     init() {
       let query = this.$route.query;
-      this.active = (query && query.id) || sessionStorage.orgId;
+      this.active = (query && query.id) || sessionStorage.depId;
       if (window.sessionStorage.dep_list) {
         this.entranceList = JSON.parse(window.sessionStorage.dep_list);
         // console.log(this.entranceList)

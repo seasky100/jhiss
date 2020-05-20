@@ -19,37 +19,37 @@ import store from '../index.js'
 //     })
 //     return permArr
 // }
-function collectRouters(routers, flag){
-    let arr = []
-    routers.forEach(route =>{
-        if (route.meta && route.meta.level) {
-            let meta = route.meta
-            if(flag){
-                if(meta.level == 1){
-                    route.hidden = false
-                }
-                if(meta.level == 2){
-                    route.hidden = true
-                }
-            }else{
-                if(meta.level == 1){
-                    route.hidden = true
-                }
-                if(meta.level == 2){
-                    route.hidden = false
-                }
-            }
-            // console.log(route)
-            arr.push(route)
-        } else{
-            arr.push(route)
-        }
-        if(route.children && route.children.length > 0){
-            collectRouters(route.children, flag)
-        }
-    })
-    return arr
-}
+// function collectRouters(routers, flag){
+//     let arr = []
+//     routers.forEach(route =>{
+//         if (route.meta && route.meta.level) {
+//             let meta = route.meta
+//             if(flag){
+//                 if(meta.level == 1){
+//                     route.hidden = false
+//                 }
+//                 if(meta.level == 2){
+//                     route.hidden = true
+//                 }
+//             }else{
+//                 if(meta.level == 1){
+//                     route.hidden = true
+//                 }
+//                 if(meta.level == 2){
+//                     route.hidden = false
+//                 }
+//             }
+//             // console.log(route)
+//             arr.push(route)
+//         } else{
+//             arr.push(route)
+//         }
+//         if(route.children && route.children.length > 0){
+//             collectRouters(route.children, flag)
+//         }
+//     })
+//     return arr
+// }
 
 // 过滤路由
 function filterAsyncRoutes(constantRoutes, permValueArr) {
