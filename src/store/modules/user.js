@@ -57,7 +57,11 @@ const mutations = {
         sessionStorage.setItem('userInfo', userInfo)
     },
     CLEAR_SESSION: (state) => {
+        let orgData = sessionStorage.orgData
+        let leaderStr = sessionStorage.leaderStr
         sessionStorage.clear()
+        sessionStorage.setItem('orgData', orgData)
+        sessionStorage.setItem('leaderStr', leaderStr)
     },
     SETORGDATA: (state, data) => {
         state.orgData = data

@@ -134,10 +134,11 @@ export default {
             <div class="depLeader">
             {
               data.userList.map((item, index) => {
+                let img = this.getUserWarn(item.userInfo)
                 return(
                   <div class={'user_panel level_one leaderCon depLeaderCon'}
                    onclick={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag ? () => this.nodePanelClick(item, "", "person_info") : ''}>
-                    {this.getUserWarn(item.userInfo)}
+                    {img}
                     {this.getPersonImg(item.userInfo)}
                     <div class="panel_info">
                       <span style="line-height:20px;font-size:15px">
@@ -281,30 +282,37 @@ export default {
       //   }
       // })
 
-      // let img = ''
-      // console.log(userInfo)
-      // warnInfoTypeByUserId({
-      //   userId: userInfo.id
-      // }).then(res => {
-      //   console.log(res.data)
-      //   if(res.data.includes('关注')){
-      //     return (<img class="warnStatus" src={require("../../assets/images/careful.png")} />)
-      //   }else if(res.data.includes('预警')){
-      //     return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
-      //   }
-      // })
-      // return img
-      this.getData(userInfo, (data) => {
-        console.log(data)
-        return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
+      let img = ''
+      warnInfoTypeByUserId({
+        userId: userInfo.id
+      }).then(res => {
+        console.log(res.data)
+        if(res.data.includes('关注')){
+          img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
+          // return (<img class="warnStatus" src={require("../../assets/images/careful.png")} />)
+        }else if(res.data.includes('预警')){
+          img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
+          // return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
+        }
       })
+      return img
+      // this.getData(userInfo, (data) => {
+      //   console.log(data)
+      //   return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
+      // })
     },
     async getData(userInfo, callback){
       await warnInfoTypeByUserId({
         userId: userInfo.id
       }).then(res => {
         // console.log(res.data)
-        callback(res.data)
+        let img = ''
+        if(res.data.includes('关注')){
+          img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
+        }else if(res.data.includes('预警')){
+          img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
+        }
+        callback(img)
       })
     },
     getPersonImg(userInfo) {
