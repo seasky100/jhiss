@@ -56,6 +56,10 @@ const mutations = {
         state.userInfo = userInfo
         sessionStorage.setItem('userInfo', userInfo)
     },
+    SET_USERPID: (state, userPid) => {
+        state.userPid = userPid
+        sessionStorage.setItem('userPid', userPid)
+    },
     CLEAR_SESSION: (state) => {
         let orgData = sessionStorage.orgData
         let leaderStr = sessionStorage.leaderStr
@@ -120,6 +124,7 @@ const actions = {
                 commit('SET_ORGNAME', res.data.organizations[0].name)
                 commit('SET_ORGCODE', res.data.orgCode)
                 commit('SET_USERINFO', JSON.stringify(res.data.userInfo))
+                commit('SET_USERPID', res.data.posts[0].userPid)
                 resolve()
             }).catch(error => {
                 reject(error)

@@ -74,7 +74,7 @@
     
     <script>
 import { format } from "date-fns";
-
+import { responseAuditWarning } from '@/api/warn.js'
 export default {
   props: {
     title: {
@@ -100,13 +100,40 @@ export default {
       this.visible = true;
       if(option.userId == sessionStorage.userId && (!option.content)){
         option.is_self = true
+      }else{
+        option.is_leader = true
       }
       // console.log("用户信息", option)
       this.detailInfo = option
     },
     handleSubmit(){
-      // GET /warn/responseAuditWarning
-      console.log('提交', this.detailInfo)
+      let role = 1
+      let leaderId = ''
+      if(this.detailInfo.userId.includes(sessionStorage.userId)){
+        role = 1
+        leaderId = sessionStorage.userPid
+      }else{
+        role = 2
+        leaderId = sessionStorage.userId
+      }
+      const params = {
+        userId: sessionStorage.userId,
+        warnId: this.detailInfo.id,
+        leaderId: leaderId,
+        role: role,
+        content: this.detailInfo.content,
+        leaderAdvice: '', // 领导意见
+        branchAdvice: '', // 部门意见
+      }
+      console.log('提交', params)
+      responseAuditWarning(params).then(res => {
+        let option = res.data
+        if(option.userId == sessionStorage.userId && (!option.content)){
+          option.is_self = true
+        }
+        this.detailInfo = option
+      })
+      
     },
   }
 };
