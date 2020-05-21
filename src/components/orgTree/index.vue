@@ -66,13 +66,22 @@ export default {
     permissionFlag(newVal,oldVal){
       this.tree_key++
     },
+    permissionFlag2(newVal,oldVal){
+      this.tree_key++
+    },
+  },
+  created(){
+    // 判断是否为董旭斌
+    this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
+    // 判断是否为部门领导
+    this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
   },
   mounted(){
-    this.permissionFlag = sessionStorage.leaderStr.includes(sessionStorage.userId)
   },
   data() {
     return {
       permissionFlag: false,
+      permissionFlag2: false,
       tree_key: 1,
       labelClassName: "",
       form: {
@@ -95,6 +104,8 @@ export default {
   },
   methods: {
     renderContent(h, data) {
+      this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
+      this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
       //个人工作台界面
       if (this.model == "person_info") {
         return (
@@ -110,7 +121,7 @@ export default {
         );
       }
       let handleEvent = "";
-      if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag) {
+      if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2) {
         handleEvent = () => this.nodePanelClick(data, "", "person_info");
       }
       // if(data.level == 0){
@@ -137,13 +148,13 @@ export default {
                 let img = this.getUserWarn(item.userInfo)
                 return(
                   <div class={'user_panel level_one leaderCon depLeaderCon'}
-                   onclick={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag ? () => this.nodePanelClick(item, "", "person_info") : ''}>
+                   onclick={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 ? () => this.nodePanelClick(item, "", "person_info") : ''}>
                     {img}
                     {this.getPersonImg(item.userInfo)}
                     <div class="panel_info">
                       <span style="line-height:20px;font-size:15px">
                         <img src={require("../../assets/images/dangyuan.png")} />
-                        <span class={item.id == JSON.parse(sessionStorage.userInfo).id ? "current_user" : ""}>
+                        <span class={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 ? "current_user" : ""}>
                           {item.realName || item.userInfo.realName}
                         </span>
                       </span>
@@ -159,7 +170,7 @@ export default {
             </div>
           );
         }else{
-          let img = this.getPersonImg(data.userInfo);
+          let img = this.getPersonImg(data.userInfo.fileId?data.userInfo:data.userInfo.userInfo);
           return (
             <div class={'user_panel level_one leaderCon'}>
               {img}
@@ -364,7 +375,6 @@ export default {
         // query.id = valueObj.id;
         query.id = valueObj.orgId;
       }
-
       this.$router.push({ path: this.path_url, query });
     },
     collapse(list) {

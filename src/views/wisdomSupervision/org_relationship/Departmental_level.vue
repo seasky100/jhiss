@@ -100,6 +100,10 @@ export default {
   },
   created(){
     let permissionFlag = false
+    // permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
+    // if(permissionFlag && this.$route.query.id == null){
+    //   this.$router.push({ path: "/Org_relationship" });
+    // }
     if(sessionStorage.leaderStr == null){
       this.getLeaderList()
     }else{
@@ -108,7 +112,6 @@ export default {
         this.$router.push({ path: "/Org_relationship" });
       }
     }
-    
   },
   mounted() {
     this.init();
@@ -259,6 +262,7 @@ export default {
         realName: value.userList[0].realName,
         expand: true,
         level: 1,
+        userPid: value.userPid,
         userInfo: value.userList[0].userInfo
       };
       this.getChildren(value, tree_data.children);

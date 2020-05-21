@@ -64,7 +64,7 @@ export default {
     }
   },
   mounted() {
-    this.getLeaderList()
+    // this.getLeaderList()
     this.setTimer();
     // const token = sessionStorage.getItem('token')
     // console.log(window.location.href)   

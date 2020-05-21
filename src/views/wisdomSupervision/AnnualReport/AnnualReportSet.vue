@@ -30,7 +30,7 @@
         <div class="reportTable" ref="printCon" id="printCon" :key="menuKey">
           <AnnualReportInfo :reportInfoData="reportInfoData" :key="list_active"></AnnualReportInfo>
           <div v-for="(item,index) of tableDataList" :key="index+'_tableCon'" ref="table_box">
-            <e-table-report ref="table_box_component"
+            <e-table-report ref="table_box_component" :key="table_report_key"
               :annualTotal="annualTotal"
               :title="index < 11 ? reportList2[index]: reportList3[index - 11]" 
               :index="index"
@@ -92,6 +92,7 @@ export default {
   },
   data() {
     return {
+      table_report_key: 0,
       menuKey: 0,
       reportObj: null,
       menu_active: 0,
@@ -646,7 +647,6 @@ export default {
             return item
           })
         }
-        
       }else {
         if(index == -1){
           this.loading = false
