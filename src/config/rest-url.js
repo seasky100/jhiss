@@ -54,6 +54,7 @@ const DEFAULT_URL = {
     indexCalendar: `${GAISMSERVER}/warn/indexCalendar`, // 首页个人评分 部门评分
     warnInfoUserStatistics: `${GAISMSERVER}/warn/warnInfoUserStatistics`, // 预警人员列表
     warnInfoCountByType: `${GAISMSERVER}/warn/warnInfoCountByType`, // 预警数量
+    warnInfoTypeByUserId: `${GAISMSERVER}/warn/warnInfoTypeByUserId`, // 人员预警状态
   },
   // 廉政风险
   vacation: {

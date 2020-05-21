@@ -208,9 +208,9 @@ export default {
                           .dispatch("user/getInfo")
                           .then(() => {
                             _this.$message({
-                            type: "success",
-                            message: "登录成功"
-                          });
+                              type: "success",
+                              message: "登录成功"
+                            });
                             _this.$router.push("/PersonalHome");
                           })
                           .catch(err => {
@@ -250,6 +250,19 @@ export default {
         const url = window.location.href
         window.location.href='https://41.232.3.197:8443/calogin.jsp?url='+url     //给证书传参 
       }
+    },
+    filterData(treeData, id) {
+      const _this = this
+      return treeData.filter(item => {
+          // return item.id == id
+          return JSON.stringify(item).includes(id)
+      }).map(item => {
+          item = Object.assign({}, item)
+          if (item.childrens) {
+              item.childrens = _this.filterData(item.childrens, id)
+          }
+          return item
+      })
     },
     jhlogin(loginName){
       const _this = this

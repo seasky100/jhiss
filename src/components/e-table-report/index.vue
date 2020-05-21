@@ -357,7 +357,6 @@ export default {
     },
     // 修改后获取新增数据保存
     saveBtnClick(){
-      this.addFlag = false
       if(this.saveEvent.code == 310){
         this.customType = 'add'
         return
@@ -384,8 +383,30 @@ export default {
         paramData = this.headerParam
       }
       // console.log('编辑信息：', paramData)
-      this.loading = true
-      this.$emit('editData', this.index, paramData, this.saveEvent)
+      let data = paramData
+      if(this.isArray(paramData) && paramData.length > 0){
+        data = paramData[0]
+      }
+      let flag = true
+      for(let key in data){
+        if(key != 'edit' && key != 'type' && data[key] != null && data[key] != ''){
+          flag = false
+        }
+      }
+      if(flag){
+        this.$message({
+          type: 'warning',
+          message: '提交为空！'
+        })
+        return
+      }else{
+        this.addFlag = false
+        this.loading = true
+        this.$emit('editData', this.index, data, this.saveEvent)
+      }
+    },
+    isArray(o){
+      return o instanceof Array || o.constructor === Array
     },
     // 修改table header的背景色
     tableHeaderColor({ row, rowIndex }) {

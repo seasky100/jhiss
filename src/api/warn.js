@@ -19,10 +19,19 @@ export function warnInfoUserStatistics (params) {
   })
 }
 
-// 部门预警数量 GET /warn/warnInfoCountByType
+// 部门预警数量 
 export function warnInfoCountByType (params) {
   return request({
     url: DEFAULT_URL.warn.warnInfoCountByType,
+    method: 'get',
+    params
+  })
+}
+
+// 人员预警状态 GET /warn/warnInfoTypeByUserId
+export function warnInfoTypeByUserId (params) {
+  return request({
+    url: DEFAULT_URL.warn.warnInfoTypeByUserId,
     method: 'get',
     params
   })

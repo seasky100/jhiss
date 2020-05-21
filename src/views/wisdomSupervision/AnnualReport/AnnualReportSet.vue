@@ -473,7 +473,6 @@ export default {
         param.gmtModified = format(new Date(), 'yyyy-MM-dd'),
         param.flowProcessDto = flowProcess
         this[eventObj.saveEvent](index, param)
-        
       } else {
         // console.log('参数数据', data)
         data.gmtCreate = format(new Date(), 'yyyy-MM-dd'),

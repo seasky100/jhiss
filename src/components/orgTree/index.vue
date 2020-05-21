@@ -22,6 +22,7 @@
 </template>
 <script>
 import { myPhotoSrc } from "@/utils/common.js";
+import { warnInfoTypeByUserId } from '@/api/warn.js'
 export default {
   props: {
     data: {
@@ -123,10 +124,11 @@ export default {
       if (data.level == 1) {
         // let img = this.getPersonImg(data.userInfo.userInfo||data.userInfo);
         if(this.model == 'dep'){
-          let flag = false
-          if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag) {
-            flag = true
-          }
+          // let flag = false
+          // if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag) {
+          //   flag = true
+          // }
+          // console.log(flag)
           return (
             <div style="position:relative;width:120px;height:161px;">
             <div class="depLeader">
@@ -134,12 +136,15 @@ export default {
               data.userList.map((item, index) => {
                 return(
                   <div class={'user_panel level_one leaderCon depLeaderCon'}
-                   onclick={flag ? () => this.nodePanelClick(item, "", "person_info") : ''}>
+                   onclick={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag ? () => this.nodePanelClick(item, "", "person_info") : ''}>
+                    {this.getUserWarn(item.userInfo)}
                     {this.getPersonImg(item.userInfo)}
                     <div class="panel_info">
                       <span style="line-height:20px;font-size:15px">
                         <img src={require("../../assets/images/dangyuan.png")} />
-                        {item.realName || item.userInfo.realName}
+                        <span class={item.id == JSON.parse(sessionStorage.userInfo).id ? "current_user" : ""}>
+                          {item.realName || item.userInfo.realName}
+                        </span>
                       </span>
                       <span class="post" style="position: relative;">
                         {item.userInfo.job || item.userInfo.userInfo.job}
@@ -254,6 +259,53 @@ export default {
         }
       }
       return img
+    },
+    getUserWarn(userInfo){
+      // let p =  new Promise((resolve, reject) => {
+      //   warnInfoTypeByUserId({
+      //     userId: userInfo.id
+      //   }).then( res => {
+      //     resolve(res.data)
+      //   }).catch(err => {
+      //     reject()
+      //   });
+      // });
+      // p.then((res) => {
+      //   console.log(res)
+      //   if(res.includes('关注')){
+      //     return (<img class="warnStatus" src={require("../../assets/images/careful.png")} />)
+      //   }else if(res.includes('预警')){
+      //     return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
+      //   }else {
+      //     return ''
+      //   }
+      // })
+
+      // let img = ''
+      // console.log(userInfo)
+      // warnInfoTypeByUserId({
+      //   userId: userInfo.id
+      // }).then(res => {
+      //   console.log(res.data)
+      //   if(res.data.includes('关注')){
+      //     return (<img class="warnStatus" src={require("../../assets/images/careful.png")} />)
+      //   }else if(res.data.includes('预警')){
+      //     return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
+      //   }
+      // })
+      // return img
+      this.getData(userInfo, (data) => {
+        console.log(data)
+        return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
+      })
+    },
+    async getData(userInfo, callback){
+      await warnInfoTypeByUserId({
+        userId: userInfo.id
+      }).then(res => {
+        // console.log(res.data)
+        callback(res.data)
+      })
     },
     getPersonImg(userInfo) {
       let imgPath = myPhotoSrc(userInfo);
