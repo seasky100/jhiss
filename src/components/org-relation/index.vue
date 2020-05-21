@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-            funcObj: (item3, item) => {
+      funcObj: (item3, item) => {
         // console.log(this.level)
         if(this.level == 1){
           this.handleClick(item3, item)
@@ -101,7 +101,9 @@ export default {
       // }
     },
     handleClick2(value){
-      this.$parent.responsibility(value)
+      if(this.level == 1){
+        this.$parent.responsibility(value)
+      }
     }
     // 
   }
