@@ -8,12 +8,13 @@ import login from "../views/Login.vue";
 import PersonalHome from "../views/PersonalHome";
 import Gateway from "../views/AgencyJump/Gateway.vue";
 import Cooperation from "../views/AgencyJump/Cooperation.vue";
-import Refinement from "../views/AgencyJump/Refinement.vue";
 
 import organizationRouter from './organization'
 
 import wisdomReminderRouter from './modules/wisdomreminder';
 // import integrityRiskRouter from './modules/integrityRisk';
+//云上政工
+import cloudpoliticalRouter from './modules/cloudpolitical'
 import UserRouter from './user'
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
@@ -21,7 +22,7 @@ VueRouter.prototype.push = function push(location) {
 }
 Vue.use(VueRouter);
 
-export  const constantRoutes = [
+export const constantRoutes = [
   // {
   //   path: "/Home",
   //   name: "home",
@@ -31,8 +32,8 @@ export  const constantRoutes = [
   {
     path: "/",
     name: "MenuPaage",
-    meta:{
-      permValue:'ZHKQ',
+    meta: {
+      permValue: 'ZHKQ',
     },
     component: MenuPage,
     children: [
@@ -42,8 +43,8 @@ export  const constantRoutes = [
         icon: 'el-icon-s-home',
         // icon: 'el-icon-location',
         path: "/PersonalHome",
-        meta:{
-          permValue:'ZHKQ',
+        meta: {
+          permValue: 'ZHKQ',
         },
         name: "PersonalHome",
         component: PersonalHome
@@ -65,25 +66,15 @@ export  const constantRoutes = [
         // icon: 'el-icon-location',
         path: "/Cooperation",
         name: "Cooperation",
-        meta:{
-          permValue:'ZHKQ',
+        meta: {
+          permValue: 'ZHKQ',
         },
         component: Cooperation
       },
-      {
-        title: '云上政工',
-        img: 'left_ledger@2x.png',
-        icon: 'el-icon-s-home',
-        path: "/Refinement",
-        meta:{
-          permValue:'ZHKQ',
-        },
-        name: "Refinement",
-        component: Refinement
-      },
+      ...cloudpoliticalRouter,
       ...wisdomReminderRouter,
       // ...integrityRiskRouter,
-      
+
       ...UserRouter,
 
     ]
@@ -91,7 +82,7 @@ export  const constantRoutes = [
   {
     path: "/login",
     name: "login",
-    hidden:true,
+    hidden: true,
     component: login
   },
   {
@@ -102,7 +93,7 @@ export  const constantRoutes = [
     path: "*", // 此处需特别注意置于最底部
     redirect: "/404"
   },
-  
+
   // {
   //   path: "/agency",
   //   name: "agency",
@@ -113,8 +104,8 @@ export  const constantRoutes = [
 ];
 
 const createRouter = () => new VueRouter({
-     scrollBehavior: () => ({ y: 0 }),
-     routes: constantRoutes
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
 });
 const router = createRouter()
 // const router = new VueRouter({
