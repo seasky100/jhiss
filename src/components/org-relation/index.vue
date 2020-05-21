@@ -14,16 +14,15 @@
           <img src="../../assets/images/dangyuan.png"/>{{item.realName}}
       </div>
       <div class="nameSpan position">{{item.orgPname}}</div>
-      <span :style="[{background:color_arr[index2].bg,color:color_arr[index2].color}]"
-        class="label_body"
-        v-for="(item2,index2) of labelList" :key="index2">
-        {{item2.label}}
-      </span>
-      <span @click="handleClick2(item)" :style="[{background:color_arr[0].bg,color:color_arr[0].color}]"
+      <span :style="[{color:color_arr[0].color}]"
+      class="label_body">
+      <img style="height:25px" :src=" require('@/assets/images/bg/yujing1.png')"/>
+    </span>
+      <span @click="handleClick2(item)" :style="[{color:color_arr[0].color}]"
       class="label_body"><img  :src=" require('@/assets/images/dzzrs.png')"/>责任书
     </span>
       <div class="person_ul">
-        <span class="person_li" @click="funcObj(item3, item)"
+       <span class="person_li" @click="funcObj(item3, item)"
           :style="[{'cursor': level == 1 ? 'pointer' : ''}]"
           v-for="(item3,index3) of projectList" :key="index3">
           <img class="menuImg" :title="item3.name" :src="item3.imgPath" />
@@ -52,7 +51,7 @@ export default {
   },
   data() {
     return {
-      funcObj: (item3, item) => {
+            funcObj: (item3, item) => {
         // console.log(this.level)
         if(this.level == 1){
           this.handleClick(item3, item)
@@ -62,13 +61,13 @@ export default {
         // {name: '工作日志', path: '/HierEvaluation', imgPath: require('@/assets/images/bg/menu1.png')},
         {name: '岗位风险', imgPath: require('@/assets/images/bg/menu3.png')},
         {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu2.png')},
-        {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
-        {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/xxjy.png')},
+        // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
+        // {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/xxjy.png')},
         {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/yjgk.png')},
-        {name: '学习教育', imgPath: require('@/assets/images/bg/fxpg.png')},
+        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/fxpg.png')},
       ],
       labelList: [
-        {label: '党员'}
+        {label: '预警'}
         // {label: '在岗'}
       ],
       color_arr: [
@@ -141,6 +140,7 @@ export default {
         color #AB2C31
         font-size 16px
         margin-bottom 5px
+        cursor pointer
         span 
           display block
           font-size 13px
@@ -153,13 +153,13 @@ export default {
       .photo_img
         width 55px
     .label_body
-      padding: 5px 10px
+      padding: 2px 0px
       margin-top 15px
-      background #ccc
+      background #fff
       font-size 13px
       border-radius 5px
       maegin: 5px
       cursor: pointer
-      margin-left 10px
+      margin-left 8px
       display inline-block
 </style>

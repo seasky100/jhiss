@@ -24,12 +24,12 @@
         </div>
         <div class="con labelCon">
           <!-- <span class="top_title">标签</span> -->
-          <span :style="[{background:color_arr[index].bg,color:color_arr[index].color}]"
-            class="label_body" 
-            v-for="(item,index) of labelList" :key="index">
-            {{item.label}}
+          <span :style="[{color:color_arr[0].color}]"
+            class="label_body" >
+            <img style="height:25px" src="@/assets/images/bg/yujing1.png"/>
           </span>
-          <span :style="[{background:color_arr[0].bg,color:color_arr[0].color}]"
+          <!-- <img src="@/assets/images/bg/menu3.png"/> -->
+          <span :style="[{color:color_arr[0].color}]"
           class="label_body" @click="responsibility(personInfo)"><img src="../../../assets/images/dzzrs.png"/>责任书
         </span>
         </div>  
@@ -43,7 +43,7 @@
         <div class="con orgTreeCon">
           <span class="top_title">层级关系</span>
           <org-tree style="overflow-x:auto;"
-            :data="tree_data" 
+          :data="tree_data" 
             :collapsable="false" 
             :model="model"
             :expandAll="true">
@@ -51,7 +51,7 @@
         </div>
       </div>
 			<!-- 领导属下信息 -->
-      <div class="fengxian" style="width:calc(99% - 430px);margin-left:0.7%;">
+      <div class="fengxian" style="width:calc(99% - 460px);margin-left:0.7%;">
         <div class="person_title">
           <div class="submenu" @click="subMenuClick(index)"
             :style="[{'border-bottom':active==index?'4px solid #235FF6':'none','color':active==index?'#235FF6':'#7F7E84'}]"
@@ -91,12 +91,12 @@
       <div v-if="leData != null && leData != ''">
         <div style="margin-bottom: 17px;margin-top: 15px;font-size: 15px;font-weight: 600;color: #2070c1;">领导评价：</div>
       <div>
-          <img style="float:left;width: 55px;" class="photo_img" :src="getPhotoPath(personInfo.userInfo)" />
+          <img style="float:left;width: 55px;" class="photo_img" :src="leData[0].leaderUrl" />
           <div style="float:left;padding:15px;line-height:25px;">
             <span class="dialogName">{{leData[0].leaderName}}</span>
-            <span style="color:#ccc;">警号：</span>{{leData[0].policeCode}}
-            <span style="color:#ccc;margin-left:10px;">职务：</span>{{leData[0].rank}}
-            <span style="color:#ccc;margin-left:10px;">部门：</span>{{leData[0].label}}
+            <span style="color:#ccc;">警号：</span>{{leData[0].leaderCode}}
+            <span style="color:#ccc;margin-left:10px;">职务：</span>{{leData[0].leaderPost}}
+            <span style="color:#ccc;margin-left:10px;">部门：</span>{{leData[0].leaderDept}}
             <!-- <span style="color:#ccc;margin-left:10px;">职级：</span>{{this.leadInfo.policeRank}} -->
           </div>
         </div>
@@ -168,8 +168,8 @@
             第（<input v-model="ruleForm.lever"  style="border: 0px solid rgb(255, 213, 33); width: 36px;color: rgb(255, 213, 33); text-align:center"></input>）级
           </div>
            <div style="width: 100%;height: 20px;text-align: -webkit-center;margin-top: 60%;color: #FFD521;font-size: 15px;" ><div><!--<el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期"  style="width:50%;height:30px;"></el-date-picker> -->
-           <div style="margin-top: 10px;" ><span>{{orgName}}</span></div>
-           <div style="margin-top: 10px;" ><span>{{date}}</span></div>
+           <div style="margin-top: 10px;" ><span style="letter-spacing: 5px;">{{orgName}}</span></div>
+           <div style="margin-top: 10px;" ><span style="letter-spacing: 2px;">{{year}}年{{month}}月</span></div>
            <button v-show='look' style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 30px; " type="primary" @click="addrespons">查看</button>
             <button style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 31px; " type="primary" @click="backrespons">关闭</button>
             <button v-show='!look' style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 31px; " type="primary" @click="addrespons">创建</button>
@@ -293,7 +293,8 @@ export default {
       look:false,
       orgName: sessionStorage.orgName,
       value: '',
-      date: new Date().toLocaleDateString(),
+      year: new Date().getFullYear(),
+      month: new Date().getMonth()+1,
       parentId:'',
       nCurrent: 1,
       zrsId:'',
@@ -445,7 +446,7 @@ export default {
         ]
       },
       labelList: [
-        {label: '党员'},
+        {label: '预警'},
         // {label: '在岗'},
       ],
       ruleForm: {
@@ -462,8 +463,8 @@ export default {
         // {name: '工作日志', path: '/Refinement', imgPath: require('@/assets/images/bg/menu1.png')},
         {name: '岗位风险', imgPath: require('@/assets/images/bg/menu3.png')},
         {name: '谈话谈心', path: '/talks', imgPath: require('@/assets/images/bg/menu2.png')},
-        {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
-        {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/xxjy.png')},
+        // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
+        // {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/xxjy.png')},
         {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/yjgk.png')},
         {name: '学习教育', imgPath: require('@/assets/images/bg/fxpg.png')},
         // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')}
@@ -488,7 +489,7 @@ export default {
       dialogVisible5: false,
       warningInfo: null,
       gridData: [],
-            dialogVisible_edu: false,
+      dialogVisible_edu: false,
       switch_edu: true,
       eduTableList:[],
 			options_edu: {
@@ -930,7 +931,6 @@ export default {
       this.findElectronic()
     },
     nextPiece(){
-      debugger
       this.nCurrent = this.nCurrent+1
       this.findElectronic()
     },
@@ -960,6 +960,9 @@ export default {
             let branchData = []
             for (let i = 0; i < data.length; i++) {
               if (data[i].ifMyEntering == 0) {
+                if(data[i].leaderUrl){
+                  data[i].leaderUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + data[i].leaderUrl.split('\\').slice(-1)[0]
+                }
                 this.leData.push(data[i])
               } else {
                 branchData.push(data[i])
@@ -1048,7 +1051,7 @@ export default {
             message: '提交失败'
           })
         }
-        sessionStorage.orgId,
+        deptId: sessionStorage.orgId,
         this.form.ids = []
         this.form.lever = ''
       })
@@ -1058,6 +1061,7 @@ export default {
       this.formData.riskContent[0].riskContent = _this.content
       this.formData.riskContent[0].riskMesure = _this.mesure
       this.formData.riskContent[0].workMatters = _this.matters
+      const leadInfo = JSON.parse(sessionStorage.userInfo)
       let filesParam = new FormData();
       filesParam.append('orgId', this.warningInfo.orgId);
       filesParam.append('leaderName', this.warningInfo.leaderName);
@@ -1066,6 +1070,11 @@ export default {
       filesParam.append('userName', this.warningInfo.userName);
       filesParam.append('policeCode', this.warningInfo.policeCode);
       filesParam.append('leaderId', this.warningInfo.leaderId);
+      filesParam.append('leaderUrl', leadInfo.fileId);
+      filesParam.append('leaderCode', leadInfo.policeCode);
+      filesParam.append('leaderPost', leadInfo.rank);
+      filesParam.append('leaderDept', leadInfo.label);
+      filesParam.append('riskContent', JSON.stringify(this.formData.riskContent));
       filesParam.append('riskContent', JSON.stringify(_this.formData.riskContent));
       let res = null;
       if (this.id == this.warningInfo.leaderId) {
@@ -1348,15 +1357,15 @@ input:-ms-input-placeholder{
     font-weight bold
     font-size 14px
   .label_body
-    padding: 5px 10px
-    background #ccc
+    padding: 3px 0px
+    background #fff
     border-radius 5px
     maegin: 5px
     cursor: pointer
-    margin-right 10px
+    margin-right 5px
   .project_li
     width 25%
-    margin 6px 0 5px 0
+    margin 20px 0 5px 0
     float left
     color #AB2C31
     font-size 16px

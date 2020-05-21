@@ -4,7 +4,7 @@
          <!-- <div style='text-align:center;color:#dc4444'>{{listData.issue}}</div> -->
          <el-divider></el-divider>
         <!-- <div style='text-align:center;'>{{listData.title}}</div> -->
-        <div class='' style="font-size: 16px;padding-right: 114px;padding-left: 114px;line-height: 30px;" v-html = 'listData.content' ></div>
+        <div class='ql-editor' style="font-size: 16px;padding-right: 114px;padding-left: 114px;line-height: 30px;" v-html = 'listData.content' ></div>
         <div style="margin-left: 10px;font-weight: bold;">评论区</div>
         <div class='hotnode' v-for="(item,index) in nodeData" :key="index">
                 <div class='c_top'>
@@ -45,6 +45,9 @@
     </div>
 </template>
 <script>
+import '@/utils/quill/quill.core.css'
+import '@/utils/quill/quill.snow.css'
+import '@/utils/quill/quill.bubble.css'
     import { getExposureById ,saveExposureNote,queryExposureNote,updateLike } from '@/api/warn.js';
     import { mapGetters } from 'vuex';
     import { myPhotoSrc } from '../../utils/common.js';

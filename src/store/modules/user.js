@@ -128,7 +128,7 @@ const actions = {
         getOrganization().then(res => {
             if (res && res.success) {
                 const { data } = res
-                // let orgTree = data[0].childrens
+                                // let orgTree = data[0].childrens
                 // let orgId = sessionStorage.orgId
                 // const orgIdData = filterData(orgTree, orgId)
                 // if(orgIdData.length > 0){
