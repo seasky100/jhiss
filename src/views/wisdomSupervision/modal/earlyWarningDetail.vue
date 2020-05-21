@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-dialog :title="title" :visible.sync="visible">
+    <!-- :show-close="false" -->
+    <el-dialog :title="title" :visible.sync="visible" :show-close="true">
       <div class="detail-wrapper">
         <el-scrollbar style="height: 100%;">
           <div class="detail-info">
@@ -24,16 +25,20 @@
                 <span>{{detailInfo.comment ? detailInfo.comment : ''}}</span>
               </el-form-item>
               <el-form-item label="本人反馈：">
-                <span>{{detailInfo.content||'未反馈'}}</span>
-                <p v-if="detailInfo.content">反馈时间：{{detailInfo.gmtCreate | formatTime}}</p>
-                <!-- <div v-if="!detailInfo.content">
+                <!-- <span>{{detailInfo.content||'未反馈'}}</span>
+                <p v-if="detailInfo.content">反馈时间：{{detailInfo.gmtCreate | formatTime}}</p> -->
+                <div v-if="detailInfo.is_self">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 3, maxRows: 6}"
                     placeholder="请输入内容"
                     v-model="detailInfo.content"
                   ></el-input>
-                </div> -->
+                </div>
+                <template v-else>
+                  <span>{{detailInfo.content||'未反馈'}}</span>
+                  <p v-if="detailInfo.content">反馈时间：{{detailInfo.gmtCreate | formatTime}}</p>
+                </template>
               </el-form-item>
               <el-form-item v-if="detailInfo.warnLevel == 2 || detailInfo.warnLevel == 3">
                 <p>反馈时间：{{detailInfo.gmtBranch | formatTime}}</p>
@@ -54,6 +59,10 @@
                   placeholder="请输入内容"
                   v-model="detailInfo.branchAdvice"
                 ></el-input>
+              </el-form-item>
+              <el-form-item v-if="detailInfo.is_self" style="text-align:center;">
+                <el-button type="primary" plain size="default" @click="handleSubmit">提交</el-button>
+                <el-button type="info" plain size="default" @click="visible = false">取消</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -89,23 +98,28 @@ export default {
   methods: {
     open(option) {
       this.visible = true;
-      console.log("77", option);
-      this.detailInfo = option;
-    }
+      if(option.userId == sessionStorage.userId && (!option.content)){
+        option.is_self = true
+      }
+      // console.log("用户信息", option)
+      this.detailInfo = option
+    },
+    handleSubmit(){
+      // GET /warn/responseAuditWarning
+      console.log('提交', this.detailInfo)
+    },
   }
 };
 </script>
-    
-    <style lang="stylus" scoped>
-    .detail-wrapper {
-      height: 55vh;
+<style lang="stylus" scoped>
+.detail-wrapper {
+  height: 55vh;
+  .detail-info {
+    padding: 5px 20px;
+  }
+}
 
-      .detail-info {
-        padding: 5px 20px;
-      }
-    }
-
-    /deep/ .el-scrollbar__wrap {
-      overflow-x: hidden;
-    }
+/deep/ .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
 </style>

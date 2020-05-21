@@ -200,7 +200,7 @@ export default {
       }
     }
   },
-   mounted() {
+  mounted() {
     this.searchForm[1].options = this.orgData;
     this.userId = sessionStorage.userId;
     this.orgName = sessionStorage.orgName;
@@ -209,52 +209,56 @@ export default {
 		warnType_format(row, column, prop){
 			return column.options[prop]
 		},
-      // 分页点击事件
-      afterCurrentPageClickHandle(val, next) {
-          this.query(val);
-          next();
-      },
-      // 查询
-      handleSearch(params) {
-          Object.assign(this.searchData, params);
-          // console.log(params)
-          this.query();
-      },
-      // 查询列表
-      query(nCurrent = 1) {
-          const $this = this;
-          getFindMealCardPage(Object.assign({
-              nCurrent: nCurrent,
-              nSize: 10,
-              orderByField: ''
-          }, $this.searchData)).then((res) => {
-              console.log(res.data)
-              this.$refs.recordSpTableRef.setPageInfo(
-                  nCurrent,
-                  res.size,
-                  res.total,
-                  res.data
-              );
-          });
-      },
-      sortfunc(attr, rev) {
-          if (rev == undefined) {
-              rev = 1
-          }
-          return (a, b) => {
-              a = a[attr]
-              b = b[attr]
-              if (a < b) {
-                  return rev * 1
-              }
-              if (a > b) {
-                  return rev * -1
-              }
-              return 0
-          }
-      },
-    },
+		// 分页点击事件
+		afterCurrentPageClickHandle(val, next) {
+				this.query(val);
+				next();
+		},
+		// 查询
+		handleSearch(params) {
+				Object.assign(this.searchData, params);
+				// console.log(params)
+				this.query();
+		},
+		// 查询列表
+		query(nCurrent = 1) {
+				const $this = this;
+				getFindMealCardPage(Object.assign({
+						nCurrent: nCurrent,
+						nSize: 10,
+						orderByField: ''
+				}, $this.searchData)).then((res) => {
+						console.log(res.data)
+						this.$refs.recordSpTableRef.setPageInfo(
+								nCurrent,
+								res.size,
+								res.total,
+								res.data
+						);
+				});
+		},
+		sortfunc(attr, rev) {
+				if (rev == undefined) {
+						rev = 1
+				}
+				return (a, b) => {
+						a = a[attr]
+						b = b[attr]
+						if (a < b) {
+								return rev * 1
+						}
+						if (a > b) {
+								return rev * -1
+						}
+						return 0
+				}
+		},
+	},
   created() {
+		let realName = this.$route.query.realName
+		if(realName != null && realName != ''){
+			this.searchData.userName = realName
+		}
     this.userInfo = JSON.parse(sessionStorage.userInfo)
     this.userParams.userID = this.userInfo.info
     // 就餐地点预警地点统计 (给参数userParams会无数据)

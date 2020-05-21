@@ -1005,7 +1005,8 @@ import { mapGetters } from 'vuex';
         // this.showSearch = ! this.showSearch
       },
       warncon(){
-        this.$router.push({ path: '/agency' });
+        // this.$router.push({ path: '/agency' });
+        this.$router.push({ path: '/RiskControl', query:{realName:sessionStorage.realName}});
       },
       // 从警生涯数据
       getPoliceCareer() {

@@ -101,10 +101,17 @@ const actions = {
                     }
                 })
                 let orgTree = JSON.parse(sessionStorage.orgData)[0].childrens
+                let orgStr = orgTree.map(item => {
+                    return item.id
+                })
                 let orgId = res.data.organizations[0].id
-                const orgIdData = filterData(orgTree, orgId)
-                if(orgIdData.length > 0){
-                    commit('SETDEPID', orgIdData[0].id)
+                if(orgStr.includes(orgId)){
+                    commit('SETDEPID', orgId)
+                }else{
+                    const orgIdData = filterData(orgTree, orgId)
+                    if(orgIdData.length > 0){
+                        commit('SETDEPID', orgIdData[0].id)
+                    }
                 }
                 commit('SET_REALNAME', res.data.realName)
                 commit('SET_LOGINNAME', res.data.loginName)
