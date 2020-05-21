@@ -139,6 +139,7 @@ export default {
     ])
   },
   mounted() {
+    this.idNumber = JSON.parse(sessionStorage.userInfo).cardNum
     // this.getData('201')
   },
   methods: {

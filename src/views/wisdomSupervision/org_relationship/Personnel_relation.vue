@@ -26,7 +26,7 @@
           <!-- <span class="top_title">标签</span> -->
           <span :style="[{color:color_arr[0].color}]"
             class="label_body" >
-            <img style="height:25px" src="@/assets/images/bg/yujing1.png"/>
+            <img style="height:21px" src="@/assets/images/bg/yujing1.png"/>
           </span>
           <!-- <img src="@/assets/images/bg/menu3.png"/> -->
           <span :style="[{color:color_arr[0].color}]"
@@ -226,7 +226,7 @@
         <div class='' style="font-size: 14px; margin-bottom: 10px;">
           ({{responseData.title}})
         </div>
-        <div class='' v-html='responseData.content'></div>
+        <div style="text-align: -webkit-auto; padding: 10px 10px;width: 100%;" class='' v-html='responseData.content'></div>
         <div class='response' style="display:flex">
           <div class='p_leader'>
               <span class=''>主管领导：<img style="height: 20px;margin-left: 10px;" class="photo_img" :src="ruleForm.leadSignature" /></span>
@@ -846,6 +846,7 @@ export default {
       // this.signatLeader()
     },
     findElectronic(){
+      debugger
       const _this = this
       _this.responseData = ''
       findElectronicResponsibilityPage(
@@ -860,11 +861,10 @@ export default {
         )
       ).then(res => {
         if (res.success == true) {
-          debugger
           if(res.data.records == null ||res.data.records.length == 0){
             // _this.flagLeader = false 
-            _this.signatLeader()  
             _this.look = false
+            _this.signatLeader()  
             _this.dialogVisible4 = true
           }else{
             _this.look = true
@@ -1105,7 +1105,7 @@ export default {
       getSignatureById(
         Object.assign(
           {
-            userId: this.$route.query.value.id,
+            userId: sessionStorage.userId,
           },
         )
       ).then(res => {

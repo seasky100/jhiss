@@ -16,7 +16,7 @@
       <div class="nameSpan position">{{item.orgPname}}</div>
       <span :style="[{color:color_arr[0].color}]"
       class="label_body">
-      <img style="height:25px" :src=" require('@/assets/images/bg/yujing1.png')"/>
+      <img style="height:21px" :src=" require('@/assets/images/bg/yujing1.png')"/>
     </span>
       <span @click="handleClick2(item)" :style="[{color:color_arr[0].color}]"
       class="label_body"><img  :src=" require('@/assets/images/dzzrs.png')"/>责任书

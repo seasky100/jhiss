@@ -208,9 +208,9 @@ export default {
                           .dispatch("user/getInfo")
                           .then(() => {
                             _this.$message({
-                              type: "success",
-                              message: "登录成功"
-                            });
+                            type: "success",
+                            message: "登录成功"
+                          });
                             _this.$router.push("/PersonalHome");
                           })
                           .catch(err => {
