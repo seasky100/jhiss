@@ -288,6 +288,13 @@ export default {
       this.$set(this.formObj,'edit',true)
     }, 
     saveFormData(){
+      if(!JSON.stringify(this.formObj).includes('true')){
+        this.$message({
+          type: 'warning',
+          message: '没有修改！'
+        })
+        return
+      }
       this.loading = true
       const flowProcess = {
         id: '',

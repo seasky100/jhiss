@@ -575,6 +575,20 @@ export default {
     // 其他事项报告
     saveOthersBtnClick(){
       console.log('其他事项报告')
+      if(this.disabledOthers){
+        this.$message({
+          type: 'warning',
+          message: '请编辑！'
+        })
+        return
+      }
+      if( this.othersReport == ''){
+        this.$message({
+          type: 'warning',
+          message: '提交为空！'
+        })
+        return
+      }
       this.loading = true
       const flowProcess = {
         // id: this.reportObj.id,
