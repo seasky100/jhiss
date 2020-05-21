@@ -121,6 +121,7 @@ export default {
       }
       warnInfoCountByType(param).then((res) => {
         let data = res.data
+        // console.log(data)
         let num1 = 0
         let num2 = 0
         for(let key in data){
