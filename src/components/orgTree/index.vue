@@ -34,6 +34,12 @@ export default {
         return null
       }
     },
+    warnPersonList: {
+      type: Object,
+      default: () => {
+        return null
+      }
+    },
     horizontal: {
       type: Boolean,
       default: false
@@ -145,11 +151,11 @@ export default {
             <div class="depLeader">
             {
               data.userList.map((item, index) => {
-                let img = this.getUserWarn(item.userInfo)
+                let warn_img = this.getUserWarn(item.userInfo)
                 return(
                   <div class={'user_panel level_one leaderCon depLeaderCon'}
                    onclick={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 ? () => this.nodePanelClick(item, "", "person_info") : ''}>
-                    {img}
+                    {warn_img}
                     {this.getPersonImg(item.userInfo)}
                     <div class="panel_info">
                       <span style="line-height:20px;font-size:15px">
@@ -192,11 +198,16 @@ export default {
           (data.index % 11) +
           ".png");
         let depClass = this.model == 'dep' ? 'depClass' : ''
+        let warn_img = ''
+        if(this.model == 'dep'){
+          warn_img = this.getUserWarn(data.userInfo)
+        }
         return (
           <div 
-            onclick={handleEvent && this.model == 'dep' ? handleEvent : ""}
+            onclick={handleEvent ? () => this.nodePanelClick(data, "leader", "person_info") : ""}
             style={"background:url(" + img_bg + ") no-repeat"}
             class={'user_panel level_two ' + depClass}>
+            {warn_img}
             {img}
             <div class="panel_info">
               <img src={require("../../assets/images/dangyuan.png")} />
@@ -235,11 +246,16 @@ export default {
           );
         } else {
           let img = this.getPersonImg(data.userInfo);
+          let warn_img = ''
+          if(this.model == 'dep'){
+            warn_img = this.getUserWarn(data.userInfo)
+          }
           return (
             <div
               class="user_panel_dep"
               onclick={handleEvent ? handleEvent : ""}
             >
+              {warn_img}
               {img}
               <div
                 style="margin-top:5px;text-align: center;"
@@ -273,58 +289,18 @@ export default {
       return img
     },
     getUserWarn(userInfo){
-      // let p =  new Promise((resolve, reject) => {
-      //   warnInfoTypeByUserId({
-      //     userId: userInfo.id
-      //   }).then( res => {
-      //     resolve(res.data)
-      //   }).catch(err => {
-      //     reject()
-      //   });
-      // });
-      // p.then((res) => {
-      //   console.log(res)
-      //   if(res.includes('关注')){
-      //     return (<img class="warnStatus" src={require("../../assets/images/careful.png")} />)
-      //   }else if(res.includes('预警')){
-      //     return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
-      //   }else {
-      //     return ''
-      //   }
-      // })
-
       let img = ''
-      warnInfoTypeByUserId({
-        userId: userInfo.id
-      }).then(res => {
-        console.log(res.data)
-        if(res.data.includes('关注')){
-          img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
-          // return (<img class="warnStatus" src={require("../../assets/images/careful.png")} />)
-        }else if(res.data.includes('预警')){
-          img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
-          // return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
+      for(let key in this.warnPersonList){
+        let obj = this.warnPersonList[key]
+        if(userInfo.id.includes(key)){
+          if(obj['预警'] > 0){
+            img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
+          }else if(obj['关注'] > 0){
+            img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
+          }
         }
-      })
+      }
       return img
-      // this.getData(userInfo, (data) => {
-      //   console.log(data)
-      //   return (<img class="warnStatus" src={require("../../assets/images/warn.png")} />)
-      // })
-    },
-    async getData(userInfo, callback){
-      await warnInfoTypeByUserId({
-        userId: userInfo.id
-      }).then(res => {
-        // console.log(res.data)
-        let img = ''
-        if(res.data.includes('关注')){
-          img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
-        }else if(res.data.includes('预警')){
-          img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
-        }
-        callback(img)
-      })
     },
     getPersonImg(userInfo) {
       let imgPath = myPhotoSrc(userInfo);
@@ -361,10 +337,14 @@ export default {
     },
     // 节点面板点击事件
     nodePanelClick(data, valueObj, model) {
-      console.log(data, valueObj, model);
+      // console.log(data, valueObj, model);
       // 无权限
-      if (model == "" || this.path_url == null || this.path_url == "") {
-        return;
+      if(valueObj.includes('leader')){
+        // 全层级体系页面跳转层级人员
+        this.$router.push({ path: '/Personnel_relation' });
+        return
+      }else if (model == "" || this.path_url == null || this.path_url == "") {
+        return
       }
       let query = {};
       if (valueObj == "") {

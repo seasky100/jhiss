@@ -60,6 +60,7 @@
     </div>
     <div class="relationship">
       <org-tree
+        :warnPersonList="warnPersonList"
         :data="tree_data"
         :path_url="path_url"
         :collapsable="true"
@@ -71,7 +72,7 @@
 </template>
 <script>
 import { treeAndUser } from "@/api/report.js";
-import { warnInfoCountByType } from '@/api/warn.js'
+import { warnInfoCountByType, warnInfoTypeBydeptId } from '@/api/warn.js'
 import { getUserListByUserId } from "@/api/user-server.js";
 export default {
   name: "Departmental_level", //部门层级关系图
@@ -80,6 +81,7 @@ export default {
       active: 0,
       entranceList: [],
       tree_data: {},
+      warnPersonList: null,
       horizontal: false,
       // 人员关系跳转地址
       path_url: "Personnel_relation",
@@ -262,6 +264,7 @@ export default {
         realName: value.userList[0].realName,
         expand: true,
         level: 1,
+        orgId: value.orgId,
         userPid: value.userPid,
         userInfo: value.userList[0].userInfo
       };
@@ -275,21 +278,20 @@ export default {
         element.expand = false;
       });
       tree_data.children = childrenArr
-      this.tree_data = tree_data
-      // if (tree_data.children.length > 1) {
-      //   // console.log(tree_data)
-      //   // tree_data.children[1].level = 2;
-      //   // tree_data.children[1].children.forEach(element => {
-      //   //   element.level = 3;
-      //   //   element.expand = false;
-      //   // });
-      //   // tree_data.children[0].children.push(tree_data.children[1]);
-      //   tree_data.level = 0
-      //   this.tree_data = tree_data
-      // }else{
-      //   this.tree_data = tree_data.children[0];
-      // }
+      // this.tree_data = tree_data
       // console.log(tree_data)
+      this.getWarnPerson(tree_data)
+    },
+    getWarnPerson(tree_data){
+      const param = {
+        deptId: tree_data.orgId
+      }
+      warnInfoTypeBydeptId(param).then((res) => {
+        // console.log(res.data)
+        // console.log(tree_data)
+        this.warnPersonList = res.data
+        this.tree_data = tree_data
+      })
     },
     handleClickDep(value) {
       // console.log(value)

@@ -115,6 +115,7 @@ export default {
     float left
     border 1px solid #ccc
     width calc(33.3% - 42px)
+    height 235px;
     margin 0px 10px
     padding 5px 10px
     margin-bottom 10px

@@ -55,6 +55,8 @@ const DEFAULT_URL = {
     warnInfoUserStatistics: `${GAISMSERVER}/warn/warnInfoUserStatistics`, // 预警人员列表
     warnInfoCountByType: `${GAISMSERVER}/warn/warnInfoCountByType`, // 预警数量
     warnInfoTypeByUserId: `${GAISMSERVER}/warn/warnInfoTypeByUserId`, // 人员预警状态
+    warnInfoTypeBydeptId: `${GAISMSERVER}/warn/warnInfoTypeBydeptId`, // 按部门统计人员预警
+    responseAuditWarning: `${GAISMSERVER}/warn/responseAuditWarning`, // 预警反馈
   },
   // 廉政风险
   vacation: {

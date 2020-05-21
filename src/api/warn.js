@@ -37,6 +37,24 @@ export function warnInfoTypeByUserId (params) {
   })
 }
 
+// 按部门统计人员预警 GET /warn/warnInfoTypeBydeptId
+export function warnInfoTypeBydeptId (params) {
+  return request({
+    url: DEFAULT_URL.warn.warnInfoTypeBydeptId,
+    method: 'get',
+    params
+  })
+}
+
+// 预警反馈 GET /warn/responseAuditWarning
+export function responseAuditWarning (params) {
+  return request({
+    url: DEFAULT_URL.warn.responseAuditWarning,
+    method: 'get',
+    params
+  })
+}
+
 // 预警处置情况统计x未反馈，已反馈，y轴对应次数
 export function getWarnStatusStatistics (params) {
   return request({
