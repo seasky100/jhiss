@@ -47,7 +47,7 @@
       :data="tableData2" 
       style="width:100%;">
       <nav-table :columns="columns2"></nav-table>
-      <el-table-column
+      <el-table-column v-if="saveEvent.code != 312"
         class-name="classOptions"
         fixed="right"
         label="操作"
