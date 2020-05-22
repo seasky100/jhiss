@@ -337,9 +337,8 @@ export default {
     },
     // 节点面板点击事件
     nodePanelClick(data, valueObj, model) {
-      // console.log(data, valueObj, model);
       // 无权限
-      if(valueObj.includes('leader')){
+      if(typeof valueObj=='string'&&valueObj.includes('leader')){
         // 全层级体系页面跳转层级人员
         this.$router.push({ path: '/Personnel_relation' });
         return
