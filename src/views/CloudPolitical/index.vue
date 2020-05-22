@@ -118,61 +118,81 @@
                         >
                           <el-card class="box-card">
                             <div class="c_top">
-                              <div>
+                              <!-- <div>
                                 <img
                                   style="margin-top: -9px;width: 48px;"
                                   src="../../assets/images/bg/person.png"
                                 />
-                              </div>
-                              <div class="ctitle">
-                                <span>{{item2.userName}}</span>
-                                <span class="depName">{{item2.deptName}} {{item2.noteDate2}}</span>
-                              </div>
-
-                              <el-tooltip placement="bottom" effect="light">
-                                <div slot="content">
-                                  <a>修改</a>
-                                  <br />
-                                  <a>加班记录</a>
+                              </div>-->
+                              <div class="e_center_content">
+                                <div class="ctitle">
+                                  <span>{{item2.userName}}</span>
+                                  <span
+                                    class="depName"
+                                  >{{item2.deptName}} {{item2.noteDate2}} {{dayArray[item2.day]}}</span>
+                                  <!-- <a class="rc_btn_a">加班记录</a> -->
+                                  <a
+                                    class="rc_btn_a"
+                                    v-if="item2.status!=1"
+                                    @click="changeNote(item2)"
+                                  >{{item2.editStatus?'取消':'修改'}}</a>
                                 </div>
-                                <div class="e_date">操作∨</div>
-                              </el-tooltip>
-                            </div>
-                            <div class="e_center e_center_content">
-                              <div
-                                v-if="item2.content != null"
-                                class="c_introduce"
-                                style="white-space: pre-wrap;"
-                              >{{item2.content}}</div>
-                              <div v-else class="c_introduce">未填写</div>
-                            </div>
-                            <!-- 未阅 -->
-                            <div class="e_center" v-if="item2.comment">
-                              <div class="c_introduce">
-                                <span style="display:block;">审阅时间：{{item2.remarkTime}}</span>
-                                {{item2.comment}}
+                                <div class="e_center">
+                                  <div
+                                    v-if="!item2.editStatus"
+                                    class="c_introduce"
+                                    style="white-space: pre-wrap;"
+                                  >{{item2.content||'未填写'}}</div>
+                                  <div
+                                    style="padding-top: 5px; position:relative"
+                                    v-if="item2.editStatus"
+                                  >
+                                    <el-input type="textarea" v-model="item2.content" resize="none"></el-input>
+                                    <div style="position:absolute;right: 10px; bottom: 15px;">
+                                      <a @click="updateWorkNote(item2)" class="rc_btn">提交</a>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <div style="position:absolute; right: 10px;top: 15px;">
-                                <a @click="changeComent(item2)" class="rc_btn">
-                                  修改
-                                  <img
-                                    style="width: 13px;vertical-align: middle;"
-                                    src="@/assets/images/yszg/edit.png"
-                                  />
-                                </a>
+                              <!-- 已阅 -->
+                              <div class="e_center e_remark" v-if="item2.remarkStatus==1">
+                                <div class="e_remark_title">
+                                  <a @click="changeComent(item2)" class="rc_btn">
+                                    领导审阅/修改审阅
+                                    <img
+                                      style="width: 13px;vertical-align: middle;"
+                                      src="@/assets/images/yszg/edit.png"
+                                    />
+                                  </a>
+                                </div>
+                                <div class="c_introduce">
+                                  <span style="display:block;">审阅人：{{item2.approverName}}</span>
+                                </div>
+                                <div class="c_introduce">
+                                  <span style="display:block;">审阅内容：{{item2.comment}}</span>
+                                  <span style="display:block;">审阅时间：{{item2.remarkTime2}}</span>
+                                </div>
                               </div>
-                            </div>
-                            <!-- 已阅 -->
-                            <div class="e_center" v-else>
-                              <div style="margin-left:20px;position:relative">
-                                <el-input
-                                  type="textarea"
-                                  placeholder="请输入批阅内容"
-                                  v-model="item2.comment"
-                                  resize="none"
-                                ></el-input>
-                                <div style="position:absolute; right: 25px;top: 15px;">
+                              <!-- 未阅 -->
+                              <div class="e_remark" v-else>
+                                <div class="e_remark_title">
+                                  <a class="rc_btn">领导批示</a>
+                                </div>
+                                <div style="padding-top: 5px;">
+                                  <el-input
+                                    type="textarea"
+                                    placeholder="请输入批阅内容"
+                                    v-model="item2.comment"
+                                    resize="none"
+                                  ></el-input>
+                                </div>
+                                <div style="position:absolute;right: 10px; bottom: 15px;">
                                   <a @click="updateWorkNoteClick(item2)" class="rc_btn">审阅</a>
+                                  <a
+                                    v-if="item2.status==1"
+                                    @click="changeComent(item2)"
+                                    class="rc_btn"
+                                  >取消</a>
                                 </div>
                               </div>
                             </div>
@@ -201,7 +221,7 @@
             <div class="r_attendance">
               <div style="margin-left: 10px;font-weight: 600;padding: 5px 0;">待办事项</div>
               <div style="display: flex;text-align: center;margin: 0 10px;padding-bottom: 5px;">
-                <div style="width:25%;cursor: pointer;">
+                <div @click="openDialog" style="width:25%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width: 20px;height: 25px;"
@@ -209,7 +229,7 @@
                   />
                   <div class="r_list">日志(0)</div>
                 </div>
-                <div style="width:25%;cursor: pointer;">
+                <div @click="openDialog" style="width:25%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width: 20px;height: 25px;"
@@ -217,7 +237,7 @@
                   />
                   <div class="r_list">加班(0)</div>
                 </div>
-                <div style="width:25%;cursor: pointer;">
+                <div @click="openDialog" style="width:25%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width: 20px;height: 25px;"
@@ -225,7 +245,7 @@
                   />
                   <div class="r_list">请销假(0)</div>
                 </div>
-                <div style="width:25%;cursor: pointer;">
+                <div @click="openDialog" style="width:25%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width: 20px;height: 25px;"
@@ -233,7 +253,7 @@
                   />
                   <div class="r_list">出国境(0)</div>
                 </div>
-                <div style="width:25%;cursor: pointer;">
+                <div @click="openDialog" style="width:25%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width: 20px;height: 25px;"
@@ -248,7 +268,7 @@
               <div
                 style="display: flex;margin:0 15px; margin-top: 5px;text-align: center;padding-bottom: 5px;"
               >
-                <div style="width:24%;cursor: pointer;">
+                <div @click="openDialog" style="width:24%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width:57px;height:59px"
@@ -256,7 +276,7 @@
                   />
                   <div class="k_list">加班申请</div>
                 </div>
-                <div style="width:24%;cursor: pointer;">
+                <div @click="openDialog" style="width:24%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width:57px;height:59px"
@@ -264,7 +284,7 @@
                   />
                   <div class="k_list">请假申请</div>
                 </div>
-                <div style="width:24%;cursor: pointer;">
+                <div @click="openDialog" style="width:24%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width:57px;height:59px"
@@ -272,13 +292,13 @@
                   />
                   <div class="k_list">考勤补签</div>
                 </div>
-                <div style="width:24%;cursor: pointer;">
+                <div @click="openDialog" style="width:24%;cursor: pointer;">
                   <img
                     class="photo_img"
                     style="width:57px;height:59px"
                     src="@/assets/images/menu/changyong.png"
                   />
-                  <div class="k_list">常用功能</div>
+                  <div @click="openDialog" class="k_list">常用功能</div>
                 </div>
               </div>
             </div>
@@ -290,7 +310,7 @@
   </div>
 </template>
 <script>
-import { format, parse } from "date-fns";
+import { format, parse, getDay } from "date-fns";
 import {
   findWorknotePage,
   updateWorkNote,
@@ -342,6 +362,15 @@ export default {
         month: "",
         date: ""
       },
+      dayArray: [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六"
+      ],
       vw: 200,
       vh: 150,
       vh2: 200,
@@ -406,6 +435,23 @@ export default {
         []
       );
     },
+    //编辑审阅信息
+    changeComent(item) {
+      if (item.remarkStatus == 1) {
+        item.remarkStatus = 0;
+      } else {
+        item.remarkStatus = 1;
+      }
+    },
+    //修改日志
+    changeNote(item) {
+      if (item.editStatus == 1) {
+        item.editStatus = 0;
+      } else {
+        item.editStatus = 1;
+      }
+    },
+    //保存日志
     saveWorkNoteClick() {
       const userInfo = JSON.parse(window.sessionStorage.userInfo);
       saveWorkNote(
@@ -418,7 +464,8 @@ export default {
           noteScore: 10,
           userCreate: window.sessionStorage.userId, //创建人id
           userId: userInfo.info, //精细化id
-          userName: window.sessionStorage.realName //用户名中文
+          userName: window.sessionStorage.realName, //用户名中文
+          status: 0
         })
       ).then(res => {
         if (res.success) {
@@ -428,12 +475,11 @@ export default {
         }
       });
     },
-    //编辑审阅信息
-    changeComent(item) {
-      console.log(1);
-    },
-    //更新日志
-    updateWorkNoteClick(data) {
+    updateWorkNote(data) {
+      if (!data.content) {
+        alert("请输入内容。。。");
+        return;
+      }
       const userInfo = JSON.parse(window.sessionStorage.userInfo);
       const date1 = new Date(data.noteDate);
       const date2 = new Date();
@@ -445,35 +491,60 @@ export default {
         });
         return;
       }
-      updateWorkNote(
-        Object.assign({
-          id: data.id,
-          comment: data.comment,
-          remarkTime: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
-          leaderId: userInfo.info
-        })
-      ).then(res => {
+      let param = Object.assign({
+        id: data.id,
+        content: data.content,
+        userModified: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+        status: 0
+      });
+      updateWorkNote(param).then(res => {
         if (res.success) {
-          data.comment = res.data.comment;
-          data.remarkTime = res.data.remarkTime;
+          data.editStatus = 0;
           console.log(data);
         }
       });
     },
-    checkCanWrite() {},
-    getMonthDays(year, month) {
-      const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
-      const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), "day");
-      const lastDayOfMonth = firstDayOfMonth.add(1, "month").subtract(1, "day");
-      const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), "day");
-      return new Array(
-        firstDayOfMonth.daysInMonth() +
-          firstDayOfMonth.day() +
-          6 -
-          lastDayOfMonth.day()
-      )
-        .fill(0)
-        .map((item, index) => from.add(index, "day"));
+    //更新日志
+    updateWorkNoteClick(data) {
+      if (!data.comment) {
+        alert("请输入内容。。。");
+        return;
+      }
+      const userInfo = JSON.parse(window.sessionStorage.userInfo);
+      const date1 = new Date(data.noteDate);
+      const date2 = new Date();
+      let iDays = parseInt(Math.abs(date1 - date2) / 1000 / 60 / 60 / 24);
+      if (iDays > 15) {
+        this.$message({
+          type: "warning",
+          message: "已经超过15天"
+        });
+        return;
+      }
+      let param = Object.assign({
+        id: data.id,
+        approverName: window.sessionStorage.realName,
+        comment: data.comment,
+        remarkTime: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
+        leaderId: userInfo.info,
+        status: 1
+      });
+      updateWorkNote(param).then(res => {
+        if (res.success) {
+          data.status = 1;
+          data.remarkStatus = data.status;
+          data.approverName = param.approverName;
+          data.remarkTime = param.remarkTime;
+          data.remarkTime2 = format(new Date(param.remarkTime), "MM-dd HH:mm");
+          data.leaderId = param.leaderId;
+          console.log(data);
+        }
+      });
+    },
+    //滚动加载
+    load() {
+      this.nCurrent++;
+      this.query(this.nCurrent);
     },
     // 查询列表
     query(nCurrent = 1, index = 0) {
@@ -495,19 +566,33 @@ export default {
         // console.log(res.data.records)
         this.recordsList.push(
           ...res.data.records.map(obj => {
-            obj.remarkTime2 = format(
-              new Date(obj.remarkTime),
-              "yyyy-MM-dd HH:mm:ss"
-            );
+            obj.editStatus = 0;
+            obj.remarkStatus = obj.status;
+            obj.remarkTime2 = format(new Date(obj.remarkTime), "MM-dd HH:mm");
             obj.noteDate2 = format(new Date(obj.noteDate), "yyyy-MM-dd");
+            obj.day = getDay(new Date(obj.noteDate));
             return obj;
           })
         );
       });
     },
-    load() {
-      this.nCurrent++;
-      this.query(this.nCurrent);
+
+    openDialog() {
+      alert("功能建设中。。");
+    },
+    getMonthDays(year, month) {
+      const firstDayOfMonth = this.$dayjs(new Date(year, month, 1));
+      const from = firstDayOfMonth.subtract(firstDayOfMonth.day(), "day");
+      const lastDayOfMonth = firstDayOfMonth.add(1, "month").subtract(1, "day");
+      const to = lastDayOfMonth.add(6 - lastDayOfMonth.day(), "day");
+      return new Array(
+        firstDayOfMonth.daysInMonth() +
+          firstDayOfMonth.day() +
+          6 -
+          lastDayOfMonth.day()
+      )
+        .fill(0)
+        .map((item, index) => from.add(index, "day"));
     },
     prevMonth() {
       const d = this.$dayjs(
@@ -612,7 +697,7 @@ export default {
 
   .rc_write {
     margin-top: 5px;
-    padding-bottom: 10px;
+    padding-bottom: 10 px;
 
     .el-textarea {
       height: auto !important;
@@ -731,12 +816,17 @@ export default {
     display: flex;
   }
 
+  .c_content {
+    border: 1px solid #ccc;
+  }
+
   .ctitle {
-    width: 80%;
+    width: 100%;
     font-size: 14px;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: rgba(51, 51, 51, 1);
+    border-bottom: 1px solid #ccc;
   }
 
   .e_date {
@@ -762,7 +852,7 @@ export default {
   }
 
   .c_introduce {
-    font-size: 13px;
+    font-size: 12px;
     font-family: Microsoft YaHei;
     font-weight: 400;
     color: #515a6e;
@@ -835,21 +925,33 @@ export default {
   }
 
   .depName {
-    display: block;
+    // display: block;
     font-weight: normal;
     font-size: 12px;
     line-height: 20px;
     color: #aaa;
+    margin-left: 10px;
   }
 
   .e_center {
-    margin: 10px;
+  }
+
+  .e_remark {
+    border-left: 1px solid #ccc;
+    width: 40%;
     position: relative;
   }
 
+  .e_remark_title {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding: 0 0 4px 12px;
+  }
+
   .e_center_content {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f5f5f5;
+    // padding-bottom: 10px;
+    width: 60%;
+    // border-bottom: 1px solid #f5f5f5;
   }
 
   .e_center >>> .el-textarea__inner {
@@ -871,7 +973,15 @@ export default {
     font-size: 12px;
     font-family: Microsoft YaHei;
     font-weight: 400;
+    margin-left: 5px;
     color: rgba(35, 95, 246, 1);
+  }
+
+  .rc_btn_a {
+    color: orange;
+    float: right;
+    margin-right: 5px;
+    font-size: 12px;
   }
 </style> 
   
