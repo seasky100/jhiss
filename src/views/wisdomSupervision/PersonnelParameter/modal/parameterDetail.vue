@@ -31,11 +31,11 @@
 <script>
 import Userinfo from '../../../user/UserInfo';
 import UserLog from '../../../user/UserLog';
+import UserReport from '../../../user/UserReport';
+import UserOvertime from '../../../user/UserOvertime';
 import UserLeave from '../../../user/UserLeave';
 import UserAbroad from '../../../user/UserAbroad';
 import UserTalk from '../../../user/UserTalk';
-import UserReport from '../../../user/UserReport';
-import UserOvertime from '../../../user/UserOvertime';
 import UserSalary from '../../../user/UserSalary';
 
 export default {

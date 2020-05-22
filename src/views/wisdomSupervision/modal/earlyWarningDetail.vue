@@ -27,7 +27,7 @@
               <el-form-item label="本人反馈：">
                 <!-- <span>{{detailInfo.content||'未反馈'}}</span>
                 <p v-if="detailInfo.content">反馈时间：{{detailInfo.gmtCreate | formatTime}}</p> -->
-                <div v-if="detailInfo.is_self">
+                <div v-if="detailInfo.is_self && ((!detailInfo.content) || (detailInfo.content.trim() == ''))">
                   <el-input
                     type="textarea"
                     :autosize="{ minRows: 3, maxRows: 6}"
@@ -36,23 +36,33 @@
                   ></el-input>
                 </div>
                 <template v-else>
-                  <span>{{detailInfo.content||'未反馈'}}</span>
-                  <p v-if="detailInfo.content">反馈时间：{{detailInfo.gmtCreate | formatTime}}</p>
+                  <span style="color:red;"
+                    v-if="detailInfo.content == null || detailInfo.content == ''">
+                    未反馈
+                  </span>
+                  <span v-else>{{detailInfo.content}}</span>
+                  <div v-if="detailInfo.content">反馈时间：{{detailInfo.gmtCreate | formatTime}}</div>
                 </template>
               </el-form-item>
-              <el-form-item v-if="detailInfo.warnLevel == 2 || detailInfo.warnLevel == 3">
-                <p>反馈时间：{{detailInfo.gmtBranch | formatTime}}</p>
-                <p>层级领导反馈：</p>
-                <el-input
-                  type="textarea"
-                  :autosize="{ minRows: 3, maxRows: 6}"
-                  placeholder="请输入内容"
-                  v-model="detailInfo.leaderAdvice"
-                ></el-input>
+              <el-form-item v-if="detailInfo.content!=null&&detailInfo.content!=''&&(detailInfo.warnLevel == 2 || detailInfo.warnLevel == 3)">
+                <template v-if="(!detailInfo.leaderAdvice) || (detailInfo.leaderAdvice.trim() == '')">
+                  <div>反馈时间：{{detailInfo.gmtBranch | formatTime}}</div>
+                  <div>层级领导反馈：</div>
+                  <el-input
+                    type="textarea"
+                    :autosize="{ minRows: 3, maxRows: 6}"
+                    placeholder="请输入内容"
+                    v-model="detailInfo.leaderAdvice"
+                  ></el-input>
+                </template>
+                <template v-else>
+                  <div>反馈时间：{{detailInfo.gmtBranch | formatTime}}</div>
+                  <div>层级领导反馈：<span>{{detailInfo.leaderAdvice}}</span></div>
+                </template>
               </el-form-item>
-              <el-form-item v-if="detailInfo.warnLevel == 3">
-                <p>反馈时间：{{detailInfo.gmtLeader | formatTime}}</p>
-                <p>职能部门反馈：</p>
+              <el-form-item v-if="detailInfo.content!=null&&detailInfo.content!=''&&detailInfo.warnLevel == 3">
+                <div>反馈时间：{{detailInfo.gmtLeader | formatTime}}</div>
+                <div>职能部门反馈：</div>
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 3, maxRows: 6}"
@@ -60,7 +70,7 @@
                   v-model="detailInfo.branchAdvice"
                 ></el-input>
               </el-form-item>
-              <el-form-item v-if="detailInfo.is_self" style="text-align:center;">
+              <el-form-item v-if="detailInfo.options" style="text-align:center;">
                 <el-button type="primary" plain size="default" @click="handleSubmit">提交</el-button>
                 <el-button type="info" plain size="default" @click="visible = false">取消</el-button>
               </el-form-item>
@@ -98,10 +108,17 @@ export default {
   methods: {
     open(option) {
       this.visible = true;
-      if(option.userId == sessionStorage.userId && (!option.content)){
+      //  && ((!option.content) || (option.content.trim() == ''))
+      if(option.userId == sessionStorage.userId){
+        // 本人且反馈为空
         option.is_self = true
       }else{
-        option.is_leader = true
+        option.is_self = false
+      }
+      if((option.is_self && ((!option.content) || (option.content.trim() == ''))) || ((!option.is_self) && ((!option.leaderAdvice) || (option.leaderAdvice.trim() == '')))){
+        option.options = true
+      }else{
+        option.options = false
       }
       // console.log("用户信息", option)
       this.detailInfo = option
@@ -110,9 +127,11 @@ export default {
       let role = 1
       let leaderId = ''
       if(this.detailInfo.userId.includes(sessionStorage.userId)){
+        // 本人反馈
         role = 1
         leaderId = sessionStorage.userPid
       }else{
+        // 领导意见
         role = 2
         leaderId = sessionStorage.userId
       }
@@ -122,14 +141,22 @@ export default {
         leaderId: leaderId,
         role: role,
         content: this.detailInfo.content,
-        leaderAdvice: '', // 领导意见
+        leaderAdvice: this.detailInfo.leaderAdvice, // 领导意见
         branchAdvice: '', // 部门意见
       }
       console.log('提交', params)
       responseAuditWarning(params).then(res => {
         let option = res.data
-        if(option.userId == sessionStorage.userId && (!option.content)){
+        if(option.userId == sessionStorage.userId){
+          // 本人且反馈为空
           option.is_self = true
+        }else{
+          option.is_self = false
+        }
+        if((option.is_self && ((!option.content) || (option.content.trim() == ''))) || ((!option.is_self) && ((!option.leaderAdvice) || (option.leaderAdvice.trim() == '')))){
+          option.options = true
+        }else{
+          option.options = false
         }
         this.detailInfo = option
       })

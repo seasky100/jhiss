@@ -34,6 +34,7 @@
 <script>
 import { getRepastSiteWarnStatistics, getRepastWarnTimesStatistics, getFindMealCardPage } from '@/api/wisdom-reminder/perceptual-wisdom.js'
 import earlyWarningDetail from './modal/earlyWarningDetail'
+import { getUserListByUserId } from "@/api/user-server.js";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -47,7 +48,7 @@ export default {
       // 表格
       searchData: {
           userName: '',
-          dept_id: sessionStorage.orgId,
+          // dept_id: sessionStorage.orgId,
           startTime: '',
           endTime: '',
           orderByField: 'warnTime',
@@ -184,7 +185,7 @@ export default {
                     icon: '<i class="el-icon-view"></i>',
                     disabled: false,
                     method: (key, row) => {
-                        this.$refs.earlyWarningDetail.open(row);
+                      this.$refs.earlyWarningDetail.open(row);
                     },
                     showCallback: () => {
                         return true;
@@ -222,20 +223,35 @@ export default {
 		},
 		// 查询列表
 		query(nCurrent = 1) {
-				const $this = this;
-				getFindMealCardPage(Object.assign({
-						nCurrent: nCurrent,
-						nSize: 10,
-						orderByField: ''
-				}, $this.searchData)).then((res) => {
-						console.log(res.data)
-						this.$refs.recordSpTableRef.setPageInfo(
-								nCurrent,
-								res.size,
-								res.total,
-								res.data
-						);
-				});
+			getUserListByUserId({
+        userId: sessionStorage.userId,
+      }).then(res => {
+        let leaderStr = res.data.map(item => {
+          return item.id
+        })
+        leaderStr.unshift(sessionStorage.userId)
+        leaderStr = leaderStr.join(',')
+				// console.log(leaderStr)
+				this.getDataList(nCurrent, leaderStr)
+      });
+			// this.getDataList(nCurrent)
+		},
+		getDataList(nCurrent = 1, leaderStr){
+			const $this = this;
+			getFindMealCardPage(Object.assign({
+					nCurrent: nCurrent,
+					nSize: 10,
+					user_id: leaderStr,
+					orderByField: ''
+			}, $this.searchData)).then((res) => {
+					// console.log(res.data)
+					this.$refs.recordSpTableRef.setPageInfo(
+							nCurrent,
+							res.size,
+							res.total,
+							res.data
+					);
+			});
 		},
 		sortfunc(attr, rev) {
 				if (rev == undefined) {
