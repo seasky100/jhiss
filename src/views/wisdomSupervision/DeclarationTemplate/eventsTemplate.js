@@ -455,6 +455,7 @@ let columns210 = [
     { prop: 'comment', label: '备注', align: 'left' },
 ]
 
+// headerTab 默认为 1
 let tableData = [
     { columns: columns1, data: [], headerTab: 2, headerParam:{edit:false} }, // 111
     { columns: columns2, data: [data1[0]] },

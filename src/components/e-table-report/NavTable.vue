@@ -50,7 +50,8 @@
           <span v-else-if="(!item.formatter) && (!scope.row.summaryfunc)">
             <!-- {{scope.row[item.prop]}} -->
             <template v-if="item.type == 'date'">
-              {{scope.row[item.prop] != null ? formatterDate(scope.row[item.prop]) : ''}}
+              <!-- {{scope.row[item.prop] != null ? formatterDate(scope.row[item.prop]) : ''}} -->
+              {{formatterDate(scope.row[item.prop])}}
             </template>
             <template v-else>
               {{scope.row[item.prop]}}
@@ -88,7 +89,8 @@
                   <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="headerParam[item.prop]" style="width: 100%;"></el-date-picker>
                 </template>
                 <template v-else>
-                  {{headerParam[item.prop2] != null ? formatterDate(headerParam[item.prop2]) : ''}}
+                  <!-- {{headerParam[item.prop2] != null ? formatterDate(headerParam[item.prop2]) : ''}} -->
+                  {{formatterDate(headerParam[item.prop2])}}
                 </template>
               </span>
               <span v-else-if="item.type == 'checkbox'">
@@ -129,7 +131,8 @@
                   <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="headerParam[item.prop]" style="width: 100%;"></el-date-picker>
                 </template>
                 <template v-else>
-                  {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
+                  {{formatterDate(headerParam[item.prop])}}
+                  <!-- {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}} -->
                 </template>
               </span>
               <span v-else-if="item.type == 'checkbox'">
@@ -164,7 +167,8 @@
               <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="选择日期" v-model="headerParam[item.prop]" style="width: 100%;"></el-date-picker>
             </template>
             <template v-else>
-              {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}}
+              <!-- {{headerParam[item.prop] != null ? formatterDate(headerParam[item.prop]) : ''}} -->
+              {{formatterDate(headerParam[item.prop])}}
             </template>
           </span>
           <!-- headerParam[item.prop] -->
@@ -238,8 +242,11 @@ export default {
   },
   methods: {
     formatterDate(dataString){
-      if(dataString == null){
+      if(dataString == null || dataString == ''){
         return ''
+      }else if(isNaN(dataString) && !isNaN(Date.parse(dataString))){
+        // console.log("data是日期格式！")
+        return dataString
       }else{
         return format(new Date(dataString), 'yyyy-MM-dd')
       }

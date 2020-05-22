@@ -12,7 +12,9 @@
           :icon="headerTab == 2 ? 'el-icon-edit' : 'el-icon-plus'" 
           circle 
           @click="addTabData"></el-button>
-        <el-button class="opertion" size="mini" type="success" icon="el-icon-check" circle @click="saveBtnClick"></el-button>
+        <template v-if="headerTab != 1 && headerTab != 5">
+          <el-button class="opertion" size="mini" type="success" icon="el-icon-check" circle @click="saveBtnClick"></el-button>
+        </template>
         <!-- <span style="color:red;margin-left:10px;">
           注：保存按钮可获取新增数组数据
         </span> -->
@@ -45,6 +47,20 @@
       :data="tableData2" 
       style="width:100%;">
       <nav-table :columns="columns2"></nav-table>
+      <el-table-column
+        class-name="classOptions"
+        fixed="right"
+        label="操作"
+        width="100">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.edit" @click="handleClick(scope.row)" type="text" size="small">
+            保存
+          </el-button>
+          <el-button v-else type="text" size="small" @click="handleClickDelete(scope.row.id)">
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
       <template v-if="headerTab == 5" slot="append" class="appendTab">
         <el-table :class="['headerTab']" :data="[]" style="width: 100%">
           <el-table-column
@@ -252,21 +268,47 @@ export default {
       if(JSON.stringify(newV) == JSON.stringify(oldV)){
         return
       }
+      if(this.headerTab == 1 || this.headerTab == 5){
+        this.columns.push(this.columns[0])
+        this.columns.shift()
+      }
       this.columns2 = this.columns
     },
-    // headerParam(newV, oldV){
-    //   console.log(newV)
-    // }
   },
   mounted() {
     if(this.annualTotal != null){
       this.editTotal = this.annualTotal
     }
+    if(this.headerTab == 1 || this.headerTab == 5){
+      this.columns.push(this.columns[0])
+      this.columns.shift()
+    }
     this.columns2 = this.columns
     this.tableData2 = [...this.tableData,...this.appendTab]
-    // this.columns3 = this.recursionList(this.columns)
   },
   methods: {
+    handleClick(data) {
+      let flag = true
+      for(let key in data){
+        if(key != 'edit' && key != 'type' && data[key] != null && data[key] != ''){
+          flag = false
+        }
+      }
+      if(flag){
+        this.$message({
+          type: 'warning',
+          message: '提交为空！'
+        })
+        return
+      }else{
+        this.addFlag = false
+        this.loading = true
+        this.$emit('editData', this.index, data, this.saveEvent)
+      }
+    },
+    handleClickDelete(id){
+      console.log('删除', this.index, id)
+    },
     // 单元格双击事件
     cellHandleDbClick(row, column, cell, event){
       console.log(cell,event)

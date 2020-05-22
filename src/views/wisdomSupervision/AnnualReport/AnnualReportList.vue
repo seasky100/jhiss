@@ -229,7 +229,7 @@ export default {
           nCurrent,
           res.data.size,
           res.data.total,
-          res.data.records
+          res.data.records.reverse()
         );
       })
     },
