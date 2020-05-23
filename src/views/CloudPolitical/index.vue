@@ -66,8 +66,7 @@
         <div class="rc_content" ref="rc_content">
           <!-- 左侧 -->
           <div class="rc_left">
-            <!-- 新增日志 -->
-            <!-- @activated="onActivated" -->
+            <!-- 新增日志  -->
             <div class="rc_tap">
               <div style="background:#fff;padding: 0 5px;">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -77,13 +76,14 @@
                         type="textarea"
                         autosize
                         show-word-limit
-                        placeholder="发布一条日志。。。(不少于5个字)"
-                        v-model="newWContent"
+                        :disabled="todayNoteStatus==1"
+                        :placeholder="todayNoteStatus==0?'发布一条日志，。。(不少于20字，当日重复发布只保留最新一条)':'当日日志已审阅，请勿重复发布'"
+                        v-model="newContent"
                         clearable
                         resize="none"
                       ></el-input>
                       <div class="r_send">
-                        <el-button :disabled="isEmpty" type="small" @click="saveWorkNoteClick">发布</el-button>
+                        <el-button :disabled="isEmpty" type="small" @click="saveWorkNote">发布</el-button>
                       </div>
                     </div>
                     <div>
@@ -141,7 +141,7 @@
                                   <div
                                     v-if="!item2.editStatus"
                                     class="c_introduce"
-                                    style="white-space: pre-wrap;"
+                                    style="white-space: pre-wrap;word-break: break-word"
                                   >{{item2.content||'未填写'}}</div>
                                   <div
                                     style="padding-top: 5px; position:relative"
@@ -203,7 +203,7 @@
                   </template>
                 </el-tabs>
                 <div style="position: absolute;top: 10px;right: 18px;">
-                  <a class="rc_btn">批量操作</a>
+                  <!-- <a class="rc_btn">批量操作</a> -->
                 </div>
               </div>
             </div>
@@ -215,7 +215,7 @@
                 <div style="margin-top: 10px;margin-left: 15px;font-weight: 600;">工作日历</div>
               </div>
               <div class="p_hevaluate" style="float : left; height: 245px;">
-                <el-calendar v-model="value"></el-calendar>
+                <el-calendar v-model="today"></el-calendar>
               </div>
             </div>
             <div class="r_attendance">
@@ -310,7 +310,7 @@
   </div>
 </template>
 <script>
-import { format, parse, getDay } from "date-fns";
+import { format, parse, getDay, isToday } from "date-fns";
 import {
   findWorknotePage,
   updateWorkNote,
@@ -329,9 +329,10 @@ export default {
   },
   data() {
     return {
-      value: new Date(),
+      today: new Date(),
       isEmpty: true,
-      textarea2: "",
+      todayNoteId: null,
+      todayNoteStatus: 0,
       nCurrent: 1, //当前页码
       searchData: [
         { userId: this.$store.state.user.userInfo.info },
@@ -348,13 +349,12 @@ export default {
         // {label: '领导互评', name: '', data: [{name:''}]},
       ],
       recordsList: [],
-      newWContent: "", //日志内容
-      textarea: "",
+      newContent: "", //日志内容
+      limitContent:20,
       activeName: "first",
       activeName1: "0_tabs",
       nyear: "",
       nmonth: "",
-      ndate: "",
       rData: [],
       scores: [],
       ydata: {
@@ -370,62 +370,24 @@ export default {
         "星期四",
         "星期五",
         "星期六"
-      ],
-      vw: 200,
-      vh: 150,
-      vh2: 200,
-      top: 0,
-      left: 0
+      ]
     };
   },
   watch: {
-    newWContent(val) {
-      console.log(val, val.length);
-      if (val.length > 5) {
-        this.isEmpty = false;
-      } else {
+    newContent(val) {
+      if (val.length < this.limitContent) {
         this.isEmpty = true;
+      } else {
+        this.isEmpty = false;
       }
     }
   },
   mounted() {
-    // this.listenCon();
     this.init();
+    this.getIsWorkNoteFinish();
     this.query();
   },
   methods: {
-    listenCon() {
-      const _this = this;
-      this.vw = this.$refs.rc_content.offsetWidth * 0.7;
-      this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 10;
-      const erd = this.$elementResizeDetectorMaker();
-      erd.listenTo(this.$refs.rc_content, element => {
-        _this.$nextTick(() => {
-          _this.vw = element.offsetWidth * 0.7;
-          _this.vh2 = this.$refs.rc_content.offsetHeight - _this.vh - 10;
-          let dom = $(".r_content .el-tabs__content");
-          // dom[0].style.height = this.vh - 70 + "px";
-          // dom[1].style.height = this.vh2 - 70 + "px";
-        });
-      });
-    },
-    onActivated() {
-      this.$refs.textarea.focus();
-    },
-    onResize(newRect) {
-      this.vw = this.$refs.rc_content.offsetWidth * 0.7;
-      if (newRect.height > 400) {
-        this.vh = 400;
-      } else {
-        this.vh = newRect.height;
-      }
-      this.vh2 = this.$refs.rc_content.offsetHeight - this.vh - 10;
-      let dom = $(".r_content .el-tabs__content");
-      // dom[0].style.height = this.vh - 70 + "px";
-      // dom[1].style.height = this.vh2 - 70 + "px";
-      this.x = 0;
-      this.y = 0;
-    },
     init() {
       this.rData = this.getMonthDays(this.ydata.year, this.ydata.month).reduce(
         (prev, item, index) =>
@@ -451,13 +413,24 @@ export default {
         item.editStatus = 1;
       }
     },
+    saveWorkNote(item) {
+      if (this.todayNoteId) {
+        this.updateWorkNote({
+          content: this.newContent,
+          id: this.todayNoteId,
+          noteDate: new Date().toString
+        },true);
+      } else {
+        this.saveWorkNoteClick();
+      }
+    },
     //保存日志
     saveWorkNoteClick() {
       const userInfo = JSON.parse(window.sessionStorage.userInfo);
       saveWorkNote(
         Object.assign({
           // comment: "string",//批阅
-          content: this.newWContent,
+          content: this.newContent,
           deptId: window.sessionStorage.orgId,
           deptName: window.sessionStorage.orgName,
           noteDate: format(new Date(), "yyyy-MM-dd HH:mm:ss"),
@@ -469,13 +442,37 @@ export default {
         })
       ).then(res => {
         if (res.success) {
-          this.newWContent = "";
+          this.newContent = "";
           console.log("发布成功");
           this.query();
         }
       });
     },
-    updateWorkNote(data) {
+    getIsWorkNoteFinish() {
+      findWorknotePage({
+        nCurrent: 1,
+        nSize: 1,
+        userId: this.$store.state.user.userInfo.info,
+        // staffed: this.userIds,
+        orderByField: "noteDate",
+        orderFlag: false
+      }).then(res => {
+        if (res.success) {
+          if (res.data.records.length > 0) {
+            let noteDate = res.data.records[0].noteDate;
+            let noteDate2 = format(new Date(noteDate), "yyyy-MM-dd");
+            if (
+              isToday(new Date(noteDate2)) &&
+              res.data.records[0].userCreate == window.sessionStorage.userId
+            ) {
+              this.todayNoteId = res.data.records[0].id;
+              //   this.todayNoteStatus = res.data.records[0].status;
+            }
+          }
+        }
+      });
+    },
+    updateWorkNote(data,input_add) {
       if (!data.content) {
         alert("请输入内容。。。");
         return;
@@ -500,7 +497,11 @@ export default {
       updateWorkNote(param).then(res => {
         if (res.success) {
           data.editStatus = 0;
-          console.log(data);
+          if(input_add==true){
+  this.newContent = "";
+          this.query();
+          }
+        
         }
       });
     },
@@ -806,9 +807,8 @@ export default {
   }
 
   .r_send {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+    text-align:right;
+    padding:2px 0;
   }
 
   .c_top {
@@ -945,7 +945,7 @@ export default {
   .e_remark_title {
     width: 100%;
     border-bottom: 1px solid #ccc;
-    padding: 0 0 4px 12px;
+    padding: 0 0 3px 12px;
   }
 
   .e_center_content {

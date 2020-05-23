@@ -185,24 +185,12 @@
             ]
           }
         ],
-        activeMenu: '',
         routes: [],
       }
     },
     components: { NavMenu },
     watch: {
     },
-    // computed: {
-    //   // 获取当前路由的子路由
-    //   routes(){
-    //     var routes = {
-    //       children: this.$router.options.routes
-    //     };
-    //     var routesArr = routes.children[0].children
-    //     // this.activeMenu = routes.routes[0].path
-    //     return routesArr
-    //   }
-    // },
     mounted() {
       const _this = this
       this.$nextTick(() => {
@@ -212,9 +200,6 @@
         };
         _this.routes = routes.children[0].children
       });
-      // this.$root.eventHub.$on("changeParam", (n)=>{
-      //     this.getTraffData()
-      // });
       this.userInfo = JSON.parse(sessionStorage.userInfo)
       this.policeCode = this.userInfo.policeCode
       this.policeRank = this.userInfo.policeRank
@@ -223,27 +208,11 @@
       this.name = sessionStorage.realName
       this.organizationNames = sessionStorage.orgName
       this.src = myPhotoSrc(this.userInfo)
-      this.init();
     },
     methods: {
       // agency(){
       //   this.$refs.agencyBox.open();
       // },
-      init() {
-        if(this.routes != null && this.routes != undefined){
-          this.activeMenu = this.routes[0].path
-        }
-      },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleSelect(key, keyPath) {
-        this.activeMenu = key
-        console.log(key, keyPath)
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath)
-      },
       switchClick(){
         this.isCollapse = !this.isCollapse
       },
@@ -275,13 +244,6 @@
               this.logout()
               this.$router.push('/login')
           },
-      // handleClose(done) {
-      //   this.$confirm('确认关闭？')
-      //     .then(_ => {
-      //       done();
-      //     })
-      //     .catch(_ => {});
-      // }
     },
   }
   

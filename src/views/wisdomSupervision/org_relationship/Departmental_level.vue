@@ -45,10 +45,10 @@
       </div>
     </div>
     <div class="post_status">
-      <div style="margin-bottom:20px">
+      <!-- <div style="margin-bottom:20px">
         排列方式：
         <input type="checkbox" v-model="horizontal" />水平排列
-      </div>
+      </div> -->
       <span style="display:block;">岗位状态颜色说明：</span>
       <!-- <li style="color:#1ACE80;">正常</li>
       <li style="color:#DABC85;">关注</li>
@@ -126,7 +126,6 @@ export default {
       }
       warnInfoCountByType(param).then((res) => {
         let data = res.data
-        // console.log(data)
         let num1 = 0
         let num2 = 0
         for(let key in data){
@@ -162,17 +161,25 @@ export default {
       this.active = (query && query.id) || sessionStorage.depId;
       if (window.sessionStorage.dep_list) {
         this.entranceList = JSON.parse(window.sessionStorage.dep_list);
-        // console.log(this.entranceList)
         let n = 0;
         for (let i = 0; i < this.entranceList.length; i++) {
           let obj = this.entranceList[i];
-          // if(obj.id == '831' || obj.orgId == '831'){
-          //   console.log('存在部门中')
-          // }
           if (obj.id == this.active || obj.orgId == this.active) {
             n = i;
             this.getTreeData(obj);
             break;
+          }
+        }
+        //判断有没有传id，
+        if(!query||!query.id){
+          for (let i = 0; i < this.entranceList.length; i++) {
+            let obj = this.entranceList[i];
+            let objStr=JSON.stringify(obj)
+            if(objStr.includes(window.sessionStorage.userId)){
+              n = i;
+              this.getTreeData(obj);
+              break;
+             }
           }
         }
         this.$nextTick(() => {
@@ -199,11 +206,6 @@ export default {
       node.userList=userList;
       //把当前岗位的节点当作子节点
       for (var i = 0; i < userList.length; i++) {
-        // userList[i].userPid = node.userPid;
-        // userList[i].children = [];
-        // userList[i].level = t;
-        // userList[i].index = i;
-
         let child = {
           userPid: node.userPid,
           id: userList[i].id,
@@ -279,7 +281,6 @@ export default {
       });
       tree_data.children = childrenArr
       // this.tree_data = tree_data
-      // console.log(tree_data)
       this.getWarnPerson(tree_data)
     },
     getWarnPerson(tree_data){
@@ -287,14 +288,11 @@ export default {
         deptId: tree_data.orgId
       }
       warnInfoTypeBydeptId(param).then((res) => {
-        // console.log(res.data)
-        // console.log(tree_data)
         this.warnPersonList = res.data
         this.tree_data = tree_data
       })
     },
     handleClickDep(value) {
-      // console.log(value)
       this.$router.push({
         path: "/Departmental_level",
         query: { id: value.id }
@@ -348,6 +346,19 @@ export default {
             n = i;
             this.getTreeData(obj);
             break;
+          }
+        }
+        let query = this.$route.query;
+          //判断有没有传id，
+        if(!query||!query.id){
+          for (let i = 0; i < this.entranceList.length; i++) {
+            let obj = this.entranceList[i];
+            let objStr=JSON.stringify(obj)
+            if(objStr.includes(window.sessionStorage.userId)){
+              n = i;
+              this.getTreeData(obj);
+              break;
+             }
           }
         }
         this.$nextTick(() => {
