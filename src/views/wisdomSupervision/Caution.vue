@@ -116,7 +116,7 @@
 					</div>
 				</div>-->
 			</div>
-		  	<div class='c_cright'>
+			<div class='c_cright'>
 				<div class='e_title'>
 					<div class='c_exposure'>
 						历史记录
@@ -193,11 +193,11 @@
 								</div>
 							</li>
 						</div>	
-			  			<div id="child2" class="child"></div>
-			  		</div>
-		  		</div> -->
+						<div id="child2" class="child"></div>
+					</div>
+				</div> -->
 			</div>
-	  	</div>
+		</div>
 	</div>
 </template>
 <script>
