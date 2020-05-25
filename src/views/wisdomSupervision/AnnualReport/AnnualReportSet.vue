@@ -182,6 +182,22 @@ export default {
         item.data = []
         return item
       })
+      if(!reportInfo.hasOwnProperty(300)){
+        let userInfo = JSON.parse(sessionStorage.userInfo)
+        let obj = {
+          name: sessionStorage.realName,
+          sex: userInfo.sex ==1?'男':'女',
+          nation:userInfo.nation,
+          employer:userInfo.label,
+          currentPosition:userInfo.job,
+          rank:userInfo.major,
+          cardNum:userInfo.cardNum,
+          residenceAddress:userInfo.nativePlace,
+          userRelationVoList: [],
+          socialRelationship: []
+        }
+        this.reportInfoData = obj
+      }
       for(let key in reportInfo){
         if(key == 300){
           let n = reportInfo[key].length - 1

@@ -1,16 +1,18 @@
 <template>
 	<div class="Caution" style="height:100%;">
-	  	<div class='c_title'>
+		<div class='c_title'>
 			<img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
 			警示曝光栏
-	  	</div>
-	  	<div class='c_head'>
+		</div>
+			<div class='c_head'>
 			<div class='c_left content'>
 				<div class='c_education'>
 					<div class='c_tip'>警示教育</div>
-					<img style="margin-top: 3px;height: 70px;width: 70px;" src='../../utils/img/weducation.png' />
+					<img style="margin-top: 3px;height: 105px;width: 105px;" src='../../utils/img/weducation.png' />
 				</div>
-				<div id="yiBiao" class="yiBiao"></div>
+				<div class="c_yibiao">
+					<div id="yiBiao" class="yiBiao"></div>
+				</div>
 				<!-- <div class='c_tlearn'>
 					<div class='c_tip'>{{totalData.unLearned}}</div>
 					<img style="margin-top: 3px;height: 48px;width: 48px;" src='../../utils/img/tlearn.png' />
@@ -45,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-	  	<div class='c_content'>
+		<div class='c_content'>
 			<div class='c_cleft'>
 				<div class='e_title'>
 					<div class='c_exposure'>
@@ -64,12 +66,12 @@
 					<div class="c_cleft_pingLunTitle">{{pinLunNum}}条评论</div>
 					<div class="c_cleft_pingLunCon">
 						<div class="c_cleft_pingConDiv" v-for="(item,index) in nodeData" :key="index">
-							<div class="pingConLeft"><img :src="item.headUrl" alt=""></div>
+							<div class="pingConLeft"><img :src="item.headUrl" :onerror="imgurl"></div>
 							<div class="pingConRight">
 								<div class="pingConName"><p>{{item.name}}</p><p>{{item.gmtCreate}}</p></div>
 								<div class="pingConText">
 									{{item.noteContent}}
-                            	</div>
+                </div>
 								<div class="pingConZan" ><p @click='updateLike(item)'><img style="width: 15px;height:12px;" src='../../utils/img/zan.png' />{{item.praiseCount}}</p></div>
 							</div>
 						</div>
@@ -114,7 +116,7 @@
 					</div>
 				</div>-->
 			</div>
-		  	<div class='c_cright'>
+				<div class='c_cright'>
 				<div class='e_title'>
 					<div class='c_exposure'>
 						历史记录
@@ -136,6 +138,17 @@
 							<p class="zaiXue" v-if='item.leanStatus == 1' @click='tolearn(item.id)'>再次学习</p>
 						</div>
 					</div>
+				</div>
+				<div class="fenYe">
+					<el-pagination
+						background
+						layout="prev, pager, next"
+						:current-page.sync="pagenum"
+						@current-change="findExposurePage"
+						:total="totals"
+						:page-size="10"
+						>
+					</el-pagination>
 				</div>
 				<!-- <div class='e_head'>
 					<el-card class='c_hexposure'>
@@ -164,8 +177,8 @@
 						</li>
 					</el-card>
 				</div> -->
-			  	<!-- <div class='c_sentiment'>
-				  	<div id="parent" class="parent">
+				<!-- <div class='c_sentiment'>
+					<div id="parent" class="parent">
 						<div id="child1" class="child">
 							<li class='c_scont' v-for="(item,index) in nodeData" :key="index">
 								<div class='c_top'>
@@ -191,11 +204,11 @@
 								</div>
 							</li>
 						</div>	
-			  			<div id="child2" class="child"></div>
-			  		</div>
-		  		</div> -->
+						<div id="child2" class="child"></div>
+					</div>
+				</div> -->
 			</div>
-	  	</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -216,6 +229,9 @@ export default {
 			oneData:[],
 			zuiXinData:[],//最新一期数据
 			pinLunNum:'',//最新一期评论数
+			imgurl:'this.src="'+ require('../../assets/images/bg/person.png') +'"',
+			totals:1,//数据总数
+			pagenum:0,//当前页数
 		}
 	},
 	watch: {},
@@ -272,13 +288,13 @@ export default {
 		findExposurePage() {
 			const _this = this;
 			const params = {
-				nCurrent: 1,
-				nSize: 100,
+				nCurrent: _this.pagenum,
+				nSize: 10,
 				userId: _this.userId
 			}
 			findExposurePage(params).then(res => {
-				// console.log('leftData',res)
 				if (res.success) {
+					this.totals=res.data.total
 					_this.listData=res.data.records
 					_this.zuiXinData=[]
 					_this.zuiXinData.push(res.data.records[0])
@@ -315,7 +331,7 @@ export default {
 						if(data[i].headUrl){
 							data[i].headUrl = 'http://10.121.252.53:1001/View_file/UserImage/'+ data[i].headUrl.split('\\').slice(-1)[0]
 							// myPhotoSrc(data[i].headUrl)
-							console.log(data[i].headUrl)   
+							// console.log(data[i].headUrl)   
 						}
 						if(data[i].exposureId==_this.zuiXinData[0].id){
 							_this.nodeData.push(data[i])
@@ -355,13 +371,9 @@ export default {
 				[{
 					name:name,
 					type: 'gauge',
-					detail: {
-						formatter:'{value}%',
-						fontSize:16,			// 文字的字体大小,默认 15。
-					},
 					startAngle: 180,        // 仪表盘起始角度,默认 225。圆心 正右手侧为0度，正上方为90度，正左手侧为180度。
 					endAngle: 0,          // 仪表盘结束角度,默认 -45
-					center: ["60%", "60%"], 
+					center: ["50%", "70%"], 
 					radius: "100%", //仪表大小
 					title : {               //设置仪表盘中间显示文字样式
 						textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
@@ -372,12 +384,12 @@ export default {
 						},
 						offsetCenter: [0,"60%"],//相对于仪表盘中心的偏移位置，数组第一项是水平方向的偏移，第二项是垂直方向的偏移。可以是绝对的数值，也可以是相对于仪表盘半径的百分比
 					},
-					//min:0,
-					//max:100,
+					min:0,
+					max:100,
 					axisLine: {            // 坐标轴线  
-						show:true,
+						show:true, 
 						lineStyle: {       // 属性lineStyle控制线条样式  
-							//color: [[0.2, '#FF8115'], [0.8, '#F8BB4D'], [1, '#3CF088']],
+							color: [[0.2, '#FF8115'], [0.8, '#F8BB4D'], [1, '#3CF088']],
 							width: 30,//宽度
 							//shadowBlur: 10,             //(发光效果)图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。 
 							//shadowColor: "#fff",        //阴影颜色。支持的格式同color。
@@ -396,7 +408,7 @@ export default {
 						}
 					},
 					axisTick: {             // 刻度(线)样式。
-						show: false,             // 是否显示刻度(线),默认 true。
+						show: true,             // 是否显示刻度(线),默认 true。
 						splitNumber: 5,         // 分隔线之间分割的刻度数,默认 5。
 						length: 8,              // 刻度线长。支持相对半径的百分比,默认 8。
 						lineStyle: {            // 刻度线样式。   
@@ -411,6 +423,11 @@ export default {
 					pointer : { //指针样式
 						length: '50%'
 					}, 
+					detail : {//最下边数值的设置
+						show : true,
+						formatter:'{value}%',
+						fontSize:16,
+					},
 					axisLabel : { //文字样式（及“10”、“20”等文字样式）
 						color : "white",
 						distance : 3 //文字离表盘的距离
@@ -494,8 +511,7 @@ export default {
 			});
 		},
 		getRadar2() {
-		  	var colors = ['#5793f3', '#d14a61', '#675bba'];
-  
+			var colors = ['#5793f3', '#d14a61', '#675bba'];
 			let radarDom2 = this.$echarts.init(document.getElementById('hline'))
 			let option = {
 				color: colors,
@@ -506,9 +522,9 @@ export default {
 						type: 'cross'
 					}
 				},
-			  //   legend: {
-			  // 	  data: ['2016 降水量']
-			  //   },
+				//   legend: {
+				// 	  data: ['2016 降水量']
+				//   },
 				grid: {
 					left: '2%',
 					right: '4%',
@@ -523,11 +539,11 @@ export default {
 							alignWithLabel: true
 						},
 						axisLine: {
-				  lineStyle: {
-					  color: 'gray',
-					  type: 'dashed'
-				  },
-			  },
+						lineStyle: {
+							color: 'gray',
+							type: 'dashed'
+						},
+					},
 						axisPointer: {
 							label: {
 								formatter: function (params) {
@@ -541,8 +557,8 @@ export default {
 				],
 				yAxis: [
 					{
-					  show:false,
-						type: 'value'
+					show:false,
+					type: 'value'
 					}
 				],
 				series: [
@@ -556,7 +572,7 @@ export default {
 			}
 			radarDom2.setOption(option)
 			//多图表自适应
-					  //折线图宽高自适应
+			//折线图宽高自适应
 			window.onresize = function () {
 				radarDom2.resize();
 			}
@@ -676,6 +692,10 @@ export default {
 		margin: 10px;
 		display: flex;
 	}
+	.c_yibiao{
+		width: 80%;
+		height: 100%;
+	}
 	.c_title{
 		float: left;
 		width: 100%;
@@ -688,7 +708,7 @@ export default {
 		/* border-left: 5px solid #409eff; */
 		padding-left: 10px;
 		background-color: white;
-		padding-top: 6px;
+		/* padding-top: 6px; */
 	}
 	.c_exposure{
 		float: left;
@@ -723,10 +743,10 @@ export default {
 		width: 100%;
 	}
 	.c_cleft{
-		width: 50%;
+		width: 65%;
 		background-color: white;
 		margin: 10px;
-		padding: 20px;
+		padding:0 10px 10px 10px;
 	}
 
 	/*新 */
@@ -744,19 +764,19 @@ export default {
 	.c_cleft_pingLunTitle{color: #333333;font-size: 14px;font-weight:bold;border: solid 1px rgba(245, 245, 245, 1);padding: 10px;}
 	.c_cleft_pingLun{margin-top: 10px;height: 68%;}
 	.c_cleft_pingLunCon{border: solid 1px rgba(245, 245, 245, 1);border-top:none ;padding: 20px;height: 80%;overflow: auto;}
-	.c_cleft_pingConDiv .pingConLeft{width: 50px;height: 50px;border-radius:50%;overflow: hidden;flex: 1;}
-	.c_cleft_pingConDiv .pingConLeft img{width: 50px;height: 50px;}
-	.c_cleft_pingConDiv .pingConRight{margin-left: 10px;flex: 8;}
+	.c_cleft_pingConDiv .pingConLeft{width: 50px;overflow: hidden;flex: 1;text-align: center;}
+	.c_cleft_pingConDiv .pingConLeft img{width: 60px;height: 60px;border-radius:50%;overflow: hidden;margin-top: 5px;box-shadow:0px 0px 10px #F3F7FF;}
+	.c_cleft_pingConDiv .pingConRight{margin-left: 10px;flex: 9;}
 	.c_cleft_pingConDiv .pingConRight .pingConName{display: flex;justify-content: space-between;}
 	.c_cleft_pingConDiv .pingConRight .pingConName p:nth-child(1){color: #333333;font-weight: 600;font-size: 14px;}
-	.c_cleft_pingConDiv .pingConRight .pingConName p:nth-child(2){color: #8D9AAD;font-size: 12px;}
+	.c_cleft_pingConDiv .pingConRight .pingConName p:nth-child(2){color: #8D9AAD;font-size: 14px;}
 	.c_cleft_pingConDiv .pingConRight .pingConText{font-size: 14px;line-height:29px;color: #515A6E;}
 	.c_cleft_pingConDiv .pingConRight .pingConZan{display: flex;justify-content: flex-end;}
 	.c_cleft_pingConDiv .pingConRight .pingConZan p{background: #EEEEEF;border-radius:12px;width: 47px;padding: 5px 0;text-align: center;}
 	.c_cleft_pingConDiv .pingConRight .pingConZan p img{vertical-align: inherit;}
 	
 	/* 右边 */
-	.c_crightCon{padding: 20px;height: 88%;overflow: auto;}
+	.c_crightCon{padding:10px 10px;height: 86%;overflow: auto;}
 	.c_crightConDiv{border-bottom:solid 1px rgba(245, 245, 245, 1) ;padding:10px 0 0 0;}
 	.c_crightConDiv .c_crightName p:nth-child(1){font-size: 18px;color: #333333;font-weight: 600;}
 	.c_crightConDiv .c_crightName p:nth-child(2){font-size: 14px;color: #8D9AAD;font-weight:600;margin-top: 20px;}
@@ -765,9 +785,10 @@ export default {
 	.c_crightConDiv .c_crightXueStart{display: flex;justify-content: flex-end;}
 	.c_crightConDiv .c_crightXueStart .kaiXue{padding: 10px 20px;background: #FA7F79;color: white;border-radius:18px;}
 	.c_crightConDiv .c_crightXueStart .zaiXue{padding: 10px 20px;background: #006EFF;color: white;border-radius:18px;}
+	.fenYe{text-align: center;padding: 10px 0;}
 	/*新 结束*/
 	.c_cright{
-		width: calc(50% - 10px);
+		width: calc(35% - 10px);
 		background-color: #fff;
 		/* margin: 10px; */
 		margin-right: 10px;
@@ -822,8 +843,8 @@ export default {
 		width: 35%;
 	}
 	.yiBiao{
-		width:80%;
-		height:100;
+		width:100%;
+		height:100%;
 	}
 	.hbar{
 		height: 85%;
