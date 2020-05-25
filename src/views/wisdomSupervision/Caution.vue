@@ -1,10 +1,10 @@
 <template>
 	<div class="Caution" style="height:100%;">
-	  	<div class='c_title'>
+		<div class='c_title'>
 			<img style='margin-top: 3px;' src='../../utils/img/home_round_bar@2x.png' /> 
 			警示曝光栏
-	  	</div>
-	  	<div class='c_head'>
+		</div>
+			<div class='c_head'>
 			<div class='c_left content'>
 				<div class='c_education'>
 					<div class='c_tip'>警示教育</div>
@@ -47,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-	  	<div class='c_content'>
+		<div class='c_content'>
 			<div class='c_cleft'>
 				<div class='e_title'>
 					<div class='c_exposure'>
@@ -71,7 +71,7 @@
 								<div class="pingConName"><p>{{item.name}}</p><p>{{item.gmtCreate}}</p></div>
 								<div class="pingConText">
 									{{item.noteContent}}
-                            	</div>
+                </div>
 								<div class="pingConZan" ><p @click='updateLike(item)'><img style="width: 15px;height:12px;" src='../../utils/img/zan.png' />{{item.praiseCount}}</p></div>
 							</div>
 						</div>
@@ -116,7 +116,7 @@
 					</div>
 				</div>-->
 			</div>
-			<div class='c_cright'>
+				<div class='c_cright'>
 				<div class='e_title'>
 					<div class='c_exposure'>
 						历史记录
@@ -138,6 +138,17 @@
 							<p class="zaiXue" v-if='item.leanStatus == 1' @click='tolearn(item.id)'>再次学习</p>
 						</div>
 					</div>
+				</div>
+				<div class="fenYe">
+					<el-pagination
+						background
+						layout="prev, pager, next"
+						:current-page.sync="pagenum"
+						@current-change="findExposurePage"
+						:total="totals"
+						:page-size="10"
+						>
+					</el-pagination>
 				</div>
 				<!-- <div class='e_head'>
 					<el-card class='c_hexposure'>
@@ -166,8 +177,8 @@
 						</li>
 					</el-card>
 				</div> -->
-			  	<!-- <div class='c_sentiment'>
-				  	<div id="parent" class="parent">
+				<!-- <div class='c_sentiment'>
+					<div id="parent" class="parent">
 						<div id="child1" class="child">
 							<li class='c_scont' v-for="(item,index) in nodeData" :key="index">
 								<div class='c_top'>
@@ -218,7 +229,9 @@ export default {
 			oneData:[],
 			zuiXinData:[],//最新一期数据
 			pinLunNum:'',//最新一期评论数
-			imgurl:'this.src="'+ require('../../assets/images/bg/person.png') +'"'
+			imgurl:'this.src="'+ require('../../assets/images/bg/person.png') +'"',
+			totals:1,//数据总数
+			pagenum:0,//当前页数
 		}
 	},
 	watch: {},
@@ -275,13 +288,13 @@ export default {
 		findExposurePage() {
 			const _this = this;
 			const params = {
-				nCurrent: 1,
-				nSize: 100,
+				nCurrent: _this.pagenum,
+				nSize: 10,
 				userId: _this.userId
 			}
 			findExposurePage(params).then(res => {
-				// console.log('leftData',res)
 				if (res.success) {
+					this.totals=res.data.total
 					_this.listData=res.data.records
 					_this.zuiXinData=[]
 					_this.zuiXinData.push(res.data.records[0])
@@ -498,8 +511,7 @@ export default {
 			});
 		},
 		getRadar2() {
-		  	var colors = ['#5793f3', '#d14a61', '#675bba'];
-  
+			var colors = ['#5793f3', '#d14a61', '#675bba'];
 			let radarDom2 = this.$echarts.init(document.getElementById('hline'))
 			let option = {
 				color: colors,
@@ -510,9 +522,9 @@ export default {
 						type: 'cross'
 					}
 				},
-			  //   legend: {
-			  // 	  data: ['2016 降水量']
-			  //   },
+				//   legend: {
+				// 	  data: ['2016 降水量']
+				//   },
 				grid: {
 					left: '2%',
 					right: '4%',
@@ -527,11 +539,11 @@ export default {
 							alignWithLabel: true
 						},
 						axisLine: {
-				  lineStyle: {
-					  color: 'gray',
-					  type: 'dashed'
-				  },
-			  },
+						lineStyle: {
+							color: 'gray',
+							type: 'dashed'
+						},
+					},
 						axisPointer: {
 							label: {
 								formatter: function (params) {
@@ -560,7 +572,7 @@ export default {
 			}
 			radarDom2.setOption(option)
 			//多图表自适应
-					  //折线图宽高自适应
+			//折线图宽高自适应
 			window.onresize = function () {
 				radarDom2.resize();
 			}
@@ -764,7 +776,7 @@ export default {
 	.c_cleft_pingConDiv .pingConRight .pingConZan p img{vertical-align: inherit;}
 	
 	/* 右边 */
-	.c_crightCon{padding: 20px;height: 88%;overflow: auto;}
+	.c_crightCon{padding:10px 10px;height: 86%;overflow: auto;}
 	.c_crightConDiv{border-bottom:solid 1px rgba(245, 245, 245, 1) ;padding:10px 0 0 0;}
 	.c_crightConDiv .c_crightName p:nth-child(1){font-size: 18px;color: #333333;font-weight: 600;}
 	.c_crightConDiv .c_crightName p:nth-child(2){font-size: 14px;color: #8D9AAD;font-weight:600;margin-top: 20px;}
@@ -773,6 +785,7 @@ export default {
 	.c_crightConDiv .c_crightXueStart{display: flex;justify-content: flex-end;}
 	.c_crightConDiv .c_crightXueStart .kaiXue{padding: 10px 20px;background: #FA7F79;color: white;border-radius:18px;}
 	.c_crightConDiv .c_crightXueStart .zaiXue{padding: 10px 20px;background: #006EFF;color: white;border-radius:18px;}
+	.fenYe{text-align: center;padding: 10px 0;}
 	/*新 结束*/
 	.c_cright{
 		width: calc(35% - 10px);
