@@ -1,115 +1,78 @@
 <template>
   <div
-    ref='login'
-    class='login w-full h-full flex flex-column flex-align-center flex-justify-center'
+    ref="login"
+    class="login w-full h-full flex flex-column flex-align-center flex-justify-center"
   >
-    <div class='absolute w-full h-full l_left'></div>
-    <div class='absolute w-full h-full l_right'></div>
-    <div class='absolute w-full h-full flex flex-align-center flex-justify-center flex-column'>
-      <div class='flex flex-column flex-align-center'>
-        <img
-          src='../utils/img/login_logo2.png'
-          style="height: 9em"
-        />
-        <img
-          src='../utils/img/login_title2.png'
-          class='mt8'
-          style="height: 4em"
-        />
+    <div class="absolute w-full h-full l_left"></div>
+    <div class="absolute w-full h-full l_right"></div>
+    <div class="loginPanel flex-column">
+      <div class="flex flex-column flex-align-center">
+        <img src="../utils/img/login_logo2.png" style="height: 9em" />
+        <img src="../utils/img/login_title2.png" class="mt8" style="height: 4em" />
       </div>
       <div
-        class='flex flex-column border-box l_udlogal'
+        class="flex flex-column border-box l_udlogal"
         style=" width: 25em; padding: 2em; margin-top: 2em"
       >
         <div
-          class='w-full align-center color-fff'
+          class="w-full align-center color-fff"
           style="font-size: 1.6em; letter-spacing: 0.1em"
-        >
-          用户登录
+        >用户登录</div>
+        <div v-show="certification" style="position: relative;width: 100%;text-align: center;">
+          <img src="../utils/img/2/login_u.png" style="height: 3em; margin: 2em auto" />
+          <div class="align-center color-fff">证书登录</div>
         </div>
-        <div
-          v-show='certification'
-          style="position: relative;width: 100%;text-align: center;"
-        >
-          <img
-            src='../utils/img/2/login_u.png'
-            style="height: 3em; margin: 2em auto"
-          />
-          <div class='align-center color-fff'>
-            证书登录
-          </div>
-        </div>
-        <el-form
-          v-show='!certification'
-          ref='loginForm'
-          :model='form'
-          :rules='rules'
-        >
-          <el-form-item prop='username'>
+        <el-form v-show="!certification" ref="loginForm" :model="form" :rules="rules">
+          <el-form-item prop="username">
             <input
-              v-model.trim='form.username'
-              placeholder='用户名'
-              class='focus-username w-full color-fff h48'
+              v-model.trim="form.username"
+              placeholder="用户名"
+              class="focus-username w-full color-fff h48"
               style="border: 1.4px solid #004b77; border-radius: 2% / 12%; padding-left: 13%"
             />
           </el-form-item>
-          <el-form-item prop='password'>
+          <el-form-item prop="password">
             <input
-              v-model.trim='form.password'
-              placeholder='密码'
-              :type='passwordType'
-              class='focus-password w-full color-fff h48'
-              @keyup.enter='onSubmit'
+              v-model.trim="form.password"
+              placeholder="密码"
+              :type="passwordType"
+              class="focus-password w-full color-fff h48"
+              @keyup.enter="onSubmit"
               style="border: 1.4px solid #004b77; border-radius: 2% / 12%; padding-left: 13%"
             />
           </el-form-item>
-          <div
-            class='flex flex-justify-between'
-            style="margin-top: 6%"
-          >
-            <div class='flex flex-align-center'>
-              <label
-                class='flex color-fff'
-                style="letter-spacing: 0.1em"
-              >
-                <input
-                  v-model='checked'
-                  type='checkbox'
-                  class='focus-remember-password'
-                />
-                <span class=''>记住密码</span>
+          <div class="flex flex-justify-between" style="margin-top: 6%">
+            <div class="flex flex-align-center">
+              <label class="flex color-fff" style="letter-spacing: 0.1em">
+                <input v-model="checked" type="checkbox" class="focus-remember-password" />
+                <span class>记住密码</span>
               </label>
             </div>
           </div>
         </el-form>
         <button
-          @click='onSubmit'
-          class='w-full color-fff align-center h32 l_login'
+          @click="onSubmit"
+          class="w-full color-fff align-center h32 l_login"
           style="margin-top: 6%; font-size: 1.2em"
-        >
-          登录
-        </button>
+        >登录</button>
         <button
-          @click='change'
-          class='block'
+          @click="change"
+          class="block"
           style="margin: 3% auto 0; text-decoration: underline; color: #00b8ff"
         >
-          <div v-show='certification'>
+          <div v-show="certification">
             <div>切换为用户名登录</div>
           </div>
-          <div v-show='!certification'>
+          <div v-show="!certification">
             <div>切换为U盾登录</div>
           </div>
         </button>
       </div>
-      <div
-        class='absolute'
-        style="bottom: 4.17%"
-      >
+      <div class="absolute" style="bottom: 4.17%">
         <button
-          class='block txt-deco-none'
+          class="block txt-deco-none"
           style="color: #00b8ff; margin: 0 auto"
-          onClick={this.toggleDownload}
+          onclick="{this.toggleDownload}"
         >相关手册以及插件下载</button>
         <span style="color: #ccc">©金华市公安局 技术支持: 北京天耀宏图科技有限公司</span>
       </div>
@@ -119,19 +82,19 @@
           <div class='fixed left right top bottom flex flex-justify-center' style={{background: '#CCCCCC60'}} onClick={this.toggleDownload}>
             <iframe src={`${XZTX_BASE}/sys/downloadPage`} style={{border: 0, width: '600px', height: '414px', marginTop: '2em', background: '#F2F5F7'}} />
           </div>
-        } -->
+    }-->
   </div>
 </template>
 <script>
 import { encryptByDES, getUrl } from "../utils/common.js";
-import { signIn,getUserByCardNum,jhLogin } from "../api/user-server.js";
+import { signIn, getUserByCardNum, jhLogin } from "../api/user-server.js";
 export default {
-  inject: ['AppComponent'],
+  inject: ["AppComponent"],
   name: "login",
   data() {
     return {
       certification: true,
-      tk: '',
+      tk: "",
       form: {
         username: "",
         password: ""
@@ -146,19 +109,19 @@ export default {
       checked: false
     };
   },
-  created(){
-    if(this.$route.query.tk){
-      const tk = window.atob(this.$route.query.tk) 
+  created() {
+    if (this.$route.query.tk) {
+      const tk = window.atob(this.$route.query.tk);
       const parameter = {
-            cardNum: tk,
-          };
+        cardNum: tk
+      };
       getUserByCardNum(parameter).then(res => {
-        console.log(res)
+        console.log(res);
         if (res.success) {
-          const loginName = res.data.loginName
+          const loginName = res.data.loginName;
           this.jhlogin(loginName);
         }
-      })
+      });
     }
   },
   // mounted() {
@@ -183,7 +146,7 @@ export default {
               base64Code: "",
               service: getUrl() + "/police/",
               appKey: "JHGA",
-              privateKey: 'LTAI4Fd5AxPaiK2SxUYA94zN'
+              privateKey: "LTAI4Fd5AxPaiK2SxUYA94zN"
             };
             signIn(params)
               .then(res => {
@@ -198,7 +161,7 @@ export default {
                     token: res.data.gmsso_cli_ec_key,
                     appKey: "JHGA"
                   };
-                  document.cookie = `token=${res.data.gmsso_cli_ec_key}`
+                  document.cookie = `token=${res.data.gmsso_cli_ec_key}`;
                   // 调用checkTokenByAppKey 状态管理userName，token，uesrId
                   _this.$store
                     .dispatch("user/loginSaveToken", parameter)
@@ -208,16 +171,16 @@ export default {
                           .dispatch("user/getInfo")
                           .then(() => {
                             _this.$message({
-                            type: "success",
-                            message: "登录成功"
-                          });
+                              type: "success",
+                              message: "登录成功"
+                            });
                             _this.$router.push("/PersonalHome");
                           })
                           .catch(err => {
-                           _this.$message({
-                            type: "error",
-                            message: "登录失败"
-                          });
+                            _this.$message({
+                              type: "error",
+                              message: "登录失败"
+                            });
                             console.log(err);
                           });
                       }
@@ -226,8 +189,8 @@ export default {
                       // this.loading = false
                       return false;
                     });
-                    // 获取层级数据
-                    // _this.AppComponent.getData()
+                  // 获取层级数据
+                  // _this.AppComponent.getData()
                 } else {
                   // this.loading = false
                   this.$message.error(res.message);
@@ -249,64 +212,65 @@ export default {
           }
         });
       } else {
-        const url = window.location.href
-        window.location.href='https://41.232.3.197:8443/calogin.jsp?url='+url     //给证书传参 
+        const url = window.location.href;
+        window.location.href =
+          "https://41.232.3.197:8443/calogin.jsp?url=" + url; //给证书传参
       }
     },
     filterData(treeData, id) {
-      const _this = this
-      return treeData.filter(item => {
+      const _this = this;
+      return treeData
+        .filter(item => {
           // return item.id == id
-          return JSON.stringify(item).includes(id)
-      }).map(item => {
-          item = Object.assign({}, item)
+          return JSON.stringify(item).includes(id);
+        })
+        .map(item => {
+          item = Object.assign({}, item);
           if (item.childrens) {
-              item.childrens = _this.filterData(item.childrens, id)
+            item.childrens = _this.filterData(item.childrens, id);
           }
-          return item
-      })
+          return item;
+        });
     },
-    jhlogin(loginName){
-      const _this = this
+    jhlogin(loginName) {
+      const _this = this;
       const parameter = {
-            username: loginName,
-            password: '',
-            base64Code:'',
-            service: getUrl() + "/police/",
-            appKey: "JHGA",
-            privateKey: 'LTAI4Fd5AxPaiK2SxUYA94zN'
-          };
-          jhLogin(parameter).then(res => {
-				console.log(res)
-				if (res.success) {
+        username: loginName,
+        password: "",
+        base64Code: "",
+        service: getUrl() + "/police/",
+        appKey: "JHGA",
+        privateKey: "LTAI4Fd5AxPaiK2SxUYA94zN"
+      };
+      jhLogin(parameter).then(res => {
+        console.log(res);
+        if (res.success) {
           // _this.listData = res.data.records
           const parameter = {
-                    token: res.data.gmsso_cli_ec_key,
-                    appKey: "JHGA"
-                  };
-                  // 调用checkTokenByAppKey 状态管理userName，token，uesrId
-                  _this.$store
-                    .dispatch("user/loginSaveToken", parameter)
-                    .then(res => {
-                      if (res.data && res.success === true) {
-                        _this.$store
-                          .dispatch("user/getInfo")
-                          .then(() => {
-                            _this.$router.push("/PersonalHome");
-                          })
-                          .catch(err => {
-                            console.log(err);
-                          });
-                      }
-                    })
-                    .catch(() => {
-                      // this.loading = false
-                      return false;
-                    });
-          
-
-				}
-			})
+            token: res.data.gmsso_cli_ec_key,
+            appKey: "JHGA"
+          };
+          // 调用checkTokenByAppKey 状态管理userName，token，uesrId
+          _this.$store
+            .dispatch("user/loginSaveToken", parameter)
+            .then(res => {
+              if (res.data && res.success === true) {
+                _this.$store
+                  .dispatch("user/getInfo")
+                  .then(() => {
+                    _this.$router.push("/PersonalHome");
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }
+            })
+            .catch(() => {
+              // this.loading = false
+              return false;
+            });
+        }
+      });
     },
     // 设置cookie
     setCookie(c_name, c_pwd, exdays) {
@@ -357,9 +321,9 @@ export default {
     center / cover;
 }
 .el-input__inner {
-    border: 1.4px solid rgb(0, 75, 119);
-    border-radius: 2% / 12%;
-    padding-left: 13%;
+  border: 1.4px solid rgb(0, 75, 119);
+  border-radius: 2% / 12%;
+  padding-left: 13%;
 }
 .l_left {
   background: url(../utils/img/2/login_bg_left@2x.jpg) no-repeat left center /
@@ -367,8 +331,8 @@ export default {
 }
 
 .l_right {
-  background: url(../utils/img/2/login_bg_right@2x.jpg) no-repeat right 85% /
-    auto 48%;
+  background: url(../assets/images/login/national_emblem.png) no-repeat right
+    75% / auto 49%;
 }
 .focus-username {
   background: rgba(32, 32, 32, 0.2) url(../utils/img/login_user_input.png)
@@ -386,5 +350,12 @@ export default {
 }
 .l_udlogal {
   background: rgba(59, 59, 142, 0.2);
+}
+.loginPanel {
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
 }
 </style>
