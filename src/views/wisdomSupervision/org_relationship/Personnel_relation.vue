@@ -43,7 +43,8 @@
         <div class="con orgTreeCon">
           <span class="top_title">层级关系</span>
           <org-tree style="overflow-x:auto;"
-          :data="tree_data" 
+            :personId="personInfo.id"
+            :data="tree_data" 
             :collapsable="false" 
             :model="model"
             :expandAll="true">
@@ -1051,7 +1052,7 @@ export default {
             message: '提交失败'
           })
         }
-        deptId: sessionStorage.orgId,
+        sessionStorage.orgId,
         this.form.ids = []
         this.form.lever = ''
       })
