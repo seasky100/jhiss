@@ -290,7 +290,7 @@ export default {
       warnInfoTypeBydeptId(param).then((res) => {
         this.warnPersonList = res.data
         this.tree_data = tree_data
-        console.log(tree_data)
+        // console.log(tree_data)
       })
     },
     handleClickDep(value) {

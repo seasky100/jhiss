@@ -361,7 +361,9 @@ export default {
       let query = {};
       if(typeof valueObj=='string'&&valueObj.includes('leader')){
         // 全层级体系页面跳转层级人员
-        query.value = data;
+        query.id = data.id;
+        query.realName = data.realName;
+        query.userInfo = data.userInfo;
         this.$router.push({ path: '/Personnel_relation', query });
         return
       }else 
