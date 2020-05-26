@@ -81,6 +81,9 @@ export default {
     permissionFlag2(newVal,oldVal){
       this.tree_key++
     },
+    permissionFlag3(newVal,oldVal){
+      this.tree_key++
+    },
   },
   created(){
     // 判断是否为董旭斌
@@ -92,8 +95,9 @@ export default {
   },
   data() {
     return {
-      permissionFlag: false,
-      permissionFlag2: false,
+      permissionFlag: false, // 判断最大领导
+      permissionFlag2: false, // 判断部门局领导
+      permissionFlag3: false, // 判断是否下级
       tree_key: 1,
       labelClassName: "",
       form: {
@@ -118,6 +122,9 @@ export default {
     renderContent(h, data) {
       this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
       this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
+      let str = "7389a9c931cb45638d38be5d084ab336,50d1f5d2f2d24ce0b4139d22007cc866,7e21e24e6782481bbdd764286e14babc"
+      this.permissionFlag3 = str.includes(data.id)
+      // 
       let userId = ''
       if(!this.personId){
         userId = JSON.parse(sessionStorage.userInfo).id
@@ -217,7 +224,7 @@ export default {
         }
         return (
           <div 
-            onclick={handleEvent && this.model == 'dep' ? handleEvent : () => this.nodePanelClick(data, "leader", "person_info")}
+            onclick={handleEvent && this.model == 'dep' ? handleEvent :handleEvent? () => this.nodePanelClick(data, "leader", "person_info"):''}
             style={"background:url(" + img_bg + ") no-repeat"}
             class={'user_panel level_two'}>
             {warn_img}
