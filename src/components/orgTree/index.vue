@@ -63,6 +63,12 @@ export default {
     model: {
       type: String,
       default: ""
+    },
+    personId: {
+      type: String,
+      default: () => {
+        return null
+      }
     }
   },
   watch: {
@@ -112,12 +118,18 @@ export default {
     renderContent(h, data) {
       this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
       this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
+      let userId = ''
+      if(!this.personId){
+        userId = JSON.parse(sessionStorage.userInfo).id
+      }else{
+        userId = this.personId
+      }
       //个人工作台界面
       if (this.model == "person_info") {
         return (
           <div
             class={
-              data.id == JSON.parse(sessionStorage.userInfo).id
+              data.id == userId
                 ? "user_panel_others current_user_bg"
                 : "user_panel_others"
             }
@@ -183,7 +195,9 @@ export default {
               <div class="panel_info">
                 <span style="line-height:20px;font-size:15px">
                   <img src={require("../../assets/images/dangyuan.png")} />
-                  {data.realName || data.userInfo.realName}
+                  <span class={data.id == userId || this.permissionFlag || this.permissionFlag2 ? "current_user" : ""}>
+                    {data.realName || data.userInfo.realName}
+                  </span>
                 </span>
                 <span class="post" style="position: relative;">
                   {data.userInfo.job || data.userInfo.userInfo.job}
@@ -197,16 +211,15 @@ export default {
         let img_bg = require("../../assets/images/bg/person_bg" +
           (data.index % 11) +
           ".png");
-        let depClass = this.model == 'dep' ? 'depClass' : ''
         let warn_img = ''
         if(this.model == 'dep'){
           warn_img = this.getUserWarn(data.userInfo)
         }
         return (
           <div 
-            onclick={handleEvent ? () => this.nodePanelClick(data, "leader", "person_info") : ""}
+            onclick={handleEvent && this.model == 'dep' ? handleEvent : () => this.nodePanelClick(data, "leader", "person_info")}
             style={"background:url(" + img_bg + ") no-repeat"}
-            class={'user_panel level_two ' + depClass}>
+            class={'user_panel level_two'}>
             {warn_img}
             {img}
             <div class="panel_info">
