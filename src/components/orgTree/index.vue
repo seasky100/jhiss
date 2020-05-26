@@ -124,6 +124,7 @@ export default {
       }else{
         userId = this.personId
       }
+      console.log(userId)
       //个人工作台界面
       if (this.model == "person_info") {
         return (
