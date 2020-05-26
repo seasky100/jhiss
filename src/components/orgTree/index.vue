@@ -224,7 +224,7 @@ export default {
         }
         return (
           <div 
-            onclick={handleEvent && this.model == 'dep' ? handleEvent :handleEvent? () => this.nodePanelClick(data, "leader", "person_info"):''}
+            onclick={handleEvent && this.model == 'dep' ? handleEvent : handleEvent? () => this.nodePanelClick(data, "leader", "person_info"):''}
             style={"background:url(" + img_bg + ") no-repeat"}
             class={'user_panel level_two'}>
             {warn_img}
@@ -358,14 +358,18 @@ export default {
     // 节点面板点击事件
     nodePanelClick(data, valueObj, model) {
       // 无权限
+      let query = {};
       if(typeof valueObj=='string'&&valueObj.includes('leader')){
         // 全层级体系页面跳转层级人员
-        this.$router.push({ path: '/Personnel_relation' });
+        query.id = data.id;
+        query.realName = data.realName;
+        query.userInfo = data.userInfo;
+        this.$router.push({ path: '/Personnel_relation', query });
         return
-      }else if (model == "" || this.path_url == null || this.path_url == "") {
+      }else 
+      if (model == "" || this.path_url == null || this.path_url == "") {
         return
       }
-      let query = {};
       if (valueObj == "") {
         // 跳转层级人员
         query.value = data;

@@ -556,20 +556,26 @@ export default {
       let query = this.$route.query
       // query.value = JSON.parse(window.sessionStorage.personInfo)
       // this.personInfo = query.value
-      if(Object.prototype.toString.call(query.value) === '[object Object]'){
+      if(Object.prototype.toString.call(query.value) === '[object Object]' && query.id == null){
         this.personInfo = query.value
         window.sessionStorage.personInfo = JSON.stringify(query.value)
         this.getData(query)
       }else{
-        // query.value = JSON.parse(window.sessionStorage.personInfo)
-        // this.personInfo = query.value
-        // console.log(this.personInfo)
-        this.init2()
+        let userId = sessionStorage.userId
+        let realName = sessionStorage.realName
+        let userInfo = JSON.parse(sessionStorage.userInfo)
+        if(query.id != null){
+          userId = query.id
+          realName = query.realName
+          userInfo = query.userInfo
+        }
+        // console.log(userId,realName, userInfo)
+        this.init2(userId, realName, userInfo)
       }
     },
-    init2(){
-      Promise.all([this.getUserListByUserId(),this.getPostUserInfo()]).then((res) => {
-        // console.log(res, 'promise all 方法')
+    init2(userId, realName, userInfo){
+      Promise.all([this.getUserListByUserId(userId),this.getPostUserInfo(userId)]).then((res) => {
+        console.log(res, 'promise all 方法')
         let children = res[0]
         let posts = res[1]
         let userPid = ''
@@ -579,8 +585,8 @@ export default {
         let obj = {
           id: sessionStorage.userId,
           expand: true,
-          realName: sessionStorage.realName,
-          userInfo: JSON.parse(sessionStorage.userInfo),
+          realName: realName,
+          userInfo: userInfo,
           children: children,
           userPid: userPid
         }
@@ -592,10 +598,10 @@ export default {
       })
     },
     // 查询上级id getUserInfo(params).then(res => {
-    getPostUserInfo(){
+    getPostUserInfo(userId){
       return new Promise((resolve, reject) => {
         getUserInfo({
-          userId: sessionStorage.userId
+          userId: userId
         }).then( res => {
           // console.log(res.data)
           resolve(res.data.posts)
@@ -605,26 +611,10 @@ export default {
       });
     },
     // 下属信息
-    getUserListByUserId(){
-      // getUserListByUserId({
-      //   userId: sessionStorage.userId
-      // }).then( res => {
-      //   let obj = {
-      //     id: sessionStorage.userId,
-      //     expand: true,
-      //     realName: sessionStorage.realName,
-      //     userInfo: JSON.parse(sessionStorage.userInfo),
-      //     children: res.data
-      //   }
-      //   console.log(obj)
-      //   let query = {
-      //     value: obj
-      //   }
-      //   this.getData(query)
-      // })
+    getUserListByUserId(userId){
       return new Promise((resolve, reject) => {
         getUserListByUserId({
-          userId: sessionStorage.userId
+          userId: userId
         }).then( res => {
           // console.log(res.data)
           resolve(res.data)
