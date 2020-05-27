@@ -119,15 +119,19 @@
           家庭主要成员
           <span class="imgAdd img_person opertion" title="添加成员" @click="adduserRelationVoList" ></span>
         </td>
+        <td></td>
         <td>称谓</td>
         <td>姓名</td>
         <td>政治面貌</td>
-        <td colspan="5">工作单位</td>
+        <td colspan="4">工作单位</td>
         <td>职务</td>
       </tr>
       <!-- eslint-disable-next-line -->
       <template v-for="(item,index) of formObj.userRelationVoList">
         <tr :key="index + '_label'">
+          <td>
+            <img class="delImg" @click="delRelationVoList(item,index)" src="@/assets/images/del.png" />
+          </td>
           <td>
             <template v-if="item.edit">
               <el-input v-model="item.title"></el-input>
@@ -152,7 +156,7 @@
               {{item.politicsStatus}}
             </template>
           </td>
-          <td colspan="5">
+          <td colspan="4">
             <template v-if="item.edit">
               <el-input v-model="item.workUnit"></el-input>
             </template>
@@ -176,16 +180,20 @@
           主要社会关系
           <span class="imgAdd img_person opertion" title="添加成员" @click="addsocialRelationship" ></span>
         </td>
+        <td></td>
         <td>称谓</td>
         <td>姓名</td>
         <td>政治面貌</td>
-        <td colspan="5">工作单位</td>
+        <td colspan="4">工作单位</td>
         <td>职务</td>
       </tr>
       <!-- eslint-disable-next-line -->
       <template v-for="(item,index) of formObj.socialRelationship">
         <tr :key="index + 'label'">
-                    <td>
+          <td>
+            <img class="delImg" @click="delRelationSocial(item,index)" src="@/assets/images/del.png" />
+          </td>
+          <td>
             <template v-if="item.edit">
               <el-input v-model="item.title"></el-input>
             </template>
@@ -209,7 +217,7 @@
               {{item.politicsStatus}}
             </template>
           </td>
-          <td colspan="5">
+          <td colspan="4">
             <template v-if="item.edit">
               <el-input v-model="item.workUnit"></el-input>
             </template>
@@ -287,8 +295,8 @@ export default {
     addFormData(){
       this.$set(this.formObj,'edit',true)
     }, 
-    saveFormData(){
-      if(!JSON.stringify(this.formObj).includes('true')){
+    saveFormData(flag = true){
+      if((!JSON.stringify(this.formObj).includes('true')) && flag){
         this.$message({
           type: 'warning',
           message: '没有修改！'
@@ -343,6 +351,48 @@ export default {
       let socialRelationship = this.formObj.socialRelationship
       socialRelationship.push({edit:true})
       this.$set(this.formObj,'socialRelationship',socialRelationship)
+    },
+    // 删除家庭主要成员
+    delRelationVoList(data, index){
+      // console.log('家庭成员', data, index)
+      this.$confirm('删除该成员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+        this.formObj.userRelationVoList.splice(index, 1)
+        this.saveFormData(false)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
+    },
+    // 删除社会关系成员
+    delRelationSocial(data, index){
+      // console.log('社会关系', data, index)
+      this.$confirm('删除该成员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+        this.formObj.socialRelationship.splice(index, 1)
+        this.saveFormData(false)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
     },
     // 
   },
@@ -402,4 +452,8 @@ export default {
   background: rgb(249, 242, 236);
   user-select: text;
   margin-bottom: 25px;
+.delImg
+  height:25px;
+  width:25px;
+  cursor:pointer;
 </style>

@@ -84,6 +84,9 @@ export default {
     permissionFlag3(newVal,oldVal){
       this.tree_key++
     },
+    personId(newVal,oldVal){
+      this.tree_key++
+    },
   },
   created(){
     // 判断是否为董旭斌

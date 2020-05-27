@@ -229,11 +229,11 @@ export default {
               }
               tableData1[index].headerParam = {edit:false,marrageState2:obj.marrageState}
               tableData1[index].data = reportInfo[key].map(item => {
-                return JSON.parse(item.formData)
+                return Object.assign(JSON.parse(item.formData),{id: item.id})
               })
             }else{
               tableData1[index].data = reportInfo[key].map(item => {
-                return JSON.parse(item.formData)
+                return Object.assign(JSON.parse(item.formData),{id: item.id})
               })
             }
           }
@@ -245,7 +245,7 @@ export default {
             tableData2[index].data = [obj]
           }else if(item.code == key){
             tableData2[index].data = reportInfo[key].map(item => {
-              return JSON.parse(item.formData)
+              return Object.assign(JSON.parse(item.formData),{id: item.id})
             })
           }
         })
@@ -652,6 +652,9 @@ export default {
             });
           }else{
             tableData1[index].data = tableData1[index].data.map(item => {
+              if(!item.id){
+                item.id = res.data.flowProcessDto.id
+              }
               item.edit = false
               return item
             })
@@ -659,6 +662,9 @@ export default {
         }else{
           index = index - 11
           tableData2[index].data = tableData2[index].data.map(item => {
+            if(!item.id){
+              item.id = res.data.flowProcessDto.id
+            }
             item.edit = false
             return item
           })

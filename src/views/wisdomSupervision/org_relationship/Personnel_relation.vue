@@ -575,7 +575,7 @@ export default {
     },
     init2(userId, realName, userInfo){
       Promise.all([this.getUserListByUserId(userId),this.getPostUserInfo(userId)]).then((res) => {
-        console.log(res, 'promise all 方法')
+        // console.log(res, 'promise all 方法')
         let children = res[0]
         let posts = res[1]
         let userPid = ''
@@ -583,7 +583,7 @@ export default {
           userPid = posts[0].userPid
         }
         let obj = {
-          id: sessionStorage.userId,
+          id: userId,
           expand: true,
           realName: realName,
           userInfo: userInfo,
