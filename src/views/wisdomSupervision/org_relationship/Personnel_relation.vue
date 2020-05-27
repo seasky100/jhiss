@@ -583,7 +583,7 @@ export default {
           userPid = posts[0].userPid
         }
         let obj = {
-          id: sessionStorage.userId,
+          id: userId,
           expand: true,
           realName: realName,
           userInfo: userInfo,
