@@ -56,7 +56,7 @@
           <el-button v-if="scope.row.edit" @click="handleClick(scope.row)" type="text" size="small">
             保存
           </el-button>
-          <el-button v-else type="text" size="small" @click="handleClickDelete(scope.row.id)">
+          <el-button v-else type="text" size="small" @click="handleClickDelete(scope)">
             删除
           </el-button>
         </template>
@@ -167,7 +167,9 @@
 import { format } from 'date-fns'
 import NavTable from './NavTable'
 import customTable from './customTable'
-import { saveDeclareExitTotalAnnual } from '@/api/report.js'
+import { saveDeclareExitTotalAnnual, delFlowProcess } from '@/api/report.js'
+import tableData from '@/views/wisdomSupervision/DeclarationTemplate/eventsTemplate.js'
+let { tableData1, tableData2 } = tableData
 export default {
   components: { 
     NavTable,
@@ -306,8 +308,28 @@ export default {
         this.$emit('editData', this.index, data, this.saveEvent)
       }
     },
-    handleClickDelete(id){
-      console.log('删除', this.index, id)
+    handleClickDelete(scope){
+      // console.log('删除', this.index, scope.row)
+      let id = scope.row.id
+      delFlowProcess({ id: id }).then(res => {
+        try {
+          if (res.success) {
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+            this.tableData2.splice(scope.$index, 1)
+            if(this.index < 11){
+              tableData1[this.index].data = this.tableData2
+            }else{
+              let index = this.index - 11
+              tableData2[index].data = this.tableData2
+            }
+          }
+        } catch (e) {
+          console.log("ERROR", e);
+        }
+      });
     },
     // 单元格双击事件
     cellHandleDbClick(row, column, cell, event){

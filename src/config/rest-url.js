@@ -91,6 +91,7 @@ const DEFAULT_URL = {
     report: {
       findInterViewPage: `${GAISMSERVER}InterView/findInterViewPage`, //分页
       getInterViewById: `${GAISMSERVER}InterView/getInterViewById`, //详情
+      delFlowProcess: `${GAISMSERVER}flowProcess/delFlowProcess`, //删除年报
       deleteInterView: `${GAISMSERVER}InterView/deleteInterView`, //删除
       saveInterView: `${GAISMSERVER}InterView/saveInterView`, //新增
       updateInterView: `${GAISMSERVER}InterView/updateInterView`, //修改

@@ -175,6 +175,15 @@ export function getUserList (params) {
   })
 }
 
+// 年度报告删除 // DELETE /flowProcess/delFlowProcess
+export function delFlowProcess (params) {
+  return request({
+    url: DEFAULT_URL.report.delFlowProcess,
+    method: 'delete',
+    params
+  })
+}
+
 // 因私出境
 export function saveDeclareExit (params) {
   return request({
