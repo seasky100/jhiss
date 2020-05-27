@@ -355,14 +355,44 @@ export default {
     // 删除家庭主要成员
     delRelationVoList(data, index){
       // console.log('家庭成员', data, index)
-      this.formObj.userRelationVoList.splice(index, 1)
-      this.saveFormData(false)
+      this.$confirm('删除该成员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+        this.formObj.userRelationVoList.splice(index, 1)
+        this.saveFormData(false)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
     },
     // 删除社会关系成员
     delRelationSocial(data, index){
       // console.log('社会关系', data, index)
-      this.formObj.socialRelationship.splice(index, 1)
-      this.saveFormData(false)
+      this.$confirm('删除该成员, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+        this.formObj.socialRelationship.splice(index, 1)
+        this.saveFormData(false)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });          
+      });
     },
     // 
   },
