@@ -124,9 +124,13 @@ export default {
   methods: {
     renderContent(h, data) {
       this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
-      this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
-      let str = "7389a9c931cb45638d38be5d084ab336,50d1f5d2f2d24ce0b4139d22007cc866,7e21e24e6782481bbdd764286e14babc"
-      this.permissionFlag3 = str.includes(data.id)
+      // this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
+      this.permissionFlag2 = false
+      if(this.model == 'dep'){
+        this.permissionFlag2 = this.data.userPids.includes(sessionStorage.userId)
+      }
+      // let str = "7389a9c931cb45638d38be5d084ab336,50d1f5d2f2d24ce0b4139d22007cc866,7e21e24e6782481bbdd764286e14babc"
+      // this.permissionFlag3 = str.includes(data.id)
       // 
       let userId = ''
       if(!this.personId){

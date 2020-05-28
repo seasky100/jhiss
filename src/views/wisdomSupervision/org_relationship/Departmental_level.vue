@@ -259,6 +259,7 @@ export default {
       this.timer = null;
     },
     getTreeData(value) {
+      // console.log(value)
       // this.active = value.id;
       this.active = value.orgId;
       let tree_data = {
@@ -268,6 +269,7 @@ export default {
         level: 1,
         orgId: value.orgId,
         userPid: value.userPid,
+        userPids: value.userPid.concat(value.aleadIds?value.aleadIds:'', value.pleadIds?value.pleadIds:''),
         userInfo: value.userList[0].userInfo
       };
       this.getChildren(value, tree_data.children);
@@ -294,6 +296,7 @@ export default {
       })
     },
     handleClickDep(value) {
+      // console.log(value)
       this.$router.push({
         path: "/Departmental_level",
         query: { id: value.id }
@@ -311,11 +314,20 @@ export default {
         this.getDeptChidren(tree_data);
       });
     },
+    unique(arr, key) {
+      const map = new Map()
+      // return arr.filter((item) => !map.has(item[key] + '') && map.set(item[key] + '', 1))
+      return arr.filter((item) => {
+        let flag = !map.has(item[key] + '') && map.set(item[key] + '', 1) && !(item.name.includes('直管') || item.name.includes('协管'))
+        return flag
+      })
+    },
     //处理第三层部门的数据
     getDeptChidren(data) {
       data.userInfo = data.userList[0];
       let arr1 = data.children; //第二层的人员
       let arr2 = data.childrens[0].childrens; //第三次的人员
+      arr2 = this.unique(arr2, 'orgId')
       for (let i = 0; i < arr1.length; i++) {
         //遍历第二次人员
         let obj = arr1[i];
