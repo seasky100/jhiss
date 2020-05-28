@@ -69,6 +69,12 @@ export default {
       default: () => {
         return null
       }
+    },
+    expandedKeys: {
+      type: Array,
+      default: () => {
+        return []
+      }
     }
   },
   watch: {
@@ -85,6 +91,9 @@ export default {
       this.tree_key++
     },
     personId(newVal,oldVal){
+      this.tree_key++
+    },
+    expandedKeys(newVal,oldVal){
       this.tree_key++
     },
   },
@@ -129,8 +138,6 @@ export default {
       if(this.model == 'dep'){
         this.permissionFlag2 = this.data.userPids.includes(sessionStorage.userId)
       }
-      // let str = "7389a9c931cb45638d38be5d084ab336,50d1f5d2f2d24ce0b4139d22007cc866,7e21e24e6782481bbdd764286e14babc"
-      // this.permissionFlag3 = str.includes(data.id)
       // 
       let userId = ''
       if(!this.personId){
@@ -153,7 +160,7 @@ export default {
         );
       }
       let handleEvent = "";
-      if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2) {
+      if (data.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 || this.expandedKeys.includes(data.id)) {
         handleEvent = () => this.nodePanelClick(data, "", "person_info");
       }
       // if(data.level == 0){
@@ -180,7 +187,7 @@ export default {
                 let warn_img = this.getUserWarn(item.userInfo)
                 return(
                   <div class={'user_panel level_one leaderCon depLeaderCon'}
-                   onclick={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 ? () => this.nodePanelClick(item, "", "person_info") : ''}>
+                   onclick={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 || this.expandedKeys.includes(item.id) ? () => this.nodePanelClick(item, "", "person_info") : ''}>
                     {warn_img}
                     {this.getPersonImg(item.userInfo)}
                     <div class="panel_info">
