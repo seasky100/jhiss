@@ -261,6 +261,8 @@ export default {
     getTreeData(value) {
       // console.log(value)
       // this.active = value.id;
+      let aleadIds =  value.aleadIds?value.aleadIds.split(','):[]
+      let pleadIds =  value.aleadIds?value.pleadIds.split(','):[]
       this.active = value.orgId;
       let tree_data = {
         children: [],
@@ -269,7 +271,7 @@ export default {
         level: 1,
         orgId: value.orgId,
         userPid: value.userPid,
-        userPids: value.userPid.concat(value.aleadIds?value.aleadIds:'', value.pleadIds?value.pleadIds:''),
+        userPids: [value.userPid].concat(aleadIds, pleadIds).join(','),
         userInfo: value.userList[0].userInfo
       };
       this.getChildren(value, tree_data.children);
