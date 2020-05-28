@@ -61,6 +61,7 @@
     <div class="relationship">
       <org-tree
         :warnPersonList="warnPersonList"
+        :expandedKeys="expandedKeys"
         :data="tree_data"
         :path_url="path_url"
         :collapsable="true"
@@ -92,6 +93,7 @@ export default {
         {label: '关注', color: '#FFAC42', num: 0},
         {label: '预警', color: '#E85C43', num: 0},
       ],
+      expandedKeys: []
       //
     };
   },
@@ -277,6 +279,9 @@ export default {
       this.getChildren(value, tree_data.children);
       let userList = tree_data.children
       tree_data.userList = userList
+      tree_data.ids = userList.map(item => {
+        return item.id
+      })
       let childrenArr = []
       userList.forEach(element => {
         childrenArr = childrenArr.concat(element.children)
@@ -295,7 +300,37 @@ export default {
         this.warnPersonList = res.data
         this.tree_data = tree_data
         // console.log(tree_data)
+        let nodesChildren = this.findPathByLeafId(sessionStorage.userId,[tree_data])
+        this.expandedKeys = []
+        this.collectIds([nodesChildren])
+        // console.log(this.expandedKeys)
       })
+    },
+    findPathByLeafId(leafId, nodes) {
+      for(var i = 0; i < nodes.length; i++) {
+        if(nodes[i].level == 1 && nodes[i].ids.includes(leafId)){
+          return nodes[i]
+        }else if(leafId == nodes[i].id) {
+          return nodes[i];
+        }else if(nodes[i].children) {
+          var findResult = this.findPathByLeafId(leafId, nodes[i].children);
+          if(findResult) {
+            return findResult;
+          }
+        }
+      }
+    },
+    collectIds(datas){ // 遍历树  获取id数组
+      for(var i in datas){
+        if(datas[i].level == 1){
+          this.expandedKeys.push(sessionStorage.userId)
+        }else{
+          this.expandedKeys.push(datas[i].id)
+        }
+        if(datas[i].children){
+          this.collectIds(datas[i].children);
+        }
+      }
     },
     handleClickDep(value) {
       // console.log(value)
