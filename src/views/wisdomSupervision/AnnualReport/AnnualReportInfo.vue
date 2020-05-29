@@ -27,10 +27,10 @@
         <td style="width:10%;">性别</td>
         <td style="width:10%;">
           <template v-if="formObj.edit">
-            <el-input v-model="formObj.sex"></el-input>
+            <el-input v-model="formObj.sex2"></el-input>
           </template>
           <template v-else>
-            {{formObj.sex}}
+            {{formObj.sex2}}
           </template>
         </td>
         <td style="width:10%;">民族</td>
@@ -265,6 +265,7 @@ export default {
         edit: false,
         name: '',
         sex: '',
+        sex2: '',
         // 家庭主要成员
         userRelationVoList: [],
         // 主要社会关系
@@ -289,6 +290,7 @@ export default {
   mounted() {
     if(this.reportInfoData != null){
       this.formObj = this.reportInfoData
+      this.$set(this.formObj, 'sex2', this.formObj.sex == 1 ? '男':'女')
     }
   },
   methods: {
@@ -312,6 +314,7 @@ export default {
         gmtModified: format(new Date(), 'yyyy-MM-dd'),
       }
       const param = this.formObj
+      param.sex2 == '男' ? param.sex = 1 : param.sex = 0
       param.flowProcessDto = flowProcess
       saveBasicAnnual(param).then(res => {
         if(res.success){

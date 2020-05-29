@@ -186,7 +186,7 @@ export default {
         let userInfo = JSON.parse(sessionStorage.userInfo)
         let obj = {
           name: sessionStorage.realName,
-          sex: userInfo.sex ==1?'男':'女',
+          sex: userInfo.sex,
           nation:userInfo.nation,
           employer:userInfo.label,
           currentPosition:userInfo.job,

@@ -60,11 +60,10 @@ export default {
         let num1 = 0
         let num2 = 0
         this.warnList = data
-        for(let key in data){
-          // num1 += parseInt(data[key]['关注'])
-          // num2 += parseInt(data[key]['预警'])
-          num1 = parseInt(num1) + parseInt(data[key]['关注'])
-          num2 = parseInt(num2) + parseInt(data[key]['预警'])
+        for(let i=0;i<data.length;i++){
+          let obj = data[i]
+          num1 = parseInt(num1) + parseInt(obj.gzcount)
+          num2 = parseInt(num2) + parseInt(obj.yjcount)
         }
         // console.log(num1, num2)
         this.explainList[1].num = num1
