@@ -101,6 +101,12 @@ export default {
     active(newVal, oldVal){
       this.getWarmCount()
     },
+    tree_data(newVal, oldVal){
+      // console.log(newVal)
+      if(newVal.orgId != oldVal.orgId){
+        this.getWarnPerson(newVal)
+      }
+    },
   },
   created(){
     let permissionFlag = false
@@ -127,12 +133,16 @@ export default {
         deptId: this.active
       }
       warnInfoCountByType(param).then((res) => {
-        let data = res.data
+        let data = res.data[0]
         let num1 = 0
         let num2 = 0
         for(let key in data){
-          num1 += data[key]['关注']
-          num2 += data[key]['预警']
+          if(key == 'gzcount'){
+            num1 = parseInt(num1) + parseInt(data[key])
+          }
+          if(key == 'yjcount'){
+            num2 = parseInt(num2) + parseInt(data[key])
+          }
         }
         this.explainList[1].num = num1
         this.explainList[2].num = num2
@@ -289,8 +299,9 @@ export default {
         element.expand = false;
       });
       tree_data.children = childrenArr
-      // this.tree_data = tree_data
-      this.getWarnPerson(tree_data)
+      this.tree_data = tree_data
+      // console.log(tree_data)
+      // this.getWarnPerson(tree_data)
     },
     getWarnPerson(tree_data){
       const param = {
@@ -299,7 +310,6 @@ export default {
       warnInfoTypeBydeptId(param).then((res) => {
         this.warnPersonList = res.data
         this.tree_data = tree_data
-        // console.log(tree_data)
         let nodesChildren = this.findPathByLeafId(sessionStorage.userId,[tree_data])
         this.expandedKeys = []
         this.collectIds([nodesChildren])

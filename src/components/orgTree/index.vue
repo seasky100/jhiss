@@ -311,13 +311,12 @@ export default {
     },
     warnStatusDep(value){
       let img = ''
-      for(let key in this.warnList){
-        if(key == value.orgId){
-          if(this.warnList[key]['预警'] > 0){
-            img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
-          }else{
-            img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
-          }
+      for(let i=0;i<this.warnList.length;i++){
+        let obj = this.warnList[i]
+        if(parseInt(obj.yjcount) > 0){
+          img = <img class="warnStatus" src={require("../../assets/images/warn.png")} />
+        }else if(parseInt(obj.gzcount) > 0){
+          img = <img class="warnStatus" src={require("../../assets/images/careful.png")} />
         }
       }
       return img
