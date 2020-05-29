@@ -190,7 +190,7 @@ export default {
           nation:userInfo.nation,
           employer:userInfo.label,
           currentPosition:userInfo.job,
-          rank:userInfo.major,
+          rank:userInfo.rank,
           cardNum:userInfo.cardNum,
           residenceAddress:userInfo.nativePlace,
           userRelationVoList: [],
