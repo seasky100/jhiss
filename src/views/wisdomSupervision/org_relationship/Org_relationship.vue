@@ -124,7 +124,15 @@ export default {
           let aleadIds =  obj2.aleadIds?obj2.aleadIds.split(','):[]
           let pleadIds =  obj2.aleadIds?obj2.pleadIds.split(','):[]
           if ([obj2.userPid].concat(aleadIds, pleadIds).includes(obj.id)) {
-            children.push(obj2);
+            let depObj = JSON.parse(JSON.stringify(obj2))
+            depObj.userDepPid = obj.id
+            depObj.userDepPname = obj.realName
+            if(aleadIds.includes(obj.id)){
+              depObj.name = depObj.name + '（协管）'
+            }else if(pleadIds.includes(obj.id)){
+              depObj.name = depObj.name + '（分管）'
+            }
+            children.push(depObj);
           }
         }
         let dep = { dep: children, level: 3 };
