@@ -121,7 +121,9 @@ export default {
         for (let j = 0; j < arr2.length; j++) {
           //遍历第三次人员，如果相等则把部门名称加到第二层的children里面
           let obj2 = arr2[j];
-          if (obj2.userPname.includes(obj.realName)) {
+          let aleadIds =  obj2.aleadIds?obj2.aleadIds.split(','):[]
+          let pleadIds =  obj2.aleadIds?obj2.pleadIds.split(','):[]
+          if ([obj2.userPid].concat(aleadIds, pleadIds).includes(obj.id)) {
             children.push(obj2);
           }
         }
