@@ -100,7 +100,7 @@ export default {
     //处理第三层部门的数据
     getDeptChidren(data) {
       let arr1 = data.children; //第二层的人员
-      let arr2 = data.childrens[0].childrens; //第三次的人员
+      let arr2 = data.childrens[0].childrens; //第三层的数据（部门）
       //对数据进行排序
       const userIds=data.childrens[0].userIds;
       arr1.sort((a,b)=>{
@@ -122,7 +122,8 @@ export default {
           //遍历第三次人员，如果相等则把部门名称加到第二层的children里面
           let obj2 = arr2[j];
           let aleadIds =  obj2.aleadIds?obj2.aleadIds.split(','):[]
-          let pleadIds =  obj2.aleadIds?obj2.pleadIds.split(','):[]
+          let pleadIds =  obj2.pleadIds?obj2.pleadIds.split(','):[]
+
           if ([obj2.userPid].concat(aleadIds, pleadIds).includes(obj.id)) {
             let depObj = JSON.parse(JSON.stringify(obj2))
             depObj.userDepPid = obj.id
