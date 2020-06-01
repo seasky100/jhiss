@@ -81,15 +81,12 @@ export default {
     data() {
       this.isGotoPerson_info = false;
     },
-    permissionFlag(newVal,oldVal){
-      this.tree_key++
-    },
-    permissionFlag2(newVal,oldVal){
-      this.tree_key++
-    },
-    permissionFlag3(newVal,oldVal){
-      this.tree_key++
-    },
+    // permissionFlag(newVal,oldVal){
+    //   this.tree_key++
+    // },
+    // permissionFlag2(newVal,oldVal){
+    //   this.tree_key++
+    // },
     personId(newVal,oldVal){
       this.tree_key++
     },
@@ -99,9 +96,9 @@ export default {
   },
   created(){
     // 判断是否为董旭斌
-    this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
+    // this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
     // 判断是否为部门领导
-    this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
+    // this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
   },
   mounted(){
   },
@@ -109,7 +106,6 @@ export default {
     return {
       permissionFlag: false, // 判断最大领导
       permissionFlag2: false, // 判断部门局领导
-      permissionFlag3: false, // 判断是否下级
       tree_key: 1,
       labelClassName: "",
       form: {
