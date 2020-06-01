@@ -312,7 +312,9 @@ export default {
         this.tree_data = tree_data
         let nodesChildren = this.findPathByLeafId(sessionStorage.userId,[tree_data])
         this.expandedKeys = []
-        this.collectIds([nodesChildren])
+        if(nodesChildren != null){
+          this.collectIds([nodesChildren])
+        }
         // console.log(this.expandedKeys)
       })
     },

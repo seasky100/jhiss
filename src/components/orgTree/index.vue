@@ -131,7 +131,7 @@ export default {
       this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
       // this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
       this.permissionFlag2 = false
-      if(this.model == 'dep'){
+      if(this.model == 'dep' && this.data.userPids != null){
         this.permissionFlag2 = this.data.userPids.includes(sessionStorage.userId)
       }
       // 
