@@ -101,12 +101,12 @@ export default {
     active(newVal, oldVal){
       this.getWarmCount()
     },
-    tree_data(newVal, oldVal){
-      // console.log(newVal)
-      if(newVal.orgId != oldVal.orgId){
-        this.getWarnPerson(newVal)
-      }
-    },
+    // tree_data(newVal, oldVal){
+    //   // console.log(newVal)
+    //   if(newVal.orgId != oldVal.orgId){
+    //     this.getWarnPerson(newVal)
+    //   }
+    // },
   },
   created(){
     let permissionFlag = false
@@ -274,7 +274,7 @@ export default {
       // console.log(value)
       // this.active = value.id;
       let aleadIds =  value.aleadIds?value.aleadIds.split(','):[]
-      let pleadIds =  value.aleadIds?value.pleadIds.split(','):[]
+      let pleadIds =  value.pleadIds?value.pleadIds.split(','):[]
       this.active = value.orgId;
       let tree_data = {
         children: [],
@@ -283,7 +283,7 @@ export default {
         level: 1,
         orgId: value.orgId,
         userPid: value.userPid,
-        userPids: [value.userPid].concat(aleadIds, pleadIds).join(','),
+        userPids: [value.userPid].concat(aleadIds, pleadIds),
         userInfo: value.userList[0].userInfo
       };
       this.getChildren(value, tree_data.children);
@@ -301,7 +301,7 @@ export default {
       tree_data.children = childrenArr
       this.tree_data = tree_data
       // console.log(tree_data)
-      // this.getWarnPerson(tree_data)
+      this.getWarnPerson(tree_data)
     },
     getWarnPerson(tree_data){
       const param = {
@@ -400,14 +400,7 @@ export default {
         
         this.entranceList = arr2;
         let n = 0;
-        for (let i = 0; i < this.entranceList.length; i++) {
-          let obj = this.entranceList[i];
-          if (obj.id == this.active || obj.orgId == this.active) {
-            n = i;
-            this.getTreeData(obj);
-            break;
-          }
-        }
+        let flag = false // 查找当前orgId，跳出循环
         let query = this.$route.query;
           //判断有没有传id，
         if(!query||!query.id){
@@ -417,14 +410,28 @@ export default {
             if(objStr.includes(window.sessionStorage.userId)){
               n = i;
               this.getTreeData(obj);
+              flag = true
               break;
              }
+          }
+        }else{
+          for (let i = 0; i < this.entranceList.length; i++) {
+            let obj = this.entranceList[i];
+            if (obj.id == this.active || obj.orgId == this.active) {
+              n = i;
+              this.getTreeData(obj);
+              flag = true
+              break;
+            }
           }
         }
         this.$nextTick(() => {
           let scroll = this.$refs.dep_box[n].offsetLeft - 400;
           $(this.$refs.dep_list).animate({ scrollLeft: scroll }, 2000);
         });
+        if(flag){
+          break;
+        }
       }
     }
   }
