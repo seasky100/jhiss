@@ -78,21 +78,21 @@ export default {
     }
   },
   watch: {
-    data() {
-      this.isGotoPerson_info = false;
-    },
+    // data() {
+    //   this.isGotoPerson_info = false;
+    // },
     // permissionFlag(newVal,oldVal){
     //   this.tree_key++
     // },
     // permissionFlag2(newVal,oldVal){
     //   this.tree_key++
     // },
-    personId(newVal,oldVal){
-      this.tree_key++
-    },
-    expandedKeys(newVal,oldVal){
-      this.tree_key++
-    },
+    // personId(newVal,oldVal){
+    //   this.tree_key++
+    // },
+    // expandedKeys(newVal,oldVal){
+    //   this.tree_key++
+    // },
   },
   created(){
     // 判断是否为董旭斌
