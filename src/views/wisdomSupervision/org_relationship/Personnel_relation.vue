@@ -272,7 +272,7 @@
 </template>
 <script>
 // import treeData from './treeData.js';
-import { getUserInfo,getUserList,getList,getUserListByUserId  } from '@/api/user-server.js';
+import { getUserInfo,getUserList,getList,getUserListByUserId, getSubordinateList  } from '@/api/user-server.js';
 import { findExposureStudyRecord } from "@/api/warn.js";
 import { getRiskByUserId,saveElectronicResponsibility,updateElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
@@ -574,7 +574,7 @@ export default {
       }
     },
     init2(userId, realName, userInfo){
-      Promise.all([this.getUserListByUserId(userId),this.getPostUserInfo(userId)]).then((res) => {
+      Promise.all([this.getSubordinateList(userId),this.getPostUserInfo(userId)]).then((res) => {
         // console.log(res, 'promise all 方法')
         let children = res[0]
         let posts = res[1]
@@ -611,9 +611,9 @@ export default {
       });
     },
     // 下属信息
-    getUserListByUserId(userId){
+    getSubordinateList(userId){
       return new Promise((resolve, reject) => {
-        getUserListByUserId({
+        getSubordinateList({
           userId: userId
         }).then( res => {
           // console.log(res.data)
@@ -625,7 +625,6 @@ export default {
     },
     // 机构人员 下拉change事件
     orgChange(orgId) {
-      debugger
       const item = this.deepQuery(orgId);
       this.orgName = item.name;
       this.getUserListData(orgId);
@@ -662,7 +661,7 @@ export default {
       const params = {
         userId: id
       }
-        getUserListByUserId(params).then(res => {
+        getSubordinateList(params).then(res => {
           if (res.success && res.data && res.data.length > 0) {
             this.interviewMans = res.data;
             let data = res.data;

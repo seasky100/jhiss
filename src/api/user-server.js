@@ -110,6 +110,14 @@ export function getUserListByUserId(params) {
       params
     })
 }
+// 从根据userId查询相应层级成员的id列表（分管，协管） getSubordinateList
+export function getSubordinateList(params) {
+  return request({
+      url: DEFAULT_URL.user.getSubordinateList,
+      method: 'get',
+      params
+    })
+}
 // 查询字典数据
 export function getList(params) {
   return request({
