@@ -272,7 +272,7 @@
 </template>
 <script>
 // import treeData from './treeData.js';
-import { getUserInfo,getUserList,getList,getUserListByUserId, getSubordinateList  } from '@/api/user-server.js';
+import { getUserInfo,getUserList,getList,getUserListByUserId, getSubordinateUserList  } from '@/api/user-server.js';
 import { findExposureStudyRecord } from "@/api/warn.js";
 import { getRiskByUserId,saveElectronicResponsibility,updateElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
@@ -574,7 +574,7 @@ export default {
       }
     },
     init2(userId, realName, userInfo){
-      Promise.all([this.getSubordinateList(userId),this.getPostUserInfo(userId)]).then((res) => {
+      Promise.all([this.getSubordinateUserList(userId),this.getPostUserInfo(userId)]).then((res) => {
         // console.log(res, 'promise all 方法')
         let children = res[0]
         let posts = res[1]
@@ -611,12 +611,12 @@ export default {
       });
     },
     // 下属信息
-    getSubordinateList(userId){
+    getSubordinateUserList(userId){
       return new Promise((resolve, reject) => {
-        getSubordinateList({
+        getSubordinateUserList({
           userId: userId
         }).then( res => {
-          // console.log(res.data)
+          console.log(res.data)
           resolve(res.data)
         }).catch(err => {
           reject()
@@ -661,7 +661,7 @@ export default {
       const params = {
         userId: id
       }
-        getSubordinateList(params).then(res => {
+        getSubordinateUserList(params).then(res => {
           if (res.success && res.data && res.data.length > 0) {
             this.interviewMans = res.data;
             let data = res.data;
