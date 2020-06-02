@@ -306,7 +306,7 @@ export default {
         element.expand = false;
       });
       tree_data.children = childrenArr
-      this.tree_data = tree_data
+      // this.tree_data = tree_data
       // console.log(tree_data)
       this.getWarnPerson(tree_data)
     },
@@ -320,12 +320,12 @@ export default {
         }else{
           this.warnPersonList = res.data
         } 
-        this.tree_data = tree_data
         let nodesChildren = this.findPathByLeafId(sessionStorage.userId,[tree_data])
         this.expandedKeys = []
         if(nodesChildren != null){
           this.collectIds([nodesChildren])
         }
+        this.tree_data = tree_data
         // console.log(this.expandedKeys)
       })
     },
@@ -363,7 +363,9 @@ export default {
       //   query: { id: value.id }
       // });
       this.getWarmCount()
-      this.getTreeData(value);
+      this.$nextTick(() => {
+        this.getTreeData(value)
+      })
     },
     // 查询层级数据
     getData() {
