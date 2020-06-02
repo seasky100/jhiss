@@ -78,21 +78,21 @@ export default {
     }
   },
   watch: {
-    data() {
-      this.isGotoPerson_info = false;
-    },
+    // data() {
+    //   this.isGotoPerson_info = false;
+    // },
     // permissionFlag(newVal,oldVal){
     //   this.tree_key++
     // },
     // permissionFlag2(newVal,oldVal){
     //   this.tree_key++
     // },
-    personId(newVal,oldVal){
-      this.tree_key++
-    },
-    expandedKeys(newVal,oldVal){
-      this.tree_key++
-    },
+    // personId(newVal,oldVal){
+    //   this.tree_key++
+    // },
+    // expandedKeys(newVal,oldVal){
+    //   this.tree_key++
+    // },
   },
   created(){
     // 判断是否为董旭斌
@@ -131,7 +131,7 @@ export default {
       this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
       // this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
       this.permissionFlag2 = false
-      if(this.model == 'dep'){
+      if(this.model == 'dep' && this.data.userPids != null){
         this.permissionFlag2 = this.data.userPids.includes(sessionStorage.userId)
       }
       // 
