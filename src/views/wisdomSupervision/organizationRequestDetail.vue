@@ -536,7 +536,7 @@
         </tr>
         <tr class='o_tr'>
           <td class='o_td'>事项时间：</td>
-          <td>{{new Date(formData.startTime).toLocaleString('chinese',{hour12: false})}}至{{new Date(formData.applyEnd).toLocaleString('chinese',{hour12:
+          <td>{{new Date(formData.applyTime).toLocaleString('chinese',{hour12: false})}}至{{new Date(formData.applyEnd).toLocaleString('chinese',{hour12:
             false})}}</td>
         </tr>
         <tr class='o_tr'>
@@ -565,7 +565,7 @@
                 {{data.sponsorName}}
             </span>
             <span slot="description" style="background:none;margin:0px 5px 20px;">
-                {{data.gmtCreate}} <span class='o_create'>新建</span> 
+                {{data.gmtCreate}} <span class='o_create'>创建</span> 
                 <div>由<span class='o_create'>{{data.sponsorName}}</span>发起提交 </div>
             </span>
           </el-step>
@@ -628,11 +628,15 @@ export default {
     return {
       // 与本人关系
       relationMap: {
-        0: '本人',
-        1: '妻子',
-        2: '丈夫',
-        3: '儿子（共同生活）',
-        4: '女儿（共同生活）'
+        8: '本人',
+        2: '配偶',
+        7: '父母',
+        6: '儿子',
+        4: '母亲',
+        9: '儿媳',
+        3: '父亲',
+        10: '女婿',
+        5: '女儿'
       },
       // 房产类型
       typeMap : {
@@ -784,12 +788,14 @@ export default {
       approvalStatus:'',
       flowHistory:[],
       formData:[],
-      data:[]
+      data:[],
+      nodeData: "",
     }
   },
   watch: {},
   mounted() {
     this.flowCode = this.$route.query.flowCode
+    this.id = this.$route.query.id
 		console.log(this.flowCode)
     this.init()
   },
@@ -801,7 +807,8 @@ export default {
     getData() {
       const _this = this;
       const params = {
-        flowCode: _this.flowCode
+        flowCode: _this.flowCode,
+        id:_this.id,
       }
       getApprovalById(params).then(res => {
         if (res.success) {        
@@ -821,8 +828,15 @@ export default {
               _this.formData.contentUrl.push(data)
             }
           }
-          _this.flowHistory = res.data.flowHistory[0].node
-          _this.textarea2 = res.data.flowHistory[0].comment
+          const flowData = res.data.flowHistory
+          const id = sessionStorage.userId
+          debugger
+          for (let j = 0; j <flowData.length; j++) {
+            if(flowData[j].approvalId == id){
+              _this.flowHistory = flowData[j].node
+              _this.textarea2 = flowData[j].comment
+            } 
+          }
           const Data = _this.data
           Data.gmtCreate = new Date(Data.gmtCreate).toLocaleString('chinese', { hour12: false })
         }

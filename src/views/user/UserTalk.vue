@@ -253,7 +253,8 @@ export default {
       findInterViewPage(
         Object.assign(
           {
-            userId: _this.id,
+            // userId: _this.id,
+            userId: sessionStorage.id,
             nCurrent: nCurrent,
             nSize: 10,
             department: _this.orgName,

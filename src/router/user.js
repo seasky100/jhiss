@@ -3,7 +3,7 @@ export default [
         title: '用户信息',
         path: "/UserInfo",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/UserInfo.vue')
@@ -13,7 +13,7 @@ export default [
         title: '工资信息',
         path: "/Salary",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/salary.vue')
@@ -23,7 +23,7 @@ export default [
         title: '代办箱',
         path: "/agency",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/agency.vue')
@@ -33,7 +33,7 @@ export default [
         title: '协作待办',
         path: "/CooperationAgency",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/AgencyJump/CooperationAgency.vue')
@@ -43,7 +43,7 @@ export default [
         title: '审批事项',
         path: "/ApprovalMatters",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/AgencyJump/ApprovalMatters.vue')
@@ -53,7 +53,7 @@ export default [
         title: '用车申请',
         path: "/CarApplication",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/AgencyJump/CarApplication.vue')
@@ -63,7 +63,7 @@ export default [
         title: '差旅申请',
         path: "/TravelApplication",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/AgencyJump/TravelApplication.vue')
@@ -73,7 +73,7 @@ export default [
         title: '公文流转',
         path: "/DocumentLiu",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/AgencyJump/DocumentLiu.vue')
@@ -83,7 +83,7 @@ export default [
         title: '日志信息',
         path: "/UserInfo",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/UserLog.vue')
@@ -93,7 +93,7 @@ export default [
         title: '请假信息',
         path: "/UserLeave",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/UserLeave.vue')
@@ -103,7 +103,7 @@ export default [
         title: '出国信息',
         path: "/UserAbroad",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/UserAbroad.vue')
@@ -113,7 +113,7 @@ export default [
         title: '谈话信息',
         path: "/UserTalk",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/UserTalk.vue')
@@ -123,7 +123,7 @@ export default [
         title: '即报信息',
         path: "/UserReport",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/UserReport.vue')
@@ -133,7 +133,7 @@ export default [
         title: '加班信息',
         path: "/UserOvertime",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/user/UserOvertime.vue')
@@ -143,7 +143,7 @@ export default [
         title: '申报预警',
         path: "/AgencyRequest",
         meta:{
-            permValue:'ZHKQ',
+            permValue:'ZHK',
           },
         hidden:true,
         component: () => import('../views/wisdomSupervision/AgencyRequest.vue')

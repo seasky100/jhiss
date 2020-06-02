@@ -66,11 +66,11 @@ export default {
           label: '标题',
           align: 'left'
         },
-        {
-          prop: 'content',
-          label: '内容',
-          align: 'left'
-        }
+        // {
+        //   prop: 'content',
+        //   label: '内容',
+        //   align: 'left'
+        // }
       ],
     }
   },

@@ -47,9 +47,9 @@
             </template>
           </el-table-column>
           <el-table-column align="right">
-            <template slot="header" slot-scope="scope">
+            <!-- <template slot="header" slot-scope="scope">
               <el-button size="mini" type="primary" @click="addRiskContent">添加</el-button>
-            </template>
+            </template> -->
             <template slot-scope="scope">
               <el-button
                 :disabled="deleteDisable"
@@ -71,9 +71,9 @@
           ></el-option>
         </el-select>
       </el-form-item> -->
-      <el-form-item label="部门负责人：">
+      <!-- <el-form-item label="部门负责人：">
         <el-input readonly v-model="formData.orgLeaderName"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="备注：">
         <el-input type="textarea" v-model="formData.remark"></el-input>
       </el-form-item>
@@ -116,6 +116,7 @@ export default {
         orgId:sessionStorage.orgId,
         leaderName:sessionStorage.realName,
         leaderId:sessionStorage.userId,
+        ifMyEntering:'',
         fileUrl: '',
         orgName: '',
         postName: '',
@@ -239,10 +240,10 @@ export default {
           this.formData.orgName = res.data.userInfo.label
           this.formData.postName = res.data.userInfo.rank
           const { organizations } = data;
-          const nowOrg = organizations.find(
-            item => item.id === this.formData.orgId
-          );
-          this.$set(this.formData, "orgLeaderName", nowOrg.principal);
+          // const nowOrg = organizations.find(
+          //   item => item.id === this.formData.orgId
+          // );
+          // this.$set(this.formData, "orgLeaderName", nowOrg.principal);
           this.postList = data.posts;
         } else {
           this.$message({
@@ -284,6 +285,7 @@ export default {
       if (this.id) {
         this.formData.id = this.id;
       }
+      const leadInfo = JSON.parse(sessionStorage.userInfo)  
       const user = this.userList.find(item => item.id === this.formData.userId);
       this.formData.policeCode = user.userInfo.policeCode;
       this.formData.userName = user.realName;
@@ -300,6 +302,10 @@ export default {
       filesParam.append('fileUrl', this.formData.fileUrl);
       filesParam.append('orgName', this.formData.orgName);
       filesParam.append('postName', this.formData.postName);
+      filesParam.append('leaderUrl', leadInfo.fileId);
+      filesParam.append('leaderCode', leadInfo.policeCode);
+      filesParam.append('leaderPost', leadInfo.rank);
+      filesParam.append('leaderDept', leadInfo.label);
       filesParam.append('riskContent', JSON.stringify(this.formData.riskContent));
       let res = null;
       if (this.formData.id) {

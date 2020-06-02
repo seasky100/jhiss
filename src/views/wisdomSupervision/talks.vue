@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="page-title">
-      <span>谈话谈心</span>
+      <span>谈心谈话</span>
     </div>
     <div class="content">
       <div class="search-wrap">
@@ -15,6 +15,10 @@
           @addClickHandle="addClickHandle"
         />
       </div>
+      <div style="text-align: -webkit-auto;margin-bottom: 12px;margin-left: 10px;">
+          <el-switch v-model='value' v-show='dong' @change='group' active-text='我的谈话' active-color='#13ce66' inactive-text='我的下属' inactive-color='#ff4949'>
+            </el-switch>
+        </div>
       <div>
         <e-table
           ref="recordTalksTableRef"
@@ -43,26 +47,25 @@ export default {
     return {
       userId: "",
       orgName: "",
+      interviewId:'',
+      deptId: '',
+      dong: true,
+      value: '',
       btnsConfig: {
         showAdd: true
       },
       searchData: {
         userName: "",
-        department: "",
+        deptId: "",
         startTime: "",
         endTime: "",
         policeCode: ""
       },
       searchForm: [
-        {
-          type: "input",
-          prop: "userName",
-          width: "120px",
-          placeholder: "被谈话人"
-        },
+
         {
           type: "select_tree",
-          prop: "department",
+          prop: "deptId",
           width: "150px",
           options: this.orgData,
           config: {
@@ -75,11 +78,17 @@ export default {
           placeholder: "所属部门"
         },
         {
+          type: "input",
+          prop: "userName",
+          width: "120px",
+          placeholder: "被谈话人"
+        },
+        {
           type: "select",
           prop: "interviewType",
           width: "100%",
           options: [
-            { label: "谈话谈心", value: "1" },
+            { label: "谈心谈话", value: "1" },
             { label: "家庭走访", value: "2" },
             { label: "约谈提醒", value: "3" },
             { label: "帮助教育", value: "4" },
@@ -137,7 +146,7 @@ export default {
           prop: "interviewType",
           formatter: "interviewType_formatter",
           options: {
-            1: "谈话谈心",
+            1: "谈心谈话",
             2: "家庭走访",
             3: "约谈提醒",
             4: "帮助教育",
@@ -227,9 +236,15 @@ export default {
     };
   },
   mounted() {
-    this.searchForm[1].options = this.orgData;
-    console.log(this.orgData);
-    this.userId = sessionStorage.userId;
+    this.searchForm[0].options = this.orgData;
+    // console.log(this.orgData);
+    if(sessionStorage.realName =='董旭斌'){
+      this.interviewId = '';
+      this.dong = false
+    }else{
+      this.interviewId = sessionStorage.userId;
+    }
+    
     this.orgName = sessionStorage.orgName;
     this.init();
   },
@@ -257,6 +272,19 @@ export default {
       // console.log(val)
       next();
     },
+    group(){
+      if(this.value==true){ 
+        // 我的
+        this.interviewId = sessionStorage.userId
+        this.userId = ''
+        this.query()
+      }else{ 
+        // 待审批
+        this.userId = sessionStorage.userId
+        this.interviewId = '',
+        this.query()
+      }  
+    },
     // 查询列表
     query(nCurrent = 1) {
       // console.log(nCurrent)
@@ -266,7 +294,10 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            department: _this.orgName,
+            deptId: _this.orgName,
+            interviewId: _this.interviewId,
+            // deptId:'',
+            userId: _this.userId,
             orderFlag: false,
             orderByField: "interviewTime"
           },

@@ -176,8 +176,8 @@ export default {
             getFindAbroadRecordPage(Object.assign({
                 nCurrent: nCurrent,
                 nSize: 10,
-                // userId: sessionStorage.id,
-                userId: $this.id,
+                userId: sessionStorage.id,
+                // userId: $this.id,
                 orderByField: ''
             }, $this.searchData)).then((res) => {
                 this.$refs.recordSpTableRef.setPageInfo(

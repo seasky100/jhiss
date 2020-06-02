@@ -34,7 +34,9 @@
 //     getWarnPage
 // } from '@/api/warn.js';
 import {
-    getUserList
+    getUserList,
+    getUserListByOrg,
+    getUserListByUserId
 } from '@/api/user-server.js';
 // import parameterDetail from './modal/parameterDetail'
 // import { getUserList } from '@/api/wisdom-reminder/personnel-parameter.js'
@@ -45,6 +47,7 @@ export default {
     },
     data() {
         return {
+            userIds:'',
             searchData: {
                 realName: '',
                 // loginName: '',
@@ -55,14 +58,14 @@ export default {
             searchForm: [
                 // {type: 'input', prop: 'loginName', width: '120px', placeholder: '警号'},
                 {type: 'input', prop: 'realName', width: '120px', placeholder: '姓名'},
-                {
-                    type: 'select',
-                    prop: 'orgId',
-                    width: '150px',
-                    options: [],
-                    change: row => console.log(row),
-                    placeholder: '所属部门'
-                }
+                // {
+                //     type: 'select',
+                //     prop: 'orgId',
+                //     width: '150px',
+                //     options: [],
+                //     change: row => console.log(row),
+                //     placeholder: '所属部门'
+                // }
                 // {
                 //     type: 'daterange',
                 //     options: [
@@ -147,16 +150,19 @@ export default {
         // 查找列表数据
         query(nCurrent = 1) {
             const $this = this;
-            getUserList(
+            console.log(22)
+            console.log('888',sessionStorage.userId + ','+ $this.userIds,)
+            getUserListByOrg(
                 Object.assign(
                     {
-                        // nCurrent: nCurrent,
+                        // nCurrent: 1,
                         // nSize: 10,
-                        orgId: sessionStorage.orgId
+                        userId: sessionStorage.userId + ','+ $this.userIds,
                     },
                     // $this.searchData
                 )
             ).then(res => {
+                debugger
                 console.log(333,res)
                 // $this.tableList = res.data
                 this.$refs.recordSpTableRef.setPageInfo(
@@ -167,9 +173,27 @@ export default {
                 );
             })
         },
+           // 根据用户ID查询所有下属用户
+		getUserListByUserId() {
+            debugger
+        const _this= this;
+        const params = {
+          userId: sessionStorage.userId
+        }
+        getUserListByUserId(params).then(res => {
+          if (res.success) {
+            _this.userIds = res.data.map(item => item.id).join()
+            // this.searchData.approvalId = sessionStorage.userId
+            console.log('_this.userIds',_this.userIds)
+            this.query()
+          }
+        })
+      },
     },
     mounted() {
-        this.query();
+        debugger
+        console.log(1)
+        this.getUserListByUserId();
     }
 }
 </script>

@@ -23,6 +23,10 @@
           :searchData="searchData"
           :searchForm="searchForm" />
       </div>
+      <div style="text-align: -webkit-auto;margin-bottom: 12px;margin-left: 10px;">
+          <el-switch v-model='value' @change='group' active-text='我的即报' active-color='#13ce66' inactive-text='待我审批' inactive-color='#ff4949'>
+          </el-switch>
+        </div>
       <div>
         <e-table
           ref="recordSpTableRef"
@@ -63,14 +67,16 @@ export default {
 				{name:'亲属经商',url:require('@/assets/images/individual/qsjs@2x.png'),path:'/Relatives_business'},
 				{name:'境外存款',url:require('@/assets/images/individual/jwck@2x.png'),path:'/Offshore_deposits'},
 				{name:'借贷担保',url:require('@/assets/images/individual/jddb@2x.png'),path:'/Secured_lending'},
-				{name:'涉纪涉诉事项',url:require('@/assets/images/individual/sjss@2x.png'),path:'/Matters_involved'},
+				{name:'涉及诉讼事项',url:require('@/assets/images/individual/sjss@2x.png'),path:'/Matters_involved'},
 				{name:'其他',url:require('@/assets/images/individual/qt@2x.png'),path:'/Other_matters'}
 			],
       userIds:'',
+      id:'',
+      value: '',
 			searchData: {
         userName: '',
         policeCode: '',
-        approvalId: '',
+        approvalId:  '',
         status: '',
         code:'',
         startTime: '',
@@ -87,18 +93,18 @@ export default {
         //   change: row => console.log(row),
         //   placeholder: '所属部门'
         // },
-        {
-					// label: '所属部门',
-					type: 'select_tree',
-					prop: 'approvalId',
-					options: this.orgData,
-					config: {
-						value: 'id',
-						label: 'name',
-						children: 'childrens',
-						disabled: true
-					},
-				},
+        // {
+				// 	// label: '所属部门',
+				// 	type: 'select_tree',
+				// 	prop: 'approvalId',
+				// 	options: this.orgData,
+				// 	config: {
+				// 		value: 'id',
+				// 		label: 'name',
+				// 		children: 'childrens',
+				// 		disabled: true
+				// 	},
+				// },
         {
           type: 'daterange',
           options: [
@@ -230,7 +236,7 @@ export default {
             disabled: false,
             method: (key, row) => {
               console.log('row', row);
-              this.$router.push({path: '/organizationRequestDetail', query: { flowCode: row.flowCode }})
+              this.$router.push({path: '/organizationRequestDetail', query: { id: row.id,flowCode: row.flowCode }})
             },
             showCallback: () => {
               return true;
@@ -243,11 +249,12 @@ export default {
   watch: {},
   mounted() {
     this.searchForm[1].options = this.orgData
-    this.getUserListByUserId()
-    // this.init()
+    // this.getUserListByUserId()
+    this.init()
   },
   methods: {
 		init() {
+      this.id = this.userId
       this.query();
     },
     	// 根据用户ID查询所有下属用户
@@ -259,9 +266,11 @@ export default {
         getUserListByUserId(params).then(res => {
           if (res.success) {
             _this.userIds = res.data.map(item => item.id).join()
-            this.query();
+            this.searchData.approvalId = sessionStorage.userId
+            this.query()
           }
         })
+
       },
     approval_format(row, column, prop) {
       return column.options[prop]
@@ -282,7 +291,20 @@ export default {
 		},
 		ApplyReport(value){
 			this.$router.push({ path: value.path });
-		},
+    },
+    group(){
+      if(this.value==true){ 
+        // 我的
+        this.searchData.approvalId = ''
+        this.userIds = ''
+        this.id = this.userId
+        this.query()
+      }else{ 
+        // 待审批
+        this.id = ''
+        this.getUserListByUserId()
+      }  
+    },
 		// 查询列表
     query(nCurrent = 1) {
       const $this = this;
@@ -291,7 +313,7 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId: $this.userId + ','+ $this.userIds,
+            userId: $this.id + ','+ $this.userIds,
             approvalId: '',
             reportType:   $this.searchData.code||'1'
           },
@@ -316,7 +338,6 @@ export default {
   padding: 10px 10px 0;
   cursor: pointer;
   span{
-		
     padding: 3px 14px;
 		border-radius: 2px;
 		color: #515A6E;

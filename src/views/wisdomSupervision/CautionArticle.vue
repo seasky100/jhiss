@@ -4,7 +4,24 @@
          <!-- <div style='text-align:center;color:#dc4444'>{{listData.issue}}</div> -->
          <el-divider></el-divider>
         <!-- <div style='text-align:center;'>{{listData.title}}</div> -->
-        <div class='ql-editor' style="font-size: 16px;padding-right: 114px;padding-left: 114px;line-height: 30px;" v-html = 'listData.content' ></div>
+        <div class='' style="font-size: 16px;padding-right: 114px;padding-left: 114px;line-height: 30px;" v-html = 'listData.content' ></div>
+        <div v-show='flag' style="text-align: center;margin-bottom: 15px;">
+                <el-button @click='goBack'>返回</el-button>
+                <el-button type="primary" @click="mnode">评论</el-button>
+                <!-- <div v-show='flag' class='mnode' @click='mnode'>我要评论</div> -->
+            </div>  
+            <!-- <div v-show='flag' class='mnode' @click='mnode'>我要评论</div> -->
+            <div v-show='!flag' class='c_node'>
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="top">
+                    <el-form-item prop="input">
+                        <el-input placeholder="请填写评价内容" type="textarea" v-model="ruleForm.input" :rows="4"></el-input>
+                    </el-form-item>
+                    <el-form-item style="text-align: center;">
+                        <el-button type="primary" @click="submit">提交</el-button>
+                        <el-button @click='goBack'>返回</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
         <div style="margin-left: 10px;font-weight: bold;">评论区</div>
         <div class='hotnode' v-for="(item,index) in nodeData" :key="index">
                 <div class='c_top'>
@@ -25,29 +42,9 @@
                 </div>
                 </div>
         </div>
-        <div v-show='flag' style="text-align: center;margin-bottom: 15px;">
-            <el-button @click='goBack'>返回</el-button>
-            <el-button type="primary" @click="mnode">评论</el-button>
-            <!-- <div v-show='flag' class='mnode' @click='mnode'>我要评论</div> -->
-        </div>  
-        <!-- <div v-show='flag' class='mnode' @click='mnode'>我要评论</div> -->
-        <div v-show='!flag' class='c_node'>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm" size="small" label-position="top">
-                <el-form-item prop="input">
-                    <el-input placeholder="请填写评价内容" type="textarea" v-model="ruleForm.input" :rows="4"></el-input>
-                </el-form-item>
-                <el-form-item style="text-align: center;">
-                    <el-button type="primary" @click="submit">提交</el-button>
-                    <el-button @click='goBack'>返回</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
     </div>
 </template>
 <script>
-import '@/utils/quill/quill.core.css'
-import '@/utils/quill/quill.snow.css'
-import '@/utils/quill/quill.bubble.css'
     import { getExposureById ,saveExposureNote,queryExposureNote,updateLike } from '@/api/warn.js';
     import { mapGetters } from 'vuex';
     import { myPhotoSrc } from '../../utils/common.js';
