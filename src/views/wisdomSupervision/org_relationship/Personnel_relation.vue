@@ -636,6 +636,7 @@ export default {
     },
     // 机构人员 下拉change事件
     orgChange(orgId) {
+      debugger
       const item = this.deepQuery(orgId);
       this.orgName = item.name;
       this.getUserListData(orgId);
@@ -930,6 +931,7 @@ export default {
       })
     },
     responsibility(value) {
+      debugger
       this.zrsId = value.id
       console.log('领导责',this.zrsId)
       this.dialogVisible5 = true
