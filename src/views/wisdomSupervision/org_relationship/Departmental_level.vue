@@ -235,17 +235,12 @@ export default {
         newchildren.push(child);
       }
       t++;
-      let flag = false
       for (var m = 0; m < childrens.length; m++) {
         for (var n = 0; n < newchildren.length; n++) {
           if (childrens[m].userPid == newchildren[n].id) {
             this.getChildren(childrens[m], newchildren[n].children, t);
-            flag = true
             break;
           }
-        }
-        if(flag){
-          break
         }
       }
     },
