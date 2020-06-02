@@ -163,9 +163,23 @@ export const updateUserRisk = (params) =>
     method: 'post',
     data: params
   });
+  // 领导评价
+export const updateRiskContent = (params) =>
+request({
+  url: DEFAULT_URL.userRisk.updateRiskContent,
+  method: 'post',
+  data: params
+});
 
 
-
+// 根据人员id获取岗位信息
+export function getPostByUserId (params) {
+  return request({
+    url: DEFAULT_URL.post.getPostByUserId,
+    method: 'get',
+    params
+  })
+}
 // 年度报告
 export function getUserList (params) {
   return request({
