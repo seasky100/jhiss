@@ -67,6 +67,15 @@ export function getUserList (params) {
     params
   })
 }
+// 用户机构树对应下属的用户
+export function getUserListByOrg (params) {
+  return request({
+    url: DEFAULT_URL.user.getUserListByOrg,
+    method: 'get',
+    params
+  })
+}
+
 
 // 根据type 获取flowcode
 export function getFlowByCondition (params) {
