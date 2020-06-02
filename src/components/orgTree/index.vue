@@ -394,9 +394,7 @@ export default {
         // query.id = valueObj.id;
         query.id = valueObj.orgId;
       }
-      this.$nextTick(() => {
-        this.$router.push({ path: this.path_url, query });
-      })
+      this.$router.push({ path: this.path_url, query });
     },
     collapse(list) {
       var _this = this;

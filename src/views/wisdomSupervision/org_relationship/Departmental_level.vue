@@ -363,9 +363,7 @@ export default {
       //   query: { id: value.id }
       // });
       this.getWarmCount()
-      this.$nextTick(() => {
-        this.getTreeData(value)
-      })
+      this.getTreeData(value)
     },
     // 查询层级数据
     getData() {
