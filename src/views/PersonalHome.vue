@@ -52,7 +52,7 @@
         </div>
       </div>
       <el-row class='content' :gutter="10">
-        <el-col :xs="12" :sm="8" :md="8" :lg="6.5" :xl="6.5">
+        <el-col :xs="12" :sm="8" :md="8" :lg="7" :xl="7">
           <div class='person_left'>
               <div class="person_title">
                   <img style='margin-top: 3px;' src='../utils/img/home_round_bar@2x.png' /> 
@@ -61,7 +61,8 @@
                 <div class="fengxian_body radar" id="radar"></div>
                 <div class='p_warn'>
                   <div class='ptop'>
-                    <div class='pli' v-for="(item,index) in warnList" @click='warncon' :key="index">
+                    <div class='pli' v-for="(item,index) in warnList"  :key="index">
+                        <!-- @click='warncon' -->
                       <div v-if='item.num == 0'>
                           <div class='h32 warn'><span class='wnum'>{{item.num}}</span></div>
                       </div>
@@ -83,7 +84,7 @@
                 </div>
           </div>
         </el-col>
-        <el-col :xs="12" :sm="8" :md="8" :lg="11" :xl="11">
+        <el-col :xs="12" :sm="8" :md="8" :lg="10" :xl="10">
           <div class='person_center'>
             <div class='p_top'>
                 <div class="person_title">
@@ -116,20 +117,20 @@
                     </div>
                     <div v-show='change' style="height:90%; margin-top: 2em;">
                     <div style="height:22%;display:flex">
-                      <div class='p_list'>层级履职清单：</div>
-                      <el-progress style="width: 70%" :color="customColor1"  :stroke-width="10" :percentage="70">正面评价清单</el-progress>
+                      <div title='由系统根据层级履职模块数据自动赋分' class='p_list'>层级履职清单：</div>
+                      <el-progress style="width: 70%" :color="customColor1"  :stroke-width="10" :percentage="100"></el-progress>
                     </div>
-                    <div style="height:22%;display:flex">
+                    <div title='由系统根据加班情况、争先创优加分项目（其中中层领导折算部门年度考核结果）自动赋分' style="height:22%;display:flex">
                       <div class='p_list'>正面争优清单：</div>
-                      <el-progress style="width: 70%" :color="customColor2" :stroke-width="10" :percentage="90" ></el-progress>
+                      <el-progress style="width: 70%" :color="customColor2" :stroke-width="10" :percentage="0" ></el-progress>
                     </div>
-                    <div style="height:22%;display:flex">
+                    <div title='由系统根据考勤、日志、共性工作（其中中层领导考核重点工作任务、民警考核业务工作目标）自动赋分' style="height:22%;display:flex">
                       <div class='p_list'>负面扣分清单：</div>
-                      <el-progress style="width: 70%" :color="customColor3" :stroke-width="10" :percentage="80" ></el-progress>
+                      <el-progress style="width: 70%" :color="customColor3" :stroke-width="10" :percentage="100" ></el-progress>
                     </div>
-                    <div style="height:22%;display:flex">
-                      <div class='p_list'>季度评价清单：</div>
-                      <el-progress style="width: 70%;" :color="customColor4" :stroke-width="10" :percentage="70" ></el-progress>
+                    <div title='由系统根据季度和年度业绩评价测算生成' style="height:22%;display:flex">
+                      <div class='p_list'>综合评价清单：</div>
+                      <el-progress style="width: 70%;" show-text='dadad' :color="customColor4" :stroke-width="10" :percentage="0" ></el-progress>
                     </div>
                   </div>
                   <keep-alive>
@@ -141,7 +142,7 @@
               </div>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="8" :md="8" :lg="6.5" :xl="6.5">
+        <el-col :xs="24" :sm="8" :md="8" :lg="7" :xl="7">
           <div class='person_right'>
             <div class='p_top'>
               <div class="person_title">
@@ -162,12 +163,12 @@
                 </div>
                 <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
                 <div @click='jxh' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
-                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">队伍精细化</span>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">云上政工</span>
                   <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
                     <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #8674f6">
                       <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
                         style="width: '4em'; height: 4em; background: #8674f6" title='待办箱'>
-                        <span style="font-size: 1.5em">1</span>
+                        <span style="font-size: 1.5em">0</span>
                       </div>
                     </div>
                   </div>
@@ -175,7 +176,7 @@
                 </div>
                 <div  style="width: 0; border: 0.5px solid #E4E9F3; height: 11.428em; margin: auto 0"/>
                 <div @click='warncon' class='flex flex-column flex-align-center flex-grow cursor-pointer'>
-                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级关系</span>
+                  <span class='flex flex-align-center txt-bold cursor-pointer' style="font-size: 14px;">层级管理</span>
                   <div class='r-half flex flex-align-center flex-justify-center' style="width: 5.4em; height: 5.4em; margin: 0.5em 0; background: #F4F1FF">
                     <div class='r-half flex flex-align-center flex-justify-center color-fff' style="width: 4em; height: 4em; background: #F09B38">
                       <div  class='r-half flex flex-align-center flex-justify-center color-fff txt-deco-none'
@@ -198,13 +199,13 @@
               <div class='flex flex-grow w-full h-full' style="margin-top: 0.2em;margin-left: 2em;">
                 <div class='flex flex-column flex-grow' style="padding: 0.5em">
                   <div class='flex flex-grow w-full'>
-                    <router-link to='/HierEvaluation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                    <router-link to='/Personnel_relation' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
                         <img style=" width: 26px; height: 26px;" class='cursor-pointer'  src='../utils/img/home_entrance_work_log@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
-                      <span class='cursor-pointer p_inter'>层级评价</span>
+                      <span class='cursor-pointer p_inter'>层级履职</span>
                     </router-link>
-                    <router-link to='/talks' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
+                    <router-link to='/AnnualReportList' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 0">
                       <img class='cursor-pointer'  src='../utils/img/home_entrance_overtime_request@2x.png' /> <!--src='/images/home_entrance_work_log@2x.png' -->
-                      <span class='cursor-pointer p_inter'>谈心谈话</span>
+                      <span class='cursor-pointer p_inter'>年度报告</span>
                     </router-link>
                     <router-link to='/organizationRequest' class='flex-inline flex-column flex-grow flex-align-center flex-justify-center txt-deco-none' style="border: solid #E4E9F3; border-width: 0 1px 1px 1px">
                       <img class='cursor-pointer'  src='../utils/img/home_entrance_receipt_notification@2x.png' /><!--src='/images/home_entrance_receipt_notification@2x.png'  --> 
@@ -283,7 +284,7 @@ import { mapGetters } from 'vuex';
         tjData:'',//考勤数据
         ntoday: this.$dayjs(new Date()),
         nt7:'',
-        daynum: 7,
+        daynum: 10,
         total: 0,
         userscore: '',
         deptscore: '',
@@ -310,14 +311,15 @@ import { mapGetters } from 'vuex';
         options2:[{value:'2020',label:'2020年'},{value:'2019',label:'2019年'}],
         value:"2020",
         warnList:[
-          { name:'遵章守纪',type: '13',num:0},
+          { name:'工作绩效',type: '13',num:0},
           { name:'异常查询',type: '4',num:0},
           { name:'涉嫌违法',type: '6',num:0},
-          { name:'护照保管',type: '8',num:0},
+          { name:'护照管理',type: '8',num:0},
           { name:'日志业绩',type: '5',num:0},
           { name:'效能提醒',type: '3',num:0},
           { name:'违规用车',type: '7',num:0},
-          { name:'考勤预警',type: '1',num:0}
+          { name:'日常规范',type: '11',num:0}  
+          // { name:'考勤预警',type: '1',num:0}
         ], 
         weekMap: [
           { name: '日', num: '1' },
@@ -359,19 +361,31 @@ import { mapGetters } from 'vuex';
   },
     mounted() {  
       this.setTimer2(); 
-      this.setTimer(); 
+      // this.setTimer(); 
       if(this.total == 3){
         clearInterval(this.timer)
-        alert(44444)
       }
       this.userInfo = JSON.parse(sessionStorage.userInfo)
-      this.getData();
+      // this.getData(); // 协作提效总数
       // this.getUserListByUserId();
       this.allWarnByType();
       this.sevenday();
       this.getPoliceCareer();
-      this.indexRecordDeatil();
-      this.sectorAverageStatistics();
+      if(window.sessionStorage.shData && window.sessionStorage.pjData ){
+        debugger
+        let data = JSON.parse(window.sessionStorage.shData)
+        let pjData = JSON.parse(window.sessionStorage.pjData)
+        this.worklength = data.map(({ worklength }) => worklength)
+        this.overtime = data.map(({ overtime }) => overtime)
+        this.clockDate = data.map(({ clock_date }) => new Date(clock_date).toLocaleDateString().substring(5))
+        this.averageData = Object.keys(pjData).sort().map(item => pjData[item]);
+        this.init();
+      }else{
+        this.indexRecordDeatil();
+        this.sectorAverageStatistics();
+      }
+     
+      
       this.indexCalendar();
       this.listenCon()
       // this.initCircle()
@@ -416,13 +430,18 @@ import { mapGetters } from 'vuex';
       })
     },
     initCircle(width,height) {
+      debugger
       const data = [
-        { name: "争优", count: 5 }, 
-        { name: "出勤", count: 10 },
-        { name: "日志", count: 10 },
-        { name: "重点", count: 20 },
-        { name: "共性", count: 20 },
-        { name: "业绩", count: 40 },
+        { name: "层级履职", count: 295}, 
+        { name: "正面争优", count: 190 },
+        { name: "负面扣分", count: 170 },
+        { name: "综合评价", count: 150 },
+        { name: "", count: 10 },
+        { name: "", count: 18 },
+        { name: "", count: 6 },
+        { name: "", count: 14 },
+        { name: "", count: 10 },
+        { name: "", count: 15 },
       ]      
       d3.select("svg").selectAll("g").remove();//清空作图区域
       // const svg = d3.select("svg"),width = +svg.attr("width"),height = +svg.attr("height");
@@ -440,7 +459,7 @@ import { mapGetters } from 'vuex';
             var id
             d.id = id;
             d.class = id;
-            // pid = num / (d.value);
+            // pid = name / (d.value);
             // d.colorPick = pid > 12 ? 5 : (pid > 10 ? 4 : (pid > 8 ? 3 : (pid > 5 ? 2 : 1)));
           }
         });
@@ -463,12 +482,13 @@ import { mapGetters } from 'vuex';
         .attr("xlink:href", (d) => { return "#" + d.id; });
 
       node.append("text")
-        .attr("clip-path", (d) => { return "url(#clip-" + d.id + ")"; })
+        .attr("clip-path", (d) => { return "url(#clip-" + d.data.name + ")"; })
         .selectAll("tspan")
         .data((d) => {
           var arr = new Array();
           arr.push(d.class);
-          arr.push(d.data.count);
+          // arr.push(d.data.count);
+          arr.push(d.data.name);
           return arr;//圆内显示内容
         })
         .enter().append("tspan")
@@ -523,9 +543,11 @@ import { mapGetters } from 'vuex';
       },
       sevenday(){
         const today = this.$dayjs(new Date());
-        const t7 = today.subtract(7, 'day');
+        const t7 = today.subtract(30, 'day');
         this.dateStart = t7.format('YYYY-MM-DD');
         this.dateEnd = today.format('YYYY-MM-DD');
+        // this.indexRecordDeatil();
+        // this.sectorAverageStatistics();
       },
       getRadar(){
           let radarDom = this.$echarts.init(document.getElementById('radar'))
@@ -576,7 +598,7 @@ import { mapGetters } from 'vuex';
                       },
               },
               indicator: [{
-                  name: '遵章守纪',
+                  name: '工作绩效',
                   max: this.maxValue,
                   //若将此属性放在radar下，则每条indicator都会显示圈上的数值，放在这儿，只在通信这条indicator上显示
                   axisLabel: {
@@ -589,14 +611,14 @@ import { mapGetters } from 'vuex';
               },
               { name: '异常查询', max: this.maxValue},
               { name: '涉嫌违法', max: this.maxValue},
-              { name: '护照保管', max: this.maxValue},
+              { name: '护照管理', max: this.maxValue},
               { name: '日志业绩', max: this.maxValue},
               { name: '效能提醒', max: this.maxValue},
               { name: '违规用车', max: this.maxValue},
               // { name: '异常查询', max: 30},
               // { name: '差旅管理', max: 30},
                      
-              { name: '考勤预警', max: this.maxValue},
+              { name: '日常规范', max: this.maxValue},
               // { name: '就餐预警', max: 30},
               // { name: '审批预警', max: 30},
               ],
@@ -630,7 +652,7 @@ import { mapGetters } from 'vuex';
               data: [
                   {
                     value: this.warnData,
-                    name: ['遵章守纪','异常查询 ','涉嫌违法','护照保管','日志业绩','效能提醒','违规用车','考勤预警'],
+                    name: ['工作绩效','异常查询 ','涉嫌违法','护照管理','日志业绩','效能提醒','违规用车','日常规范'],
                     // 设置区域边框和区域的颜色
                     itemStyle: {
                       normal: {
@@ -781,6 +803,22 @@ import { mapGetters } from 'vuex';
       // var colors = ['#8ec6ad', '#947DFF', '#386db3'];
       let option = {
         backgroundColor: '#fff',
+        tooltip: {
+                // trigger: 'axis',
+                // axisPointer: {
+                //     label: 'cross'
+                // },
+                position:[10,10],
+              formatter:  (params) => {
+                const data = params
+                var returnStr = '个人绩效考核成绩，由系统自动采集评估（数据待2020年度市局机关绩效考核办法出台后接入）'
+                // for (let i = 0; i < data.length; i++) {
+                //   returnStr += data[i].seriesName + '：' + data[i].data + '小时' + '<br/>'
+                // }
+
+                return returnStr;
+              }
+            },
       angleAxis: {
           show: false,
           max: 12 * 3 / 2, //这里将极坐标最大值转换成仪表盘的最大值，(360度除以240度)
@@ -903,7 +941,7 @@ import { mapGetters } from 'vuex';
                   offsetCenter: ["0", '5%'],
               },
               data: [{
-                  value: 98,
+                  value: 100,
                   name: ''
               }]
           }
@@ -915,7 +953,7 @@ import { mapGetters } from 'vuex';
       setTimer2() { // 
         this.timer2 = setInterval(() => {
           this.allWarnByType();
-        }, 3000)
+        }, 36000000)
       },
       // 查询分类风险提醒数据
       allWarnByType() {
@@ -930,14 +968,15 @@ import { mapGetters } from 'vuex';
             let total = 0
             if (tdata) {
               const array = [
-                { name: '遵章守纪', type: '13', value: 30 },
+                { name: '工作绩效', type: '13', value: 30 },
                 { name: '异常查询', type: '4', value: 30 },
                 { name: '涉嫌违法', type: '6', value: 30 },
-                { name: '护照保管', type: '8', value: 30 },
+                { name: '护照管理', type: '8', value: 30 },
                 { name: '日志业绩', type: '5', value: 30 },
                 { name: '效能提醒', type: '3', value: 30 },
                 { name: '违规用车', type: '7', value: 30 },
-                { name: '考勤预警', type: '1', value: 30 }
+                { name: '日常规范', type: '11', value: 30 }
+                // { name: '考勤预警', type: '1', value: 30 }
               ]
               for (let i = 0; i < tdata.length; i++) {
                 for (let j = 0; j < array.length; j++) {
@@ -1105,20 +1144,35 @@ import { mapGetters } from 'vuex';
           })
       },
       setTimer(){ //动态展示近90天的考勤数据
-        this.timer = setInterval(() => {
-          // this.ntoday = this.$dayjs(new Date());
-        this.nt7 = this.ntoday.subtract(this.daynum, 'day');
-        this.dateStart = this.nt7.format('YYYY-MM-DD');
-        this.dateEnd = this.ntoday.format('YYYY-MM-DD');
-        // this.ntoday = this.nt7
-        this.daynum = this.daynum + 10
-        this.total++
-        if (this.total == 9) { // 清除定时器
-            clearInterval(this.timer)
-          }
-        this.indexRecordDeatil();
-        this.sectorAverageStatistics();
-        },2000)
+
+        // this.nt7 = this.ntoday.subtract(this.daynum, 'day');
+        // this.dateStart = this.nt7.format('YYYY-MM-DD');
+        // this.dateEnd = this.ntoday.format('YYYY-MM-DD');
+        // // this.ntoday = this.nt7
+        // this.daynum = this.daynum + 10
+        // this.total++
+        // // if (this.total == 2) { // 清除定时器
+        // //     clearInterval(this.timer)
+        // //   }
+        // this.indexRecordDeatil();
+        // this.sectorAverageStatistics();
+
+
+
+        // this.timer = setInterval(() => {
+        //   // this.ntoday = this.$dayjs(new Date());
+        // this.nt7 = this.ntoday.subtract(this.daynum, 'day');
+        // this.dateStart = this.nt7.format('YYYY-MM-DD');
+        // this.dateEnd = this.ntoday.format('YYYY-MM-DD');
+        // // this.ntoday = this.nt7
+        // this.daynum = this.daynum + 10
+        // this.total++
+        // if (this.total == 2) { // 清除定时器
+        //     clearInterval(this.timer)
+        //   }
+        // this.indexRecordDeatil();
+        // this.sectorAverageStatistics();
+        // },10000)
       },
       // 查询七天上班时间统计数据
       indexRecordDeatil() {
@@ -1132,6 +1186,7 @@ import { mapGetters } from 'vuex';
         indexRecordDeatil(params).then(res => {
           if (res.success) {
             const Data = res.data
+            window.sessionStorage.shData = JSON.stringify(res.data)
             _this.worklength = Data.map(({ worklength }) => worklength)
             _this.overtime = Data.map(({ overtime }) => overtime)
             _this.clockDate = Data.map(({ clock_date }) => new Date(clock_date).toLocaleDateString().substring(5))
@@ -1151,6 +1206,7 @@ import { mapGetters } from 'vuex';
         sectorAverageStatistics(params).then(res => {
           if (res.success) {
             const Data = res.data
+            window.sessionStorage.pjData = JSON.stringify(res.data)
             _this.averageData = Object.keys(Data).sort().map(item => Data[item]);
             _this.init();
           }
@@ -1186,6 +1242,11 @@ import { mapGetters } from 'vuex';
     }
   }
   </script>
+  <style lang="stylus">
+        .el-progress-bar__outer {
+    background-color: darkgray !important;
+}
+  </style>
   <style lang="stylus" scoped>
     @import './css/pseudo_classes.css';
   .p_nvleft{
