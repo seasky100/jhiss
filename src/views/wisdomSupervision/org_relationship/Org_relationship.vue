@@ -130,8 +130,8 @@ export default {
             depObj.userDepPname = obj.realName
             if(aleadIds.includes(obj.id)){
               depObj.name = depObj.name + '（协管）'
-            }else if(pleadIds.includes(obj.id)){
-              depObj.name = depObj.name + '（分管）'
+            }else if(obj2.userPid.includes(obj.id)){
+              depObj.name = depObj.name + '（直管）'
             }
             children.push(depObj);
           }
