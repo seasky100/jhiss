@@ -140,7 +140,7 @@ const DEFAULT_URL = {
     getPoliceCareer: `${GAISMSERVER}policeCareer/getPoliceCareerByUserId`,
     // 根据userId查询相应层级成员的id列表 层级评价列表使用
     getUserListByUserId: `${UUMSSERVER}post/getUserListByUserId`,
-    getSubordinateList: `${UUMSSERVER}post/getSubordinateList`,
+    getSubordinateUserList: `${UUMSSERVER}post/getSubordinateUserList`,
     // 根据身份证号查询用户信息
     getUserByCardNum: `${UUMSSERVER}user/getUserByCardNum`,
     // 查询字典数据
