@@ -98,9 +98,9 @@ export default {
     };
   },
   watch: {
-    active(newVal, oldVal){
-      this.getWarmCount()
-    },
+    // active(newVal, oldVal){
+    //   this.getWarmCount()
+    // },
     // tree_data(newVal, oldVal){
     //   // console.log(newVal)
     //   if(newVal.orgId != oldVal.orgId){
@@ -171,6 +171,7 @@ export default {
     init() {
       let query = this.$route.query;
       this.active = (query && query.id) || sessionStorage.depId;
+      this.getWarmCount()
       if (window.sessionStorage.dep_list) {
         this.entranceList = JSON.parse(window.sessionStorage.dep_list);
         let n = 0;
@@ -234,11 +235,17 @@ export default {
         newchildren.push(child);
       }
       t++;
+      let flag = false
       for (var m = 0; m < childrens.length; m++) {
         for (var n = 0; n < newchildren.length; n++) {
           if (childrens[m].userPid == newchildren[n].id) {
             this.getChildren(childrens[m], newchildren[n].children, t);
+            flag = true
+            break;
           }
+        }
+        if(flag){
+          break
         }
       }
     },
@@ -275,7 +282,7 @@ export default {
       // this.active = value.id;
       let aleadIds =  value.aleadIds?value.aleadIds.split(','):[]
       let pleadIds =  value.pleadIds?value.pleadIds.split(','):[]
-      this.active = value.orgId;
+      // this.active = value.orgId;
       let tree_data = {
         children: [],
         realName: value.userList[0].realName,
@@ -299,7 +306,7 @@ export default {
         element.expand = false;
       });
       tree_data.children = childrenArr
-      this.tree_data = tree_data
+      // this.tree_data = tree_data
       // console.log(tree_data)
       this.getWarnPerson(tree_data)
     },
@@ -308,13 +315,17 @@ export default {
         deptId: tree_data.orgId
       }
       warnInfoTypeBydeptId(param).then((res) => {
-        this.warnPersonList = res.data
-        this.tree_data = tree_data
+        if(JSON.stringify == '{}'){
+          this.warnPersonList
+        }else{
+          this.warnPersonList = res.data
+        } 
         let nodesChildren = this.findPathByLeafId(sessionStorage.userId,[tree_data])
         this.expandedKeys = []
         if(nodesChildren != null){
           this.collectIds([nodesChildren])
         }
+        this.tree_data = tree_data
         // console.log(this.expandedKeys)
       })
     },
@@ -346,11 +357,13 @@ export default {
     },
     handleClickDep(value) {
       // console.log(value)
-      this.$router.push({
-        path: "/Departmental_level",
-        query: { id: value.id }
-      });
-      this.getTreeData(value);
+      this.active = value.orgId;
+      // this.$router.push({
+      //   path: "/Departmental_level",
+      //   query: { id: value.id }
+      // });
+      this.getWarmCount()
+      this.getTreeData(value)
     },
     // 查询层级数据
     getData() {

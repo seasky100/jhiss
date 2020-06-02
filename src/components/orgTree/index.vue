@@ -78,9 +78,13 @@ export default {
     }
   },
   watch: {
-    // data() {
-    //   this.isGotoPerson_info = false;
-    // },
+    data() {
+      this.isGotoPerson_info = false;
+      this.permissionFlag2 = false
+      if(this.model == 'dep' && this.data.userPids != null){
+        this.permissionFlag2 = this.data.userPids.includes(sessionStorage.userId)
+      }
+    },
     // permissionFlag(newVal,oldVal){
     //   this.tree_key++
     // },
@@ -130,11 +134,12 @@ export default {
     renderContent(h, data) {
       this.permissionFlag = sessionStorage.userId.includes('39411b303f3346c69c7a7c507a6d0afd')
       // this.permissionFlag2 = sessionStorage.userId.includes(this.data.userPid)
-      this.permissionFlag2 = false
-      if(this.model == 'dep' && this.data.userPids != null){
-        this.permissionFlag2 = this.data.userPids.includes(sessionStorage.userId)
-      }
+      // this.permissionFlag2 = false
+      // if(this.model == 'dep' && this.data.userPids != null){
+      //   this.permissionFlag2 = this.data.userPids.includes(sessionStorage.userId)
+      // }
       // 
+      // console.log(this.permissionFlag2)
       let userId = ''
       if(!this.personId){
         userId = JSON.parse(sessionStorage.userInfo).id
@@ -189,7 +194,7 @@ export default {
                     <div class="panel_info">
                       <span style="line-height:20px;font-size:15px">
                         <img src={require("../../assets/images/dangyuan.png")} />
-                        <span class={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 ? "current_user" : ""}>
+                        <span class={item.id == JSON.parse(sessionStorage.userInfo).id || this.permissionFlag || this.permissionFlag2 || this.expandedKeys.includes(item.id) ? "current_user" : ""}>
                           {item.realName || item.userInfo.realName}
                         </span>
                       </span>
@@ -264,7 +269,9 @@ export default {
                     onclick={() => this.nodePanelClick(data, item, "dep")}
                     class={'user_panel level_three three_hover'}
                   >
-                    {this.warnStatusDep(item)}
+                    {
+                      this.warnList != null ? this.warnStatusDep(item) : ''
+                    }
                     <img
                       class="dep_img"
                       src={require("../../assets/images/bg/dep_bg.png")}
