@@ -18,11 +18,23 @@
     <div class="content">
       <div class="search-wrap">
         <div class="section-title">查询条件</div>
+        <div style="display: flex;margin-top: 9px;">
+        <div class='department'>
+          <select-tree v-model="ruleForm.department1"   :props="config" :treeData="arryData" @change="orgChange" placeholder="请选择部门"
+          />
+      </div>
+      <div class='department'>
+          <el-select v-model="id3" placeholder="姓名" @change="selectChange3">
+              <el-option v-for="item in approvalArr" :key="item.id" :label="item.realName" :value="item.id">
+              </el-option>
+          </el-select>
+      </div>
         <e-search
           class="search-form"
           @handleSearch="handleSearch"
           :searchData="searchData"
           :searchForm="searchForm" />
+        </div>
       </div>
       <div style="text-align: -webkit-auto;margin-bottom: 12px;margin-left: 10px;">
           <el-switch v-model='value' @change='group' active-text='我的即报' active-color='#13ce66' inactive-text='待我审批' inactive-color='#ff4949'>
@@ -42,8 +54,8 @@
   </div>
 </template>
 <script>
-import { getUserListByUserId } from '@/api/user-server.js';
-import { findReportPage } from '@/api/report.js';
+import { getUserListByUserId,getUserList } from '@/api/user-server.js';
+import { findReportPage,getPostByUserId } from '@/api/report.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -73,6 +85,19 @@ export default {
 			],
       userIds:'',
       id:'',
+      id3: '',
+      arryData:[],
+      approvalArr: [],
+      approvalList: [],
+      config: {
+        value: 'id',
+        label: 'name',
+        children: 'childrens',
+        disabled: true
+      },
+      ruleForm: {
+            department1: sessionStorage.orgName,
+        },
       value: '',
 			searchData: {
         userName: '',
@@ -85,7 +110,7 @@ export default {
 			},
 			searchForm: [
         // {type: 'input', prop: 'policeCode', width: '120px', placeholder: '发起人警号'},
-        {type: 'input', prop: 'userName', width: '120px', placeholder: '发起人姓名'},
+        // {type: 'input', prop: 'userName', width: '120px', placeholder: '发起人姓名'},
         // {
         //   type: 'select',
         //   prop: 'approvalId',
@@ -249,7 +274,50 @@ export default {
   },
   watch: {},
   mounted() {
-    this.searchForm[1].options = this.orgData
+    const grade = sessionStorage.grade
+        if (grade && grade == 2 ||grade == 3) {
+            this.config = {
+                value: 'orgId',
+                label: 'name',
+                children: 'childrens',
+                disabled: true
+            },
+            this.getPostByUserId()
+        } else if (grade && grade == 1) {
+
+            this.arryData = this.orgData
+
+        }  else if (grade && grade == 4) {
+
+            const data = this.orgData[0].childrens
+            const orgId = sessionStorage.orgId
+            this.orgChange(orgId)
+            this.ruleForm.department1 = orgId
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].id === orgId) {
+                    this.arryData.push(data[i])
+                }
+            }
+            // this.searchForm[0].options = this.arryData;
+
+        }else {
+            const data = this.orgData[0].childrens
+            const orgId = sessionStorage.orgId
+            this.orgChange(orgId)
+            this.ruleForm.department1 = orgId
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].id === orgId) {
+                    this.arryData.push(data[i])
+                }
+            }
+            this.id3 = sessionStorage.realName
+            // this.searchForm[0].options = this.arryData;
+        }
+       
+
+        this.userId = sessionStorage.userId;
+        this.orgName = sessionStorage.orgName;
+    // this.searchForm[1].options = this.orgData
     // this.getUserListByUserId()
     this.init()
   },
@@ -257,6 +325,34 @@ export default {
 		init() {
       this.id = this.userId
       this.query();
+    },
+          // 机构人员 下拉change事件
+    orgChange(orgId) {
+      debugger
+      // this.searchData.dept_id = orgId
+      this.getUserListData(orgId);
+    },
+            // 获取机构对应的人员
+    getUserListData(id) {
+      const grade = sessionStorage.grade
+      const params = {
+        orgId: id
+      }
+      if (grade == 4) {
+        getUserListByUserId({
+          userId: sessionStorage.userId,
+        }).then(res => {
+          this.approvalArr = res.data;
+        });
+
+      } else {
+        getUserList(params).then(res => {
+          if (res.success && res.data && res.data.length > 0) {
+            this.approvalArr = res.data;
+          }
+        })
+      }
+
     },
     	// 根据用户ID查询所有下属用户
 		getUserListByUserId() {
@@ -272,6 +368,13 @@ export default {
           }
         })
 
+      },
+      selectChange3(val) {
+          const result = this.approvalArr.filter(item => {
+              return item.id === val;
+          })
+          this.approvalList = result;
+          this.searchData.userName = result[0].realName;
       },
     approval_format(row, column, prop) {
       return column.options[prop]
@@ -329,11 +432,30 @@ export default {
         );
       })
     },
+    getPostByUserId() { // 根据id获取个人岗位
+          const params = {
+            userId: sessionStorage.userId
+          }
+          getPostByUserId(params).then(res => {
+              if (res.success && res.data && res.data.length > 0) {
+                  this.arryData = res.data;
+              }
+          })
+      },
   }
 }
 </script>
+<style>
+  .el-input__inner {
+    height: 34px !important;
+}
+</style>
 <style lang="stylus" scoped>
 @import "../../styles/common.styl";
+.department{
+    margin-left: 10px;
+    margin-top: 14px;
+}
 /* @import "../../styles/report.css"; */
 .Individual_type{
   padding: 10px 10px 0;
