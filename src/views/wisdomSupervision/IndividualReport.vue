@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="page-title">
+      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
       <span>个人即报</span>
     </div>
     <div class="Individual_type">
