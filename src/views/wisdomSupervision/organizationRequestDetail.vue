@@ -1,8 +1,12 @@
 <template>
-  <div class="organizationRequestDetail">
-    <div class='flex flex-align-center h24 w-full border-box' style="color:#121518">
-			<div class='flex-inline' style="width:5px; height:21px; border-radius:2.5px; background:#235FF6"></div>
+  <div class="container IndividualReport organizationRequestDetail">
+    <!-- <div class='page-title flex flex-align-center h24 w-full border-box' style="color:#121518">
+      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
 			<span class='pl8 txt-bold font14' style="">详情</span>
+    </div> -->
+    <div class="page-title">
+      <img style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
+      <span>详情</span>
     </div>
     <div class="detail_left" v-if='data.reportType ==113'>
       <table class="detail_tab">
@@ -547,13 +551,18 @@
         </tr>
       </table>
     </div>
-    <div class="detail_right">
+    <div class="detail_right" ref="printCon">
       <div class='flex flex-align-center h24 w-full border-box' style="color:#121518">
-        <div class='flex-inline' style="width:5px; height:21px; border-radius:2.5px; background:#235FF6"></div>
-        <span class='pl8 txt-bold font14' style="">审批详情</span>
+        <!-- <div class='flex-inline' style="width:5px; height:21px; border-radius:2.5px; background:#235FF6"></div>
+        <span class='pl8 txt-bold font14' style="">审批详情</span> -->
+        <img class="font14" style="margin-right:8px;" src='@/utils/img/home_round_bar@2x.png' /> 
+        <span class="fontSty">审批详情</span>
+        <el-button @click="PrintRow" class="opertion" style="margin-left:10px;" size="small" type="primary" plain>
+          打印
+        </el-button>
       </div>
       <!-- 步骤条 -->
-      <div style="margin-top:10px;">
+      <div style="margin-top:20px;">
         <el-steps direction="vertical" :active="3" finish-status="success">
           <el-step title="步骤 1">
             <i class="step01" slot="icon">
@@ -864,13 +873,18 @@ export default {
           _this.$router.go(-1)
         }
       })
-    }
+    },
+    PrintRow(index, row){
+      this.$print(this.$refs.printCon)
+    },
+    // 
   }
 }
 </script>
 <style lang="stylus" scoped>
+@import "../../styles/common.styl"
 .organizationRequestDetail{
-  margin: 2%;
+  margin: 0%;
 }
 .police_career{
   height: 170px;
@@ -889,8 +903,13 @@ export default {
 }
 .detail_left,.detail_right{
   float:left; 
-  width :50% ;
-  padding-top:50px
+  width :45% ;
+  padding-top:30px;
+  padding:2%;
+}
+.detail_left,.detail_right .fontSty{
+  font-size: 13px;
+  font-weight:bold;
 }
 
 .detail_tab{
