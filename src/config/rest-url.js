@@ -130,6 +130,8 @@ const DEFAULT_URL = {
     getOrganization: `${UUMSSERVER}organization/tree`,
     // 获取机构下对应的人员
     getUserList: `${UUMSSERVER}user/getUserListByOrgId`,
+    // 根据id获取人员信息列表
+    getUserListByOrg: `${UUMSSERVER}user/getUserListByOrg`,
     // 根据type 获取flowcode
     getFlowByCondition: `${UUMSSERVER}flow/getFlowByCondition`,
     // 根据flowcode节点
@@ -158,6 +160,8 @@ const DEFAULT_URL = {
       countWorkNoteByDay: `${GAISMSERVER}workNote/countWorkNoteByDay`, // 工作评价按月统计
       updateWorkNote: `${GAISMSERVER}workNote/updateWorkNote`, // 修改工作日志
       saveWorkNote: `${GAISMSERVER}workNote/saveWorkNote`, // 修改工作日志
+      // 根据人员id获取部门列表
+      getPostByUserId: `${UUMSSERVER}post/getPostByUserId`,
       
     },
      // 个人风险管理
@@ -167,7 +171,9 @@ const DEFAULT_URL = {
     saveUserRisk: `${UUMSSERVER}risk/save`, // 保存个人风险
     getUserDetail: `${UUMSSERVER}user/get`, // 获取用户层级领导及负责人
     getDetail: `${UUMSSERVER}risk/get`, // 获取个人风险详情
-    updateUserRisk: `${UUMSSERVER}risk/update` // 更新
+    updateUserRisk: `${UUMSSERVER}risk/update`, // 更新
+    updateRiskContent: `${UUMSSERVER}riskContent/update` // 领导评价
+    
   },
     exposure: {
       findExposurePage: `${GAISMSERVER}exposure/findExposurePage`,

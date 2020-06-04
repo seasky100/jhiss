@@ -177,8 +177,8 @@ export default {
             overtimeApply(Object.assign({
                 nCurrent: nCurrent,
                 nSize: 10,
-                // userId: sessionStorage.id,
-                userId: $this.id
+                userId:JSON.parse(sessionStorage.userInfo).info,
+                // userId: $this.id
             }, $this.searchData)).then((res) => {
                 this.$refs.recordSpTableRef.setPageInfo(
                     nCurrent,

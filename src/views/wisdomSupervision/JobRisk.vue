@@ -286,8 +286,10 @@ export default {
       const _this = this;
       getRiskByUserId({ userId }).then(res => {
         if (res.success == true) {
+          debugger
           this.warningInfo = res.data[0];
           _this.dialogVisible = true;
+          // _this.$parent.lslist = !_this.$parent.lslist;
         } else {
           console.log(res.message);
         }

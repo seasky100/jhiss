@@ -64,7 +64,7 @@ export default {
         // {name: '责任清单', imgPath: require('@/assets/images/bg/menu4.png')},
         // {name: '风险评估', path: '/JobRisk', imgPath: require('@/assets/images/bg/xxjy.png')},
         {name: '预警管控', path: '/RiskControl',imgPath: require('@/assets/images/bg/yjgk.png')},
-        {name: '学习教育', path: '/LearnEducation', imgPath: require('@/assets/images/bg/fxpg.png')},
+        {name: '学习教育',  imgPath: require('@/assets/images/bg/fxpg.png')},
       ],
       labelList: [
         {label: '预警'}

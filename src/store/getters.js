@@ -19,6 +19,7 @@ const getters = {
   userId: state => state.user.userId,
   loginName: state => state.user.loginName,
   realName: state => state.user.realName,
+  grade: state => state.user.grade,
   userPermissions: state => state.user.userPermissions,
   orgId: state => state.user.orgId,
   orgCode: state => state.user.orgCode,

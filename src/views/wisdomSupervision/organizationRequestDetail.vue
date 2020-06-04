@@ -552,6 +552,549 @@
           </tr>
         </table>
       </div>
+    <div class="detail_left" v-if='data.reportType ==113'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>事项类型：</td>
+          <td style="text-align: left;">{{formData.reportDesc}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==112'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>存款人姓名：</td>
+          <td>{{formData.name}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>与本人关系：</td>
+          <td>{{relationMap[formData.relation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>存款的国家（地区）及城市：</td>
+          <td>{{formData.country}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>开户银行或金融机构全称：</td>
+          <td>{{formData.bankAccount}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>币种：</td>
+          <td>{{formData.currency}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>存款金额（万元）：</td>
+          <td>{{formData.amountPaid}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==103'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>事由：</td>
+          <td>{{formData.giftDesc}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>礼金总额：</td>
+          <td>{{formData.cash}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==104'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>证件类型：</td>
+          <td>{{coupleCertificateTypeMap[formData.certificateType]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>证件号码：</td>
+          <td>{{formData.certificateNumber}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>出发时间：</td>
+          <td>{{new Date(formData.startTime).toLocaleDateString()}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>归国时间：</td>
+          <td>{{new Date(formData.endTime).toLocaleDateString()}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>同行人：</td>
+          <td>{{formData.peer}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>事由：</td>
+          <td>{{formData.cause}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>所到国家（地区）：</td>
+          <td>{{formData.exitCountry}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==108'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>房产类型：</td>
+          <td>{{typeMap[formData.houseType]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>交易类型：</td>
+          <td>{{tradeTypeMap[formData.houseSource]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>交易时间：</td>
+          <td>{{new Date(formData.tradeTime).toLocaleDateString()}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>房屋坐落：</td>
+          <td>{{formData.address}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>建筑面积：</td>
+          <td>{{formData.area}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>房产总额（万元）：</td>
+          <td>{{formData.total}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>贷款情况：</td>
+          <td>{{loanTypeMap[formData.isloan]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>装修情况：</td>
+          <td>{{decorationMap[formData.decorateStatus]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>产权归属：</td>
+          <td>{{ownershipMap[formData.ownership]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==101'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>子女姓名：</td>
+          <td>{{formData.childName}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>对方国家（地区）：</td>
+          <td>{{formData.country}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>婚姻变化情况：</td>
+          <td>{{mtypeMap[formData.marrageState]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>对方姓名：</td>
+          <td>{{formData.name}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>对方工作单位：</td>
+          <td>{{formData.workCompany}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>对方职务：</td>
+          <td>{{formData.post}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>对方证件类型：</td>
+          <td>{{coupleCertificateTypeMap[formData.otherCertificate]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>对方证件号码：</td>
+          <td>{{formData.certificateNumber}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>对方证件登记时间：</td>
+          <td>{{formData.applyTime}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==106'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>与本人关系：</td>
+          <td>{{relationMap[formData.relation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>姓名：</td>
+          <td>{{formData.name}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>工作（学习）单位：</td>
+          <td>{{formData.workCompany}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>是否在国（境）外：</td>
+          <td>{{isForeignMap[formData.isAbroad]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>现任职务：</td>
+          <td>{{formData.post}}</td>
+        </tr>
+        <!-- <tr class='o_tr'>
+                        <td class='o_td'>单位性质：</td>
+                        <td>{{formData.post}}</td>
+                      </tr> -->
+        <tr class='o_tr'>
+          <td class='o_td'>证件名称：</td>
+          <td>{{formData.certificateName}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>证件号码：</td>
+          <td>{{formData.certificateNum}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==105'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>与本人关系：</td>
+          <td>{{relationMap[formData.relation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>姓名：</td>
+          <td>{{formData.name}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>移居（所在）国家：</td>
+          <td>{{formData.country}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>现居住城市：</td>
+          <td>{{formData.city}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>事由：</td>
+          <td>{{incidentMap[formData.cause]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>移居类别：</td>
+          <td>{{ytypeMap[formData.emigrateState]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>出国时间：</td>
+          <td>{{new Date(formData.strartTime).toLocaleDateString()}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>停留时间：</td>
+          <td>{{new Date(formData.endTime).toLocaleDateString()}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==109'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>投资人姓名：</td>
+          <td>{{formData.name}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>与本人关系：</td>
+          <td>{{relationMap[formData.relation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>投资的国家（地区）及城市：</td>
+          <td>{{formData.country}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>投资情况：</td>
+          <td>{{tzMap[formData.investmentSituation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>币种：</td>
+          <td>{{formData.currency}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>投资金额（万元）：</td>
+          <td>{{formData.amountPaid}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==111'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>人员姓名：</td>
+          <td>{{formData.name}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>与本人关系：</td>
+          <td>{{relationMap[formData.relation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>统一社会信用代码/注册号：</td>
+          <td>{{formData.creditCode}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>企业或其他市场主体名称：</td>
+          <td>{{formData.companyName}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>成立日期：</td>
+          <td>{{new Date(formData.buildTime).toLocaleDateString()}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>经营范围：</td>
+          <td>{{formData.businessScope}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>注册地：</td>
+          <td>{{formData.registered}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>经营地：</td>
+          <td>{{formData.businessPlace}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>企业或其他市场主体类型：</td>
+          <td>{{enterpriseTypeMap[formData.companyType]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>注册资本（金）或资金数额（出资额）：</td>
+          <td>{{formData.registeredCapital}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>个人认缴出资额或个人出资额：</td>
+          <td>{{formData.personalContribution}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>个人认缴出资比例或个人出资比例：</td>
+          <td>{{formData.personalRatio}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==110'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>类型：</td>
+          <td>{{dtypeMap[formData.type]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>借贷对象姓名：</td>
+          <td>{{formData.borrower}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>借款对象工作单位：</td>
+          <td>{{formData.workCompany}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>借入/借出</td>
+          <td>{{inOutMap[formData.isBorrow]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>借款事由</td>
+          <td>{{formData.borrowReason}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>金额：</td>
+          <td>{{formData.amount}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>约定利息：</td>
+          <td>{{formData.interest}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>期限：</td>
+          <td>{{formData.term}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==107'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>类型：</td>
+          <td>{{stypeMap[formData.illegalType]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>与本人关系：</td>
+          <td>{{relationMap[formData.relation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>姓名：</td>
+          <td>{{formData.name}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>处理阶段：</td>
+          <td>{{phaseMap[formData.stage]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>发生时间：</td>
+          <td>{{new Date(formData.happenTime).toLocaleDateString()}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>发生事由：</td>
+          <td>{{formData.cause}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>处理结果：</td>
+          <td>{{formData.result}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==102'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>办理类型：</td>
+          <td>{{htypeMap[formData.banquetState]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>宴请对象范围：</td>
+          <td v-for="(item,index) in formData.banquetScope" :key="index">{{hguestMap[formData.banquetScope[index]]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>酒席桌数：</td>
+          <td>{{formData.count}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>餐费标准：</td>
+          <td>{{formData.mealsPrice}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>与本人关系：</td>
+          <td>{{relationMap[formData.banquetRelation]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>备注：</td>
+          <td>{{formData.comment}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="detail_left" v-if='data.reportType ==201'>
+      <table class="detail_tab">
+        <tr class='o_tr'>
+          <td class='o_td'>事项类型：</td>
+          <td>{{sbtypeMap[formData.applyType]}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>事由：</td>
+          <td>{{formData.applyDesc}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>事项时间：</td>
+          <td>{{new Date(formData.applyTime).toLocaleString('chinese',{hour12: false})}}至{{new Date(formData.applyEnd).toLocaleString('chinese',{hour12:
+            false})}}</td>
+        </tr>
+        <tr class='o_tr'>
+          <td class='o_td'>附件下载：</td>
+          <td v-for="(item,index) in formData.contentUrl" :key="index">
+            <el-link :href="item.url" style="color:#235FF6;margin-right:10px">附件{{index+1}}</el-link>
+          </td>
+        </tr>
+      </table>
+    </div>
     </div>
     <div class="detail_right">
       <div class='flex flex-align-center h24 w-full border-box' style="color:#121518">

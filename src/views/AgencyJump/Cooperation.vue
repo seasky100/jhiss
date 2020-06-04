@@ -15,14 +15,18 @@ export default {
 
   },
   mounted() {
-    const getToken = () => {
-      const tokenRaw = document.cookie.split(';').find(item =>
+    debugger
+    let getToken = () => {
+      let tokenRaw = document.cookie.split(';').find(item =>
         /token=([a-zA-Z0-9]+)/.test(item)
       );
       return tokenRaw ? RegExp.$1 : '';
     }
-    const token = getToken()
-    this.src = `http://41.232.3.207/sys/indexOA.shtml?ownerUnit=&sysId=ZHJD&token=${token}`
+    let token = getToken()
+    console.log('token22',token);
+    let userId = sessionStorage.userId
+    this.src = `http://41.232.3.207/sys/indexOA.shtml?ownerUnit=&sysId=ZHJD&userId=${userId}&token=${token}`
+    console.log('this.src',this.src)
   },
   methods: {
   }

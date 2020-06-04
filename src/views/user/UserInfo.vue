@@ -51,9 +51,9 @@
                     <span>任职时间：</span>
                 </div>
             </div>
-            <div class='m_xin'><span>职级：</span>{{userInfo.postLevel}}</div>
+            <!-- <div class='m_xin'><span>职级：</span>{{userInfo.postLevel}}</div>
             <div class='m_xin'><span>籍贯：</span>{{userInfo.realName}}</div>
-            <div class='m_xin'><span>技术职称：</span>{{userInfo.technicalTitle}}</div>
+            <div class='m_xin'><span>技术职称：</span>{{userInfo.technicalTitle}}</div> -->
             <!-- <div v-if="userInfo.startWorkTime !=''&&userInfo.startWorkTime !=undefined&&userInfo.startWorkTime !='undefined'">
                 <div class='m_xin'>
                     <span>参加工作时间：</span>{{new Date(userInfo.startWorkTime).toLocaleDateString() || ''}}</div>

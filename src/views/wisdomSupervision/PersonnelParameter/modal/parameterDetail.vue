@@ -11,7 +11,7 @@
                 <UserReport :id='userId'/>
         </el-tab-pane>
         <el-tab-pane label="我的加班信息" name="fourth">
-                <UserOvertime :id='infoId'/>
+                <UserOvertime :id='userId'/>
         </el-tab-pane>
         <el-tab-pane label="我的请假申请" name="five">
                 <UserLeave :Id='infoId'/>

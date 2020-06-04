@@ -170,6 +170,8 @@ export default {
             getFindMealCardPage(Object.assign({
                 nCurrent: nCurrent,
                 nSize: 10,
+                user_id: sessionStorage.userId,
+                warnType: 11,
                 orderByField: ''
             }, $this.searchData)).then((res) => {
                 console.log(res.data);

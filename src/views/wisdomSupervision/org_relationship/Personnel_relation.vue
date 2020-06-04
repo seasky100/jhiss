@@ -67,8 +67,9 @@
     </div>
     <!-- 岗位预警 -->
     <el-dialog  class="dialog_info" title="风险信息" :visible.sync="dialogVisible">
-      <div v-if="warningInfo != null && warningInfo != ''">
+      
      <div v-show='lslist'>
+        <div v-if="warningInfo != null && warningInfo != ''">
       <div>
         <span v-if='warningInfo.fileUrl'>
             <img style="float:left; width: 55px;" class="photo_img" :src="warningInfo.fileUrl" />
@@ -79,8 +80,8 @@
         <div style="float:left;padding:15px;line-height:25px;">
           <span class="dialogName">{{warningInfo.userName}}</span>
           <span style="color:#ccc;">警号：</span>{{warningInfo.policeCode}}
-          <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.orgName}}
-          <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.postName}}
+          <span style="color:#ccc;margin-left:10px;">职务：</span>{{warningInfo.postName}}
+          <span style="color:#ccc;margin-left:10px;">部门：</span>{{warningInfo.orgName}}
           <!-- <span style="color:#ccc;margin-left:10px;">职级：</span>{{warningInfo.orgName}} -->
         </div>
       </div>
@@ -92,21 +93,23 @@
       <div v-if="leData != null && leData != ''">
         <div style="margin-bottom: 17px;margin-top: 15px;font-size: 15px;font-weight: 600;color: #2070c1;">领导评价：</div>
       <div>
-          <img style="float:left;width: 55px;" class="photo_img" :src="leData[0].leaderUrl" />
+          <img style="float:left;width: 55px;" class="photo_img" :src="leData.leaderUrl" />
           <div style="float:left;padding:15px;line-height:25px;">
-            <span class="dialogName">{{leData[0].leaderName}}</span>
-            <span style="color:#ccc;">警号：</span>{{leData[0].leaderCode}}
-            <span style="color:#ccc;margin-left:10px;">职务：</span>{{leData[0].leaderPost}}
-            <span style="color:#ccc;margin-left:10px;">部门：</span>{{leData[0].leaderDept}}
+            <span class="dialogName">{{leData.leaderName}}</span>
+            <span style="color:#ccc;">警号：</span>{{leData.leaderCode}}
+            <span style="color:#ccc;margin-left:10px;">职务：</span>{{leData.leaderPost}}
+            <span style="color:#ccc;margin-left:10px;">部门：</span>{{leData.leaderDept}}
             <!-- <span style="color:#ccc;margin-left:10px;">职级：</span>{{this.leadInfo.policeRank}} -->
           </div>
         </div>
-        <el-table :data="leData[0].riskContentList" class="diaTab">
-          <el-table-column property="workMatters" label="岗位职责"></el-table-column>
-          <el-table-column property="riskContent" label="廉政风险"></el-table-column>
-          <el-table-column property="riskMesure" label="防控措施"></el-table-column>
+        <el-table :data="leData.riskContentList" class="diaTab">
+          <el-table-column property="workMattersEvaluate" label="岗位职责"></el-table-column>
+          <el-table-column property="riskContentEvaluate" label="廉政风险"></el-table-column>
+          <el-table-column property="riskMesureEvaluate" label="防控措施"></el-table-column>
         </el-table>
+        <!-- <el-button @click="back">返回</el-button> -->
       </div>
+    </div>
     </div>
     <div v-show='!lslist'>
       <div class="page-title">
@@ -127,21 +130,23 @@
     </div>
       <div v-show='aaa' style="text-align: -webkit-center;margin-top: 50px;">
           <el-button type="primary" @click="addClickHandle">新增</el-button>
-          <el-button @click="back">取消</el-button>
-          <div style="text-align: -webkit-right;">
+          <el-button @click="back">返回</el-button>
+          <div  v-if="historyData != null && historyData != ''" style="text-align: -webkit-right;">
               <el-button type="primary" @click="historylist">历史列表</el-button>
           </div>
           
       </div>
       <div v-show='!aaa' style="text-align: -webkit-center;margin-top: 20px;">
+          <div v-if="warningInfo != null && warningInfo != ''">
         <div  v-if="leData == null || leData == ''">
           <div style="text-align: -webkit-right;" v-show='Pleader'>
-          <el-button type="primary" @click="leaderClickHandle(add)">领导评价</el-button>
+          <el-button type="primary" @click="leaderClickHandle">领导评价</el-button>
         </div>
         </div>
         <div style="text-align: -webkit-right;" v-else>
-            <el-button type="primary" @click="leaderClickHandle(edit)">编辑</el-button>
+            <el-button type="primary" @click="leaderClickHandle">编辑</el-button>
         </div>
+          </div>
         <div v-show='!Pleader'>
         <div class='pingjia'  >岗位职责:</div>
         <el-input v-model="matters" type="textarea"></el-input>            
@@ -150,13 +155,13 @@
         <div class='pingjia'  >防控措施:</div>
         <el-input v-model="mesure" type="textarea"></el-input>
         <el-button type="primary" @click="leadClickHandle">评价</el-button>
-        <el-button @click="back">取消</el-button>
+        <el-button @click="back">返回</el-button>
       </div>
       </div>
-    </div>
-    <div style="text-align: -webkit-center;font-size: 16px;font-weight: 800;color: red;" v-else>
+  
+    <!-- <div style="text-align: -webkit-center;font-size: 16px;font-weight: 800;color: red;" v-else>
       暂无数据
-    </div>
+    </div> -->
     </el-dialog>
     <!-- 责任清单 -->
     <el-dialog class="dialog_info" title="责任清单" :visible.sync="dialogVisible2">
@@ -171,9 +176,9 @@
            <div style="width: 100%;height: 20px;text-align: -webkit-center;margin-top: 60%;color: #FFD521;font-size: 15px;" ><div><!--<el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期"  style="width:50%;height:30px;"></el-date-picker> -->
            <div style="margin-top: 10px;" ><span style="letter-spacing: 5px;">{{orgName}}</span></div>
            <div style="margin-top: 10px;" ><span style="letter-spacing: 2px;">{{year}}年{{month}}月</span></div>
-           <button v-show='look' style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 30px; " type="primary" @click="addrespons">查看</button>
+           <button  style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 30px; " type="primary" @click="addrespons">查看</button>
             <button style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 31px; " type="primary" @click="backrespons">关闭</button>
-            <button v-show='!look' style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 31px; " type="primary" @click="addrespons">创建</button>
+            <button  style="height: 22px; width: 33px;float: right; margin-right: 28px;margin-top: 31px; " type="primary" @click="addrespons2">创建</button>
           </div></div>
         </div>
     </div>
@@ -214,7 +219,7 @@
                   <el-date-picker :disabled="disabled" :picker-options = 'pickerOptions0' type="datetime" value-format="yyyy-MM-dd hh:mm:ss" placeholder="选择日期" v-model="ruleForm.applyEnd" style="width: 100%;"></el-date-picker>
                 </el-form-item> -->
         <el-button type="primary" @click="submit">下发</el-button>
-        <el-button @click="goBack">取消</el-button>
+        <el-button @click="goBack">返回</el-button>
       </div>
     <div v-show='!dialogVisible4'>
       <div class='p_title'>
@@ -239,7 +244,8 @@
               <div>日期：{{responseData.selfCreate}}</div>
           </div>
         </div>
-        <el-button v-show ='editFlag' type="primary" @click="edit">编辑</el-button>
+        <el-button v-show ='editFlag' type="primary" @click="edit">编辑并下发</el-button>
+        <el-button @click="goBack">返回</el-button>
         <div style="text-align: -webkit-right;">
             <el-button v-show='prev' type="primary" @click="prevPiece">下一篇</el-button>
             <el-button v-show='next' type="primary" @click="nextPiece">上一篇</el-button>
@@ -274,7 +280,7 @@
 // import treeData from './treeData.js';
 import { getUserInfo,getUserList,getList,getUserListByUserId, getSubordinateUserList  } from '@/api/user-server.js';
 import { findExposureStudyRecord } from "@/api/warn.js";
-import { getRiskByUserId,saveElectronicResponsibility,updateElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk } from '@/api/report.js';
+import { getRiskByUserId,saveElectronicResponsibility,updateElectronicResponsibility,getElectronicResponsibilityById,findElectronicResponsibilityPage,getSignatureById,getRiskPage,saveUserRisk,updateUserRisk,updateRiskContent } from '@/api/report.js';
 import { myPhotoSrc } from '@/utils/common.js';
 import editor from "@/components/editor.vue";
 import JobriskAdd from "../JobriskAdd";
@@ -298,6 +304,8 @@ export default {
       month: new Date().getMonth()+1,
       parentId:'',
       nCurrent: 1,
+      historyData: [],
+      riskContentId:'', // 风险内容id
       zrsId:'',
       mesure:'',
       content:'',
@@ -318,12 +326,15 @@ export default {
         disabled: true
       },
       formData: {
-        ifMyEntering: 0,
+        // ifMyEntering: 0,
         riskContent: [
           {
             workMatters: "",
             riskContent: "",
-            riskMesure: ""
+            riskMesure: "",
+            riskContentEvaluate:"",
+            riskMesureEvaluate:"",
+            workMattersEvaluate:'',
           }
         ]
       },
@@ -509,11 +520,11 @@ export default {
           label: '标题',
           align: 'left'
         },
-        {
-          prop: 'content',
-          label: '内容',
-          align: 'left'
-        }
+        // {
+        //   prop: 'content',
+        //   label: '内容',
+        //   align: 'left'
+        // }
       ],
     }
   },
@@ -625,6 +636,7 @@ export default {
     },
     // 机构人员 下拉change事件
     orgChange(orgId) {
+      debugger
       const item = this.deepQuery(orgId);
       this.orgName = item.name;
       this.getUserListData(orgId);
@@ -830,10 +842,20 @@ export default {
       this.dialogVisible5 = false
     },
     addrespons(){
+      debugger
       this.dialogVisible5 = false
       this.dialogVisible3 = true
-      this.findElectronic()
+      this.dialogVisible4 = false
+      // this.findElectronic()
       // this.signatLeader()
+    },
+    addrespons2(){
+      debugger
+      this.dialogVisible5 =  false
+      this.dialogVisible3 = true
+      this.dialogVisible4 = true
+      // this.findElectronic()
+      this.signatLeader()
     },
     findElectronic(){
       debugger
@@ -853,11 +875,11 @@ export default {
         if (res.success == true) {
           if(res.data.records == null ||res.data.records.length == 0){
             // _this.flagLeader = false 
-            _this.look = false
+            // _this.look = false
             _this.signatLeader()  
             _this.dialogVisible4 = true
           }else{
-            _this.look = true
+            // _this.look = true
             let userId = JSON.parse(sessionStorage.userInfo).id
             let data = res.data.records
             if(_this.nCurrent == res.data.pages && _this.nCurrent > 1){
@@ -878,16 +900,23 @@ export default {
                 _this.ruleForm.selfSignature = data[i].selfSignature   
                 data[i].gmtCreate = new Date(data[i].gmtCreate).toLocaleDateString()
                 data[i].selfCreate = new Date(data[i].selfCreate).toLocaleDateString()
+              if (_this.zrsId == sessionStorage.userId) {
+                _this.flag = true
+                _this.editFlag = true
+              } else {
+                _this.flag = false
+              }
                 if(data[i].selfSignature){
-                     _this.flag = false
+                  _this.editFlag = false
+                  _this.flag = false
                 }else{
-                  _this.flag = true
+                  _this.editFlag = true
                 }                             
             }
-            _this.dialogVisible4 = false
-            if(_this.level == 2){
-              _this.editFlag = false
-            }
+            // _this.dialogVisible4 = false
+            // if(_this.level == 2){
+            //   _this.editFlag = false
+            // }
             _this.ruleForm.title = res.data.records[0].title
             _this.ruleForm.content = res.data.records[0].content
             _this.ruleForm.leadId = res.data.records[0].leadId
@@ -902,6 +931,7 @@ export default {
       })
     },
     responsibility(value) {
+      debugger
       this.zrsId = value.id
       console.log('领导责',this.zrsId)
       this.dialogVisible5 = true
@@ -924,9 +954,12 @@ export default {
       this.nCurrent = this.nCurrent+1
       this.findElectronic()
     },
-   // 个人岗位预警
+   // 个人岗位预警风险
     getRiskByUserData(userId) {
+      debugger
+      this.QueryData(); // 判断是否显示历史列表
       this.leData = []
+      this.warningInfo = []
       const id = JSON.parse(sessionStorage.userInfo).id
       if (userId != id) {
         this.aaa = false
@@ -947,24 +980,38 @@ export default {
           debugger
           if (res.data.length > 0) {
             let data = res.data
+            _this.formData.riskContent[0].riskContent = data[0].riskContentList[0].riskContent
+            _this.formData.riskContent[0].riskMesure= data[0].riskContentList[0].riskMesure
+            _this.formData.riskContent[0].workMatters = data[0].riskContentList[0].workMatters
             let branchData = []
-            for (let i = 0; i < data.length; i++) {
-              if (data[i].ifMyEntering == 0) {
-                if(data[i].leaderUrl){
-                  data[i].leaderUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + data[i].leaderUrl.split('\\').slice(-1)[0]
-                }
-                this.leData.push(data[i])
-              } else {
-                branchData.push(data[i])
-              }
+            res.data[0].leaderUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + res.data[0].leaderUrl.split('\\').slice(-1)[0]
+            res.data[0].fileUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + res.data[0].fileUrl.split('\\').slice(-1)[0]
+            let Data = res.data[0]
+            if(Data.riskContentList[0].riskContentEvaluate ||Data.riskContentList[0].workMattersEvaluate ||Data.riskContentList[0].riskMesureEvaluate){
+              _this.leData = Data
+              // Data[0].leaderUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + Data[i].leaderUrl.split('\\').slice(-1)[0]
             }
-            if (branchData[0].fileUrl) {
-              branchData[0].fileUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + branchData[0].fileUrl.split('\\').slice(-1)[0]
-            }
-            this.warningInfo = branchData[0]
-            console.log('大大阿达的', this.leData)
+            _this.warningInfo = res.data[0]
+
+            // for (let i = 0; i < data.length; i++) {
+
+            //   if (data[i].ifMyEntering == 1) {
+            //     if(data[i].leaderUrl){
+            //       data[i].leaderUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + data[i].leaderUrl.split('\\').slice(-1)[0]
+            //     }
+            //     _this.leData.push(data[i])
+            //   } else {
+            //     branchData.push(data[i])
+            //     _this.riskContentId = data[0].riskContentList[0].id
+            //   }
+            // }
+            // if (branchData[0].fileUrl) {
+            //   branchData[0].fileUrl = 'http://10.121.252.53:1001/View_file/UserImage/' + branchData[0].fileUrl.split('\\').slice(-1)[0]
+            // }
+            // this.warningInfo = branchData[0]
+            // console.log('大大阿达的', this.leData)
           } else {
-            this.warningInfo = []
+            _this.warningInfo = []
           }
         } else {
           console.log(res.message)
@@ -973,6 +1020,7 @@ export default {
     },
     // 个人的电子签名
     signature() {
+      debugger
       const _this = this
       getSignatureById(
         Object.assign(
@@ -986,6 +1034,10 @@ export default {
           _this.ruleForm.selfSignature = res.data
           _this.flag = false
           let qmurl = res.data
+          this.$message({
+            type: "success",
+            message: '签名成功'
+          });
           _this.updateElectronic(qmurl)
         } else {
           console.log(res.message)
@@ -1000,7 +1052,7 @@ export default {
         id: this.ruleForm.id,
         title: this.ruleForm.title,
         userId: sessionStorage.userId,
-        userCreate: this.$route.query.value.id,
+        userModified: sessionStorage.userId,
         content: this.ruleForm.content,
         selfSignature: this.ruleForm.selfSignature,
       }
@@ -1047,10 +1099,9 @@ export default {
       })
     },
     leadClickHandle(){ // 领导评价
-      const _this = this
-      this.formData.riskContent[0].riskContent = _this.content
-      this.formData.riskContent[0].riskMesure = _this.mesure
-      this.formData.riskContent[0].workMatters = _this.matters
+      this.formData.riskContent[0].riskContentEvaluate = this.content
+      this.formData.riskContent[0].riskMesureEvaluate = this.mesure
+      this.formData.riskContent[0].workMattersEvaluate = this.matters
       const leadInfo = JSON.parse(sessionStorage.userInfo)
       let filesParam = new FormData();
       filesParam.append('orgId', this.warningInfo.orgId);
@@ -1064,28 +1115,21 @@ export default {
       filesParam.append('leaderCode', leadInfo.policeCode);
       filesParam.append('leaderPost', leadInfo.rank);
       filesParam.append('leaderDept', leadInfo.label);
+      filesParam.append('id', this.warningInfo.id);
       filesParam.append('riskContent', JSON.stringify(this.formData.riskContent));
-      filesParam.append('riskContent', JSON.stringify(_this.formData.riskContent));
-      let res = null;
-      if (this.id == this.warningInfo.leaderId) {
-        filesParam.append('id', this.id);
-         res =  updateUserRisk(filesParam);
-      } else {
-        res =  saveUserRisk(filesParam); 
-      }
-      debugger
-      if (res && res.success === true) {
-        this.$message({
-          type: "success",
-          message: "评价成功"
-        });
-        // _this.visible = false;
-      } else {
-        // this.$message({
-        //   type: "error",
-        //   message: res.message
-        // });
-      }
+      updateUserRisk(filesParam).then(res => {
+        if (res.success) {
+          this.$message({
+            type: 'success',
+            message: '评价成功'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '评价失败'
+          })
+        }
+      })
       this.dialogVisible = false
       this.Pleader = true
     },
@@ -1122,7 +1166,10 @@ export default {
           // _this.searchData
         )
       ).then(res => {
-        this.$refs.recordTalksTableRef.setPageInfo(
+        if(res.data.records.length>0){
+          _this.historyData = res.data.records
+        }
+        _this.$refs.recordTalksTableRef.setPageInfo(
           nCurrent,
           res.data.size,
           res.data.total,
@@ -1137,6 +1184,7 @@ export default {
     },
     edit(){
       this.dialogVisible4 = true
+      this.signatLeader()
     },
     goBack(){
       this.dialogVisible3= false
@@ -1145,16 +1193,16 @@ export default {
       this.$refs.JobriskAdd.open("add");
     },
     leaderClickHandle(typeData){
-      debugger
-      if (this.leData.length>0) {
-        const data = this.leData
-        this.leData = []
-        this.mesure = data[0].riskContentList[0].riskMesure
-        this.content = data[0].riskContentList[0].riskContent
-        this.matters = data[0].riskContentList[0].workMatters
-        this.id = data[0].id
-      }
-      this.type = typeData  
+      // debugger
+      // if (this.leData.length>0) {
+      //   const data = this.leData
+      //   this.leData = []
+      //   this.mesure = data[0].riskContentList[0].riskMesure
+      //   this.content = data[0].riskContentList[0].riskContent
+      //   this.matters = data[0].riskContentList[0].workMatters
+      //   this.id = data[0].id
+      // }
+      // this.type = typeData  
       this.Pleader = false
     },
     back(){
@@ -1164,7 +1212,6 @@ export default {
     },
     historylist(){
       this.lslist = !this.lslist
-      this.QueryData();
     },
     group(){
       debugger

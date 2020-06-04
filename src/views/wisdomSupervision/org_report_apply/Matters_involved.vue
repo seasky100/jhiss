@@ -1,7 +1,7 @@
 <template>
   <div class="report-container">
 		<div class="report-title">
-      <span>涉纪涉诉事项</span>
+      <span>涉及诉讼事项</span>
     </div>
 		<div class="report-content">
 			<div class="tip">
@@ -58,7 +58,7 @@
           <el-form-item label="附件">
             <e-upload @changeHandler="changeHandler" />
           </el-form-item>
-          <el-form-item label="审批人" required>
+          <el-form-item label="本部门审批" required>
             <el-col :span="11">
               <el-form-item prop="department">
                 <select-tree 
@@ -71,18 +71,53 @@
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-form-item prop="approvalId">
-                <el-select v-model="ruleForm.approvalId" placeholder="请选择" @change="selectChange">
-                  <el-option
-                    v-for="item in approvalArr"
-                    :key="item.id"
-                    :label="item.realName"
-                    :value="item.id">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+                <el-form-item prop="id1">
+                  <el-select v-model="id1"  placeholder="第一审批人" @change="selectChange1">
+                    <el-option
+                      v-for="item in approvalArr"
+                      :key="item.id"
+                      :label="item.realName"
+                      :value="item.id">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item v-show='shenpi' prop="id2">
+                    <el-select v-model="id2"  placeholder="第二审批人" @change="selectChange2">
+                      <el-option
+                        v-for="item in approvalArr"
+                        :key="item.id"
+                        :label="item.realName"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+              </el-col>
           </el-form-item>
+          <el-form-item v-show='shenpi' label="局领导审批">
+              <el-col :span="11">
+                <el-form-item prop="department1">
+                  <select-tree 
+                    v-model="ruleForm.department1"
+                    :props="config"
+                    :treeData="orgData"
+                    @change="orgChange"
+                    placeholder="请选择领导部门" />
+                </el-form-item>
+              </el-col>
+              <el-col class="line" :span="2">-</el-col>
+              <el-col :span="11">
+                <el-form-item prop="id3">
+                  <el-select v-model="id3"  placeholder="审批人" @change="selectChange3">
+                    <el-option
+                      v-for="item in approvalArr"
+                      :key="item.id"
+                      :label="item.realName"
+                      :value="item.id">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-form-item>
           <el-form-item style="text-align: center;">
             <el-button type="primary" @click="submit">提交</el-button>
             <el-button @click="goBack">取消</el-button>
@@ -102,6 +137,10 @@ export default {
   mixins: [getFlowNode],
   data() {
     return {
+      id1:'',
+      id2:'',
+      id3:'',
+      shenpi: false,
       ruleForm: {
         name: '',
         relation: '',
@@ -112,8 +151,10 @@ export default {
         result: '',
         comment: '',
         department: sessionStorage.orgId,
+        department1: '',
         approvalId: '',
-        contentUrl:''
+        contentUrl:'',
+        flowHistory: [],
       },
       rules: {
         name: [
@@ -145,15 +186,22 @@ export default {
         ]
       },
       relationOptions: [
-        {label:'配偶', value:'0'},
-        {label:'子女', value:'1'},
-        {label:'子女配偶', value:'2'}
+        {label:'本人', value:'8'},
+        {label:'配偶', value:'2'},
+        {label:'女儿', value:'5'},
+        {label:'儿子', value:'6'},
+        {label:'父亲', value:'3'},
+        {label:'母亲', value:'4'},
+        {label:'父母', value:'7'},
+        {label:'儿媳', value:'9'},
+        {label:'女婿', value:'10'},
       ],
       illegalOptions: [
         {label:'民事诉讼', value:'0'},
-        {label:'执纪执法机关查处', value:'1'},
         {label:'涉嫌犯罪', value:'2'},
-        {label:'非正常死亡', value:'3'}
+        {label:'非正常死亡', value:'3'},
+        {label:'执纪执法机关查处', value:'4'},
+        {label:'其他', value:'1'}
       ],
       stageOptions: [
         {label:'立案侦查', value:'0'},
@@ -174,7 +222,19 @@ export default {
       approvalArr: [],
       // 审批人对象
       approvalList: [],
+      approvalList1: [],
+      approvalList2: [],
+      approvalList3: [],
       files: []
+    }
+  },
+  watch: {
+    'id1': {
+      handler() {
+        if(this.id1){
+          this.shenpi = true
+        }
+      }
     }
   },
   computed: {
@@ -232,6 +292,23 @@ export default {
     // 提交
     submit() {
       this.$refs.ruleForm.validate((valid) => {
+        let approvalList = (this.approvalList1.concat(this.approvalList2)).concat(this.approvalList3)
+        console.log(approvalList)
+        // return     
+        // let approvalList = this.approvalList.reduce((prev,curr)=>{  // 二维数组转一维数组
+        //   return prev.concat(curr)
+        // },[])
+        const _this = this
+        let arryData 
+        for (let i = 0; i < approvalList.length; i++) {
+          arryData = {
+            approvalId : approvalList[i].id,
+            approvalName : approvalList[i].realName,
+            node : _this.flowNodeList[i].orders,
+            name : _this.flowNodeList[i].name
+          }   
+          _this.ruleForm.flowHistory.push(arryData) 
+        } 
         if (valid) {
           const params = {
             flowProcess: {
@@ -241,12 +318,7 @@ export default {
               sponsorName: this.realName,
               department: this.orgName,
               policeCode: this.userInfo.policeCode,
-              flowHistory: this.flowNodeList.map((item, index) => ({
-                node: item.orders,
-                name: item.name,
-                approvalId: this.approvalList[index].id,
-                approvalName: this.approvalList[index].realName
-              }))
+              flowHistory: this.ruleForm.flowHistory
             },
             cause: this.ruleForm.cause,
             comment: this.ruleForm.comment,
@@ -285,15 +357,27 @@ export default {
     goBack() {
       this.$router.go(-1)
     },     
-    selectChange(val) {
+    selectChange1(val) {
       const result = this.approvalArr.filter(item => {
         return item.id === val;
       })
-      this.approvalList = result;
+      this.approvalList1 = result;
+    },
+    selectChange2(val) {
+      const result = this.approvalArr.filter(item => {
+        return item.id === val;
+      })
+      this.approvalList2 = result;
+    },
+    selectChange3(val) {
+      const result = this.approvalArr.filter(item => {
+        return item.id === val;
+      })
+      this.approvalList3 = result;
     }
   },
   mounted() {
-    this.getData('201')
+    this.getData('107')
     const orgId = this.ruleForm.department
     this.getUserListData(orgId);
   }

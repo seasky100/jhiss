@@ -6,6 +6,7 @@ const state = {
     userId: sessionStorage.getItem('userId') || '',
     loginName: sessionStorage.getItem('loginName') || '',
     realName: sessionStorage.getItem('realName') || '',
+    grade: sessionStorage.getItem('grade') || '',
     orgId: sessionStorage.getItem('orgId') || '',
     userPermissions: sessionStorage.getItem('userPermissions') || [],
     orgCode: sessionStorage.getItem('orgCode') || [],
@@ -35,6 +36,10 @@ const mutations = {
     SET_REALNAME: (state, realName) => {
         state.realName = realName
         sessionStorage.setItem('realName', realName)
+    },
+    SET_GRADE: (state, grade) => {
+        state.grade = grade
+        sessionStorage.setItem('grade', grade)
     },
     SET_PERMISSIONS: (state, permissions) => {
         state.userPermissions = permissions
@@ -94,7 +99,8 @@ const actions = {
         })
     },
     // 获取用户信息
-    getInfo({ commit, state }) {        
+    getInfo({ commit, state }) { 
+        debugger       
         return new Promise((resolve, reject) => {
             getUserInfo({ userId: state.userId }).then(res => {
                 // console.log(res)
@@ -108,20 +114,32 @@ const actions = {
                 let orgStr = orgTree.map(item => {
                     return item.id
                 })
-                let orgId = res.data.organizations[0].id
-                if(orgStr.includes(orgId)){
-                    commit('SETDEPID', orgId)
+                if(res.data.posts >0){
+                    let orgId = res.data.posts[0].id
+                    
                 }else{
-                    const orgIdData = filterData(orgTree, orgId)
-                    if(orgIdData.length > 0){
-                        commit('SETDEPID', orgIdData[0].id)
-                    }
+                    let orgId =  res.data.organizations[0].id
                 }
+                
+                // if(orgStr.includes(orgId)){
+                //     commit('SETDEPID', orgId)
+                // }else{
+                //     const orgIdData = filterData(orgTree, orgId)
+                //     if(orgIdData.length > 0){
+                //         commit('SETDEPID', orgIdData[0].id)
+                //     }
+                // }
                 commit('SET_REALNAME', res.data.realName)
                 commit('SET_LOGINNAME', res.data.loginName)
                 commit('SET_PERMISSIONS', permValueArr)
-                commit('SET_ORGID', res.data.organizations[0].id)
-                commit('SET_ORGNAME', res.data.organizations[0].name)
+                if(res.data.posts.length >0){
+                    commit('SET_ORGID', res.data.posts[0].orgId)
+                    commit('SET_ORGNAME', res.data.posts[0].name)
+                    commit('SET_GRADE', res.data.posts[0].grade)
+                }else{
+                    commit('SET_ORGID', res.data.organizations[0].id)
+                    commit('SET_ORGNAME', res.data.organizations[0].name) 
+                }
                 commit('SET_ORGCODE', res.data.orgCode)
                 commit('SET_USERINFO', JSON.stringify(res.data.userInfo))
                 commit('SET_USERPID', res.data.posts[0].userPid)

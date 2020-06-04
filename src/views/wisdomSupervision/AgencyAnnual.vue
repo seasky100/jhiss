@@ -122,11 +122,7 @@ export default {
         ]
 			},
 			testList: [
-				{policeCode: '1234',policeName: '1234',depment: '1234', time: '1234'},
-				{policeCode: '1234',policeName: '1234',depment: '1234', time: '1234'},
-				{policeCode: '1234',policeName: '1234',depment: '1234', time: '1234'},
-				{policeCode: '1234',policeName: '1234',depment: '1234', time: '1234'},
-				{policeCode: '1234',policeName: '1234',depment: '1234', time: '1234'}
+
 			]
     }
   },

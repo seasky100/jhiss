@@ -230,7 +230,8 @@ export default {
           {
             nCurrent: nCurrent,
             nSize: 10,
-            userId:  _this.userId + ','+ _this.userIds,
+            // userId:  _this.userId + ','+ _this.userIds,
+            userId:  _this.userId ,
             reportType: '2'
           },
           _this.searchData
