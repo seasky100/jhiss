@@ -808,7 +808,6 @@ export default {
     this.flowCode = this.$route.query.flowCode
     this.id = this.$route.query.id
     console.log(this.flowCode)
-    console.log(this.data)
     this.init()
   },
   methods: {
