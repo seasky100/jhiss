@@ -1384,7 +1384,6 @@ export default {
           }
           const flowData = res.data.flowHistory
           const id = sessionStorage.userId
-          debugger
           for (let j = 0; j <flowData.length; j++) {
             if(flowData[j].approvalId == id){
               _this.flowHistory = flowData[j].node

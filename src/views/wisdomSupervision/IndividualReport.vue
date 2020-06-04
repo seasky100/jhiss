@@ -328,7 +328,6 @@ export default {
     },
           // 机构人员 下拉change事件
     orgChange(orgId) {
-      debugger
       // this.searchData.dept_id = orgId
       this.getUserListData(orgId);
     },
