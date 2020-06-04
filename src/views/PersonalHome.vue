@@ -372,7 +372,6 @@ import { mapGetters } from 'vuex';
       this.sevenday();
       this.getPoliceCareer();
       if(window.sessionStorage.shData && window.sessionStorage.pjData ){
-        debugger
         let data = JSON.parse(window.sessionStorage.shData)
         let pjData = JSON.parse(window.sessionStorage.pjData)
         this.worklength = data.map(({ worklength }) => worklength)
@@ -430,7 +429,6 @@ import { mapGetters } from 'vuex';
       })
     },
     initCircle(width,height) {
-      debugger
       const data = [
         { name: "层级履职", count: 295}, 
         { name: "正面争优", count: 190 },
